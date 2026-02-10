@@ -1,0 +1,5 @@
+{
+    "assemblyInputPaths": [
+        "Items/Service/App/ItemsAssembly.swift"
+    ]
+}

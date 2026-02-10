@@ -1,0 +1,42 @@
+{
+  "originHash" : "a3d3b46e25222624b1446ee93af31085fae9f49599cd1935c90b99827c85021d",
+  "pins" : [
+    {
+      "identity" : "askcoordinator",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/skorulis/ASKCoordinator",
+      "state" : {
+        "branch" : "main",
+        "revision" : "461cb72d0492ae5af1c882b7def54124b4379abb"
+      }
+    },
+    {
+      "identity" : "knit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/cashapp/knit",
+      "state" : {
+        "branch" : "skorulis/resolver-class",
+        "revision" : "f645ad918b2b38173e4d1c82fe622d95d25b10a6"
+      }
+    },
+    {
+      "identity" : "swift-argument-parser",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-argument-parser",
+      "state" : {
+        "revision" : "c5d11a805e765f52ba34ec7284bd4fcd6ba68615",
+        "version" : "1.7.0"
+      }
+    },
+    {
+      "identity" : "swift-syntax",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-syntax.git",
+      "state" : {
+        "revision" : "f99ae8aa18f0cf0d53481901f88a0991dc3bd4a2",
+        "version" : "601.0.1"
+      }
+    }
+  ],
+  "version" : 3
+}
