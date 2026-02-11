@@ -7,6 +7,8 @@ import SwiftUI
 
 @Observable final class ContentViewModel {
     
+    var showingWarehouse: Bool = false
+    
     @Resolvable<BaseResolver>
     init() {
 

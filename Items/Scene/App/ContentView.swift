@@ -16,7 +16,7 @@ struct ContentView: View {
 
             // Floating Action Button for Inventory
             Button(action: {
-                // TODO: Hook up inventory action/navigation
+                viewModel.showingWarehouse = true
             }) {
                 Image(systemName: "shippingbox")
                     .font(.system(size: 20, weight: .semibold))
@@ -32,6 +32,9 @@ struct ContentView: View {
             .padding(.bottom, 24)
             .accessibilityLabel("Inventory")
             .accessibilityAddTraits(.isButton)
+        }
+        .sheet(isPresented: $viewModel.showingWarehouse) {
+            WarehouseView(viewModel: resolver!.warehouseViewModel())
         }
     }
     

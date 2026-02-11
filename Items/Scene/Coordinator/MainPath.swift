@@ -8,6 +8,7 @@ import SwiftUI
 public enum MainPath: CoordinatorPath {
     
     case creation
+    case warehouse
     
     public var id: String {
         String(describing: self)
@@ -23,6 +24,8 @@ public struct MainPathRenderer: CoordinatorPathRenderer {
         switch path {
         case .creation:
             CreationView(viewModel: coordinator.apply(resolver.creationViewModel()))
+        case .warehouse:
+            WarehouseView(viewModel: coordinator.apply(resolver.warehouseViewModel()))
         }
     }
 }

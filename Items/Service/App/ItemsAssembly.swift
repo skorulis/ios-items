@@ -33,6 +33,7 @@ final class ItemsAssembly: AutoInitModuleAssembly {
     private func registerViewModels(container: Container<TargetResolver>) {
         container.register(ContentViewModel.self) { ContentViewModel.make(resolver: $0) }
         container.register(CreationViewModel.self) { CreationViewModel.make(resolver: $0) }
+        container.register(WarehouseViewModel.self) { WarehouseViewModel.make(resolver: $0) }
         
         container.register(MainPathRenderer.self) { MainPathRenderer(resolver: $0) }
     }
