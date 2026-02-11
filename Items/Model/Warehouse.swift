@@ -9,4 +9,8 @@ struct Warehouse {
         let count = baseItems[item] ?? 0
         baseItems[item] = count + 1
     }
+    
+    func quantity(_ item: BaseItem) -> Int {
+        return baseItems[item] ?? 0
+    }
 }

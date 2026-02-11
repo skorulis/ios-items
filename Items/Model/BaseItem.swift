@@ -3,7 +3,7 @@
 import Foundation
 
 /// Simple items that only have quantity
-enum BaseItem: Hashable, Equatable, CaseIterable {
+enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable {
     case apple
     case goldCoin
     case woodenChair
@@ -19,6 +19,8 @@ enum BaseItem: Hashable, Equatable, CaseIterable {
     case bowlingBall
     case hourglass
     case compass
+    
+    var id: Self { self }
     
     var acronym: String {
         switch self {

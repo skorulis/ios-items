@@ -10,12 +10,23 @@ import SwiftUI
     
     var coordinator: Coordinator?
     
+    private(set) var warehouse: Warehouse
+    
+    private var cancellables: Set<AnyCancellable> = []
+    
     @Resolvable<BaseResolver>
     init(mainStore: MainStore) {
+        warehouse = mainStore.warehouse
         
+        mainStore.$warehouse.sink { [unowned self] in
+            self.warehouse = $0
+        }
+        .store(in: &cancellables)
     }
 }
 
 // MARK: - Logic
 
-extension WarehouseViewModel {}
+extension WarehouseViewModel {
+    
+}
