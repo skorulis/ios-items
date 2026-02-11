@@ -19,5 +19,6 @@ struct ItemsApp: App {
         WindowGroup {
             ContentView(viewModel: assembler.resolver.contentViewModel())
         }
+        .environment(\.resolver, assembler.resolver)
     }
 }
