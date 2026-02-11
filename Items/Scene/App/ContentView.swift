@@ -9,10 +9,15 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
+            AnimatedBlobView(color: .blue, size: 220, speed: 0.7, points: 9, jitter: 0.26)
+                .padding(.bottom, 16)
             Image(systemName: "globe")
                 .imageScale(.large)
                 .foregroundStyle(.tint)
             Text("Hello, world!")
+            Button("Make") {
+                viewModel.make()
+            }
         }
         .padding()
     }
@@ -22,3 +27,4 @@ struct ContentView: View {
     let assembler = ItemsAssembly.testing()
     ContentView(viewModel: assembler.resolver.contentViewModel())
 }
+
