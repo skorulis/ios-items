@@ -17,8 +17,7 @@ extension CreationView: View {
     var body: some View {
         VStack {
             Spacer()
-            AnimatedBlobView(color: .blue, size: 220, speed: 0.7, points: 9, jitter: 0.26)
-                .padding(.bottom, 16)
+            itemContainer
             Spacer()
             Button("Create an item") {
                 viewModel.make()
@@ -26,6 +25,17 @@ extension CreationView: View {
             .buttonStyle(CapsuleButtonStyle())
         }
         .padding()
+    }
+    
+    private var itemContainer: some View {
+        ZStack {
+            AnimatedBlobView(color: .blue, size: 220, speed: 0.7, points: 9, jitter: 0.26)
+                .padding(.bottom, 16)
+            
+            if let item = viewModel.createdItem {
+                ItemView(item: item)
+            }
+        }
     }
 }
 

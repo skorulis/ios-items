@@ -10,6 +10,8 @@ import SwiftUI
     private let itemGeneratorService: ItemGeneratorService
     private let mainStore: MainStore
     
+    private(set) var createdItem: BaseItem?
+    
     @Resolvable<BaseResolver>
     init(itemGeneratorService: ItemGeneratorService, mainStore: MainStore) {
         self.itemGeneratorService = itemGeneratorService
@@ -25,6 +27,7 @@ extension CreationViewModel {
         let item = itemGeneratorService.make()
         mainStore.warehouse.add(item: item)
         mainStore.statistics.itemsCreated += 1
+        self.createdItem = item
     }
     
 }

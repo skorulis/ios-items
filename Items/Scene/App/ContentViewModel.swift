@@ -7,24 +7,14 @@ import SwiftUI
 
 @Observable final class ContentViewModel {
     
-    private let itemGeneratorService: ItemGeneratorService
-    private let mainStore: MainStore
-    
     @Resolvable<BaseResolver>
-    init(itemGeneratorService: ItemGeneratorService, mainStore: MainStore) {
-        self.itemGeneratorService = itemGeneratorService
-        self.mainStore = mainStore
+    init() {
+
     }
 }
 
 // MARK: - Logic
 
 extension ContentViewModel {
-    
-    func make() {
-        let item = itemGeneratorService.make()
-        mainStore.warehouse.add(item: item)
-        mainStore.statistics.itemsCreated += 1
-    }
     
 }
