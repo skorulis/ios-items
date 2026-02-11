@@ -18,17 +18,25 @@ final class ItemsAssembly: AutoInitModuleAssembly {
     
     @MainActor
     private func registerServices(container: Container<TargetResolver>) {
-        
+        container.register(ItemGeneratorService.self) { _ in ItemGeneratorService() }
+            .inObjectScope(.container)
     }
     
     @MainActor
     private func registerStores(container: Container<TargetResolver>) {
-        
+        container.register(MainStore.self) { _ in MainStore() }
+            .inObjectScope(.container)
     }
     
     @MainActor
     private func registerViewModels(container: Container<TargetResolver>) {
-        
+        container.register(ContentViewModel.self) { ContentViewModel.make(resolver: $0) }
     }
     
+}
+
+extension ItemsAssembly {
+    @MainActor static func testing() -> ScopedModuleAssembler<BaseResolver> {
+        ScopedModuleAssembler<BaseResolver>([ItemsAssembly()])
+    }
 }
