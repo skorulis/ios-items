@@ -9,15 +9,14 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
+            Spacer()
             AnimatedBlobView(color: .blue, size: 220, speed: 0.7, points: 9, jitter: 0.26)
                 .padding(.bottom, 16)
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
-            Button("Make") {
+            Spacer()
+            Button("Create an item") {
                 viewModel.make()
             }
+            .buttonStyle(CapsuleButtonStyle())
         }
         .padding()
     }
