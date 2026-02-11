@@ -19,4 +19,24 @@ enum BaseItem: Hashable, Equatable, CaseIterable {
     case bowlingBall
     case hourglass
     case compass
+    
+    var acronym: String {
+        switch self {
+        case .apple: return "AP"
+        case .goldCoin: return "GC"
+        case .woodenChair: return "WC"
+        case .rubberDuck: return "RD"
+        case .lavaLamp: return "LL"
+        case .typewriter: return "TW"
+        case .cactus: return "CA"
+        case .vinylRecord: return "VR"
+        case .snowGlobe: return "SG"
+        case .umbrella: return "UM"
+        case .telescope: return "TS"
+        case .toaster: return "TO"
+        case .bowlingBall: return "BB"
+        case .hourglass: return "HG"
+        case .compass: return "CP"
+        }
+    }
 }
