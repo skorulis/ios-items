@@ -34,6 +34,7 @@ final class ItemsAssembly: AutoInitModuleAssembly {
         container.register(ContentViewModel.self) { ContentViewModel.make(resolver: $0) }
         container.register(CreationViewModel.self) { CreationViewModel.make(resolver: $0) }
         container.register(WarehouseViewModel.self) { WarehouseViewModel.make(resolver: $0) }
+        container.register(RecipeListViewModel.self) { RecipeListViewModel.make(resolver: $0)}
         
         container.register(MainPathRenderer.self) { MainPathRenderer(resolver: $0) }
     }

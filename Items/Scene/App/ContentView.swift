@@ -9,44 +9,46 @@ struct ContentView: View {
     @Environment(\.resolver) private var resolver
     @State var viewModel: ContentViewModel
     @State var creationCoordinator = Coordinator(root: MainPath.creation)
+    @State var recipesCoordinator = Coordinator(root: MainPath.recipeList)
+    @State var warehouseCoordinator = Coordinator(root: MainPath.warehouse)
     
     var body: some View {
-        ZStack(alignment: .bottomTrailing) {
+        TabView {
             creationTab
-
-            // Floating Action Button for Inventory
-            Button(action: {
-                viewModel.showingWarehouse = true
-            }) {
-                Image(systemName: "shippingbox")
-                    .font(.system(size: 20, weight: .semibold))
-                    .foregroundStyle(.white)
-                    .padding(16)
-                    .background(
-                        Circle()
-                            .fill(Color.accentColor)
-                            .shadow(color: .black.opacity(0.2), radius: 6, x: 0, y: 3)
-                    )
-            }
-            .padding(.trailing, 24)
-            .padding(.bottom, 24)
-            .accessibilityLabel("Inventory")
-            .accessibilityAddTraits(.isButton)
+            warehouseTab
+            recipesTab
         }
+        
         .sheet(isPresented: $viewModel.showingWarehouse) {
             WarehouseView(viewModel: resolver!.warehouseViewModel())
         }
     }
     
     private var creationTab: some View {
-        TabView {
-            CoordinatorView(coordinator: creationCoordinator)
-                .with(renderer: resolver!.mainPathRenderer())
-                .tabItem {
-                    Label("Creation", systemImage: "hammer")
-                }
-                .tag(0)
-        }
+        CoordinatorView(coordinator: creationCoordinator)
+            .with(renderer: resolver!.mainPathRenderer())
+            .tabItem {
+                Label("Creation", systemImage: "hammer")
+            }
+            .tag(0)
+    }
+    
+    private var warehouseTab: some View {
+        CoordinatorView(coordinator: warehouseCoordinator)
+            .with(renderer: resolver!.mainPathRenderer())
+            .tabItem {
+                Label("Warehouse", systemImage: "shippingbox")
+            }
+            .tag(1)
+    }
+    
+    private var recipesTab: some View {
+        CoordinatorView(coordinator: recipesCoordinator)
+            .with(renderer: resolver!.mainPathRenderer())
+            .tabItem {
+                Label("Recipes", systemImage: "book.closed.fill")
+            }
+            .tag(2)
     }
 }
 

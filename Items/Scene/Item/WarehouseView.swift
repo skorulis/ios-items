@@ -17,8 +17,7 @@ struct WarehouseView: View {
     
     private var items: some View {
         let columns = [
-            GridItem(.flexible(), spacing: 12),
-            GridItem(.flexible(), spacing: 12)
+            GridItem(.adaptive(minimum: 80)),
         ]
         return LazyVGrid(columns: columns, spacing: 12) {
             ForEach(BaseItem.allCases) { item in
@@ -29,23 +28,15 @@ struct WarehouseView: View {
     }
     
     private func cell(item: BaseItem) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(String(describing: item))
-                .font(.headline)
-            HStack {
-                Text("Quantity:")
-                    .foregroundStyle(.secondary)
-                Text("\(viewModel.warehouse.quantity(item))")
-                    .monospaced()
-            }
-            .font(.subheadline)
+        VStack(alignment: .trailing, spacing: 0) {
+            ItemView(item: item)
+            Text("\(viewModel.warehouse.quantity(item))")
+                .monospaced()
+                .font(.subheadline)
+                .foregroundStyle(Color.white)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(12)
-        .background(
-            RoundedRectangle(cornerRadius: 12)
-                .fill(Color(.secondarySystemBackground))
-        )
+        
+
     }
     
     private var titleBar: some View {
