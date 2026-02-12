@@ -10,6 +10,11 @@ struct Warehouse {
         baseItems[item] = count + 1
     }
     
+    mutating func remove(item: BaseItem, quantity: Int = 1) {
+        let count = baseItems[item] ?? 0
+        baseItems[item] = count - quantity
+    }
+    
     func quantity(_ item: BaseItem) -> Int {
         return baseItems[item] ?? 0
     }

@@ -8,15 +8,21 @@ import SwiftUI
 
 @Observable final class RecipeListViewModel {
     
-    var recipes: [Recipe] = []
+    var recipes: [Recipe] = [] {
+        didSet {
+            mainStore.recipes = recipes
+        }
+    }
     var warehouse: Warehouse
     
     var editingRecipe: Recipe?
     
+    private let mainStore: MainStore
     private var cancellables: Set<AnyCancellable> = []
     
     @Resolvable<BaseResolver>
     init(mainStore: MainStore) {
+        self.mainStore = mainStore
         warehouse = mainStore.warehouse
         
         mainStore.$warehouse.sink { [unowned self] in
@@ -43,4 +49,9 @@ extension RecipeListViewModel {
         guard let index else { return }
         recipes[index].items.append(item)
     }
+    
+    func delete(indexSet: IndexSet) {
+        recipes.remove(atOffsets: indexSet)
+    }
+    
 }

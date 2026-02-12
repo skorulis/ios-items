@@ -3,10 +3,10 @@
 import Foundation
 
 /// Class that creates new items
+/// Functions in this class are non mutating and only return the result
 final class ItemGeneratorService {
     
-    
-    func make() -> BaseItem {
+    func make(recipe: Recipe) -> BaseItem {
         return BaseItem.allCases.randomElement()!
     }
 }

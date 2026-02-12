@@ -21,6 +21,8 @@ final class ItemsAssembly: AutoInitModuleAssembly {
     private func registerServices(container: Container<TargetResolver>) {
         container.register(ItemGeneratorService.self) { _ in ItemGeneratorService() }
             .inObjectScope(.container)
+        
+        container.register(RecipeService.self) { RecipeService.make(resolver: $0) }
     }
     
     @MainActor

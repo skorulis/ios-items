@@ -15,10 +15,10 @@ import SwiftUI
 extension RecipeListView: View {
 
     var body: some View {
-        PageLayout(
-            titleBar: { titleBar },
-            content: { content }
-        )
+        VStack {
+            titleBar
+            content
+        }
         .overlay(alignment: .bottomTrailing) {
             fab
         }
@@ -34,11 +34,21 @@ extension RecipeListView: View {
     }
     
     private var content: some View {
-        ForEach(viewModel.recipes) { recipe in
-            RecipeCell(recipe: recipe, warehouse: viewModel.warehouse) {
-                viewModel.addItem(to: recipe)
+        List {
+            ForEach(viewModel.recipes) { recipe in
+                RecipeCell(recipe: recipe, warehouse: viewModel.warehouse) {
+                    viewModel.addItem(to: recipe)
+                }
+                .listRowSeparator(.hidden)
+            }
+            .onDelete { indexSet in
+                viewModel.delete(indexSet: indexSet)
+            }
+            .onMove { indices, newOffset in
+                viewModel.recipes.move(fromOffsets: indices, toOffset: newOffset)
             }
         }
+        .listStyle(.plain)
     }
     
     private var titleBar: some View {

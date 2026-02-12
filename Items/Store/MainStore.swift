@@ -6,4 +6,5 @@ import Foundation
 final class MainStore: ObservableObject {
     @Published var warehouse = Warehouse()
     @Published var statistics = Statistics()
+    @Published var recipes: [Recipe] = []
 }
