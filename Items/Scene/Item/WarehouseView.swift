@@ -28,15 +28,10 @@ struct WarehouseView: View {
     }
     
     private func cell(item: BaseItem) -> some View {
-        VStack(alignment: .trailing, spacing: 0) {
-            ItemView(item: item)
-            Text("\(viewModel.warehouse.quantity(item))")
-                .monospaced()
-                .font(.subheadline)
-                .foregroundStyle(Color.white)
-        }
-        
-
+        ItemGridCell(
+            item: item,
+            quantity: viewModel.warehouse.quantity(item)
+        )
     }
     
     private var titleBar: some View {
