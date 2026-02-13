@@ -45,6 +45,40 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable {
     }
     
     var quality: ItemQuality {
+        switch self {
+        case .apple:
+            <#code#>
+        case .rock:
+            <#code#>
+        case .goldCoin:
+            <#code#>
+        case .woodenChair:
+            <#code#>
+        case .rubberDuck:
+            <#code#>
+        case .lavaLamp:
+            <#code#>
+        case .typewriter:
+            <#code#>
+        case .cactus:
+            <#code#>
+        case .vinylRecord:
+            <#code#>
+        case .snowGlobe:
+            <#code#>
+        case .umbrella:
+            <#code#>
+        case .telescope:
+            <#code#>
+        case .toaster:
+            <#code#>
+        case .bowlingBall:
+            <#code#>
+        case .hourglass:
+            <#code#>
+        case .compass:
+            <#code#>
+        }
         return .junk
     }
     

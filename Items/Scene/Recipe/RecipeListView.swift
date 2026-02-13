@@ -1,5 +1,6 @@
 //Created by Alexander Skorulis on 12/2/2026.
 
+import ASKCoordinator
 import Foundation
 import Knit
 import SwiftUI
@@ -24,7 +25,9 @@ extension RecipeListView: View {
         }
         .sheet(item: $viewModel.editingRecipe) { recipe in
             ItemPicker(
-                predicate: { !recipe.items.contains($0) },
+                predicate: {
+                    !recipe.items.contains($0) && viewModel.warehouse.hasDiscovered($0)
+                },
                 onSelect: { item in
                     viewModel.addItem(recipe: recipe, item: item)
                     viewModel.editingRecipe = nil
@@ -54,6 +57,7 @@ extension RecipeListView: View {
     private var titleBar: some View {
         TitleBar(
             title: "Recipes",
+            backAction: { viewModel.coordinator?.pop() }
         )
     }
 

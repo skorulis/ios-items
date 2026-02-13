@@ -1,12 +1,15 @@
 //Created by Alexander Skorulis on 12/2/2026.
 
+import ASKCoordinator
 import Combine
 import Foundation
 import Knit
 import KnitMacros
 import SwiftUI
 
-@Observable final class RecipeListViewModel {
+@Observable final class RecipeListViewModel: CoordinatorViewModel {
+    
+    var coordinator: ASKCoordinator.Coordinator?
     
     var recipes: [Recipe] = [] {
         didSet {

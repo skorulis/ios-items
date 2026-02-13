@@ -26,4 +26,8 @@ struct Warehouse {
     func hasDiscovered(_ item: BaseItem) -> Bool {
         return total[item] != nil
     }
+    
+    var totalItemsCollected: Int {
+        return total.reduce(0) { $0 + $1.value }
+    }
 }

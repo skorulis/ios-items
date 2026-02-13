@@ -16,6 +16,7 @@ extension CreationView: View {
     
     var body: some View {
         VStack {
+            topBar
             Spacer()
             itemContainer
             Spacer()
@@ -25,6 +26,17 @@ extension CreationView: View {
             .buttonStyle(CapsuleButtonStyle())
         }
         .padding()
+    }
+    
+    private var topBar: some View {
+        HStack {
+            Spacer()
+            Button("Recipes") {
+                viewModel.make()
+            }
+            .buttonStyle(CapsuleButtonStyle())
+            .opacity(viewModel.recipesAvailable ? 1 : 0)
+        }
     }
     
     private var itemContainer: some View {

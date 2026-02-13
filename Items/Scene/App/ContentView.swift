@@ -9,7 +9,6 @@ struct ContentView: View {
     @Environment(\.resolver) private var resolver
     @State var viewModel: ContentViewModel
     @State var creationCoordinator = Coordinator(root: MainPath.creation)
-    @State var recipesCoordinator = Coordinator(root: MainPath.recipeList)
     @State var warehouseCoordinator = Coordinator(root: MainPath.warehouse)
     @State var researchCoordinator = Coordinator(root: MainPath.research)
     
@@ -17,12 +16,10 @@ struct ContentView: View {
         TabView {
             creationTab
             warehouseTab
-            recipesTab
-            researchTab
-        }
-        
-        .sheet(isPresented: $viewModel.showingWarehouse) {
-            WarehouseView(viewModel: resolver!.warehouseViewModel())
+            
+            if viewModel.showingResearch {
+                researchTab
+            }
         }
     }
     
@@ -42,15 +39,6 @@ struct ContentView: View {
                 Label("Warehouse", systemImage: "shippingbox")
             }
             .tag(1)
-    }
-    
-    private var recipesTab: some View {
-        CoordinatorView(coordinator: recipesCoordinator)
-            .with(renderer: resolver!.mainPathRenderer())
-            .tabItem {
-                Label("Recipes", systemImage: "book.closed.fill")
-            }
-            .tag(2)
     }
     
     private var researchTab: some View {
