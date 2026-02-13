@@ -87,6 +87,8 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable {
     
     var lore: [String] {
         switch self {
+        case .apple:
+            return ["Tastes good and keeps doctors away"]
         case .rock:
             return ["A stupid rock which may or may not repel tigers"]
         default:

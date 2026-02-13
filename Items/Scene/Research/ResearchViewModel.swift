@@ -48,5 +48,13 @@ extension ResearchViewModel {
         
     }
     
+    var progress: ResearchProgress {
+        guard let selectedItem else { return .init(total: .init(), current: .init()) }
+        return ResearchProgress(
+            total: selectedItem.availableResearch,
+            current: researchService.currentResearch(item: selectedItem)
+        )
+    }
+    
     
 }

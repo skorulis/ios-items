@@ -3,19 +3,27 @@
 import Foundation
 
 struct Warehouse {
-    var baseItems: [BaseItem: Int] = [:]
+    // Current storage
+    private var current: [BaseItem: Int] = [:]
+    
+    // Total items that have been found
+    private var total: [BaseItem: Int] = [:]
     
     mutating func add(item: BaseItem) {
-        let count = baseItems[item] ?? 0
-        baseItems[item] = count + 1
+        current[item, default: 0] += 1
+        total[item, default: 0] += 1
     }
     
     mutating func remove(item: BaseItem, quantity: Int = 1) {
-        let count = baseItems[item] ?? 0
-        baseItems[item] = count - quantity
+        let count = current[item] ?? 0
+        current[item] = count - quantity
     }
     
     func quantity(_ item: BaseItem) -> Int {
-        return baseItems[item] ?? 0
+        return current[item] ?? 0
+    }
+    
+    func hasDiscovered(_ item: BaseItem) -> Bool {
+        return total[item] != nil
     }
 }

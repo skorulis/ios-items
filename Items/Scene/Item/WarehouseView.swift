@@ -32,6 +32,7 @@ struct WarehouseView: View {
             item: item,
             quantity: viewModel.warehouse.quantity(item)
         )
+        .grayscale(viewModel.warehouse.hasDiscovered(item) ? 0 : 0.9)
     }
     
     private var titleBar: some View {
@@ -44,5 +45,6 @@ struct WarehouseView: View {
 
 #Preview {
     let assembler = ItemsAssembly.testing()
-    WarehouseView(viewModel: assembler.resolver.warehouseViewModel())
+    assembler.resolver.mainStore().warehouse.add(item: .apple)
+    return WarehouseView(viewModel: assembler.resolver.warehouseViewModel())
 }

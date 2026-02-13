@@ -30,3 +30,9 @@ struct Research {
     }
 }
 
+struct ResearchProgress {
+    let total: Research
+    let current: Research
+    
+    var missing: Research { total.missing(research: current) }
+}

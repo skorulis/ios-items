@@ -42,14 +42,29 @@ extension ResearchView: View {
     @ViewBuilder
     private var itemView: some View {
         if let item = viewModel.selectedItem {
-            Button(action: {viewModel.showingPicker = true}) {
-                ItemGridCell(item: item, quantity: viewModel.warehouse.quantity(item))
+            VStack {
+                Button(action: {viewModel.showingPicker = true}) {
+                    ItemGridCell(item: item, quantity: viewModel.warehouse.quantity(item))
+                }
+                progressBar
+                
             }
+            .padding(.horizontal, 16)
+            
         } else {
             Button("Select Item") {
                 viewModel.showingPicker = true
             }
         }
+    }
+    
+    private var progressBar: some View {
+        let progress = viewModel.progress
+        
+        return SegmentedProgressBar(
+            totalSteps: progress.total.level,
+            currentStep: progress.current.level,
+        )
     }
     
     private var button: some View {
@@ -71,6 +86,7 @@ extension ResearchView: View {
 
 #Preview {
     let assembler = ItemsAssembly.testing()
-    ResearchView(viewModel: assembler.resolver.researchViewModel())
+    assembler.resolver.mainStore().warehouse.add(item: .apple)
+    return ResearchView(viewModel: assembler.resolver.researchViewModel())
 }
 

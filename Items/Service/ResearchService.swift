@@ -15,6 +15,12 @@ final class ResearchService {
 }
 
 extension ResearchService {
+    
+    // Return what has been researched for an item
+    func currentResearch(item: BaseItem) -> Research {
+        return mainStore.lab.research(item: item)
+    }
+    
     func research(item: BaseItem) {
         // TODO: Add delay and failure chance
         
