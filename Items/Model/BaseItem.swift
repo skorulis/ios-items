@@ -5,6 +5,7 @@ import Foundation
 /// Simple items that only have quantity
 enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable {
     case apple
+    case rock
     case goldCoin
     case woodenChair
     case rubberDuck
@@ -25,6 +26,7 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable {
     var acronym: String {
         switch self {
         case .apple: return "AP"
+        case .rock: return "RK"
         case .goldCoin: return "GC"
         case .woodenChair: return "WC"
         case .rubberDuck: return "RD"
@@ -39,6 +41,56 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable {
         case .bowlingBall: return "BB"
         case .hourglass: return "HG"
         case .compass: return "CP"
+        }
+    }
+    
+    var quality: ItemQuality {
+        return .junk
+    }
+    
+    var essences: [Essence] {
+        switch self {
+        case .apple:
+            return [.organic]
+        case .rock:
+            return []
+        case .goldCoin:
+            return []
+        case .woodenChair:
+            return [.organic]
+        case .rubberDuck:
+            return [.organic]
+        case .lavaLamp:
+            return [.technology]
+        case .typewriter:
+            return [.technology]
+        case .cactus:
+            return []
+        case .vinylRecord:
+            return [.technology]
+        case .snowGlobe:
+            return []
+        case .umbrella:
+            return []
+        case .telescope:
+            return [.technology]
+        case .toaster:
+            return [.technology]
+        case .bowlingBall:
+            return []
+        case .hourglass:
+            return []
+        case .compass:
+            return []
+        }
+    }
+    
+    var lore: [String] {
+        switch self {
+        case .rock:
+            return ["A stupid rock which may or may not repel tigers"]
+        default:
+            return []
         }
     }
 }

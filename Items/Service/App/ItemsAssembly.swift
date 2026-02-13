@@ -23,6 +23,7 @@ final class ItemsAssembly: AutoInitModuleAssembly {
             .inObjectScope(.container)
         
         container.register(RecipeService.self) { RecipeService.make(resolver: $0) }
+        container.register(ResearchService.self) { ResearchService.make(resolver: $0) }
     }
     
     @MainActor
@@ -37,6 +38,7 @@ final class ItemsAssembly: AutoInitModuleAssembly {
         container.register(CreationViewModel.self) { CreationViewModel.make(resolver: $0) }
         container.register(WarehouseViewModel.self) { WarehouseViewModel.make(resolver: $0) }
         container.register(RecipeListViewModel.self) { RecipeListViewModel.make(resolver: $0)}
+        container.register(ResearchViewModel.self) { ResearchViewModel.make(resolver: $0)}
         
         container.register(MainPathRenderer.self) { MainPathRenderer(resolver: $0) }
     }

@@ -10,6 +10,7 @@ public enum MainPath: CoordinatorPath {
     case creation
     case warehouse
     case recipeList
+    case research
     
     public var id: String {
         String(describing: self)
@@ -29,6 +30,8 @@ public struct MainPathRenderer: CoordinatorPathRenderer {
             WarehouseView(viewModel: coordinator.apply(resolver.warehouseViewModel()))
         case .recipeList:
             RecipeListView(viewModel: coordinator.apply(resolver.recipeListViewModel()))
+        case .research:
+            ResearchView(viewModel: coordinator.apply(resolver.researchViewModel()))
         }
     }
 }

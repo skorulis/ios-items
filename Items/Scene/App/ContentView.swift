@@ -11,12 +11,14 @@ struct ContentView: View {
     @State var creationCoordinator = Coordinator(root: MainPath.creation)
     @State var recipesCoordinator = Coordinator(root: MainPath.recipeList)
     @State var warehouseCoordinator = Coordinator(root: MainPath.warehouse)
+    @State var researchCoordinator = Coordinator(root: MainPath.research)
     
     var body: some View {
         TabView {
             creationTab
             warehouseTab
             recipesTab
+            researchTab
         }
         
         .sheet(isPresented: $viewModel.showingWarehouse) {
@@ -47,6 +49,15 @@ struct ContentView: View {
             .with(renderer: resolver!.mainPathRenderer())
             .tabItem {
                 Label("Recipes", systemImage: "book.closed.fill")
+            }
+            .tag(2)
+    }
+    
+    private var researchTab: some View {
+        CoordinatorView(coordinator: researchCoordinator)
+            .with(renderer: resolver!.mainPathRenderer())
+            .tabItem {
+                Label("Research", systemImage: "flask.fill")
             }
             .tag(2)
     }
