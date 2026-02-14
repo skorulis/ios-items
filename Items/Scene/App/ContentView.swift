@@ -21,6 +21,7 @@ struct ContentView: View {
                 researchTab
             }
         }
+        
     }
     
     private var creationTab: some View {
@@ -35,6 +36,9 @@ struct ContentView: View {
     private var warehouseTab: some View {
         CoordinatorView(coordinator: warehouseCoordinator)
             .with(renderer: resolver!.mainPathRenderer())
+            .with(overlay: .card) { view in
+                AnyView(CardPathWrapper { view })
+            }
             .tabItem {
                 Label("Warehouse", systemImage: "shippingbox")
             }

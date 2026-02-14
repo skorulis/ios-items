@@ -5,24 +5,26 @@ import Foundation
 import Knit
 import SwiftUI
 
-public enum MainPath: CoordinatorPath {
+enum MainPath: CoordinatorPath {
     
     case creation
     case warehouse
     case recipeList
     case research
     
+    case itemDetails(BaseItem)
+    
     public var id: String {
         String(describing: self)
     }
 }
 
-public struct MainPathRenderer: CoordinatorPathRenderer {
+struct MainPathRenderer: CoordinatorPathRenderer {
     
     let resolver: BaseResolver
     
     @ViewBuilder
-    public func render(path: MainPath, in coordinator: Coordinator) -> some View {
+    func render(path: MainPath, in coordinator: Coordinator) -> some View {
         switch path {
         case .creation:
             CreationView(viewModel: coordinator.apply(resolver.creationViewModel()))
@@ -32,6 +34,13 @@ public struct MainPathRenderer: CoordinatorPathRenderer {
             RecipeListView(viewModel: coordinator.apply(resolver.recipeListViewModel()))
         case .research:
             ResearchView(viewModel: coordinator.apply(resolver.researchViewModel()))
+        case let .itemDetails(item):
+            ItemDetailsView(item: item, research: item.availableResearch)
         }
     }
+}
+
+extension CustomOverlay.Name {
+    // A card in the center of the screen
+    static let card = CustomOverlay.Name("card")
 }

@@ -15,8 +15,6 @@ import SwiftUI
     
     private var cancellables: Set<AnyCancellable> = []
     
-    var detailsItem: BaseItem?
-    
     @Resolvable<BaseResolver>
     init(mainStore: MainStore) {
         warehouse = mainStore.warehouse
@@ -38,7 +36,7 @@ import SwiftUI
 
 extension WarehouseViewModel {
     
-    func pressed(item: BaseItem) {
-        detailsItem = item
+    func pressed(item: BaseItem) {        
+        coordinator?.custom(overlay: .card, MainPath.itemDetails(item))
     }
 }

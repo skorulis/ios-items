@@ -13,9 +13,6 @@ struct WarehouseView: View {
             titleBar: { titleBar },
             content: { items }
         )
-        .popover(item: $viewModel.detailsItem) { item in
-            ItemDetailsView(item: item, research: item.availableResearch)
-        }
     }
     
     private var items: some View {
@@ -30,16 +27,22 @@ struct WarehouseView: View {
         .padding(16)
     }
     
+    @ViewBuilder
     private func cell(item: BaseItem) -> some View {
-        Button(action: {viewModel.pressed(item: item)}) {
+        if viewModel.warehouse.hasDiscovered(item) {
+            Button(action: {viewModel.pressed(item: item)}) {
+                ItemGridCell(
+                    item: item,
+                    quantity: viewModel.warehouse.quantity(item)
+                )
+            }
+        } else {
             ItemGridCell(
                 item: item,
                 quantity: viewModel.warehouse.quantity(item)
             )
-            .grayscale(viewModel.warehouse.hasDiscovered(item) ? 0 : 0.9)
+            .grayscale(0.9)
         }
-        
-        
     }
     
     private var titleBar: some View {
