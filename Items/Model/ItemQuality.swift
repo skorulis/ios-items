@@ -24,4 +24,8 @@ enum ItemQuality {
             return .orange
         }
     }
+    
+    var name: String {
+        String(describing: self).capitalized
+    }
 }

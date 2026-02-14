@@ -27,6 +27,10 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
     
     var id: Self { self }
     
+    var name: String {
+        return String(describing: self)
+    }
+    
     var acronym: String {
         switch self {
         case .apple: return "AP"
