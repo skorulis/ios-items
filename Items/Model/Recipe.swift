@@ -6,4 +6,8 @@ struct Recipe: Identifiable {
     let id = UUID()
     
     var items: [BaseItem]
+    
+    func count(quality: ItemQuality) -> Int {
+        items.filter { $0.quality == quality }.count
+    }
 }

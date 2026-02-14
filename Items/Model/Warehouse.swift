@@ -3,8 +3,11 @@
 import Foundation
 
 struct Warehouse: Codable {
-    // Current storage
+    // Current item storage
     private var current: [BaseItem: Int] = [:]
+    
+    // Discovered artifacts
+    private var artifacts: [Artifact: ItemQuality] = [:]
     
     // Total items that have been found
     private var total: [BaseItem: Int] = [:]

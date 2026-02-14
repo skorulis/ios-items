@@ -3,12 +3,22 @@
 import Foundation
 import SwiftUI
 
-enum ItemQuality {
+enum ItemQuality: Codable {
     case junk
     case common
     case good
     case rare
     case exceptional
+    
+    var next: ItemQuality? {
+        switch self {
+        case .junk: return .common
+        case .common: return .good
+        case .good: return .rare
+        case .rare: return .exceptional
+        case .exceptional: return nil
+        }
+    }
     
     var color: Color {
         switch self {

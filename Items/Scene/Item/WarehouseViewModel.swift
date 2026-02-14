@@ -12,6 +12,7 @@ import SwiftUI
     
     private(set) var warehouse: Warehouse
     private(set) var lab: Laboratory
+    var page: Page = .items
     
     private var cancellables: Set<AnyCancellable> = []
     
@@ -29,6 +30,14 @@ import SwiftUI
             self.lab = $0
         }
         .store(in: &cancellables)
+    }
+}
+
+// MARK: - Inner Types
+
+extension WarehouseViewModel {
+    enum Page {
+        case items, artifacts
     }
 }
 

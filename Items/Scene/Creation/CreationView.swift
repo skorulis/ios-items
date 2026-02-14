@@ -20,6 +20,7 @@ extension CreationView: View {
             Spacer()
             itemContainer
             Spacer()
+            autoToggle
             makeButton
         }
         .padding()
@@ -47,6 +48,10 @@ extension CreationView: View {
                 ItemView(item: item)
             }
         }
+    }
+    
+    private var autoToggle: some View {
+        Toggle("Auto", isOn: $viewModel.automateCreation)
     }
     
     private var makeButton: some View {

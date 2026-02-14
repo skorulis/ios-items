@@ -11,8 +11,32 @@ struct WarehouseView: View {
     var body: some View {
         PageLayout(
             titleBar: { titleBar },
-            content: { items }
+            content: { content }
         )
+    }
+    
+    private var content: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Picker("Page", selection: $viewModel.page) {
+                Text("Items")
+                    .tag(WarehouseViewModel.Page.items)
+                Text("Artifacts")
+                    .tag(WarehouseViewModel.Page.artifacts)
+            }
+            .pickerStyle(.segmented)
+            .padding(.horizontal, 16)
+
+            switch viewModel.page {
+            case .items:
+                items
+            case .artifacts:
+                artifacts
+            }
+        }
+    }
+    
+    private var artifacts: some View {
+        EmptyView()
     }
     
     private var items: some View {

@@ -9,11 +9,22 @@ import SwiftUI
 
 @Observable final class CreationViewModel: CoordinatorViewModel {
     
+    private var makeTimer: Timer?
+    
     var coordinator: ASKCoordinator.Coordinator?
     private(set) var recipesAvailable: Bool = false
     private(set) var createdItem: BaseItem?
     private(set) var isCreating: Bool = false
     var automateCreation: Bool = false
+    {
+        didSet {
+            if automateCreation {
+                startMakeTimer()
+            } else {
+                stopMakeTimer()
+            }
+        }
+    }
     
     private let itemGeneratorService: ItemGeneratorService
     private let mainStore: MainStore
@@ -31,6 +42,25 @@ import SwiftUI
         }
         .store(in: &cancellables)
     }
+    
+    deinit {
+        stopMakeTimer()
+    }
+
+    private func startMakeTimer() {
+        stopMakeTimer()
+        makeTimer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { [weak self] _ in
+            Task { @MainActor in
+                guard self?.isCreating == false else { return }
+                await self?.make()
+            }
+        }
+    }
+
+    private func stopMakeTimer() {
+        makeTimer?.invalidate()
+        makeTimer = nil
+    }
 }
 
 // MARK: - Logic
@@ -40,6 +70,7 @@ extension CreationViewModel {
     static let makeDelay: Int = 1000
     
     func make() async {
+        if isCreating { return }
         self.isCreating = true
         self.createdItem = nil
         let recipe = recipeService.nextAvailable()
