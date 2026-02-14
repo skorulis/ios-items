@@ -12,6 +12,8 @@ import SwiftUI
     var coordinator: ASKCoordinator.Coordinator?
     private(set) var recipesAvailable: Bool = false
     private(set) var createdItem: BaseItem?
+    private(set) var isCreating: Bool = false
+    var automateCreation: Bool = false
     
     private let itemGeneratorService: ItemGeneratorService
     private let mainStore: MainStore
@@ -35,9 +37,17 @@ import SwiftUI
 
 extension CreationViewModel {
     
-    func make() {
+    static let makeDelay: Int = 1000
+    
+    func make() async {
+        self.isCreating = true
+        self.createdItem = nil
         let recipe = recipeService.nextAvailable()
         recipeService.consumeRecipe(recipe)
+        
+        try? await Task.sleep(for: .milliseconds(Self.makeDelay))
+        self.isCreating = false
+        
         let item = itemGeneratorService.make(recipe: recipe)
         mainStore.warehouse.add(item: item)
         

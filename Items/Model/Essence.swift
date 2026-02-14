@@ -5,11 +5,13 @@ import SwiftUI
 
 nonisolated enum Essence: Identifiable, Hashable, Codable {
     
-    case organic
+    case life
+    case wealth
     case magic
     case technology
     case light
     case dark
+    case earth
     
     var id: Self { self }
 }
@@ -17,11 +19,13 @@ nonisolated enum Essence: Identifiable, Hashable, Codable {
 extension Essence {
     var color: Color {
         switch self {
-        case .organic: return .green
+        case .life: return .green
+        case .wealth: return .orange
         case .magic: return .blue
         case .technology: return .gray
         case .light: return .yellow
         case .dark: return .black
+        case .earth: return .brown
         }
     }
 }

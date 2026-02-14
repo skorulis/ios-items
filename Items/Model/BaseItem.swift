@@ -8,22 +8,23 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
     // Junk
     case apple
     case rock
+    case gear
+    case copperFlorin
+    
     case woodenChair
-    case rubberDuck
-    case lavaLamp
-    case typewriter
     case cactus
     case vinylRecord
     case snowGlobe
     case umbrella
-    case telescope
-    case toaster
-    case bowlingBall
     case hourglass
     case compass
     
+    
     // Common
-    case goldCoin
+    case silverFlorin
+    
+    // Good
+    case goldFlorin
     
     var id: Self { self }
     
@@ -35,48 +36,43 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
         switch self {
         case .apple: return "AP"
         case .rock: return "RK"
-        case .goldCoin: return "GC"
+        case .gear: return "GE"
+        case .copperFlorin: return "CF"
         case .woodenChair: return "WC"
-        case .rubberDuck: return "RD"
-        case .lavaLamp: return "LL"
-        case .typewriter: return "TW"
         case .cactus: return "CA"
         case .vinylRecord: return "VR"
         case .snowGlobe: return "SG"
         case .umbrella: return "UM"
-        case .telescope: return "TS"
-        case .toaster: return "TO"
-        case .bowlingBall: return "BB"
         case .hourglass: return "HG"
         case .compass: return "CP"
+        case .silverFlorin: return "SF"
+        case .goldFlorin: return "GF"
         }
     }
     
     var quality: ItemQuality {
         switch self {
-        case .apple, .rock, .woodenChair, .rubberDuck, .lavaLamp, .typewriter, .cactus, .vinylRecord, .snowGlobe, .umbrella, .telescope, .toaster, .bowlingBall, .hourglass, .compass:
+        case .apple, .rock, .woodenChair, .cactus, .vinylRecord, .snowGlobe, .umbrella, .hourglass, .compass, .copperFlorin, .gear:
             return .junk
-        case .goldCoin:
+        case .silverFlorin:
             return .common
+        case .goldFlorin:
+            return .good
         }
     }
     
     var essences: [Essence] {
         switch self {
         case .apple:
-            return [.organic]
+            return [.life]
         case .rock:
-            return []
-        case .goldCoin:
-            return []
+            return [.earth]
+        case .gear:
+            return [.technology]
+        case .copperFlorin:
+            return [.wealth]
         case .woodenChair:
-            return [.organic]
-        case .rubberDuck:
-            return [.organic]
-        case .lavaLamp:
-            return [.technology]
-        case .typewriter:
-            return [.technology]
+            return [.life]
         case .cactus:
             return []
         case .vinylRecord:
@@ -85,16 +81,14 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
             return []
         case .umbrella:
             return []
-        case .telescope:
-            return [.technology]
-        case .toaster:
-            return [.technology]
-        case .bowlingBall:
-            return []
         case .hourglass:
             return []
         case .compass:
             return []
+        case .silverFlorin:
+            return [.wealth]
+        case .goldFlorin:
+            return [.wealth]
         }
     }
     
@@ -104,6 +98,18 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
             return ["Tastes good and keeps doctors away"]
         case .rock:
             return ["A stupid rock which may or may not repel tigers"]
+        case .copperFlorin:
+            return [
+                "The base currency in the realm of Relicara"
+            ]
+        case .silverFlorin:
+            return [
+                "Worth 100 copper Florins"
+            ]
+        case .goldFlorin:
+            return [
+                "Worth 100 silver Florins"
+            ]
         default:
             return []
         }

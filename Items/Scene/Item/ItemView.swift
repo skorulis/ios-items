@@ -34,10 +34,10 @@ extension ItemView: View {
 
 #Preview {
     HStack(spacing: 8) {
-        ItemView(item: .bowlingBall)
-        ItemView(item: .telescope)
+        ItemView(item: .cactus)
+        ItemView(item: .gear)
         ItemView(item: .compass)
-        ItemView(item: .goldCoin)
+        ItemView(item: .silverFlorin)
     }
 }
 

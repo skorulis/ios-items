@@ -34,7 +34,7 @@ extension ResearchViewModel {
     
     var canStart: Bool {
         guard let selectedItem else { return false }
-        return warehouse.quantity(selectedItem) > 0
+        return warehouse.quantity(selectedItem) > 0 && progress.missing.level > 0
     }
     
     func select(item: BaseItem) {

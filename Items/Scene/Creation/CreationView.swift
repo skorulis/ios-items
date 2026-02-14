@@ -20,10 +20,7 @@ extension CreationView: View {
             Spacer()
             itemContainer
             Spacer()
-            Button("Create an item") {
-                viewModel.make()
-            }
-            .buttonStyle(CapsuleButtonStyle())
+            makeButton
         }
         .padding()
     }
@@ -32,7 +29,7 @@ extension CreationView: View {
         HStack {
             Spacer()
             Button("Recipes") {
-                viewModel.make()
+                viewModel.showRecipes()
             }
             .buttonStyle(CapsuleButtonStyle())
             .opacity(viewModel.recipesAvailable ? 1 : 0)
@@ -44,10 +41,30 @@ extension CreationView: View {
             AnimatedBlobView(color: .blue, size: 220, speed: 0.7, points: 9, jitter: 0.26)
                 .padding(.bottom, 16)
             
-            if let item = viewModel.createdItem {
+            if viewModel.isCreating {
+                ProgressView()
+            } else if let item = viewModel.createdItem {
                 ItemView(item: item)
             }
         }
+    }
+    
+    private var makeButton: some View {
+        Button(action: {
+            Task {
+                await viewModel.make()
+            }
+        }) {
+            ZStack {
+                if viewModel.isCreating {
+                    ProgressView()
+                }
+                Text("Create an item")
+                    .opacity(viewModel.isCreating ? 0 : 1)
+            }
+        }
+        .buttonStyle(CapsuleButtonStyle())
+        .disabled(viewModel.isCreating)
     }
 }
 

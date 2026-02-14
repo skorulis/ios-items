@@ -85,7 +85,7 @@ extension RecipeCell: View {
         .padding(8)
         
         RecipeCell(
-            recipe: .init(items: [.toaster, .bowlingBall]),
+            recipe: .init(items: [.gear, .copperFlorin]),
             warehouse: .init(),
             addPressed: {}
         )
