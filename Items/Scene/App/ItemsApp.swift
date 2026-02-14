@@ -1,5 +1,6 @@
 //  Created by Alexander Skorulis on 10/2/2026.
 
+import ASKCore
 import Knit
 import SwiftUI
 
@@ -9,7 +10,7 @@ struct ItemsApp: App {
     private let assembler: ScopedModuleAssembler<BaseResolver> = {
         let assembler = ScopedModuleAssembler<BaseResolver>(
             [
-                ItemsAssembly(),
+                ItemsAssembly(purpose: .normal),
             ]
         )
         return assembler

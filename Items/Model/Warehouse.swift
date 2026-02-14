@@ -2,7 +2,7 @@
 
 import Foundation
 
-struct Warehouse {
+struct Warehouse: Codable {
     // Current storage
     private var current: [BaseItem: Int] = [:]
     

@@ -11,6 +11,7 @@
 		FA6D90A62F3B3389003DE626 /* Knit in Frameworks */ = {isa = PBXBuildFile; productRef = FA6D90A52F3B3389003DE626 /* Knit */; };
 		FA6D90A82F3B3389003DE626 /* KnitMacros in Frameworks */ = {isa = PBXBuildFile; productRef = FA6D90A72F3B3389003DE626 /* KnitMacros */; };
 		FA6D90B82F3B34B7003DE626 /* knitconfig.json in Resources */ = {isa = PBXBuildFile; fileRef = FA6D90B72F3B34B7003DE626 /* knitconfig.json */; };
+		FA777FFF2F3FE15E000C40C3 /* ASKCore in Frameworks */ = {isa = PBXBuildFile; productRef = FA777FFE2F3FE15E000C40C3 /* ASKCore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 				FA6D90A62F3B3389003DE626 /* Knit in Frameworks */,
 				FA6D90A82F3B3389003DE626 /* KnitMacros in Frameworks */,
 				FA6D90A32F3B334E003DE626 /* ASKCoordinator in Frameworks */,
+				FA777FFF2F3FE15E000C40C3 /* ASKCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -81,6 +83,7 @@
 				FA6D90A22F3B334E003DE626 /* ASKCoordinator */,
 				FA6D90A52F3B3389003DE626 /* Knit */,
 				FA6D90A72F3B3389003DE626 /* KnitMacros */,
+				FA777FFE2F3FE15E000C40C3 /* ASKCore */,
 			);
 			productName = Items;
 			productReference = FA6D90922F3B32F1003DE626 /* Items.app */;
@@ -113,6 +116,7 @@
 			packageReferences = (
 				FA6D90A12F3B334E003DE626 /* XCRemoteSwiftPackageReference "ASKCoordinator" */,
 				FA6D90A42F3B3389003DE626 /* XCRemoteSwiftPackageReference "knit" */,
+				FA777FFD2F3FE15E000C40C3 /* XCRemoteSwiftPackageReference "ASKCore" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = FA6D90932F3B32F1003DE626 /* Products */;
@@ -378,6 +382,14 @@
 				kind = branch;
 			};
 		};
+		FA777FFD2F3FE15E000C40C3 /* XCRemoteSwiftPackageReference "ASKCore" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/skorulis/ASKCore";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -400,6 +412,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = FA6D90A42F3B3389003DE626 /* XCRemoteSwiftPackageReference "knit" */;
 			productName = "plugin:KnitBuildPlugin";
+		};
+		FA777FFE2F3FE15E000C40C3 /* ASKCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA777FFD2F3FE15E000C40C3 /* XCRemoteSwiftPackageReference "ASKCore" */;
+			productName = ASKCore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -2,7 +2,7 @@
 
 import Foundation
 
-struct Statistics {
+struct Statistics: Codable {
     var itemsCreated: Int64 = 0
     var itemsDestroyed: Int64 = 0
 }

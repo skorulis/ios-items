@@ -3,10 +3,11 @@
 import Foundation
 
 /// Simple items that only have quantity
-enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable {
+enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
+    
+    // Junk
     case apple
     case rock
-    case goldCoin
     case woodenChair
     case rubberDuck
     case lavaLamp
@@ -20,6 +21,9 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable {
     case bowlingBall
     case hourglass
     case compass
+    
+    // Common
+    case goldCoin
     
     var id: Self { self }
     
@@ -46,40 +50,11 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable {
     
     var quality: ItemQuality {
         switch self {
-        case .apple:
-            <#code#>
-        case .rock:
-            <#code#>
+        case .apple, .rock, .woodenChair, .rubberDuck, .lavaLamp, .typewriter, .cactus, .vinylRecord, .snowGlobe, .umbrella, .telescope, .toaster, .bowlingBall, .hourglass, .compass:
+            return .junk
         case .goldCoin:
-            <#code#>
-        case .woodenChair:
-            <#code#>
-        case .rubberDuck:
-            <#code#>
-        case .lavaLamp:
-            <#code#>
-        case .typewriter:
-            <#code#>
-        case .cactus:
-            <#code#>
-        case .vinylRecord:
-            <#code#>
-        case .snowGlobe:
-            <#code#>
-        case .umbrella:
-            <#code#>
-        case .telescope:
-            <#code#>
-        case .toaster:
-            <#code#>
-        case .bowlingBall:
-            <#code#>
-        case .hourglass:
-            <#code#>
-        case .compass:
-            <#code#>
+            return .common
         }
-        return .junk
     }
     
     var essences: [Essence] {
@@ -130,3 +105,4 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable {
         }
     }
 }
+

@@ -18,6 +18,9 @@ extension ItemView: View {
             Circle()
                 .fill(ColorHash.color(for: item.acronym))
             
+            Circle()
+                .stroke(item.quality.color, lineWidth: 2)
+            
             Text(item.acronym)
                 .font(.title)
                 .bold()

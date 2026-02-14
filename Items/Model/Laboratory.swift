@@ -2,7 +2,7 @@
 
 import Foundation
 
-struct Laboratory {
+struct Laboratory: Codable {
     private var items: [BaseItem: Research] = [:]
     
     func research(item: BaseItem) -> Research {

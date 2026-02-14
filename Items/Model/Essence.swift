@@ -3,7 +3,7 @@
 import Foundation
 import SwiftUI
 
-nonisolated enum Essence: Identifiable, Hashable {
+nonisolated enum Essence: Identifiable, Hashable, Codable {
     
     case organic
     case magic

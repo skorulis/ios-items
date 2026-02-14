@@ -1,17 +1,34 @@
 //  Created by Alexander Skorulis on 10/2/2026.
 
+import ASKCore
 import Foundation
 import Knit
 import SwiftUI
 
 final class ItemsAssembly: AutoInitModuleAssembly {
     static var dependencies: [any Knit.ModuleAssembly.Type] = []
-    
     typealias TargetResolver = BaseResolver
     
-    init() {}
+    private let purpose: IOCPurpose
+    
+    init() {
+        self.purpose = .testing
+    }
+    
+    init(purpose: IOCPurpose ) {
+        self.purpose = purpose
+    }
     
     @MainActor func assemble(container: Container<TargetResolver>) {
+        ASKCoreAssembly(purpose: purpose).assemble(container: container)
+        if purpose == .normal {
+            // @knit ignore
+            container.register(PKeyValueStore.self) { _ in
+                FileSystemKeyValueStore(folderName: "items")
+            }
+            .inObjectScope(.container)
+        }
+        
         registerServices(container: container)
         registerStores(container: container)
         registerViewModels(container: container)
@@ -28,7 +45,7 @@ final class ItemsAssembly: AutoInitModuleAssembly {
     
     @MainActor
     private func registerStores(container: Container<TargetResolver>) {
-        container.register(MainStore.self) { _ in MainStore() }
+        container.register(MainStore.self) { MainStore.make(resolver: $0) }
             .inObjectScope(.container)
     }
     

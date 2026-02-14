@@ -1,11 +1,37 @@
 //Created by Alexander Skorulis on 10/2/2026.
 
+import ASKCore
 import Combine
 import Foundation
+import Knit
+import KnitMacros
 
 final class MainStore: ObservableObject {
-    @Published var warehouse = Warehouse()
-    @Published var statistics = Statistics()
+    @Published var warehouse: Warehouse {
+        didSet {
+            try! self.store.set(codable: warehouse, forKey: Self.warehouseKey)
+        }
+    }
+    
+    @Published var statistics: Statistics {
+        didSet {
+            try! self.store.set(codable: statistics, forKey: Self.statisticsKey)
+        }
+    }
+    
     @Published var recipes: [Recipe] = []
     @Published var lab = Laboratory()
+    
+    private let store: PKeyValueStore
+    private static let warehouseKey = "MainStore.warehouse"
+    private static let statisticsKey = "MainStore.statistics"
+    private static let recipesKey = "MainStore.recipes"
+    
+    @Resolvable<BaseResolver>
+    init(store: PKeyValueStore) {
+        self.store = store
+        
+        self.warehouse = (try? store.codable(forKey: Self.warehouseKey)) ?? Warehouse()
+        self.statistics = (try? store.codable(forKey: Self.statisticsKey)) ?? Statistics()
+    }
 }

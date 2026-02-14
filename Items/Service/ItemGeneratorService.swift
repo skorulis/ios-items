@@ -7,6 +7,17 @@ import Foundation
 final class ItemGeneratorService {
     
     func make(recipe: Recipe) -> BaseItem {
-        return BaseItem.allCases.randomElement()!
+        let qualityChance = createQualityChance(recipe: recipe)
+        let randomArray = RandomArray(items: BaseItem.allCases) { item in
+            return qualityChance[item.quality] ?? 0
+        }
+        
+        return randomArray.random!
+    }
+    
+    private func createQualityChance(recipe: Recipe) -> [ItemQuality: Double] {
+        return [
+            .junk: 1,
+        ]
     }
 }

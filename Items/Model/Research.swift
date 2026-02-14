@@ -4,7 +4,7 @@ import Foundation
 
 
 // Research that has been done about an item
-struct Research {
+struct Research: Codable {
     var essences: Set<Essence>
     var lore: Int // Number of lore values which have been unlocked
     
