@@ -17,4 +17,12 @@ struct CalculationsService {
     var baseResearchChance: Double {
         return 0.2
     }
+    
+    var autoCreationMilliseconds: Double {
+        return 5000
+    }
+    
+    var itemCreationMilliseconds: Double {
+        return 1000
+    }
 }

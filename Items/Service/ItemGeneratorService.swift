@@ -1,12 +1,21 @@
 //Created by Alexander Skorulis on 10/2/2026.
 
 import Foundation
+import Knit
+import KnitMacros
 
 /// Class that creates new items
 /// Functions in this class are non mutating and only return the result
 final class ItemGeneratorService {
     
-    func make(recipe: Recipe) -> BaseItem {
+    private let mainStore: MainStore
+    
+    @Resolvable<BaseResolver>
+    init(mainStore: MainStore) {
+        self.mainStore = mainStore
+    }
+    
+    func make(recipe: Recipe) -> Result {
         let qualityChance = createQualityChance(recipe: recipe)
         let essenceBonuses = essenceBonuses(recipe: recipe)
         let randomArray = RandomArray(items: BaseItem.allCases) { item in
@@ -17,7 +26,26 @@ final class ItemGeneratorService {
             return chance
         }
         
-        return randomArray.random!
+        let baseItem = randomArray.random!
+        
+        if let artifact = maybeConvertToArtifact(baseItem: baseItem) {
+            return .artifact(artifact)
+        }
+        
+        return .base(baseItem)
+    }
+    
+    private func maybeConvertToArtifact(baseItem: BaseItem) -> ArtifactInstance? {
+        guard let type = baseItem.associatedArtifact else {
+            return nil
+        }
+        // TODO: Do check to calculate quality
+        let quality = ItemQuality.junk
+        let instance = ArtifactInstance(type: type, quality: quality)
+        guard !mainStore.warehouse.has(artifact: instance) else {
+            return nil
+        }
+        return instance
     }
     
     private func createQualityChance(recipe: Recipe) -> [ItemQuality: Double] {
@@ -38,5 +66,15 @@ final class ItemGeneratorService {
             }
             return mutableResult
         }
+    }
+}
+
+// MARK: - Inner Types
+
+extension ItemGeneratorService{
+    
+    enum Result {
+        case base(BaseItem)
+        case artifact(ArtifactInstance)
     }
 }

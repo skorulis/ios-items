@@ -7,4 +7,16 @@ enum Artifact: Identifiable, Hashable, CaseIterable, Codable {
     case frictionlessGear
     
     var id: Self { self }
+    
+    var acronym: String {
+        switch self {
+        case .frictionlessGear:
+            return "FG"
+        }
+    }
+}
+
+struct ArtifactInstance {
+    let type: Artifact
+    let quality: ItemQuality
 }

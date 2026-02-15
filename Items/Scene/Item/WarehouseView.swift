@@ -36,7 +36,15 @@ struct WarehouseView: View {
     }
     
     private var artifacts: some View {
-        EmptyView()
+        let columns = [
+            GridItem(.adaptive(minimum: 80)),
+        ]
+        return LazyVGrid(columns: columns, spacing: 12) {
+            ForEach(Artifact.allCases) { artifact in
+                artifactCell(artifact: artifact)
+            }
+        }
+        .padding(16)
     }
     
     private var items: some View {
@@ -49,6 +57,20 @@ struct WarehouseView: View {
             }
         }
         .padding(16)
+    }
+    
+    @ViewBuilder
+    private func artifactCell(artifact: Artifact) -> some View {
+        if let instance = viewModel.warehouse.artifactInstance(artifact) {
+            Button(action: { viewModel.pressed(artifact: instance) }) {
+                ArtifactView(artifact: instance)
+            }
+        } else {
+            Image(systemName: "questionmark.circle")
+                .resizable()
+                .frame(width: 60, height: 60)
+        }
+        
     }
     
     @ViewBuilder

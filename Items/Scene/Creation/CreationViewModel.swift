@@ -27,15 +27,22 @@ import SwiftUI
     }
     
     private let itemGeneratorService: ItemGeneratorService
+    private let calculations: CalculationsService
     private let mainStore: MainStore
     private let recipeService: RecipeService
     private var cancellables: Set<AnyCancellable> = []
     
     @Resolvable<BaseResolver>
-    init(itemGeneratorService: ItemGeneratorService, mainStore: MainStore, recipeService: RecipeService) {
+    init(
+        itemGeneratorService: ItemGeneratorService,
+        mainStore: MainStore,
+        recipeService: RecipeService,
+        calculations: CalculationsService,
+    ) {
         self.itemGeneratorService = itemGeneratorService
         self.mainStore = mainStore
         self.recipeService = recipeService
+        self.calculations = calculations
         
         mainStore.$warehouse.sink { warehouse in
             self.recipesAvailable = warehouse.totalItemsCollected >= 10
@@ -49,10 +56,14 @@ import SwiftUI
 
     private func startMakeTimer() {
         stopMakeTimer()
-        makeTimer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { [weak self] _ in
+        let time = calculations.autoCreationMilliseconds / 1000
+        makeTimer = Timer.scheduledTimer(withTimeInterval: time, repeats: false) { [weak self] _ in
             Task { @MainActor in
                 guard self?.isCreating == false else { return }
                 await self?.make()
+                if self?.automateCreation == true {
+                    self?.startMakeTimer()
+                }
             }
         }
     }
@@ -67,8 +78,6 @@ import SwiftUI
 
 extension CreationViewModel {
     
-    static let makeDelay: Int = 1000
-    
     func make() async {
         if isCreating { return }
         self.isCreating = true
@@ -76,16 +85,21 @@ extension CreationViewModel {
         let recipe = recipeService.nextAvailable()
         recipeService.consumeRecipe(recipe)
         
-        try? await Task.sleep(for: .milliseconds(Self.makeDelay))
+        try? await Task.sleep(for: .milliseconds(calculations.itemCreationMilliseconds))
         self.isCreating = false
         
         let item = itemGeneratorService.make(recipe: recipe)
-        mainStore.warehouse.add(item: item)
-        
-        mainStore.statistics.itemsCreated += 1
-        mainStore.statistics.itemsDestroyed += Int64(recipe.items.count)
-        
-        self.createdItem = item
+        switch item {
+        case let .base(baseItem):
+            mainStore.warehouse.add(item: baseItem)
+            
+            mainStore.statistics.itemsCreated += 1
+            mainStore.statistics.itemsDestroyed += Int64(recipe.items.count)
+            
+            self.createdItem = baseItem
+        case let .artifact(artifact):
+            mainStore.warehouse.add(artifact: artifact)
+        }
     }
     
     func showRecipes() {

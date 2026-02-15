@@ -39,3 +39,5 @@ enum ItemQuality: Codable {
         String(describing: self).capitalized
     }
 }
+
+extension ItemQuality: Comparable {}
