@@ -14,6 +14,10 @@ enum Artifact: Identifiable, Hashable, CaseIterable, Codable {
             return "FG"
         }
     }
+    
+    var name: String {
+        String(describing: self)
+    }
 }
 
 struct ArtifactInstance {

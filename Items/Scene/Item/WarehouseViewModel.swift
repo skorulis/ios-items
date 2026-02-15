@@ -46,7 +46,7 @@ extension WarehouseViewModel {
 extension WarehouseViewModel {
     
     func pressed(artifact: ArtifactInstance) {
-        
+        coordinator?.custom(overlay: .card, MainPath.artifactDetails(artifact))
     }
     
     func pressed(item: BaseItem) {        

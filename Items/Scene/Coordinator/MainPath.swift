@@ -13,6 +13,7 @@ enum MainPath: CoordinatorPath {
     case research
     
     case itemDetails(BaseItem)
+    case artifactDetails(ArtifactInstance)
     
     public var id: String {
         String(describing: self)
@@ -39,6 +40,8 @@ struct MainPathRenderer: CoordinatorPathRenderer {
                 item: item,
                 level: resolver.mainStore().lab.currentLevel(item: item),
             )
+        case let .artifactDetails(instance):
+            ArtifactDetailView(artifact: instance)
         }
     }
 }

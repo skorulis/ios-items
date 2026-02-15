@@ -30,10 +30,7 @@ extension ItemDetailsView: View {
             researchProgress
         }
         .padding(16)
-        .background(
-            RoundedRectangle(cornerRadius: 8)
-                .fill(Color.gray)
-        )
+        .background(CardBackground())
         .padding(16)
     }
     
