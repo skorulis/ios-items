@@ -7,7 +7,7 @@ import SwiftUI
 
 @MainActor struct ItemDetailsView {
     let item: BaseItem
-    let research: Research
+    let level: Int
 }
 
 // MARK: - Rendering
@@ -38,18 +38,15 @@ extension ItemDetailsView: View {
     }
     
     private var researchProgress: some View {
-        SegmentedProgressBar(
-            totalSteps: item.availableResearch.level,
-            currentStep: research.level,
-        )
+        Text("Research level: \(level)")
     }
     
     private var essences: some View {
         HStack {
             Text("Essence")
-            ForEach(item.essences) { essence in
-                if research.essences.contains(essence) {
-                    EssenceView(essence: essence)
+            ForEach(Array(0..<item.essences.count), id: \.self) { index in
+                if level > index {
+                    EssenceView(essence: item.essences[index])
                 } else {
                     Text("?")
                 }
@@ -59,11 +56,8 @@ extension ItemDetailsView: View {
     }
     
     private var combinedLore: String? {
-        let count = min(research.lore, item.lore.count)
-        if count == 0 {
-            return nil
-        }
-        return item.lore.prefix(count).joined(separator: "\n")
+        // TODO: Only show discovered lore
+        return item.lore.joined(separator: "\n")
     }
 }
 
@@ -72,7 +66,7 @@ extension ItemDetailsView: View {
 #Preview {
     ItemDetailsView(
         item: .apple,
-        research: BaseItem.apple.availableResearch
+        level: 2,
     )
 }
 

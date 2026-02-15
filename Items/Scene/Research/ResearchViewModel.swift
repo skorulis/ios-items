@@ -8,23 +8,34 @@ import SwiftUI
 
 @Observable final class ResearchViewModel {
     
-    var warehouse: Warehouse
+    private(set) var warehouse: Warehouse
+    private(set) var lab: Laboratory
     var selectedItem: BaseItem?
     var showingPicker: Bool = false
     
     private let researchService: ResearchService
+    private let calulations: CalculationsService
     private var cancellables: Set<AnyCancellable> = []
     
     @Resolvable<BaseResolver>
-    init(mainStore: MainStore, researchService: ResearchService) {
+    init(mainStore: MainStore, researchService: ResearchService, calulations: CalculationsService) {
         self.researchService = researchService
+        self.calulations = calulations
+        
         
         self.warehouse = mainStore.warehouse
+        self.lab = mainStore.lab
         
         mainStore.$warehouse.sink { [unowned self] in
             self.warehouse = $0
         }
         .store(in: &cancellables)
+        
+        mainStore.$lab.sink { [unowned self] in
+            self.lab = $0
+        }
+        .store(in: &cancellables)
+        
     }
 }
 
@@ -34,7 +45,7 @@ extension ResearchViewModel {
     
     var canStart: Bool {
         guard let selectedItem else { return false }
-        return warehouse.quantity(selectedItem) > 0 && progress.missing.level > 0
+        return warehouse.quantity(selectedItem) > 0
     }
     
     func select(item: BaseItem) {
@@ -48,12 +59,16 @@ extension ResearchViewModel {
         
     }
     
-    var progress: ResearchProgress {
-        guard let selectedItem else { return .init(total: .init(), current: .init()) }
-        return ResearchProgress(
-            total: selectedItem.availableResearch,
-            current: researchService.currentResearch(item: selectedItem)
-        )
+    var currentLevel: Int {
+        guard let selectedItem else { return 0 }
+        return lab.currentLevel(item: selectedItem)
+    }
+    
+    var chance: Double {
+        let level = self.currentLevel
+        let mult = pow(1.5, Double(level))
+        
+        return calulations.baseResearchChance / mult
     }
     
     

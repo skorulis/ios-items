@@ -35,7 +35,10 @@ struct MainPathRenderer: CoordinatorPathRenderer {
         case .research:
             ResearchView(viewModel: coordinator.apply(resolver.researchViewModel()))
         case let .itemDetails(item):
-            ItemDetailsView(item: item, research: item.availableResearch)
+            ItemDetailsView(
+                item: item,
+                level: resolver.mainStore().lab.currentLevel(item: item),
+            )
         }
     }
 }

@@ -41,6 +41,7 @@ final class ItemsAssembly: AutoInitModuleAssembly {
         
         container.register(RecipeService.self) { RecipeService.make(resolver: $0) }
         container.register(ResearchService.self) { ResearchService.make(resolver: $0) }
+        container.register(CalculationsService.self) { CalculationsService.make(resolver: $0) }
     }
     
     @MainActor

@@ -1,16 +1,16 @@
 //Created by Alexander Skorulis on 13/2/2026.
 
 import Foundation
-
+import SwiftUI
 
 // Research that has been done about an item
 struct Research: Codable {
-    var essences: Set<Essence>
-    var lore: Int // Number of lore values which have been unlocked
+    var essences: [Essence]
+    var lore: [String]
     
     public init(
-        essences: Set<Essence> = [],
-        lore: Int = 0
+        essences: Array<Essence> = [],
+        lore: [String] = []
     ) {
         self.essences = essences
         self.lore = lore
@@ -18,21 +18,62 @@ struct Research: Codable {
     
     /// The level of research
     var level: Int {
-        return essences.count + lore
+        return essences.count + lore.count
     }
     
-    // Return what parts of this research are still missing in the given research
-    func missing(research: Research) -> Research {
-        let lore = max(self.lore - research.lore, 0)
-        let essences = self.essences.filter { !research.essences.contains($0) }
+    var sections: [ResearchSection] {
+        var result = [ResearchSection]()
+        for e in essences {
+            result.append(.essence(e))
+        }
+        for l in lore {
+            result.append(.lore(l))
+        }
         
-        return Research(essences: essences, lore: lore)
+        result.append(.infinity)
+        return result
     }
+    
+    func unlockedEssences(level: Int) -> [Essence] {
+        return Array(essences.prefix(level))
+    }
+}
+
+enum ResearchSection: Identifiable {
+    case essence(Essence), lore(String), infinity
+    
+    var id: String {
+        switch self {
+        case let .essence(essence):
+            return String(describing: essence.id)
+        case let .lore(string):
+            return string
+        case .infinity:
+            return "infinity"
+        }
+    }
+    
+    var isInfinity: Bool {
+        switch self {
+        case .infinity:
+            return true
+        default:
+            return false
+        }
+    }
+    
+    var iconColor: Color {
+        switch self {
+        case let .essence(essence):
+            return essence.color
+        default:
+            return Color.white
+        }
+    }
+    
 }
 
 struct ResearchProgress {
     let total: Research
     let current: Research
-    
-    var missing: Research { total.missing(research: current) }
 }

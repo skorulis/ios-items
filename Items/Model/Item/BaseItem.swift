@@ -9,6 +9,7 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
     case apple
     case rock
     case gear
+    case potionFlask
     case copperFlorin
     
     case woodenChair
@@ -37,6 +38,7 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
         case .apple: return "AP"
         case .rock: return "RK"
         case .gear: return "GE"
+        case .potionFlask: return "PF"
         case .copperFlorin: return "CF"
         case .woodenChair: return "WC"
         case .cactus: return "CA"
@@ -52,7 +54,7 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
     
     var quality: ItemQuality {
         switch self {
-        case .apple, .rock, .woodenChair, .cactus, .vinylRecord, .snowGlobe, .umbrella, .hourglass, .compass, .copperFlorin, .gear:
+        case .apple, .rock, .woodenChair, .cactus, .vinylRecord, .snowGlobe, .umbrella, .hourglass, .compass, .copperFlorin, .gear, .potionFlask:
             return .junk
         case .silverFlorin:
             return .common
@@ -69,6 +71,8 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
             return [.earth]
         case .gear:
             return [.technology]
+        case .potionFlask:
+            return [.magic]
         case .copperFlorin:
             return [.wealth]
         case .woodenChair:
@@ -109,6 +113,11 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
         case .goldFlorin:
             return [
                 "Worth 100 silver Florins"
+            ]
+        case .potionFlask:
+            return [
+                "A glass flask for mixing or storing potions",
+                "The glass is embued with a subtle magic that prevents the contents from losing potency over time",
             ]
         default:
             return []

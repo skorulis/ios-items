@@ -16,11 +16,6 @@ final class ResearchService {
 
 extension ResearchService {
     
-    // Return what has been researched for an item
-    func currentResearch(item: BaseItem) -> Research {
-        return mainStore.lab.research(item: item)
-    }
-    
     func research(item: BaseItem) {
         // TODO: Add delay and failure chance
         
@@ -28,24 +23,13 @@ extension ResearchService {
             return
         }
         
-        var existing = mainStore.lab.research(item: item)
-        let missing = item.availableResearch.missing(research: existing)
-        guard let type = missing.remainingTypes.randomElement() else {
-            return
-        }
+        let level = mainStore.lab.currentLevel(item: item)
         
         // Research consumes 1 item
         mainStore.warehouse.remove(item: item)
         
-        switch type {
-        case .essence:
-            let found = missing.essences.randomElement()!
-            existing.essences.insert(found)
-        case .lore:
-            existing.lore += 1
-        }
         
-        mainStore.lab.set(research: existing, item: item)
+        mainStore.lab.set(level: level + 1, item: item)
     }
     
     
@@ -55,27 +39,13 @@ private enum ResearchType {
     case essence, lore
 }
 
-private extension Research {
-    var remainingTypes: [ResearchType] {
-        var result: [ResearchType] = []
-        if essences.count > 0 {
-            result.append(.essence)
-        }
-        if lore > 0 {
-            result.append(.lore)
-        }
-        
-        return result
-    }
-}
-
 extension BaseItem {
     
     // The total research that can be done for the item
     var availableResearch: Research {
         return .init(
-            essences: Set(self.essences),
-            lore: lore.count,
+            essences: self.essences,
+            lore: lore,
         )
     }
 }

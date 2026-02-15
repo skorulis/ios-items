@@ -46,7 +46,9 @@ extension ResearchView: View {
                 Button(action: {viewModel.showingPicker = true}) {
                     ItemGridCell(item: item, quantity: viewModel.warehouse.quantity(item))
                 }
-                progressBar
+                textBlock(item: item)
+                
+                progressBar(item: item)
                 
             }
             .padding(.horizontal, 16)
@@ -58,12 +60,17 @@ extension ResearchView: View {
         }
     }
     
-    private var progressBar: some View {
-        let progress = viewModel.progress
-        
-        return SegmentedProgressBar(
-            totalSteps: progress.total.level,
-            currentStep: progress.current.level,
+    private func textBlock(item: BaseItem) -> some View {
+        VStack {
+            Text("Level: \(viewModel.currentLevel)")
+            Text("Success chance: \(100 * viewModel.chance)%")
+        }
+    }
+    
+    private func progressBar(item: BaseItem) -> some View {
+        SegmentedResearchBar(
+            research: item.availableResearch,
+            level: viewModel.currentLevel
         )
     }
     

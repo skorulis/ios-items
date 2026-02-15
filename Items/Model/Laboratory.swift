@@ -3,17 +3,14 @@
 import Foundation
 
 struct Laboratory: Codable {
-    private var items: [BaseItem: Research] = [:]
-    
-    func research(item: BaseItem) -> Research {
-        return items[item] ?? Research()
-    }
+    // Current research level
+    private var items: [BaseItem: Int] = [:]
     
     func currentLevel(item: BaseItem) -> Int {
-        return research(item: item).level
+        return items[item, default: 0]
     }
     
-    mutating func set(research: Research, item: BaseItem) {
-        items[item] = research
+    mutating func set(level: Int, item: BaseItem) {
+        items[item] = level
     }
 }
