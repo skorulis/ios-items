@@ -7,6 +7,18 @@ import SwiftUI
 @MainActor struct AvatarView {
     let initials: String
     let border: Color
+    
+    let badge: String?
+    
+    init(
+        initials: String,
+        border: Color,
+        badge: String? = nil
+    ) {
+        self.initials = initials
+        self.border = border
+        self.badge = badge
+    }
 }
 
 // MARK: - Rendering
@@ -14,6 +26,13 @@ import SwiftUI
 extension AvatarView: View {
     
     var body: some View {
+        ZStack(alignment: .bottomTrailing) {
+            mainCircle
+            maybeBadge
+        }
+    }
+    
+    private var mainCircle: some View {
         ZStack {
             Circle()
                 .fill(ColorHash.color(for: initials))
@@ -27,6 +46,20 @@ extension AvatarView: View {
                 .foregroundStyle(Color.white)
         }
         .frame(width: 60, height: 60)
+    }
+    
+    @ViewBuilder
+    private var maybeBadge: some View {
+        if let badge {
+            Text(badge)
+                .monospaced()
+                .bold()
+                .font(.subheadline)
+                .foregroundStyle(Color.white)
+                .padding(2)
+                .background(Capsule())
+                .padding(2)
+        }
     }
 }
 

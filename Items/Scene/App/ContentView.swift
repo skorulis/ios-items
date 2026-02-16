@@ -32,6 +32,9 @@ struct ContentView: View {
     private var creationTab: some View {
         CoordinatorView(coordinator: creationCoordinator)
             .with(renderer: resolver!.mainPathRenderer())
+            .with(overlay: .card) { view in
+                AnyView(CardPathWrapper { view })
+            }
             .tabItem {
                 Label("Creation", systemImage: "hammer")
             }

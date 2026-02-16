@@ -40,10 +40,7 @@ struct MainPathRenderer: CoordinatorPathRenderer {
         case .achievements:
             AchievementsView(viewModel: coordinator.apply(resolver.achievementsViewModel()))
         case let .itemDetails(item):
-            ItemDetailsView(
-                item: item,
-                level: resolver.mainStore().lab.currentLevel(item: item),
-            )
+            ItemDetailsView(viewModel: resolver.itemDetailsViewModel(item: item))
         case let .artifactDetails(instance):
             ArtifactDetailView(artifact: instance)
         case let .achievementDetails(achievement):

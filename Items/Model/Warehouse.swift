@@ -12,9 +12,9 @@ struct Warehouse: Codable {
     // Total items that have been found
     private var total: [BaseItem: Int] = [:]
     
-    mutating func add(item: BaseItem) {
-        current[item, default: 0] += 1
-        total[item, default: 0] += 1
+    mutating func add(item: BaseItem, count: Int = 1) {
+        current[item, default: 0] += count
+        total[item, default: 0] += count
     }
     
     mutating func add(artifact: ArtifactInstance) {

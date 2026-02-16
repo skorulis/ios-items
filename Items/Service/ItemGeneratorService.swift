@@ -9,10 +9,12 @@ import KnitMacros
 final class ItemGeneratorService {
     
     private let mainStore: MainStore
+    private let calculations: CalculationsService
     
     @Resolvable<BaseResolver>
-    init(mainStore: MainStore) {
+    init(mainStore: MainStore, calculations: CalculationsService) {
         self.mainStore = mainStore
+        self.calculations = calculations
     }
     
     func make(recipe: Recipe) -> Result {
@@ -32,7 +34,9 @@ final class ItemGeneratorService {
             return .artifact(artifact)
         }
         
-        return .base(baseItem)
+        // TODO: Check if another item gets created
+        
+        return .base(baseItem, 1)
     }
     
     private func maybeConvertToArtifact(baseItem: BaseItem) -> ArtifactInstance? {
@@ -74,7 +78,7 @@ final class ItemGeneratorService {
 extension ItemGeneratorService{
     
     enum Result {
-        case base(BaseItem)
+        case base(BaseItem, Int)
         case artifact(ArtifactInstance)
     }
 }

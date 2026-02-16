@@ -7,6 +7,12 @@ import SwiftUI
 
 @MainActor struct ItemView {
     let item: BaseItem
+    let quantity: Int?
+    
+    init(item: BaseItem, quantity: Int? = nil) {
+        self.item = item
+        self.quantity = quantity
+    }
 }
 
 // MARK: - Rendering
@@ -14,7 +20,15 @@ import SwiftUI
 extension ItemView: View {
     
     var body: some View {
-        AvatarView(initials: item.acronym, border: item.quality.color)
+        AvatarView(
+            initials: item.acronym,
+            border: item.quality.color,
+            badge: badgeText,
+        )
+    }
+    
+    private var badgeText: String? {
+        return quantity.map(String.init)
     }
 }
 

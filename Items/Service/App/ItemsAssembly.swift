@@ -62,6 +62,10 @@ final class ItemsAssembly: AutoInitModuleAssembly {
         container.register(ResearchViewModel.self) { ResearchViewModel.make(resolver: $0)}
         container.register(AchievementsViewModel.self) { AchievementsViewModel.make(resolver: $0) }
         
+        container.register(ItemDetailsViewModel.self) { (resolver: BaseResolver, item: BaseItem) in
+            ItemDetailsViewModel.make(resolver: resolver, item: item)
+        }
+        
         container.register(MainPathRenderer.self) { MainPathRenderer(resolver: $0) }
     }
     

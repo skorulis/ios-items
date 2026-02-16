@@ -13,7 +13,7 @@ import SwiftUI
     
     var coordinator: ASKCoordinator.Coordinator?
     private(set) var recipesAvailable: Bool = false
-    private(set) var createdItem: BaseItem?
+    private(set) var createdItem: ItemGeneratorService.Result?
     private(set) var isCreating: Bool = false
     var automateCreation: Bool = false
     {
@@ -84,26 +84,30 @@ extension CreationViewModel {
         self.createdItem = nil
         let recipe = recipeService.nextAvailable()
         recipeService.consumeRecipe(recipe)
+        mainStore.statistics.itemsDestroyed += Int64(recipe.items.count)
         
         try? await Task.sleep(for: .milliseconds(calculations.itemCreationMilliseconds))
         self.isCreating = false
         
         let item = itemGeneratorService.make(recipe: recipe)
         switch item {
-        case let .base(baseItem):
-            mainStore.warehouse.add(item: baseItem)
+        case let .base(baseItem, count):
+            mainStore.warehouse.add(item: baseItem, count: count)
             
-            mainStore.statistics.itemsCreated += 1
-            mainStore.statistics.itemsDestroyed += Int64(recipe.items.count)
-            
-            self.createdItem = baseItem
+            mainStore.statistics.itemsCreated += Int64(count)
         case let .artifact(artifact):
             mainStore.warehouse.add(artifact: artifact)
         }
+        
+        self.createdItem = item
     }
     
     func showRecipes() {
         coordinator?.push(MainPath.recipeList)
+    }
+    
+    func showDetails(item: BaseItem) {
+        coordinator?.custom(overlay: .card, MainPath.itemDetails(item))
     }
     
 }

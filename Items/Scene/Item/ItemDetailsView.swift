@@ -1,18 +1,21 @@
 //Created by Alexander Skorulis on 14/2/2026.
 
 import Foundation
+import Knit
 import SwiftUI
 
 // MARK: - Memory footprint
 
 @MainActor struct ItemDetailsView {
-    let item: BaseItem
-    let level: Int
+    @State var viewModel: ItemDetailsViewModel
 }
 
 // MARK: - Rendering
 
 extension ItemDetailsView: View {
+    
+    var item: BaseItem { viewModel.item }
+    var level: Int { viewModel.lab.currentLevel(item: viewModel.item) }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
@@ -28,6 +31,7 @@ extension ItemDetailsView: View {
                 Text(lore)
             }
             researchProgress
+            Text("Double chance: \(viewModel.doubleChanceString)")
         }
         .padding(16)
         .background(CardBackground())
@@ -61,9 +65,8 @@ extension ItemDetailsView: View {
 // MARK: - Previews
 
 #Preview {
+    let assembler = ItemsAssembly.testing()
     ItemDetailsView(
-        item: .apple,
-        level: 2,
+        viewModel: assembler.resolver.itemDetailsViewModel(item: BaseItem.apple),
     )
 }
-

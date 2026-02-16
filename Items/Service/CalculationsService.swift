@@ -30,4 +30,8 @@ struct CalculationsService {
         
         return max(value, 100)
     }
+    
+    func doubleItemChance(item: BaseItem) -> Double {
+        return Double(mainStore.lab.currentLevel(item: item)) * 0.05
+    }
 }

@@ -45,9 +45,25 @@ extension CreationView: View {
             if viewModel.isCreating {
                 ProgressView()
             } else if let item = viewModel.createdItem {
-                ItemView(item: item)
+                createdItem(item: item)
             }
         }
+    }
+    
+    @ViewBuilder
+    private func createdItem(item: ItemGeneratorService.Result) -> some View {
+        switch item {
+        case let .base(baseItem, count):
+            Button(action: { viewModel.showDetails(item: baseItem) }) {
+                ItemView(
+                    item: baseItem,
+                    quantity: count > 1 ? count : nil,
+                )
+            }
+        case let .artifact:
+            Text("TODO")
+        }
+        
     }
     
     private var autoToggle: some View {
