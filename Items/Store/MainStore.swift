@@ -26,7 +26,7 @@ final class MainStore: ObservableObject {
         }
     }
     
-    @Published var achievements: [Achievement] {
+    @Published var achievements: Set<Achievement> {
         didSet {
             try! self.store.set(codable: achievements, forKey: Self.achievementsKey)
         }

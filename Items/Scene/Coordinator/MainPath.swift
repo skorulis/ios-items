@@ -11,9 +11,11 @@ enum MainPath: CoordinatorPath {
     case warehouse
     case recipeList
     case research
+    case achievements
     
     case itemDetails(BaseItem)
     case artifactDetails(ArtifactInstance)
+    case achievementDetails(Achievement)
     
     public var id: String {
         String(describing: self)
@@ -35,6 +37,8 @@ struct MainPathRenderer: CoordinatorPathRenderer {
             RecipeListView(viewModel: coordinator.apply(resolver.recipeListViewModel()))
         case .research:
             ResearchView(viewModel: coordinator.apply(resolver.researchViewModel()))
+        case .achievements:
+            AchievementsView(viewModel: coordinator.apply(resolver.achievementsViewModel()))
         case let .itemDetails(item):
             ItemDetailsView(
                 item: item,
@@ -42,6 +46,8 @@ struct MainPathRenderer: CoordinatorPathRenderer {
             )
         case let .artifactDetails(instance):
             ArtifactDetailView(artifact: instance)
+        case let .achievementDetails(achievement):
+            AchievementDetailsView(achievement: achievement)
         }
     }
 }

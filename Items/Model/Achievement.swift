@@ -2,17 +2,23 @@
 
 import Foundation
 
-enum Achievement: Codable, Hashable {
+enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
     case items1
     case items10
     case items100
     
-    var text: String {
+    var id: Self { self }
+    
+    var name: String {
         switch self {
         case .items1: return "Your first item"
         case .items10: return "Baby steps"
         case .items100: return "Getting somewhere"
         }
+    }
+    
+    var acronym: String {
+        String(String(describing: self).prefix(2))
     }
     
     var requirement: AchievementRequirement {

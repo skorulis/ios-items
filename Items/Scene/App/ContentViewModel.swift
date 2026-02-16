@@ -9,13 +9,21 @@ import SwiftUI
 @Observable final class ContentViewModel {
     
     private(set) var showingResearch: Bool = false
+    private(set) var showingAchievements: Bool = false
     
+    private let achievementService: AchievementService
     private var cancellables: Set<AnyCancellable> = []
     
     @Resolvable<BaseResolver>
-    init(mainStore: MainStore) {
+    init(mainStore: MainStore, achievementService: AchievementService) {
+        self.achievementService = achievementService
         mainStore.$warehouse.sink { warehouse in
             self.showingResearch = warehouse.totalItemsCollected >= 10
+        }
+        .store(in: &cancellables)
+        
+        mainStore.$achievements.sink { achievements in
+            self.showingAchievements = achievements.count > 0
         }
         .store(in: &cancellables)
     }

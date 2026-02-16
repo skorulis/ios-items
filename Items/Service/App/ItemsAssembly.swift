@@ -39,6 +39,9 @@ final class ItemsAssembly: AutoInitModuleAssembly {
         container.register(ItemGeneratorService.self) { ItemGeneratorService.make(resolver: $0) }
             .inObjectScope(.container)
         
+        container.register(AchievementService.self) { AchievementService.make(resolver: $0) }
+            .inObjectScope(.container)
+        
         container.register(RecipeService.self) { RecipeService.make(resolver: $0) }
         container.register(ResearchService.self) { ResearchService.make(resolver: $0) }
         container.register(CalculationsService.self) { CalculationsService.make(resolver: $0) }
@@ -57,6 +60,7 @@ final class ItemsAssembly: AutoInitModuleAssembly {
         container.register(WarehouseViewModel.self) { WarehouseViewModel.make(resolver: $0) }
         container.register(RecipeListViewModel.self) { RecipeListViewModel.make(resolver: $0)}
         container.register(ResearchViewModel.self) { ResearchViewModel.make(resolver: $0)}
+        container.register(AchievementsViewModel.self) { AchievementsViewModel.make(resolver: $0) }
         
         container.register(MainPathRenderer.self) { MainPathRenderer(resolver: $0) }
     }

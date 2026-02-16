@@ -11,11 +11,16 @@ struct ContentView: View {
     @State var creationCoordinator = Coordinator(root: MainPath.creation)
     @State var warehouseCoordinator = Coordinator(root: MainPath.warehouse)
     @State var researchCoordinator = Coordinator(root: MainPath.research)
+    @State var achievementsCoordinator = Coordinator(root: MainPath.achievements)
     
     var body: some View {
         TabView {
             creationTab
             warehouseTab
+            
+            if viewModel.showingAchievements {
+                achievementsTab
+            }
             
             if viewModel.showingResearch {
                 researchTab
@@ -45,14 +50,27 @@ struct ContentView: View {
             .tag(1)
     }
     
+    private var achievementsTab: some View {
+        CoordinatorView(coordinator: achievementsCoordinator)
+            .with(renderer: resolver!.mainPathRenderer())
+            .with(overlay: .card) { view in
+                AnyView(CardPathWrapper { view })
+            }
+            .tabItem {
+                Label("Achievements", systemImage: "fireworks")
+            }
+            .tag(2)
+    }
+    
     private var researchTab: some View {
         CoordinatorView(coordinator: researchCoordinator)
             .with(renderer: resolver!.mainPathRenderer())
             .tabItem {
                 Label("Research", systemImage: "flask.fill")
             }
-            .tag(2)
+            .tag(3)
     }
+    
 }
 
 #Preview {

@@ -14,19 +14,7 @@ import SwiftUI
 extension ItemView: View {
     
     var body: some View {
-        ZStack {
-            Circle()
-                .fill(ColorHash.color(for: item.acronym))
-            
-            Circle()
-                .stroke(item.quality.color, lineWidth: 2)
-            
-            Text(item.acronym)
-                .font(.title)
-                .bold()
-                .foregroundStyle(Color.white)
-        }
-        .frame(width: 60, height: 60)
+        AvatarView(initials: item.acronym, border: item.quality.color)
     }
 }
 
