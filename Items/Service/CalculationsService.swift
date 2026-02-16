@@ -23,6 +23,11 @@ struct CalculationsService {
     }
     
     var itemCreationMilliseconds: Double {
-        return 1000
+        var value: Double = 1000
+        if let fg = mainStore.warehouse.artifactInstance(.frictionlessGear) {
+            value -= Double(fg.type.frictionlessGearTimeReduction(quality: fg.quality))
+        }
+        
+        return max(value, 100)
     }
 }

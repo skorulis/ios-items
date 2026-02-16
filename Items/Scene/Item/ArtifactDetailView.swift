@@ -24,7 +24,7 @@ extension ArtifactDetailView: View {
             }
 
             // Details
-            VStack(spacing: 8) {
+            VStack(alignment: .leading, spacing: 8) {
                 HStack {
                     Text("Quality:")
                         .font(.headline)
@@ -33,6 +33,8 @@ extension ArtifactDetailView: View {
                         .bold()
                     Spacer()
                 }
+                
+                Text(artifact.bonusMessage)
             }
         }
         .padding(16)

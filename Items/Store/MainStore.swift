@@ -26,11 +26,18 @@ final class MainStore: ObservableObject {
         }
     }
     
+    @Published var achievements: [Achievement] {
+        didSet {
+            try! self.store.set(codable: achievements, forKey: Self.achievementsKey)
+        }
+    }
+    
     private let store: PKeyValueStore
-    private static let warehouseKey = "MainStore.warehouse"
-    private static let statisticsKey = "MainStore.statistics"
-    private static let recipesKey = "MainStore.recipes"
+    private static let achievementsKey = "MainStore.achievements"
     private static let labKey = "MainStore.lab"
+    private static let recipesKey = "MainStore.recipes"
+    private static let statisticsKey = "MainStore.statistics"
+    private static let warehouseKey = "MainStore.warehouse"
     
     @Resolvable<BaseResolver>
     init(store: PKeyValueStore) {
@@ -39,5 +46,6 @@ final class MainStore: ObservableObject {
         self.warehouse = (try? store.codable(forKey: Self.warehouseKey)) ?? Warehouse()
         self.statistics = (try? store.codable(forKey: Self.statisticsKey)) ?? Statistics()
         self.lab = (try? store.codable(forKey: Self.labKey)) ?? Laboratory()
+        self.achievements = (try? store.codable(forKey: Self.achievementsKey)) ?? []
     }
 }
