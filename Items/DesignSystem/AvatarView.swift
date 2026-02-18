@@ -5,19 +5,31 @@ import SwiftUI
 // MARK: - Memory footprint
 
 @MainActor struct AvatarView {
-    let initials: String
-    let border: Color
     
-    let badge: String?
+    enum Size: Identifiable, CaseIterable {
+        case small, medium, large
+        var id: Self { self }
+    }
+    
+    private let size: Size
+    private let initials: String
+    private let image: Image?
+    private let border: Color
+    
+    private let badge: String?
     
     init(
         initials: String,
+        image: Image?,
         border: Color,
-        badge: String? = nil
+        badge: String? = nil,
+        size: Size = .medium,
     ) {
         self.initials = initials
+        self.image = image
         self.border = border
         self.badge = badge
+        self.size = size
     }
 }
 
@@ -40,12 +52,25 @@ extension AvatarView: View {
             Circle()
                 .stroke(border, lineWidth: 2)
             
+            content
+            
+        }
+        .frame(width: size.diameter, height: size.diameter)
+    }
+    
+    @ViewBuilder
+    private var content: some View {
+        if let image {
+            image
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: size.imageSize, height: size.imageSize)
+        } else {
             Text(initials)
-                .font(.title)
+                .font(size.font)
                 .bold()
                 .foregroundStyle(Color.white)
         }
-        .frame(width: 60, height: 60)
     }
     
     @ViewBuilder
@@ -63,12 +88,69 @@ extension AvatarView: View {
     }
 }
 
+fileprivate extension AvatarView.Size {
+     var diameter: CGFloat {
+        switch self {
+        case .small:
+            return 32
+        case .medium:
+            return 60
+        case .large:
+            return 80
+        }
+    }
+    
+    var imageSize: CGFloat {
+        switch self {
+        case .small:
+            return 24
+        case .medium:
+            return 48
+        case .large:
+            return 60
+        }
+    }
+    
+    var font: Font {
+        switch self {
+        case .small:
+            return .body
+        case .medium:
+            return .title
+        case .large:
+            return .largeTitle
+        }
+    }
+}
+
 // MARK: - Previews
 
 #Preview {
-    AvatarView(
-        initials: "AB",
-        border: .orange,
-    )
+    VStack {
+        HStack {
+            ForEach(AvatarView.Size.allCases) { size in
+                AvatarView(
+                    initials: "AB",
+                    image: nil,
+                    border: .orange,
+                    size: size,
+                )
+            }
+        }
+        
+        HStack {
+            ForEach(AvatarView.Size.allCases) { size in
+                AvatarView(
+                    initials: "AP",
+                    image: Asset.BaseItem.apple.swiftUIImage,
+                    border: .orange,
+                    size: size,
+                )
+            }
+        }
+        
+    }
+    
+    
 }
 

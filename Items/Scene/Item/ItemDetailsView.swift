@@ -15,27 +15,47 @@ import SwiftUI
 extension ItemDetailsView: View {
     
     var item: BaseItem { viewModel.item }
-    var level: Int { viewModel.lab.currentLevel(item: viewModel.item) }
+    var level: Int { viewModel.model.lab.currentLevel(item: viewModel.item) }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             HStack {
                 ItemView(item: item)
-                Text(item.name)
-                    .font(.title)
+                titleBar
                 Spacer()
             }
             Text("Quality \(item.quality.name)")
-            essences
+            researchProgress
+            Text("Double chance: \(viewModel.doubleChanceString)")
+            artifactSection
+            
             if let lore = combinedLore {
                 Text(lore)
             }
-            researchProgress
-            Text("Double chance: \(viewModel.doubleChanceString)")
         }
         .padding(16)
-        .background(CardBackground())
-        .padding(16)
+    }
+    
+    private var titleBar: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            essences
+            Text(item.name)
+                .font(.title)
+        }
+    }
+    
+    @ViewBuilder
+    private var artifactSection: some View {
+        if let artifact = viewModel.item.associatedArtifact {
+            HStack {
+                Text("Artifact:")
+                if let instance = viewModel.model.warehouse.artifactInstance(artifact) {
+                    ArtifactView(artifact: instance, size: .small)
+                } else {
+                    Image(systemName: "questionmark.circle.dashed")
+                }
+            }
+        }
     }
     
     private var researchProgress: some View {
@@ -44,12 +64,14 @@ extension ItemDetailsView: View {
     
     private var essences: some View {
         HStack {
-            Text("Essence")
             ForEach(Array(0..<item.essences.count), id: \.self) { index in
                 if level > index {
                     EssenceView(essence: item.essences[index])
                 } else {
-                    Text("?")
+                    Image(systemName: "questionmark.circle.dashed")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 16, height: 16)
                 }
             }
         }
@@ -62,11 +84,18 @@ extension ItemDetailsView: View {
     }
 }
 
+extension ItemDetailsView {
+    struct Model {
+        var lab: Laboratory
+        var warehouse: Warehouse
+    }
+}
+
 // MARK: - Previews
 
 #Preview {
     let assembler = ItemsAssembly.testing()
     ItemDetailsView(
-        viewModel: assembler.resolver.itemDetailsViewModel(item: BaseItem.apple),
+        viewModel: assembler.resolver.itemDetailsViewModel(item: BaseItem.gear),
     )
 }

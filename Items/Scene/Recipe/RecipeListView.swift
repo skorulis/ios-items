@@ -57,9 +57,20 @@ extension RecipeListView: View {
     
     private var titleBar: some View {
         TitleBar(
-            title: "Recipes",
-            backAction: { viewModel.coordinator?.pop() }
+            title: "Sacrifices",
+            backAction: { viewModel.coordinator?.pop() },
+            trailing: { helpButton }
         )
+    }
+    
+    private var helpButton: some View {
+        Button(action: viewModel.showInfo) {
+            Image(systemName: "questionmark.app")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 24, height: 24)
+                .foregroundStyle(Color.black)
+        }
     }
 
     private var fab: some View {

@@ -8,6 +8,24 @@ import SwiftUI
 
 @MainActor struct CreationView {
     @State var viewModel: CreationViewModel
+    
+    struct Model {
+        var createdItem: ItemGeneratorService.Result?
+        var isCreating: Bool = false
+        
+        var warehouse: Warehouse = Warehouse()
+        var recipes: [Recipe] = []
+        
+        var recipesAvailable: Bool { warehouse.totalItemsCollected >= 10 }
+        
+        var currentSacrifice: Recipe? {
+            return recipes.first { recipe in
+                recipe.items.count > 0 &&
+                recipe.items.allSatisfy { warehouse.quantity($0) > 0 }
+            }
+        }
+    }
+
 }
 
 // MARK: - Rendering
@@ -29,12 +47,32 @@ extension CreationView: View {
     private var topBar: some View {
         HStack {
             Spacer()
-            Button("Recipes") {
-                viewModel.showRecipes()
+            if viewModel.model.recipesAvailable {
+                sacficesButton
             }
-            .buttonStyle(CapsuleButtonStyle())
-            .opacity(viewModel.recipesAvailable ? 1 : 0)
         }
+    }
+    
+    private var sacficesButton: some View {
+        Button(action: viewModel.showRecipes) {
+            VStack {
+                Text("Sacrifices")
+                if let recipe = viewModel.model.currentSacrifice {
+                    HStack {
+                        ForEach(recipe.items) { item in
+                            AvatarView(
+                                initials: item.acronym,
+                                image: item.image,
+                                border: item.quality.color,
+                                size: .small,
+                            )
+                        }
+                    }
+                }
+            }
+        }
+        .buttonStyle(CapsuleButtonStyle())
+        .opacity(viewModel.model.recipesAvailable ? 1 : 0)
     }
     
     private var itemContainer: some View {
@@ -42,9 +80,9 @@ extension CreationView: View {
             AnimatedBlobView(color: .blue, size: 220, speed: 0.7, points: 9, jitter: 0.26)
                 .padding(.bottom, 16)
             
-            if viewModel.isCreating {
+            if viewModel.model.isCreating {
                 ProgressView()
-            } else if let item = viewModel.createdItem {
+            } else if let item = viewModel.model.createdItem {
                 createdItem(item: item)
             }
         }
@@ -77,15 +115,15 @@ extension CreationView: View {
             }
         }) {
             ZStack {
-                if viewModel.isCreating {
+                if viewModel.model.isCreating {
                     ProgressView()
                 }
                 Text("Create an item")
-                    .opacity(viewModel.isCreating ? 0 : 1)
+                    .opacity(viewModel.model.isCreating ? 0 : 1)
             }
         }
         .buttonStyle(CapsuleButtonStyle())
-        .disabled(viewModel.isCreating)
+        .disabled(viewModel.model.isCreating)
     }
 }
 

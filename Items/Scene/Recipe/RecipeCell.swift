@@ -21,7 +21,9 @@ extension RecipeCell: View {
                 itemCell(item: item)
             }
             
-            addButton
+            if recipe.items.count < 2 {
+                addButton
+            }
             
             Spacer()
         }

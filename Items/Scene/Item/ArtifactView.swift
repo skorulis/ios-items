@@ -7,25 +7,24 @@ import SwiftUI
 
 @MainActor struct ArtifactView {
     let artifact: ArtifactInstance
+    let size: AvatarView.Size
+    
+    init(artifact: ArtifactInstance, size: AvatarView.Size = .medium) {
+        self.artifact = artifact
+        self.size = size
+    }
 }
 
 // MARK: - Rendering
 
 extension ArtifactView: View {
     var body: some View {
-        ZStack {
-            Circle()
-                .fill(ColorHash.color(for: artifact.type.acronym))
-
-            Circle()
-                .stroke(artifact.quality.color, lineWidth: 2)
-
-            Text(artifact.type.acronym)
-                .font(.title)
-                .bold()
-                .foregroundStyle(Color.white)
-        }
-        .frame(width: 60, height: 60)
+        AvatarView(
+            initials: artifact.type.acronym,
+            image: nil,
+            border: artifact.quality.color,
+            size: size
+        )
     }
 }
 

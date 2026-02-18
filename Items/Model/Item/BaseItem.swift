@@ -1,6 +1,7 @@
 //Created by Alexander Skorulis on 10/2/2026.
 
 import Foundation
+import SwiftUI
 
 /// Simple items that only have quantity
 enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
@@ -11,13 +12,13 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
     case gear
     case potionFlask
     case copperFlorin
+    case hourglass
     
     case woodenChair
     case cactus
     case vinylRecord
     case snowGlobe
     case umbrella
-    case hourglass
     case compass
     
     
@@ -31,6 +32,29 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
     
     var name: String {
         return String(describing: self)
+    }
+    
+    var image: Image? {
+        switch self {
+        case .apple:
+            return Asset.BaseItem.apple.swiftUIImage
+        case .rock:
+            return Asset.BaseItem.rock.swiftUIImage
+        case .gear:
+            return Asset.BaseItem.gear.swiftUIImage
+        case .potionFlask:
+            return Asset.BaseItem.flask.swiftUIImage
+        case .copperFlorin:
+            return Asset.BaseItem.copperCoin.swiftUIImage
+        case .hourglass:
+            return Asset.BaseItem.hourglass.swiftUIImage
+        case .silverFlorin:
+            return Asset.BaseItem.silverCoin.swiftUIImage
+        case .goldFlorin:
+            return Asset.BaseItem.goldCoin.swiftUIImage
+        default:
+            return nil
+        }
     }
     
     var acronym: String {

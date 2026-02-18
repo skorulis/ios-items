@@ -38,6 +38,21 @@ enum ItemQuality: Codable {
     var name: String {
         String(describing: self).capitalized
     }
+    
+    var artifactChanceMultiplier: Double {
+        switch self {
+        case .junk:
+            return 1
+        case .common:
+            return 0.2
+        case .good:
+            return 0.05
+        case .rare:
+            return 0.01
+        case .exceptional:
+            return 0.001
+        }
+    }
 }
 
 extension ItemQuality: Comparable {}

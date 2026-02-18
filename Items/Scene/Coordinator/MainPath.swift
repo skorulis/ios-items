@@ -17,6 +17,9 @@ enum MainPath: CoordinatorPath {
     case artifactDetails(ArtifactInstance)
     case achievementDetails(Achievement)
     
+    // Present a block of text
+    case dialog(String)
+    
     public var id: String {
         String(describing: self)
     }
@@ -45,11 +48,9 @@ struct MainPathRenderer: CoordinatorPathRenderer {
             ArtifactDetailView(artifact: instance)
         case let .achievementDetails(achievement):
             AchievementDetailsView(achievement: achievement)
+        case let .dialog(text):
+            Text(text)
+                .padding(16)
         }
     }
-}
-
-extension CustomOverlay.Name {
-    // A card in the center of the screen
-    static let card = CustomOverlay.Name("card")
 }

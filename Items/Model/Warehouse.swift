@@ -46,6 +46,13 @@ struct Warehouse: Codable {
         return artifacts[artifact]
     }
     
+    func nextArtifactQuality(artifact: Artifact) -> ItemQuality? {
+        guard let current = quality(artifact) else {
+            return .junk
+        }
+        return current.next
+    }
+    
     func hasDiscovered(_ item: BaseItem) -> Bool {
         return total[item] != nil
     }

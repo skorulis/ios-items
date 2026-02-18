@@ -16,7 +16,7 @@ extension EssenceView: View {
     var body: some View {
         Circle()
             .fill(essence.color)
-            .frame(width: 24, height: 24)
+            .frame(width: 16, height: 16)
     }
 }
 

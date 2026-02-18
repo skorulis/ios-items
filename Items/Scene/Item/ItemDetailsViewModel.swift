@@ -8,8 +8,8 @@ import SwiftUI
 
 @Observable final class ItemDetailsViewModel {
     
+    var model: ItemDetailsView.Model
     let item: BaseItem
-    var lab: Laboratory
     
     private let mainStore: MainStore
     private let calculations: CalculationsService
@@ -20,10 +20,16 @@ import SwiftUI
         self.item = item
         self.mainStore = mainStore
         self.calculations = calculations
-        self.lab = mainStore.lab
+        
+        model = .init(lab: mainStore.lab, warehouse: mainStore.warehouse)
         
         mainStore.$lab.sink { [unowned self] in
-            self.lab = $0
+            self.model.lab = $0
+        }
+        .store(in: &cancellables)
+        
+        mainStore.$warehouse.sink { [unowned self] in
+            self.model.warehouse = $0
         }
         .store(in: &cancellables)
     }

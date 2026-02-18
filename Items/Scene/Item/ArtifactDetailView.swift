@@ -38,8 +38,6 @@ extension ArtifactDetailView: View {
             }
         }
         .padding(16)
-        .background(CardBackground())
-        .padding(16)
     }
 }
 

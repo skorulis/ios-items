@@ -31,10 +31,7 @@ struct ContentView: View {
     
     private var creationTab: some View {
         CoordinatorView(coordinator: creationCoordinator)
-            .with(renderer: resolver!.mainPathRenderer())
-            .with(overlay: .card) { view in
-                AnyView(CardPathWrapper { view })
-            }
+            .withRenderers(resolver: resolver!)
             .tabItem {
                 Label("Creation", systemImage: "hammer")
             }
@@ -43,10 +40,7 @@ struct ContentView: View {
     
     private var warehouseTab: some View {
         CoordinatorView(coordinator: warehouseCoordinator)
-            .with(renderer: resolver!.mainPathRenderer())
-            .with(overlay: .card) { view in
-                AnyView(CardPathWrapper { view })
-            }
+            .withRenderers(resolver: resolver!)
             .tabItem {
                 Label("Warehouse", systemImage: "shippingbox")
             }
@@ -55,10 +49,7 @@ struct ContentView: View {
     
     private var achievementsTab: some View {
         CoordinatorView(coordinator: achievementsCoordinator)
-            .with(renderer: resolver!.mainPathRenderer())
-            .with(overlay: .card) { view in
-                AnyView(CardPathWrapper { view })
-            }
+            .withRenderers(resolver: resolver!)
             .tabItem {
                 Label("Achievements", systemImage: "fireworks")
             }
@@ -67,7 +58,7 @@ struct ContentView: View {
     
     private var researchTab: some View {
         CoordinatorView(coordinator: researchCoordinator)
-            .with(renderer: resolver!.mainPathRenderer())
+            .withRenderers(resolver: resolver!)
             .tabItem {
                 Label("Research", systemImage: "flask.fill")
             }

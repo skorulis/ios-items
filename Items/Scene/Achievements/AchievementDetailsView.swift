@@ -18,6 +18,7 @@ extension AchievementDetailsView: View {
             HStack {
                 AvatarView(
                     initials: achievement.acronym,
+                    image: nil,
                     border: Color.gray,
                 )
                 Text(achievement.name)
@@ -30,8 +31,6 @@ extension AchievementDetailsView: View {
                 Text(bonus)
             }
         }
-        .padding(16)
-        .background(CardBackground())
         .padding(16)
     }
 }

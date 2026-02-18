@@ -1,5 +1,6 @@
 //Created by Alexander Skorulis on 14/2/2026.
 
+import ASKCoordinator
 import Foundation
 import SwiftUI
 
@@ -15,6 +16,8 @@ struct CardPathWrapper<Content: View>: View {
                 .ignoresSafeArea()
             
             content()
+                .background(CardBackground())
+                .padding(16)
         }
     }
     
@@ -24,3 +27,7 @@ struct CardPathWrapper<Content: View>: View {
     
 }
 
+extension CustomOverlay.Name {
+    // A card in the center of the screen
+    static let card = CustomOverlay.Name("card")
+}

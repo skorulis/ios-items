@@ -11,7 +11,7 @@ import SwiftUI
     
     var coordinator: ASKCoordinator.Coordinator?
     
-    var recipes: [Recipe] = [] {
+    var recipes: [Recipe] {
         didSet {
             mainStore.recipes = recipes
         }
@@ -27,6 +27,7 @@ import SwiftUI
     init(mainStore: MainStore) {
         self.mainStore = mainStore
         warehouse = mainStore.warehouse
+        recipes = mainStore.recipes
         
         mainStore.$warehouse.sink { [unowned self] in
             self.warehouse = $0
@@ -35,9 +36,25 @@ import SwiftUI
     }
 }
 
+// MARK: - Inner Types
+
+extension RecipeListViewModel {
+    enum Strings {
+        static let helpText = """
+        The Sacrifices screen lets you define rules for what items will be sacrificed on the next item generation.
+        Each time an item is generated it will pick the first sacrifice option which has ingredients in your warehouse and consume them.
+        Sacrificing low quality items helps to create specific higher quality ones.
+        """
+    }
+}
+
 // MARK: - Logic
 
 extension RecipeListViewModel {
+    
+    func showInfo() {
+        coordinator?.custom(overlay: .card, MainPath.dialog(Strings.helpText))
+    }
     
     func addRecipe() {
         recipes.append(.init(items: []))
@@ -58,3 +75,4 @@ extension RecipeListViewModel {
     }
     
 }
+

@@ -2,8 +2,8 @@
 
 import Foundation
 
-struct Recipe: Identifiable {
-    let id = UUID()
+struct Recipe: Identifiable, Codable {
+    var id = UUID()
     
     var items: [BaseItem]
     

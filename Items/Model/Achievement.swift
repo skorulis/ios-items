@@ -39,7 +39,7 @@ enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
         case .items10:
             return "Research unlocked"
         case .items100:
-            return "Recipes unlocked"
+            return "Sacrifices unlocked"
         }
     }
     

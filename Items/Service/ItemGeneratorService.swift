@@ -34,22 +34,29 @@ final class ItemGeneratorService {
             return .artifact(artifact)
         }
         
-        // TODO: Check if another item gets created
+        // Check if another item gets created based on double item chance
+        let chance = calculations.doubleItemChance(item: baseItem)
+        let roll = Double.random(in: 0...1)
+        if roll < chance {
+            return .base(baseItem, 2)
+        }
         
         return .base(baseItem, 1)
     }
     
     private func maybeConvertToArtifact(baseItem: BaseItem) -> ArtifactInstance? {
-        guard let type = baseItem.associatedArtifact else {
+        guard let type = baseItem.associatedArtifact,
+              let targetQuality = mainStore.warehouse.nextArtifactQuality(artifact: type)
+        else {
             return nil
         }
-        // TODO: Do check to calculate quality
-        let quality = ItemQuality.junk
-        let instance = ArtifactInstance(type: type, quality: quality)
-        guard !mainStore.warehouse.has(artifact: instance) else {
+        
+        let chance = calculations.artifactChance(quality: targetQuality)
+        guard Double.random(in: 0..<1) < chance else {
             return nil
         }
-        return instance
+        
+        return ArtifactInstance(type: type, quality: targetQuality)
     }
     
     private func createQualityChance(recipe: Recipe) -> [ItemQuality: Double] {
@@ -82,3 +89,4 @@ extension ItemGeneratorService{
         case artifact(ArtifactInstance)
     }
 }
+

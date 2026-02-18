@@ -8,6 +8,8 @@ extension BaseItem {
         switch self {
         case .gear:
             return .frictionlessGear
+        case .hourglass:
+            return .eternalHourglass
         default:
             return nil
         }
