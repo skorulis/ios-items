@@ -63,6 +63,8 @@ extension SegmentedResearchBar: View {
             return Image(systemName: "circle.fill")
         case .lore:
             return Image(systemName: "book.pages")
+        case .artifact:
+            return Image(systemName: "star.fill")
         case .infinity:
             return Image(systemName: "infinity.circle.fill")
         }

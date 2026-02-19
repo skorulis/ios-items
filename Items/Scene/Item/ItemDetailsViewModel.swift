@@ -9,7 +9,6 @@ import SwiftUI
 @Observable final class ItemDetailsViewModel {
     
     var model: ItemDetailsView.Model
-    let item: BaseItem
     
     private let mainStore: MainStore
     private let calculations: CalculationsService
@@ -17,11 +16,10 @@ import SwiftUI
     
     @Resolvable<BaseResolver>
     init(@Argument item: BaseItem, mainStore: MainStore, calculations: CalculationsService) {
-        self.item = item
         self.mainStore = mainStore
         self.calculations = calculations
         
-        model = .init(lab: mainStore.lab, warehouse: mainStore.warehouse)
+        model = .init(item: item, lab: mainStore.lab, warehouse: mainStore.warehouse)
         
         mainStore.$lab.sink { [unowned self] in
             self.model.lab = $0
@@ -40,7 +38,7 @@ import SwiftUI
 extension ItemDetailsViewModel {
     
     var doubleChanceString: String {
-        String(calculations.doubleItemChance(item: item))
+        String(calculations.doubleItemChance(item: model.item))
     }
     
 }

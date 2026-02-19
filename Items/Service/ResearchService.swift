@@ -45,6 +45,7 @@ extension BaseItem {
     var availableResearch: Research {
         return .init(
             essences: self.essences,
+            artifact: self.associatedArtifact != nil,
             lore: lore,
         )
     }

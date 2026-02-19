@@ -3,21 +3,7 @@ import SwiftUI
 /// Utility for deterministically mapping strings to colors from a fixed palette.
 public enum ColorHash {
     /// Fixed palette of colors to choose from. Adjust or extend as needed.
-    private static let palette: [Color] = [
-        .red,
-        .orange,
-        .yellow,
-        .green,
-        .mint,
-        .teal,
-        .cyan,
-        .blue,
-        .indigo,
-        .purple,
-        .pink,
-        .brown,
-        .gray
-    ]
+    private static let palette: [Color] = AccentColors.palette
 
     /// Returns a color from the palette based on a stable hash of the given string.
     /// - Parameter string: The input used to choose a color.
@@ -44,3 +30,4 @@ public enum ColorHash {
         return hash
     }
 }
+

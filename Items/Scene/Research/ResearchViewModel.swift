@@ -1,12 +1,14 @@
 //Created by Alexander Skorulis on 13/2/2026.
 
+import ASKCoordinator
 import Combine
 import Foundation
 import Knit
 import KnitMacros
 import SwiftUI
 
-@Observable final class ResearchViewModel {
+@Observable final class ResearchViewModel: CoordinatorViewModel {
+    var coordinator: ASKCoordinator.Coordinator?
     
     private(set) var warehouse: Warehouse
     private(set) var lab: Laboratory
@@ -21,7 +23,6 @@ import SwiftUI
     init(mainStore: MainStore, researchService: ResearchService, calulations: CalculationsService) {
         self.researchService = researchService
         self.calulations = calulations
-        
         
         self.warehouse = mainStore.warehouse
         self.lab = mainStore.lab
@@ -56,7 +57,11 @@ extension ResearchViewModel {
         guard let selectedItem else { return }
         
         researchService.research(item: selectedItem)
-        
+    }
+    
+    func itemDetails() {
+        guard let selectedItem else { return }
+        coordinator?.custom(overlay: .card, MainPath.itemDetails(selectedItem))
     }
     
     var currentLevel: Int {

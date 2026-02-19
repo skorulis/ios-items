@@ -1,6 +1,7 @@
 //Created by Alexander Skorulis on 16/2/2026.
 
 import Foundation
+import SwiftUI
 
 enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
     case items1
@@ -14,6 +15,17 @@ enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
         case .items1: return "Your first item"
         case .items10: return "Baby steps"
         case .items100: return "Getting somewhere"
+        }
+    }
+    
+    var image: Image? {
+        switch self {
+        case .items1:
+            return Image(systemName: "1.circle")
+        case .items10:
+            return Image(systemName: "waterbottle")
+        case .items100:
+            return Image(systemName: "gauge.with.dots.needle.bottom.100percent")
         }
     }
     

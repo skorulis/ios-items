@@ -64,6 +64,7 @@ extension AvatarView: View {
             image
                 .resizable()
                 .aspectRatio(contentMode: .fit)
+                .foregroundStyle(Color.white)
                 .frame(width: size.imageSize, height: size.imageSize)
         } else {
             Text(initials)

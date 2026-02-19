@@ -38,7 +38,7 @@ extension AchievementsView: View {
         Button(action: { viewModel.showDetails(achievement: achievement)}) {
             AvatarView(
                 initials: achievement.acronym,
-                image: nil,
+                image: achievement.image,
                 border: Color.gray,
             )
         }

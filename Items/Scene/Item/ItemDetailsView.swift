@@ -14,12 +14,12 @@ import SwiftUI
 
 extension ItemDetailsView: View {
     
-    var item: BaseItem { viewModel.item }
-    var level: Int { viewModel.model.lab.currentLevel(item: viewModel.item) }
+    var item: BaseItem { viewModel.model.item }
+    var level: Int { viewModel.model.lab.currentLevel(item: viewModel.model.item) }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-            HStack {
+            HStack(spacing: 4) {
                 ItemView(item: item)
                 titleBar
                 Spacer()
@@ -46,7 +46,7 @@ extension ItemDetailsView: View {
     
     @ViewBuilder
     private var artifactSection: some View {
-        if let artifact = viewModel.item.associatedArtifact {
+        if let artifact = viewModel.model.unlockedArtifact {
             HStack {
                 Text("Artifact:")
                 if let instance = viewModel.model.warehouse.artifactInstance(artifact) {
@@ -86,8 +86,21 @@ extension ItemDetailsView: View {
 
 extension ItemDetailsView {
     struct Model {
+        let item: BaseItem
         var lab: Laboratory
         var warehouse: Warehouse
+        
+        var unlockedArtifact: Artifact? {
+            guard let artifact = item.associatedArtifact else {
+                return nil
+            }
+            let level = lab.currentLevel(item: item)
+            if item.availableResearch.isArtifactUnlocked(level: level) {
+                return artifact
+            } else {
+                return nil
+            }
+        }
     }
 }
 

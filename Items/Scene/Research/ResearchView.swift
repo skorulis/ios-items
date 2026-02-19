@@ -33,6 +33,9 @@ extension ResearchView: View {
     private var content: some View {
         VStack {
             Spacer()
+            Button("Select Item") {
+                viewModel.showingPicker = true
+            }
             itemView
             Spacer()
             button
@@ -43,7 +46,7 @@ extension ResearchView: View {
     private var itemView: some View {
         if let item = viewModel.selectedItem {
             VStack {
-                Button(action: {viewModel.showingPicker = true}) {
+                Button(action: viewModel.itemDetails) {
                     ItemGridCell(item: item, quantity: viewModel.warehouse.quantity(item))
                 }
                 textBlock(item: item)
@@ -52,11 +55,6 @@ extension ResearchView: View {
                 
             }
             .padding(.horizontal, 16)
-            
-        } else {
-            Button("Select Item") {
-                viewModel.showingPicker = true
-            }
         }
     }
     
