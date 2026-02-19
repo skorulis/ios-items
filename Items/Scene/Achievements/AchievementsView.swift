@@ -37,7 +37,7 @@ extension AchievementsView: View {
     private func cell(achievement: Achievement) -> some View {
         Button(action: { viewModel.showDetails(achievement: achievement)}) {
             AvatarView(
-                initials: achievement.acronym,
+                text: achievement.name,
                 image: achievement.image,
                 border: Color.gray,
             )

@@ -9,17 +9,8 @@ enum Artifact: Identifiable, Hashable, CaseIterable, Codable {
     
     var id: Self { self }
     
-    var acronym: String {
-        switch self {
-        case .frictionlessGear:
-            return "FG"
-        case .eternalHourglass:
-            return "EH"
-        }
-    }
-    
     var name: String {
-        String(describing: self)
+        String(describing: self).fromCaseName
     }
     
     

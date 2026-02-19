@@ -12,20 +12,20 @@ import SwiftUI
     }
     
     private let size: Size
-    private let initials: String
+    private let text: String
     private let image: Image?
     private let border: Color
     
     private let badge: String?
     
     init(
-        initials: String,
+        text: String,
         image: Image?,
         border: Color,
         badge: String? = nil,
         size: Size = .medium,
     ) {
-        self.initials = initials
+        self.text = text
         self.image = image
         self.border = border
         self.badge = badge
@@ -47,7 +47,7 @@ extension AvatarView: View {
     private var mainCircle: some View {
         ZStack {
             Circle()
-                .fill(ColorHash.color(for: initials))
+                .fill(ColorHash.color(for: text))
             
             Circle()
                 .stroke(border, lineWidth: 2)
@@ -67,7 +67,7 @@ extension AvatarView: View {
                 .foregroundStyle(Color.white)
                 .frame(width: size.imageSize, height: size.imageSize)
         } else {
-            Text(initials)
+            Text(text.acronym())
                 .font(size.font)
                 .bold()
                 .foregroundStyle(Color.white)
@@ -106,7 +106,7 @@ fileprivate extension AvatarView.Size {
         case .small:
             return 24
         case .medium:
-            return 48
+            return 44
         case .large:
             return 60
         }
@@ -131,7 +131,7 @@ fileprivate extension AvatarView.Size {
         HStack {
             ForEach(AvatarView.Size.allCases) { size in
                 AvatarView(
-                    initials: "AB",
+                    text: "AB",
                     image: nil,
                     border: .orange,
                     size: size,
@@ -142,7 +142,7 @@ fileprivate extension AvatarView.Size {
         HStack {
             ForEach(AvatarView.Size.allCases) { size in
                 AvatarView(
-                    initials: "AP",
+                    text: "AP",
                     image: Asset.BaseItem.apple.swiftUIImage,
                     border: .orange,
                     size: size,

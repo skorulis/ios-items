@@ -83,9 +83,10 @@ struct WarehouseView: View {
                 )
             }
         } else {
-            ItemGridCell(
-                item: item,
-                quantity: viewModel.warehouse.quantity(item)
+            AvatarView(
+                text: "",
+                image: Image(systemName: "questionmark"),
+                border: .black
             )
             .grayscale(0.9)
         }

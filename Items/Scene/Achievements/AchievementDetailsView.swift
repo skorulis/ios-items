@@ -17,7 +17,7 @@ extension AchievementDetailsView: View {
         VStack(alignment: .leading, spacing: 4) {
             HStack {
                 AvatarView(
-                    initials: achievement.acronym,
+                    text: achievement.name,
                     image: nil,
                     border: Color.gray,
                 )

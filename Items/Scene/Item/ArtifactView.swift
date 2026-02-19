@@ -20,7 +20,7 @@ import SwiftUI
 extension ArtifactView: View {
     var body: some View {
         AvatarView(
-            initials: artifact.type.acronym,
+            text: artifact.type.name,
             image: nil,
             border: artifact.quality.color,
             size: size

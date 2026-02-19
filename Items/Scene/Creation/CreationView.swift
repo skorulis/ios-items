@@ -61,7 +61,7 @@ extension CreationView: View {
                     HStack {
                         ForEach(recipe.items) { item in
                             AvatarView(
-                                initials: item.acronym,
+                                text: item.name,
                                 image: item.image,
                                 border: item.quality.color,
                                 size: .small,

@@ -21,7 +21,7 @@ extension ItemView: View {
     
     var body: some View {
         AvatarView(
-            initials: item.acronym,
+            text: item.name,
             image: item.image,
             border: item.quality.color,
             badge: badgeText,

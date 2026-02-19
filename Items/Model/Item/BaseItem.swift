@@ -31,7 +31,7 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
     var id: Self { self }
     
     var name: String {
-        return String(describing: self)
+        return String(describing: self).fromCaseName
     }
     
     var image: Image? {
@@ -54,25 +54,6 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
             return Asset.BaseItem.goldCoin.swiftUIImage
         default:
             return nil
-        }
-    }
-    
-    var acronym: String {
-        switch self {
-        case .apple: return "AP"
-        case .rock: return "RK"
-        case .gear: return "GE"
-        case .potionFlask: return "PF"
-        case .copperFlorin: return "CF"
-        case .woodenChair: return "WC"
-        case .cactus: return "CA"
-        case .vinylRecord: return "VR"
-        case .snowGlobe: return "SG"
-        case .umbrella: return "UM"
-        case .hourglass: return "HG"
-        case .compass: return "CP"
-        case .silverFlorin: return "SF"
-        case .goldFlorin: return "GF"
         }
     }
     

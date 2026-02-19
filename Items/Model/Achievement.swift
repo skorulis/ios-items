@@ -29,10 +29,6 @@ enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
         }
     }
     
-    var acronym: String {
-        String(String(describing: self).prefix(2))
-    }
-    
     var requirement: AchievementRequirement {
         switch self {
         case .items1:
