@@ -47,7 +47,7 @@ extension AvatarView: View {
     private var mainCircle: some View {
         ZStack {
             Circle()
-                .fill(ColorHash.color(for: text))
+                .fill(ColorHash.gradient(for: text))
             
             Circle()
                 .stroke(border, lineWidth: 2)

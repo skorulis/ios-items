@@ -29,5 +29,24 @@ public enum ColorHash {
         }
         return hash
     }
+    
+    static func gradient(for text: String) -> some ShapeStyle {
+        // Use the same stable hash as ColorHash to keep assignments consistent.
+        // Derive an index from FNV-1a directly for palette selection
+        let raw = Self.fnv1a64(text)
+        let palette = AccentColors.palette
+        let c1 = palette[Int(raw % UInt64(palette.count))]
+        let c2 = palette[Int((raw + 1) % UInt64(palette.count))]
+        let c3 = palette[Int((raw + 2) % UInt64(palette.count))]
+        // Soften the blend slightly
+        let stops: [Gradient.Stop] = [
+            .init(color: c1.opacity(0.95), location: 0.0),
+            .init(color: c2.opacity(0.90), location: 0.55),
+            .init(color: c3.opacity(0.95), location: 1.0),
+        ]
+        // Angular gradients look nice within circles; fall back to linear if preferred.
+        return LinearGradient(
+            gradient: Gradient(stops: stops), startPoint: .topLeading, endPoint: .bottomTrailing)
+    }
 }
 
