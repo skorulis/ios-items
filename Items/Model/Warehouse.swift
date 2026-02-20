@@ -60,4 +60,10 @@ struct Warehouse: Codable {
     var totalItemsCollected: Int {
         return total.reduce(0) { $0 + $1.value }
     }
+    
+    func totalItemsCollected(_ predicate: (BaseItem) -> Bool) -> Int {
+        return total
+            .filter { predicate($0.key) }
+            .reduce(0) { $0 + $1.value }
+    }
 }

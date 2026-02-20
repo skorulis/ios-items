@@ -1,12 +1,21 @@
 //Created by Alexander Skorulis on 16/2/2026.
 
+import Knit
 import Foundation
 import SwiftUI
 
 // MARK: - Memory footprint
 
 @MainActor struct AchievementDetailsView {
-    let achievement: Achievement
+    
+    struct Model {
+        var value: Int64
+        let total: Int64
+    }
+    
+    @State var viewModel: AchievementDetailsViewModel
+    
+    var model: Model { viewModel.model }
 }
 
 // MARK: - Rendering
@@ -17,19 +26,20 @@ extension AchievementDetailsView: View {
         VStack(alignment: .leading, spacing: 4) {
             HStack {
                 AvatarView(
-                    text: achievement.name,
+                    text: viewModel.achievement.name,
                     image: nil,
                     border: Color.gray,
                 )
-                Text(achievement.name)
+                Text(viewModel.achievement.name)
                     .font(.title)
                 Spacer()
             }
             
-            Text(achievement.requirement.description)
-            if let bonus = achievement.bonusMessage {
+            Text(viewModel.achievement.requirement.description)
+            if let bonus = viewModel.achievement.bonusMessage {
                 Text(bonus)
             }
+            GoalProgressBar(value: model.value, total: model.total)
         }
         .padding(16)
     }
@@ -38,10 +48,19 @@ extension AchievementDetailsView: View {
 // MARK: - Previews
 
 #Preview {
+    let assembler = ItemsAssembly.testing()
     VStack {
-        AchievementDetailsView(achievement: .items1)
-        AchievementDetailsView(achievement: .items10)
+        AchievementDetailsView(
+            viewModel: assembler.resolver.achievementDetailsViewModel(achievement: .items1)
+        )
+        .background(CardBackground())
+        
+        AchievementDetailsView(
+            viewModel: assembler.resolver.achievementDetailsViewModel(achievement: .items100)
+        )
+        .background(CardBackground())
     }
+    .padding(16)
     
 }
 

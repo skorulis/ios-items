@@ -44,13 +44,18 @@ import SwiftUI
         self.recipeService = recipeService
         self.calculations = calculations
         
-        mainStore.$warehouse.sink { warehouse in
-            self.model.warehouse = warehouse
+        mainStore.$warehouse.sink { [unowned self] in
+            self.model.warehouse = $0
         }
         .store(in: &cancellables)
         
-        mainStore.$recipes.sink { recipes in
-            self.model.recipes = recipes
+        mainStore.$recipes.sink { [unowned self] in
+            self.model.recipes = $0
+        }
+        .store(in: &cancellables)
+        
+        mainStore.$achievements.sink { [unowned self] in
+            self.model.achievements = $0
         }
         .store(in: &cancellables)
     }

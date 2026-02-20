@@ -47,7 +47,7 @@ struct MainPathRenderer: CoordinatorPathRenderer {
         case let .artifactDetails(instance):
             ArtifactDetailView(artifact: instance)
         case let .achievementDetails(achievement):
-            AchievementDetailsView(achievement: achievement)
+            AchievementDetailsView(viewModel: resolver.achievementDetailsViewModel(achievement: achievement))
         case let .dialog(text):
             Text(text)
                 .padding(16)

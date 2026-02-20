@@ -27,12 +27,27 @@ final class AchievementService {
         mainStore.achievements = mainStore.achievements.union(completed)
     }
     
-    private func isComplete(requirement: AchievementRequirement) -> Bool {
+    func progressValue(requirement: AchievementRequirement) -> Int64 {
         switch requirement {
-        case let .itemsCreated(count):
-            return mainStore.statistics.itemsCreated >= count
-        case let .researchRuns(count):
-            return mainStore.statistics.researchRuns >= count
+        case .itemsCreated:
+            return mainStore.statistics.itemsCreated
+        case .researchRuns:
+            return mainStore.statistics.researchRuns
+        case .commonItemsCreated:
+            return Int64(mainStore.warehouse.totalItemsCollected { $0.quality == .common })
         }
+    }
+    
+    func progressTotal(requirement: AchievementRequirement) -> Int64 {
+        switch requirement {
+        case let .itemsCreated(count),
+             let .researchRuns(count),
+             let .commonItemsCreated(count):
+            return count
+        }
+    }
+    
+    private func isComplete(requirement: AchievementRequirement) -> Bool {
+        return progressValue(requirement: requirement) >= progressTotal(requirement: requirement)
     }
 }

@@ -17,13 +17,10 @@ import SwiftUI
     @Resolvable<BaseResolver>
     init(mainStore: MainStore, achievementService: AchievementService) {
         self.achievementService = achievementService
-        mainStore.$warehouse.sink { warehouse in
-            self.showingResearch = warehouse.totalItemsCollected >= 10
-        }
-        .store(in: &cancellables)
         
         mainStore.$achievements.sink { achievements in
             self.showingAchievements = achievements.count > 0
+            self.showingResearch = achievements.contains(.items10)
         }
         .store(in: &cancellables)
     }

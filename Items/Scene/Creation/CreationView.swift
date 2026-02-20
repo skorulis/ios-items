@@ -14,9 +14,10 @@ import SwiftUI
         var isCreating: Bool = false
         
         var warehouse: Warehouse = Warehouse()
+        var achievements: Set<Achievement> = []
         var recipes: [Recipe] = []
         
-        var recipesAvailable: Bool { warehouse.totalItemsCollected >= 10 }
+        var recipesAvailable: Bool { achievements.contains(.items10) }
         
         var currentSacrifice: Recipe? {
             return recipes.first { recipe in
