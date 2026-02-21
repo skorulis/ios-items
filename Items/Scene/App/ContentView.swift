@@ -12,6 +12,7 @@ struct ContentView: View {
     @State var warehouseCoordinator = Coordinator(root: MainPath.warehouse)
     @State var researchCoordinator = Coordinator(root: MainPath.research)
     @State var achievementsCoordinator = Coordinator(root: MainPath.achievements)
+    @State var tab5Coordinator = Coordinator(root: MainPath.encyclopediaEntry(.root))
     
     var body: some View {
         TabView {
@@ -25,6 +26,8 @@ struct ContentView: View {
             if viewModel.showingResearch {
                 researchTab
             }
+            
+            encyclopediaTab
         }
         
     }
@@ -63,6 +66,15 @@ struct ContentView: View {
                 Label("Research", systemImage: "flask.fill")
             }
             .tag(3)
+    }
+    
+    private var encyclopediaTab: some View {
+        CoordinatorView(coordinator: tab5Coordinator)
+            .withRenderers(resolver: resolver!)
+            .tabItem {
+                Label("Encyclopedia", systemImage: "books.vertical")
+            }
+            .tag(4)
     }
     
 }

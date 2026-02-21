@@ -2,7 +2,7 @@
 
 import Foundation
 
-extension String {
+nonisolated extension String {
     
     func acronym(_ maxLength: Int = 2) -> String {
         let value =  split(separator: " ")

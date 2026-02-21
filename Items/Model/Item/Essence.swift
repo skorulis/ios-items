@@ -3,17 +3,18 @@
 import Foundation
 import SwiftUI
 
-nonisolated enum Essence: Identifiable, Hashable, Codable {
+nonisolated enum Essence: Identifiable, Hashable, Codable, CaseIterable {
     
-    case life
-    case wealth
-    case magic
-    case technology
-    case light
     case dark
     case earth
+    case life
+    case light
+    case magic
+    case technology
+    case wealth
     
     var id: Self { self }
+    var name: String { String(describing: self).fromCaseName }
 }
 
 extension Essence {
