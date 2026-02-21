@@ -36,12 +36,8 @@ extension EncyclopediaView: View {
     }
     
     private func cell(entry: EncyclopediaEntry) -> some View {
-        Button(action: { viewModel.showChild(entry: entry) }) {
-            HStack {
-                Text(entry.title)
-                Spacer()
-                Image(systemName: "chevron.forward")
-            }
+        ChevronRow(title: entry.title) {
+            viewModel.showChild(entry: entry)
         }
     }
     
