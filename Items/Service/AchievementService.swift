@@ -27,7 +27,7 @@ final class AchievementService {
         mainStore.achievements = mainStore.achievements.union(completed)
     }
     
-    func progressValue(requirement: AchievementRequirement) -> Int64 {
+    func progressValue(requirement: UnlockRequirement) -> Int64 {
         switch requirement {
         case .itemsCreated:
             return mainStore.statistics.itemsCreated
@@ -35,19 +35,27 @@ final class AchievementService {
             return mainStore.statistics.researchRuns
         case .commonItemsCreated:
             return Int64(mainStore.warehouse.totalItemsCollected { $0.quality == .common })
+        case .essencesUnlocked:
+            return Int64(mainStore.concepts.essences.count)
+        case let .essenceUnlocked(essence):
+            return mainStore.concepts.essences.contains(essence) ? 1 : 0
         }
     }
     
-    func progressTotal(requirement: AchievementRequirement) -> Int64 {
+    func progressTotal(requirement: UnlockRequirement) -> Int64 {
         switch requirement {
         case let .itemsCreated(count),
              let .researchRuns(count),
-             let .commonItemsCreated(count):
+             let .commonItemsCreated(count),
+             let .essencesUnlocked(count):
             return count
+            
+        case .essenceUnlocked:
+            return 1
         }
     }
     
-    private func isComplete(requirement: AchievementRequirement) -> Bool {
+    func isComplete(requirement: UnlockRequirement) -> Bool {
         return progressValue(requirement: requirement) >= progressTotal(requirement: requirement)
     }
 }

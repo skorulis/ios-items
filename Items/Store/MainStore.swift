@@ -19,7 +19,7 @@ final class MainStore: ObservableObject {
         }
     }
     
-    @Published var recipes: [Recipe] = [] {
+    @Published var recipes: [Recipe] {
         didSet {
             try! self.store.set(codable: recipes, forKey: Self.recipesKey)
         }
@@ -36,8 +36,11 @@ final class MainStore: ObservableObject {
         }
     }
     
+    @Published var concepts: Concepts
+    
     private let store: PKeyValueStore
     private static let achievementsKey = "MainStore.achievements"
+    private static let conceptsKey = "MainStore.concepts"
     private static let labKey = "MainStore.lab"
     private static let recipesKey = "MainStore.recipes"
     private static let statisticsKey = "MainStore.statistics"
@@ -52,5 +55,6 @@ final class MainStore: ObservableObject {
         self.lab = (try? store.codable(forKey: Self.labKey)) ?? Laboratory()
         self.achievements = (try? store.codable(forKey: Self.achievementsKey)) ?? []
         self.recipes = (try? store.codable(forKey: Self.recipesKey)) ?? []
+        self.concepts = (try? store.codable(forKey: Self.conceptsKey)) ?? Concepts()
     }
 }

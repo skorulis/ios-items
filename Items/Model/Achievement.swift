@@ -38,7 +38,7 @@ enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
         }
     }
     
-    var requirement: AchievementRequirement {
+    var requirement: UnlockRequirement {
         switch self {
         case .items1:
             return .itemsCreated(1)
@@ -68,24 +68,4 @@ enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
         }
     }
     
-}
-
-enum AchievementRequirement: Codable {
-    case itemsCreated(Int64)
-    case researchRuns(Int64)
-    case commonItemsCreated(Int64)
-}
-
-extension AchievementRequirement {
-    
-    var description: String {
-        switch self {
-        case let .itemsCreated(count):
-            return "Create \(count) items"
-        case let .researchRuns(count):
-            return "Research \(count) times"
-        case let .commonItemsCreated(count):
-            return "Create \(count) common items"
-        }
-    }
 }

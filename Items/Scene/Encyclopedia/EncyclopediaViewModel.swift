@@ -10,10 +10,15 @@ import SwiftUI
     var coordinator: ASKCoordinator.Coordinator?
     
     let entry: EncyclopediaEntry
+    private let achievementService: AchievementService
     
     @Resolvable<BaseResolver>
-    init(@Argument entry: EncyclopediaEntry) {
+    init(
+        @Argument entry: EncyclopediaEntry,
+        achievementService: AchievementService
+    ) {
         self.entry = entry
+        self.achievementService = achievementService
     }
 }
 
@@ -27,6 +32,13 @@ extension EncyclopediaViewModel {
         else { return nil }
         
         return { coordinator.pop() }
+    }
+    
+    func isUnlocked(entry: EncyclopediaEntry) -> Bool {
+        guard let condition = entry.condition else {
+            return true
+        }
+        return achievementService.isComplete(requirement: condition)
     }
     
     func showChild(entry: EncyclopediaEntry) {

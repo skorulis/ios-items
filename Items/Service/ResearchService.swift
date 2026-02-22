@@ -28,8 +28,12 @@ extension ResearchService {
         // Research consumes 1 item
         mainStore.warehouse.remove(item: item)
         
-        
         mainStore.lab.set(level: level + 1, item: item)
+        
+        let essences = item.availableResearch.unlockedEssences(level: level + 1)
+        for e in essences {
+            mainStore.concepts.essences.insert(e)
+        }
     }
     
     

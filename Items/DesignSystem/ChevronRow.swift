@@ -42,11 +42,24 @@ public struct ChevronRow<Accessory: View>: View {
                     .font(.body.weight(.semibold))
                     .foregroundStyle(.tertiary)
             }
+            .padding(.vertical, 8)
             .contentShape(Rectangle())
-            .padding(.vertical, 12)
-            .padding(.horizontal, 16)
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableRowStyle())
+    }
+    
+    private struct PressableRowStyle: ButtonStyle {
+        var pressedBackground: Color = Color.secondary.opacity(0.12)
+        var normalBackground: Color = .clear
+        var cornerRadius: CGFloat = 12
+
+        func makeBody(configuration: Configuration) -> some View {
+            configuration.label
+                .background(
+                    RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+                        .fill(configuration.isPressed ? pressedBackground : normalBackground)
+                )
+        }
     }
 }
 

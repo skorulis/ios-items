@@ -31,7 +31,20 @@ extension EncyclopediaView: View {
     
     private var children: some View {
         ForEach(viewModel.entry.childItems, id: \.title) { entry in
-            cell(entry: entry)
+            if viewModel.isUnlocked(entry: entry) {
+                cell(entry: entry)
+            } else {
+                lockedCell
+            }
+            
+        }
+    }
+    
+    private var lockedCell: some View {
+        HStack {
+            Text("<Locked>")
+                .foregroundStyle(Color.gray)
+            Spacer()
         }
     }
     

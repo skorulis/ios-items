@@ -5,12 +5,14 @@ import Foundation
 struct EncyclopediaEntry {
     let title: String
     let body: String
+    let condition: UnlockRequirement?
     let childItems: [EncyclopediaEntry]
     
     static var root: Self {
         .init(
             title: "Encyclopedia",
             body: "",
+            condition: nil,
             childItems: [
                 Self.essences,
             ]
@@ -23,8 +25,9 @@ struct EncyclopediaEntry {
 extension EncyclopediaEntry {
     static var essences: Self {
         .init(
-            title: "Essences",
+            title: "Essence",
             body: "All items contain essences that can be used to craft new items.",
+            condition: .essencesUnlocked(1),
             childItems: Essence.allCases.map { Self.essenceEntry($0) }
         )
     }
@@ -34,7 +37,12 @@ extension EncyclopediaEntry {
 
 extension EncyclopediaEntry {
     static func essenceEntry(_ essence: Essence) -> Self {
-        return .init(title: essence.name, body: essence.encyclopediaText, childItems: [])
+        return .init(
+            title: essence.name,
+            body: essence.encyclopediaText,
+            condition: .essenceUnlocked(essence),
+            childItems: []
+        )
     }
 }
 
