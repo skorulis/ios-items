@@ -78,7 +78,8 @@ extension CreationView: View {
     
     private var itemContainer: some View {
         ZStack {
-            AnimatedBlobView(color: .blue, size: 220, speed: 0.7, points: 9, jitter: 0.26)
+            ParticleCanvasView(particleCount: 200, movementDuration: 3.0)
+                .frame(width: 300, height: 300)
                 .padding(.bottom, 16)
             
             if viewModel.model.isCreating {
