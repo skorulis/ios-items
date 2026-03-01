@@ -90,8 +90,3 @@ enum ResearchSection: Identifiable {
     }
     
 }
-
-struct ResearchProgress {
-    let total: Research
-    let current: Research
-}

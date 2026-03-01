@@ -18,17 +18,22 @@ final class ItemGeneratorService {
     }
     
     func make(recipe: Recipe) -> Result {
-        let qualityChance = createQualityChance(recipe: recipe)
+        let quality = selectQuality(recipe: recipe)
+
         let essenceBonuses = essenceBonuses(recipe: recipe)
-        let randomArray = RandomArray(items: BaseItem.allCases) { item in
-            var chance = qualityChance[item.quality] ?? 0
+        let options = BaseItem.allCases.filter { $0.quality == quality}
+        
+        let randomArray = RandomArray(items: options) { item in
+            var chance: Double = 1
             for essence in item.essences {
                 chance *= essenceBonuses[essence, default: 1]
             }
             return chance
         }
         
-        let baseItem = randomArray.random!
+        guard let baseItem = randomArray.random else {
+            fatalError("Could not find an appropriate item. \(quality.name)")
+        }
         
         if let artifact = maybeConvertToArtifact(baseItem: baseItem) {
             return .artifact(artifact)
@@ -44,6 +49,19 @@ final class ItemGeneratorService {
         return .base(baseItem, 1)
     }
     
+    private func selectQuality(recipe: Recipe) -> ItemQuality {
+        let randomArray = RandomArray(items: ItemQuality.allCases) {
+            switch $0 {
+            case .junk: return 1
+            case .common: return 0.5 * Double(recipe.count(quality: .junk))
+            case .good: return 0.5 * Double(recipe.count(quality: .common))
+            case .rare: return 0.5 * Double(recipe.count(quality: .good))
+            case .exceptional: return 0.5 * Double(recipe.count(quality: .rare))
+            }
+        }
+        return randomArray.random ?? .junk
+    }
+    
     private func maybeConvertToArtifact(baseItem: BaseItem) -> ArtifactInstance? {
         guard let type = baseItem.associatedArtifact,
               let targetQuality = mainStore.warehouse.nextArtifactQuality(artifact: type)
@@ -57,16 +75,6 @@ final class ItemGeneratorService {
         }
         
         return ArtifactInstance(type: type, quality: targetQuality)
-    }
-    
-    private func createQualityChance(recipe: Recipe) -> [ItemQuality: Double] {
-        return [
-            .junk: 1,
-            .common: 0.5 * Double(recipe.count(quality: .junk)),
-            .good: 0.5 * Double(recipe.count(quality: .common)),
-            .rare: 0.5 * Double(recipe.count(quality: .good)),
-            .exceptional: 0.5 * Double(recipe.count(quality: .rare)),
-        ]
     }
     
     private func essenceBonuses(recipe: Recipe) -> [Essence: Double] {

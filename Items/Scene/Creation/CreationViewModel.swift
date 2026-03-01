@@ -25,6 +25,9 @@ import SwiftUI
             }
         }
     }
+
+    /// Unique id for the current countdown. Changes each time the timer restarts so the progress view can reset and re-animate.
+    private(set) var autoTimerProgress: TimerProgressView.Model?
     
     private let itemGeneratorService: ItemGeneratorService
     private let calculations: CalculationsService
@@ -67,6 +70,8 @@ import SwiftUI
     private func startMakeTimer() {
         stopMakeTimer()
         let time = calculations.autoCreationMilliseconds / 1000
+        
+        autoTimerProgress = .init(id: UUID(), duration: time)
         makeTimer = Timer.scheduledTimer(withTimeInterval: time, repeats: false) { [weak self] _ in
             Task { @MainActor in
                 guard self?.model.isCreating == false else { return }
@@ -81,6 +86,7 @@ import SwiftUI
     private func stopMakeTimer() {
         makeTimer?.invalidate()
         makeTimer = nil
+        autoTimerProgress = nil
     }
 }
 

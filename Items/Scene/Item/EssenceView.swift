@@ -14,9 +14,10 @@ import SwiftUI
 extension EssenceView: View {
     
     var body: some View {
-        Circle()
+        Rectangle()
             .fill(essence.color)
             .frame(width: 16, height: 16)
+            .rotationEffect(.degrees(45))
     }
 }
 

@@ -8,7 +8,7 @@ import SwiftUI
 
 @MainActor struct CreationView {
     @State var viewModel: CreationViewModel
-    
+
     struct Model {
         var createdItem: ItemGeneratorService.Result?
         var isCreating: Bool = false
@@ -106,7 +106,12 @@ extension CreationView: View {
     }
     
     private var autoToggle: some View {
-        Toggle("Auto", isOn: $viewModel.automateCreation)
+        VStack(alignment: .leading, spacing: 6) {
+            Toggle("Auto", isOn: $viewModel.automateCreation)
+            if viewModel.automateCreation, let timer = viewModel.autoTimerProgress {
+                TimerProgressView(model: timer)
+            }
+        }
     }
     
     private var makeButton: some View {

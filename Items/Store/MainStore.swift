@@ -36,7 +36,11 @@ final class MainStore: ObservableObject {
         }
     }
     
-    @Published var concepts: Concepts
+    @Published var concepts: Concepts {
+        didSet {
+            try! self.store.set(codable: concepts, forKey: Self.conceptsKey)
+        }
+    }
     
     private let store: PKeyValueStore
     private static let achievementsKey = "MainStore.achievements"
