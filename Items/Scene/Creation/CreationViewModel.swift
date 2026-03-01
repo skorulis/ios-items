@@ -74,11 +74,11 @@ import SwiftUI
         autoTimerProgress = .init(id: UUID(), duration: time)
         makeTimer = Timer.scheduledTimer(withTimeInterval: time, repeats: false) { [weak self] _ in
             Task { @MainActor in
-                guard self?.model.isCreating == false else { return }
-                await self?.make()
                 if self?.automateCreation == true {
                     self?.startMakeTimer()
                 }
+                guard self?.model.isCreating == false else { return }
+                await self?.make()
             }
         }
     }
