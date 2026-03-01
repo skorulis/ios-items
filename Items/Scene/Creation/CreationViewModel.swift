@@ -77,7 +77,7 @@ import SwiftUI
                 if self?.automateCreation == true {
                     self?.startMakeTimer()
                 }
-                guard self?.model.isCreating == false else { return }
+                guard self?.model.creationInProgress == nil else { return }
                 await self?.make()
             }
         }
@@ -95,15 +95,16 @@ import SwiftUI
 extension CreationViewModel {
     
     func make() async {
-        if model.isCreating { return }
-        self.model.isCreating = true
+        if model.creationInProgress != nil { return }
+        let duration = TimeInterval(calculations.itemCreationMilliseconds) / 1000
+        self.model.creationInProgress = CreationView.CreationInProgress(id: UUID(), duration: duration)
         self.model.createdItem = nil
         let recipe = recipeService.nextAvailable()
         recipeService.consumeRecipe(recipe)
         mainStore.statistics.itemsDestroyed += Int64(recipe.items.count)
-        
+
         try? await Task.sleep(for: .milliseconds(calculations.itemCreationMilliseconds))
-        self.model.isCreating = false
+        self.model.creationInProgress = nil
         
         let item = itemGeneratorService.make(recipe: recipe)
         switch item {

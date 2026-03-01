@@ -30,7 +30,7 @@ final class MainStore: ObservableObject {
         }
     }
     
-    @Published var achievements: Set<Achievement> {
+    @Published private(set) var achievements: Set<Achievement> {
         didSet {
             try! self.store.set(codable: achievements, forKey: Self.achievementsKey)
         }
@@ -40,6 +40,11 @@ final class MainStore: ObservableObject {
         didSet {
             try! self.store.set(codable: concepts, forKey: Self.conceptsKey)
         }
+    }
+    
+    func setAchievements(_ achievements: Set<Achievement>) {
+        guard self.achievements != achievements else { return }
+        self.achievements = achievements
     }
     
     private let store: PKeyValueStore

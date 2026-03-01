@@ -24,7 +24,7 @@ final class AchievementService {
     private func checkAchievements() {
         let toCheck = Achievement.allCases.filter { !mainStore.achievements.contains($0) }
         let completed = toCheck.filter { isComplete(requirement: $0.requirement) }
-        mainStore.achievements = mainStore.achievements.union(completed)
+        mainStore.setAchievements(mainStore.achievements.union(completed))
     }
     
     func progressValue(requirement: UnlockRequirement) -> Int64 {

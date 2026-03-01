@@ -9,10 +9,17 @@ import SwiftUI
 @MainActor struct CreationView {
     @State var viewModel: CreationViewModel
 
+    struct CreationInProgress {
+        let id: UUID
+        let duration: TimeInterval
+    }
+
     struct Model {
         var createdItem: ItemGeneratorService.Result?
-        var isCreating: Bool = false
-        
+        var creationInProgress: CreationInProgress?
+
+        var isCreating: Bool { creationInProgress != nil }
+
         var warehouse: Warehouse = Warehouse()
         var achievements: Set<Achievement> = []
         var recipes: [Recipe] = []
@@ -34,15 +41,17 @@ import SwiftUI
 extension CreationView: View {
     
     var body: some View {
-        VStack {
-            topBar
-            Spacer()
+        ZStack {
+            maybeCreationAnimation
             itemContainer
-            Spacer()
-            autoToggle
-            makeButton
+            VStack {
+                topBar
+                Spacer()
+                autoToggle
+                makeButton
+            }
+            .padding()
         }
-        .padding()
     }
     
     private var topBar: some View {
@@ -76,17 +85,20 @@ extension CreationView: View {
         .opacity(viewModel.model.recipesAvailable ? 1 : 0)
     }
     
+    @ViewBuilder
+    private var maybeCreationAnimation: some View {
+        if let creation = viewModel.model.creationInProgress {
+            ParticleCanvasView(movementDuration: creation.duration)
+                .id(creation.id)
+        }
+    }
+    
+    @ViewBuilder
     private var itemContainer: some View {
-        ZStack {
-            ParticleCanvasView(particleCount: 200, movementDuration: 3.0)
-                .frame(width: 300, height: 300)
-                .padding(.bottom, 16)
-            
-            if viewModel.model.isCreating {
-                ProgressView()
-            } else if let item = viewModel.model.createdItem {
-                createdItem(item: item)
-            }
+        if let item = viewModel.model.createdItem {
+            createdItem(item: item)
+        } else {
+            EmptyView()
         }
     }
     
