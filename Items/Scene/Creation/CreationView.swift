@@ -107,9 +107,14 @@ extension CreationView: View {
     
     private var autoToggle: some View {
         VStack(alignment: .leading, spacing: 6) {
-            Toggle("Auto", isOn: $viewModel.automateCreation)
-            if viewModel.automateCreation, let timer = viewModel.autoTimerProgress {
-                TimerProgressView(model: timer)
+            Toggle(isOn: $viewModel.automateCreation) {
+                HStack {
+                    Text("Auto")
+                    if viewModel.automateCreation, let timer = viewModel.autoTimerProgress {
+                        TimerProgressView(model: timer)
+                            .frame(width: 32, height: 32)
+                    }
+                }
             }
         }
     }
