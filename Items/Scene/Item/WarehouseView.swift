@@ -51,12 +51,28 @@ struct WarehouseView: View {
         let columns = [
             GridItem(.adaptive(minimum: 80)),
         ]
-        return LazyVGrid(columns: columns, spacing: 12) {
-            ForEach(BaseItem.allCases) { item in
-                cell(item: item)
+        let grouped = Dictionary(grouping: BaseItem.allCases, by: { $0.quality })
+
+        return LazyVStack(alignment: .leading, spacing: 16) {
+            ForEach(ItemQuality.allCases, id: \.self) { quality in
+                if let itemsInQuality = grouped[quality], !itemsInQuality.isEmpty {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text(quality.name)
+                            .font(.headline)
+                            .foregroundStyle(quality.color)
+                            .padding(.horizontal, 16)
+
+                        LazyVGrid(columns: columns, spacing: 12) {
+                            ForEach(itemsInQuality) { item in
+                                cell(item: item)
+                            }
+                        }
+                        .padding(.horizontal, 16)
+                    }
+                }
             }
         }
-        .padding(16)
+        .padding(.vertical, 16)
     }
     
     @ViewBuilder
