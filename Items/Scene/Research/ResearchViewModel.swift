@@ -59,6 +59,10 @@ extension ResearchViewModel {
         guard let selectedItem = lab.currentResearch?.item else { return }
         coordinator?.custom(overlay: .card, MainPath.itemDetails(selectedItem))
     }
+
+    func showHelp() {
+        coordinator?.custom(overlay: .card, MainPath.dialog(HelpStrings.research))
+    }
     
     var currentLevel: Int {
         guard let selectedItem = lab.currentResearch?.item else { return 0 }

@@ -26,6 +26,7 @@ struct EncyclopediaEntry {
             body: "",
             childItems: [
                 Self.warehouse,
+                Self.research,
                 Self.essences,
             ]
         )
@@ -48,6 +49,13 @@ extension EncyclopediaEntry {
         .init(
             title: "Warehouse",
             body: HelpStrings.warehouse,
+        )
+    }
+
+    static var research: Self {
+        .init(
+            title: "Research",
+            body: HelpStrings.research,
         )
     }
 }

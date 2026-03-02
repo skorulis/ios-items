@@ -85,7 +85,18 @@ extension ResearchView: View {
     private var titleBar: some View {
         TitleBar(
             title: "Research",
+            trailing: { helpButton }
         )
+    }
+
+    private var helpButton: some View {
+        Button(action: { viewModel.showHelp() }) {
+            Image(systemName: "questionmark.app")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 24, height: 24)
+                .foregroundStyle(Color.black)
+        }
     }
 }
 
