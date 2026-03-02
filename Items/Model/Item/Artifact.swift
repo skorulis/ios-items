@@ -8,7 +8,7 @@ enum Artifact: Identifiable, Hashable, CaseIterable, Codable {
     case eternalHourglass
     case luckyCoin
     case perfectLens
-    case kingsSkull
+    case sacrificalSkull
     
     var id: Self { self }
     
@@ -63,7 +63,7 @@ extension Artifact {
         }
     }
     
-    func kingsSkullSacrificeEffectMultiplier(quality: ItemQuality) -> Int {
+    func sacrificalSkullSacrificeEffectMultiplier(quality: ItemQuality) -> Int {
         switch quality {
         case .junk: return 25
         case .common: return 50
@@ -87,8 +87,8 @@ extension Artifact {
             return "Increase the chance of double items by \(luckyCoinMultipleItemChance(quality: quality))%"
         case .perfectLens:
             return "Boost generating light based items by \(perfectLensLightBoost(quality: quality))%"
-        case .kingsSkull:
-            return "Increase the effect of sacrifices by \(kingsSkullSacrificeEffectMultiplier(quality: quality))%"
+        case .sacrificalSkull:
+            return "Increase the effect of sacrifices by \(sacrificalSkullSacrificeEffectMultiplier(quality: quality))%"
         }
     }
 }

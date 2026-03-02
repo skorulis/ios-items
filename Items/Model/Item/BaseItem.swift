@@ -50,7 +50,7 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
         case .lens:
             return Asset.BaseItem.lens.swiftUIImage
         case .humanSkull:
-            return nil
+            return Asset.BaseItem.humanSkull.swiftUIImage
         }
     }
     

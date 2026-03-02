@@ -27,6 +27,7 @@ extension Artifact {
         case .eternalHourglass: return .hourglass
         case .luckyCoin: return .copperFlorin
         case .perfectLens: return .lens
+        case .sacrificalSkull: return .humanSkull
         }
     }
 }
