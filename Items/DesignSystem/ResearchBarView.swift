@@ -25,21 +25,35 @@ import SwiftUI
 extension ResearchBarView {
     var body: some View {
         GeometryReader { geometry in
-            ZStack(alignment: .leading) {
-                Capsule()
-                    .fill(.quaternary)
-                
-                Capsule()
-                    .fill(.tint)
-                    .frame(width: geometry.size.width * clampedProgress)
-            }
-            .overlay {
+            ZStack(alignment: .center) {
+                bar(geometry: geometry)
                 Text(formattedRemainingTime(remainingSeconds))
                     .font(.caption.monospacedDigit())
                     .foregroundStyle(.primary)
             }
         }
         .frame(height: 20)
+    }
+    
+    private func bar(geometry: GeometryProxy) -> some View {
+        ZStack(alignment: .leading) {
+            Capsule()
+                .fill(AccentColors.slate)
+                
+            overlay(geometry: geometry)
+            
+        }
+        .frame(height: 20)
+    }
+    
+    private func overlay(geometry: GeometryProxy) -> some View {
+        HStack(spacing: 0) {
+            Rectangle()
+                .fill(AccentColors.amethyst)
+                .frame(width: geometry.size.width * clampedProgress)
+            Spacer(minLength: 0)
+        }
+        .clipShape(Capsule())
     }
     
     private func formattedRemainingTime(_ timeInterval: TimeInterval) -> String {

@@ -64,7 +64,7 @@ extension ResearchView: View {
     }
     
     private func progressBar(item: BaseItem) -> some View {
-        VStack(spacing: 12) {
+        VStack(alignment: .leading, spacing: 12) {
             SegmentedResearchBar(
                 research: item.availableResearch,
                 level: viewModel.currentLevel
@@ -72,6 +72,12 @@ extension ResearchView: View {
             ResearchBarView(
                 totalSeconds: viewModel.totalSeconds,
                 completedSeconds: viewModel.completedSeconds
+            )
+            ResearchRushButton(
+                item: item,
+                cost: viewModel.rushCost,
+                isEnabled: viewModel.canRush,
+                action: { viewModel.rushCurrentResearch() }
             )
         }
     }

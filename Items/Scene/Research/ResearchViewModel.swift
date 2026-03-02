@@ -48,6 +48,13 @@ extension ResearchViewModel {
         researchService.startResearch(to: item, now: Date())
     }
     
+    func rushCurrentResearch() {
+        guard let item = lab.currentResearch?.item else { return }
+        let now = Date()
+        self.now = now
+        researchService.rushResearch(to: item, now: now)
+    }
+    
     func viewItemDetails() {
         guard let selectedItem = lab.currentResearch?.item else { return }
         coordinator?.custom(overlay: .card, MainPath.itemDetails(selectedItem))
@@ -66,6 +73,18 @@ extension ResearchViewModel {
     var completedSeconds: TimeInterval {
         guard let selectedItem = lab.currentResearch?.item else { return 0 }
         return researchService.progressFor(item: selectedItem, now: now).completed
+    }
+    
+    var rushCost: Int {
+        guard let selectedItem = lab.currentResearch?.item else { return 0 }
+        return researchService.rushCost(for: selectedItem, now: now)
+    }
+    
+    var canRush: Bool {
+        guard let selectedItem = lab.currentResearch?.item else { return false }
+        let cost = rushCost
+        guard cost > 0 else { return false }
+        return warehouse.quantity(selectedItem) >= cost
     }
     
     func startTimer() {

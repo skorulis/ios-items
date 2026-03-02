@@ -50,6 +50,35 @@ extension ResearchService {
         mainStore.lab = lab
     }
     
+    /// The number of items required to rush the current research level (1 item per minute of remaining time).
+    func rushCost(for item: BaseItem, now: Date = Date()) -> Int {
+        let (completed, total) = progressFor(item: item, now: now)
+        let remainingSeconds = max(total - completed, 0)
+        guard remainingSeconds > 0 else { return 0 }
+        let remainingMinutes = remainingSeconds / 60
+        return max(1, Int(ceil(remainingMinutes)))
+    }
+    
+    /// Instantly completes the current research level for the given item by consuming items and applying unlocks.
+    func rushResearch(to item: BaseItem, now: Date = Date()) {
+        var lab = mainStore.lab
+        var warehouse = mainStore.warehouse
+        
+        let cost = rushCost(for: item, now: now)
+        guard cost > 0, warehouse.quantity(item) >= cost else { return }
+        
+        let currentLevel = lab.currentLevel(item: item)
+        warehouse.remove(item: item, quantity: cost)
+        
+        let newLevel = currentLevel + 1
+        lab.setState(level: newLevel, accumulatedSeconds: 0, for: item)
+        lab.setCurrentResearch(item: item, startDate: now)
+        applyUnlocks(for: item, newLevel: newLevel)
+        
+        mainStore.lab = lab
+        mainStore.warehouse = warehouse
+    }
+    
     private func applyUnlocks(for item: BaseItem, newLevel: Int) {
         let essences = item.availableResearch.unlockedEssences(level: newLevel)
         for e in essences {
