@@ -119,8 +119,19 @@ struct WarehouseView: View {
     private var titleBar: some View {
         TitleBar(
             title: "Warehouse",
-            backAction: { viewModel.coordinator?.retreat() }
+            backAction: { viewModel.coordinator?.retreat() },
+            trailing: { helpButton }
         )
+    }
+
+    private var helpButton: some View {
+        Button(action: viewModel.showInfo) {
+            Image(systemName: "questionmark.app")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 24, height: 24)
+                .foregroundStyle(Color.black)
+        }
     }
 }
 

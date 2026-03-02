@@ -39,12 +39,24 @@ extension WarehouseViewModel {
     enum Page {
         case items, artifacts
     }
+
+    enum Strings {
+        static let helpText = """
+        The Warehouse is your inventory of discovered items and artifacts.
+        Items are grouped by quality. Tap an item or artifact to view its details.
+        New discoveries are marked until you view them. Items here can be used in sacrifices and other activities.
+        """
+    }
 }
 
 // MARK: - Logic
 
 extension WarehouseViewModel {
-    
+
+    func showInfo() {
+        coordinator?.custom(overlay: .card, MainPath.dialog(Strings.helpText))
+    }
+
     func pressed(artifact: ArtifactInstance) {
         coordinator?.custom(overlay: .card, MainPath.artifactDetails(artifact))
     }
