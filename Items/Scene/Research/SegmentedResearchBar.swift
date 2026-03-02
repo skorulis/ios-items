@@ -52,19 +52,18 @@ extension SegmentedResearchBar: View {
     }
     
     private func icon(index: Int, section: ResearchSection) -> Image {
-        if section.isInfinity {
-            return Image(systemName: "infinity.circle.fill")
-        }
-        if index >= level {
-            return Image(systemName: "questionmark.circle.dashed")
-        }
+        let unlocked = level > index
         switch section {
         case .essence:
-            return Image(systemName: "circle.fill")
+            return unlocked
+                ? Image(systemName: "diamond.fill")
+                : Image(systemName: "questionmark.diamond")
         case .lore:
             return Image(systemName: "book.pages")
         case .artifact:
-            return Image(systemName: "star.fill")
+            return unlocked
+                ? Image(systemName: "star.fill")
+                : Image(systemName: "star")
         case .infinity:
             return Image(systemName: "infinity.circle.fill")
         }

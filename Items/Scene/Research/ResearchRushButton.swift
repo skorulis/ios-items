@@ -44,7 +44,6 @@ struct ResearchRushButton: View {
             )
             Text("×\(cost)")
                 .font(.subheadline)
-                .foregroundStyle(.secondary)
         }
     }
 }
