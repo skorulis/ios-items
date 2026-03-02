@@ -113,10 +113,9 @@ extension CreationView: View {
                     quantity: count > 1 ? count : nil,
                 )
             }
-        case let .artifact:
-            Text("TODO")
+        case let .artifact(instance):
+            ArtifactView(artifact: instance)
         }
-        
     }
     
     private var autoToggle: some View {

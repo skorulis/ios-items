@@ -90,9 +90,8 @@ struct WarehouseView: View {
                     }
             }
         } else {
-            Image(systemName: "questionmark.circle")
-                .resizable()
-                .frame(width: 60, height: 60)
+            AvatarView.emptyState(size: .medium)
+                .grayscale(0.9)
         }
     }
     
@@ -107,12 +106,8 @@ struct WarehouseView: View {
                 )
             }
         } else {
-            AvatarView(
-                text: "",
-                image: Image(systemName: "questionmark"),
-                border: .black
-            )
-            .grayscale(0.9)
+            AvatarView.emptyState(size: .medium)
+                .grayscale(0.9)
         }
     }
     

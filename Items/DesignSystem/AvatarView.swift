@@ -31,6 +31,16 @@ import SwiftUI
         self.badge = badge
         self.size = size
     }
+
+    /// Reusable empty/undiscovered state (e.g. for BaseItem or artifact slots).
+    static func emptyState(size: Size = .medium) -> AvatarView {
+        AvatarView(
+            text: "",
+            image: Image(systemName: "questionmark"),
+            border: .black,
+            size: size
+        )
+    }
 }
 
 // MARK: - Rendering
