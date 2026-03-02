@@ -38,7 +38,9 @@ import SwiftUI
 extension ItemDetailsViewModel {
     
     var doubleChanceString: String {
-        String(calculations.doubleItemChance(item: model.item))
+        calculations
+            .doubleItemChance(item: model.item)
+            .percentageString()
     }
     
     private var nextArtifactQuality: ItemQuality? {

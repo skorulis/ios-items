@@ -40,9 +40,7 @@ final class ItemGeneratorService {
         }
         
         // Check if another item gets created based on double item chance
-        let chance = calculations.doubleItemChance(item: baseItem)
-        let roll = Double.random(in: 0...1)
-        if roll < chance {
+        if calculations.doubleItemChance(item: baseItem).check() {
             return .base(baseItem, 2)
         }
         

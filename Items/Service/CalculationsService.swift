@@ -31,8 +31,9 @@ struct CalculationsService {
         return max(value, 100)
     }
     
-    func doubleItemChance(item: BaseItem) -> Double {
-        return Double(mainStore.lab.currentLevel(item: item)) * 0.05
+    func doubleItemChance(item: BaseItem) -> Chance {
+        let level = Double(mainStore.lab.currentLevel(item: item))
+        return Chance(level * 0.05)
     }
     
     func artifactChance(quality: ItemQuality, researchLevel: Int) -> Double {
