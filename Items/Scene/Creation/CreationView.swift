@@ -65,19 +65,20 @@ extension CreationView: View {
     
     private var sacficesButton: some View {
         Button(action: viewModel.showRecipes) {
-            VStack {
+            HStack {
                 Text("Sacrifices")
                 if let recipe = viewModel.model.currentSacrifice {
-                    HStack {
-                        ForEach(recipe.items) { item in
+                    AvatarStack(
+                        avatars: recipe.items.map { item in
                             AvatarView(
                                 text: item.name,
                                 image: item.image,
                                 border: item.quality.color,
                                 size: .small,
                             )
-                        }
-                    }
+                        },
+                        size: .small
+                    )
                 }
             }
         }

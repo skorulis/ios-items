@@ -6,6 +6,7 @@ enum Artifact: Identifiable, Hashable, CaseIterable, Codable {
     
     case frictionlessGear
     case eternalHourglass
+    case luckyCoin
     
     var id: Self { self }
     
@@ -39,6 +40,16 @@ extension Artifact {
         case .exceptional: return 2500
         }
     }
+    
+    func luckyCoinMultipleItemChance(quality: ItemQuality) -> Int {
+        switch quality {
+        case .junk: return 10
+        case .common: return 20
+        case .good: return 30
+        case .rare: return 40
+        case .exceptional: return 50
+        }
+    }
 }
 
 // MARK: - Bonus message
@@ -50,6 +61,8 @@ extension Artifact {
             return "Reduces item creation time by \(frictionlessGearTimeReduction(quality: quality)) milliseconds."
         case .eternalHourglass:
             return "Reduces automatic item creation time by \(eternalHourglassTimeReduction(quality: quality)) milliseconds"
+        case .luckyCoin:
+            return "Increase the chance of double items by \(luckyCoinMultipleItemChance(quality: quality)) percent"
         }
     }
 }

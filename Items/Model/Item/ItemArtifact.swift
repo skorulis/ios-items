@@ -10,6 +10,8 @@ extension BaseItem {
             return .frictionlessGear
         case .hourglass:
             return .eternalHourglass
+        case .copperFlorin:
+            return .luckyCoin
         default:
             return nil
         }

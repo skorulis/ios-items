@@ -89,7 +89,7 @@ extension AvatarView: View {
     }
 }
 
-fileprivate extension AvatarView.Size {
+extension AvatarView.Size {
      var diameter: CGFloat {
         switch self {
         case .small:
