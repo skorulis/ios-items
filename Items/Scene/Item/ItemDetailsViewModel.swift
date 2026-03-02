@@ -40,9 +40,14 @@ extension ItemDetailsViewModel {
     var doubleChanceString: String {
         String(calculations.doubleItemChance(item: model.item))
     }
+    
+    private var nextArtifactQuality: ItemQuality? {
+        guard let type = model.item.associatedArtifact else { return nil }
+        return model.warehouse.nextArtifactQuality(artifact: type)
+    }
 
     var nextLevelArtifactChanceString: String? {
-        guard let nextQuality = model.item.quality.next else { return nil }
+        guard let nextQuality = nextArtifactQuality else { return nil }
         let researchLevel = model.lab.currentLevel(item: model.item)
         let chance = calculations.artifactChance(quality: nextQuality, researchLevel: researchLevel)
         let value = String(format: "%.1f%%", chance * 100)

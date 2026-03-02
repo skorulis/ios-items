@@ -26,7 +26,12 @@ struct Warehouse: Codable {
     }
     
     mutating func add(artifact: ArtifactInstance) {
-        let wasNew = artifacts[artifact.type] == nil
+        let wasNew: Bool
+        if let existing = artifacts[artifact.type] {
+            wasNew = artifact.quality > existing
+        } else {
+            wasNew = true
+        }
         let quality = artifacts[artifact.type, default: .junk]
         artifacts[artifact.type] = max(quality, artifact.quality)
         if wasNew {
