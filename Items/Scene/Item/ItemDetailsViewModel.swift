@@ -41,4 +41,7 @@ extension ItemDetailsViewModel {
         String(calculations.doubleItemChance(item: model.item))
     }
     
+    func markItemViewed() {
+        mainStore.markItemViewed(model.item)
+    }
 }

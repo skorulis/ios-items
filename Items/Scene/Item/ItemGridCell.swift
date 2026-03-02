@@ -8,6 +8,7 @@ import SwiftUI
 @MainActor struct ItemGridCell {
     let item: BaseItem
     let quantity: Int?
+    var showNewBadge: Bool = false
 }
 
 // MARK: - Rendering
@@ -27,6 +28,14 @@ extension ItemGridCell: View {
                     .padding(2)
                     .background(Capsule())
                     .padding(2)
+            }
+        }
+        .overlay(alignment: .topTrailing) {
+            if showNewBadge {
+                Circle()
+                    .fill(.red)
+                    .frame(width: 10, height: 10)
+                    .padding(4)
             }
         }
     }

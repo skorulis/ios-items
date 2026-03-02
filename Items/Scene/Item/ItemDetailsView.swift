@@ -34,6 +34,7 @@ extension ItemDetailsView: View {
             }
         }
         .padding(16)
+        .onAppear { viewModel.markItemViewed() }
     }
     
     private var titleBar: some View {

@@ -80,13 +80,20 @@ struct WarehouseView: View {
         if let instance = viewModel.warehouse.artifactInstance(artifact) {
             Button(action: { viewModel.pressed(artifact: instance) }) {
                 ArtifactView(artifact: instance)
+                    .overlay(alignment: .topTrailing) {
+                        if viewModel.warehouse.isNew(artifact: artifact) {
+                            Circle()
+                                .fill(.red)
+                                .frame(width: 10, height: 10)
+                                .padding(4)
+                        }
+                    }
             }
         } else {
             Image(systemName: "questionmark.circle")
                 .resizable()
                 .frame(width: 60, height: 60)
         }
-        
     }
     
     @ViewBuilder
@@ -95,7 +102,8 @@ struct WarehouseView: View {
             Button(action: {viewModel.pressed(item: item)}) {
                 ItemGridCell(
                     item: item,
-                    quantity: viewModel.warehouse.quantity(item)
+                    quantity: viewModel.warehouse.quantity(item),
+                    showNewBadge: viewModel.warehouse.isNew(item: item)
                 )
             }
         } else {

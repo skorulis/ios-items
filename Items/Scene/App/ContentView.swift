@@ -13,9 +13,10 @@ struct ContentView: View {
     @State var researchCoordinator = Coordinator(root: MainPath.research)
     @State var achievementsCoordinator = Coordinator(root: MainPath.achievements)
     @State var tab5Coordinator = Coordinator(root: MainPath.encyclopediaEntry(.root))
+    @State private var selectedTab: Int = 0
     
     var body: some View {
-        TabView {
+        TabView(selection: $selectedTab) {
             creationTab
             warehouseTab
             
@@ -48,6 +49,7 @@ struct ContentView: View {
                 Label("Warehouse", systemImage: "shippingbox")
             }
             .tag(1)
+            .badge(viewModel.warehouseNewCount > 0 ? "\(viewModel.warehouseNewCount)" : nil)
     }
     
     private var achievementsTab: some View {

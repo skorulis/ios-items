@@ -10,6 +10,7 @@ import SwiftUI
     
     private(set) var showingResearch: Bool = false
     private(set) var showingAchievements: Bool = false
+    private(set) var warehouseNewCount: Int = 0
     
     private let achievementService: AchievementService
     private var cancellables: Set<AnyCancellable> = []
@@ -23,6 +24,11 @@ import SwiftUI
             self.showingResearch = achievements.contains(.items10)
         }
         .store(in: &cancellables)
+        
+        mainStore.$warehouse
+            .map(\.newDiscoveriesCount)
+            .sink { [weak self] in self?.warehouseNewCount = $0 }
+            .store(in: &cancellables)
     }
 }
 

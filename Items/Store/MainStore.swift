@@ -47,6 +47,18 @@ final class MainStore: ObservableObject {
         self.achievements = achievements
     }
     
+    func markItemViewed(_ item: BaseItem) {
+        var w = warehouse
+        w.markViewed(item: item)
+        warehouse = w
+    }
+    
+    func markArtifactViewed(_ artifact: Artifact) {
+        var w = warehouse
+        w.markViewed(artifact: artifact)
+        warehouse = w
+    }
+    
     private let store: PKeyValueStore
     private static let achievementsKey = "MainStore.achievements"
     private static let conceptsKey = "MainStore.concepts"
