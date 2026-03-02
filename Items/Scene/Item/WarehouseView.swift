@@ -39,12 +39,48 @@ struct WarehouseView: View {
         let columns = [
             GridItem(.adaptive(minimum: 80)),
         ]
-        return LazyVGrid(columns: columns, spacing: 12) {
-            ForEach(Artifact.allCases) { artifact in
-                artifactCell(artifact: artifact)
+        return VStack(alignment: .leading, spacing: 16) {
+            equippedSection
+            Text("All Artifacts")
+                .font(.headline)
+                .padding(.horizontal, 16)
+            LazyVGrid(columns: columns, spacing: 12) {
+                ForEach(Artifact.allCases) { artifact in
+                    artifactCell(artifact: artifact)
+                }
             }
+            .padding(16)
         }
-        .padding(16)
+    }
+
+    private var equippedSection: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Equipped")
+                .font(.headline)
+                .padding(.horizontal, 16)
+
+            HStack(spacing: 12) {
+                Spacer()
+                ForEach(0..<2, id: \.self) { index in
+                    equippedSlot(index: index)
+                }
+                Spacer()
+            }
+            .padding(.horizontal, 16)
+        }
+    }
+
+    @ViewBuilder
+    private func equippedSlot(index: Int) -> some View {
+        let equipped = viewModel.warehouse.equippedArtifacts
+        if index < equipped.count, let instance = viewModel.warehouse.artifactInstance(equipped[index]) {
+            Button(action: { viewModel.pressed(artifact: instance) }) {
+                ArtifactView(artifact: instance)
+            }
+        } else {
+            AvatarView.emptyState(size: .medium)
+                .grayscale(0.9)
+        }
     }
     
     private var items: some View {

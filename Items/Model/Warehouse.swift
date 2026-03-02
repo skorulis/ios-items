@@ -15,7 +15,10 @@ struct Warehouse: Codable {
     // New discoveries not yet viewed (persisted)
     private var newItems: Set<BaseItem> = []
     private var newArtifacts: Set<Artifact> = []
-    
+
+    // Equipped artifacts (max 2, order preserved)
+    private(set) var equippedArtifacts: [Artifact] = []
+
     mutating func add(item: BaseItem, count: Int = 1) {
         let wasNewDiscovery = (total[item] ?? 0) == 0
         current[item, default: 0] += count
@@ -102,5 +105,19 @@ struct Warehouse: Codable {
         return total
             .filter { predicate($0.key) }
             .reduce(0) { $0 + $1.value }
+    }
+
+    mutating func equip(_ artifact: Artifact) {
+        guard artifactInstance(artifact) != nil else { return }
+        if equippedArtifacts.contains(artifact) { return }
+        if equippedArtifacts.count < 2 {
+            equippedArtifacts.append(artifact)
+        } else {
+            equippedArtifacts[1] = artifact
+        }
+    }
+
+    mutating func unequip(_ artifact: Artifact) {
+        equippedArtifacts.removeAll { $0 == artifact }
     }
 }

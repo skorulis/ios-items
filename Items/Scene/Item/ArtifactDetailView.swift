@@ -37,6 +37,16 @@ extension ArtifactDetailView: View {
 
                 Text(viewModel.artifact.bonusMessage)
             }
+
+            HStack(spacing: 12) {
+                if viewModel.isEquipped {
+                    Button("Unequip", action: viewModel.unequip)
+                        .buttonStyle(CapsuleButtonStyle())
+                } else {
+                    Button("Equip", action: viewModel.equip)
+                        .buttonStyle(CapsuleButtonStyle())
+                }
+            }
         }
         .padding(16)
         .onAppear { viewModel.markArtifactViewed() }
