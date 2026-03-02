@@ -17,3 +17,16 @@ extension BaseItem {
         }
     }
 }
+
+extension Artifact {
+    var baseItem: BaseItem {
+        switch self {
+        case .frictionlessGear:
+            return .gear
+        case .eternalHourglass:
+            return .hourglass
+        case .luckyCoin:
+            return .copperFlorin
+        }
+    }
+}

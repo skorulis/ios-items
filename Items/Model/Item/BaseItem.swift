@@ -14,13 +14,6 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
     case copperFlorin
     case hourglass
     
-    case woodenChair
-    case cactus
-    case vinylRecord
-    case snowGlobe
-    case umbrella
-    case compass
-    
     
     // Common
     case silverFlorin
@@ -52,14 +45,12 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
             return Asset.BaseItem.silverCoin.swiftUIImage
         case .goldFlorin:
             return Asset.BaseItem.goldCoin.swiftUIImage
-        default:
-            return nil
         }
     }
     
     var quality: ItemQuality {
         switch self {
-        case .apple, .rock, .woodenChair, .cactus, .vinylRecord, .snowGlobe, .umbrella, .hourglass, .compass, .copperFlorin, .gear, .potionFlask:
+        case .apple, .rock, .hourglass, .copperFlorin, .gear, .potionFlask:
             return .junk
         case .silverFlorin:
             return .common
@@ -80,19 +71,7 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
             return [.magic]
         case .copperFlorin:
             return [.wealth]
-        case .woodenChair:
-            return [.life]
-        case .cactus:
-            return []
-        case .vinylRecord:
-            return [.technology]
-        case .snowGlobe:
-            return []
-        case .umbrella:
-            return []
         case .hourglass:
-            return []
-        case .compass:
             return []
         case .silverFlorin:
             return [.wealth]
