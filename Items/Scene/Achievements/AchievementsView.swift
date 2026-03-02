@@ -35,6 +35,7 @@ extension AchievementsView: View {
     
     @ViewBuilder
     private func cell(achievement: Achievement) -> some View {
+        let complete = viewModel.isComplete(achievement: achievement)
         Button(action: { viewModel.showDetails(achievement: achievement)}) {
             AvatarView(
                 text: achievement.name,
@@ -42,6 +43,7 @@ extension AchievementsView: View {
                 border: Color.gray,
             )
         }
+        .grayscale(complete ? 0 : 1)
     }
     
     private var titleBar: some View {

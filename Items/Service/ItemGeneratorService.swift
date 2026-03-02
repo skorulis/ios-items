@@ -63,7 +63,10 @@ final class ItemGeneratorService {
     }
     
     private func maybeConvertToArtifact(baseItem: BaseItem) -> ArtifactInstance? {
+        let itemLevel = mainStore.lab.currentLevel(item: baseItem)
+        
         guard let type = baseItem.associatedArtifact,
+              baseItem.availableResearch.isArtifactUnlocked(level: itemLevel),
               let targetQuality = mainStore.warehouse.nextArtifactQuality(artifact: type)
         else {
             return nil

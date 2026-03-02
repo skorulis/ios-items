@@ -48,12 +48,17 @@ extension ItemDetailsView: View {
     @ViewBuilder
     private var artifactSection: some View {
         if let artifact = viewModel.model.unlockedArtifact {
-            HStack {
-                Text("Artifact:")
-                if let instance = viewModel.model.warehouse.artifactInstance(artifact) {
-                    ArtifactView(artifact: instance, size: .small)
-                } else {
-                    Image(systemName: "questionmark.circle.dashed")
+            VStack(alignment: .leading, spacing: 4) {
+                HStack {
+                    Text("Artifact:")
+                    if let instance = viewModel.model.warehouse.artifactInstance(artifact) {
+                        ArtifactView(artifact: instance, size: .small)
+                    } else {
+                        Image(systemName: "questionmark.circle.dashed")
+                    }
+                    if let chanceText = viewModel.nextLevelArtifactChanceString {
+                        Text(chanceText)
+                    }
                 }
             }
         }

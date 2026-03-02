@@ -20,12 +20,12 @@ struct ContentView: View {
             creationTab
             warehouseTab
             
-            if viewModel.showingAchievements {
-                achievementsTab
-            }
-            
             if viewModel.showingResearch {
                 researchTab
+            }
+            
+            if viewModel.showingAchievements {
+                achievementsTab
             }
             
             encyclopediaTab

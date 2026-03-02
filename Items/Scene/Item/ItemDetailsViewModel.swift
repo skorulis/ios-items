@@ -40,6 +40,17 @@ extension ItemDetailsViewModel {
     var doubleChanceString: String {
         String(calculations.doubleItemChance(item: model.item))
     }
+
+    var nextLevelArtifactChanceString: String? {
+        guard let nextQuality = model.item.quality.next else { return nil }
+        let chance = calculations.artifactChance(quality: nextQuality)
+        let value = String(format: "%.1f%%", chance * 100)
+        if nextQuality == .junk {
+            return "Discovery chance \(value)"
+        } else {
+            return "Upgrade chance: \(value)"
+        }
+    }
     
     func markItemViewed() {
         mainStore.markItemViewed(model.item)
