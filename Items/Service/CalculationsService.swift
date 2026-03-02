@@ -36,9 +36,9 @@ struct CalculationsService {
         return Chance(level * 0.05)
     }
     
-    func artifactChance(quality: ItemQuality, researchLevel: Int) -> Double {
+    func artifactChance(quality: ItemQuality, researchLevel: Int) -> Chance {
         let base = 0.1 * quality.artifactChanceMultiplier
         let levelMultiplier = pow(2.0, Double(researchLevel))
-        return min(1.0, base * levelMultiplier)
+        return Chance(min(1.0, base * levelMultiplier))
     }
 }

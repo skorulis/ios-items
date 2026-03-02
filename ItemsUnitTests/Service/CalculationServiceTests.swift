@@ -14,26 +14,26 @@ struct CalculationServiceTests {
     @Test
     func artifactChance_doublesPerResearchLevel() {
         // Junk base chance = 0.1 * 1 = 0.1
-        #expect(calculationService.artifactChance(quality: .junk, researchLevel: 0) == 0.1)
-        #expect(calculationService.artifactChance(quality: .junk, researchLevel: 1) == 0.2)
-        #expect(calculationService.artifactChance(quality: .junk, researchLevel: 2) == 0.4)
-        #expect(calculationService.artifactChance(quality: .junk, researchLevel: 3) == 0.8)
-        #expect(calculationService.artifactChance(quality: .junk, researchLevel: 4) == 1.0) // capped
+        #expect(calculationService.artifactChance(quality: .junk, researchLevel: 0).fraction == 0.1)
+        #expect(calculationService.artifactChance(quality: .junk, researchLevel: 1).fraction == 0.2)
+        #expect(calculationService.artifactChance(quality: .junk, researchLevel: 2).fraction == 0.4)
+        #expect(calculationService.artifactChance(quality: .junk, researchLevel: 3).fraction == 0.8)
+        #expect(calculationService.artifactChance(quality: .junk, researchLevel: 4).fraction == 1.0) // capped
         
-        #expect(calculationService.artifactChance(quality: .exceptional, researchLevel: 10) == 0.1024)
+        #expect(calculationService.artifactChance(quality: .exceptional, researchLevel: 10).fraction == 0.1024)
     }
 
     @Test
     func artifactChance_respectsQualityMultiplier() {
-        expectApproximate(calculationService.artifactChance(quality: .common, researchLevel: 0),  0.02)  // 0.1 * 0.2
-        expectApproximate(calculationService.artifactChance(quality: .good, researchLevel: 0), 0.005)   // 0.1 * 0.05
-        expectApproximate(calculationService.artifactChance(quality: .exceptional, researchLevel: 0), 0.0001) // 0.1 * 0.001
+        expectApproximate(calculationService.artifactChance(quality: .common, researchLevel: 0).fraction,  0.02)  // 0.1 * 0.2
+        expectApproximate(calculationService.artifactChance(quality: .good, researchLevel: 0).fraction, 0.005)   // 0.1 * 0.05
+        expectApproximate(calculationService.artifactChance(quality: .exceptional, researchLevel: 0).fraction, 0.0001) // 0.1 * 0.001
     }
 
     @Test
     func artifactChance_qualityAndLevelCombine() {
         // Common base 0.02, level 2 = 4x -> 0.08
-        expectApproximate(calculationService.artifactChance(quality: .common, researchLevel: 2), 0.08)
+        expectApproximate(calculationService.artifactChance(quality: .common, researchLevel: 2).fraction, 0.08)
     }
 }
 

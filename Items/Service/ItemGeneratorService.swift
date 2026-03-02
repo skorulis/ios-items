@@ -71,7 +71,7 @@ final class ItemGeneratorService {
         }
         
         let chance = calculations.artifactChance(quality: targetQuality, researchLevel: itemLevel)
-        guard Double.random(in: 0..<1) < chance else {
+        guard chance.check() else {
             return nil
         }
         
