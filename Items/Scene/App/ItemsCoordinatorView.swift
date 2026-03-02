@@ -10,5 +10,8 @@ extension CoordinatorView {
         .with(overlay: .card) { view in
             AnyView(CardPathWrapper { view })
         }
+        .with(overlay: .toast) { view in
+            AnyView(ToastPathWrapper { view })
+        }
     }
 }

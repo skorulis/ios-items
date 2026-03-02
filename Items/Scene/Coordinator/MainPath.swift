@@ -21,6 +21,9 @@ enum MainPath: CoordinatorPath {
     // Present a block of text
     case dialog(String)
     
+    // Toast at the bottom of the screen
+    case toast(String)
+    
     public var id: String {
         String(describing: self)
     }
@@ -54,6 +57,9 @@ struct MainPathRenderer: CoordinatorPathRenderer {
         case let .achievementDetails(achievement):
             AchievementDetailsView(viewModel: resolver.achievementDetailsViewModel(achievement: achievement))
         case let .dialog(text):
+            Text(text)
+                .padding(16)
+        case let .toast(text):
             Text(text)
                 .padding(16)
         }
