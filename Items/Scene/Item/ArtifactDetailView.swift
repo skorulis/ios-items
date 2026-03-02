@@ -1,11 +1,13 @@
 //Created by Alexander Skorulis on 15/2/2026.
 
 import Foundation
+import Knit
 import SwiftUI
+
 // MARK: - Memory footprint
 
 @MainActor struct ArtifactDetailView {
-    let artifact: ArtifactInstance
+    @State var viewModel: ArtifactDetailViewModel
 }
 
 // MARK: - Rendering
@@ -14,13 +16,12 @@ extension ArtifactDetailView: View {
     var body: some View {
         VStack(spacing: 16) {
             HStack {
-                ArtifactView(artifact: artifact)
-                
-                Text(artifact.type.name)
+                ArtifactView(artifact: viewModel.artifact)
+
+                Text(viewModel.artifact.type.name)
                     .font(.title)
-                
+
                 Spacer()
-                
             }
 
             // Details
@@ -28,24 +29,26 @@ extension ArtifactDetailView: View {
                 HStack {
                     Text("Quality:")
                         .font(.headline)
-                    Text(artifact.quality.name)
-                        .foregroundStyle(artifact.quality.color)
+                    Text(viewModel.artifact.quality.name)
+                        .foregroundStyle(viewModel.artifact.quality.color)
                         .bold()
                     Spacer()
                 }
-                
-                Text(artifact.bonusMessage)
+
+                Text(viewModel.artifact.bonusMessage)
             }
         }
         .padding(16)
+        .onAppear { viewModel.markArtifactViewed() }
     }
 }
 
 // MARK: - Previews
 
 #Preview("Artifact Detail") {
+    let assembler = ItemsAssembly.testing()
     ArtifactDetailView(
-        artifact: .init(type: .frictionlessGear, quality: .good)
+        viewModel: assembler.resolver.artifactDetailViewModel(artifact: .init(type: .frictionlessGear, quality: .good))
     )
 }
 

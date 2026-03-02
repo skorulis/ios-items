@@ -50,8 +50,7 @@ struct MainPathRenderer: CoordinatorPathRenderer {
         case let .itemDetails(item):
             ItemDetailsView(viewModel: resolver.itemDetailsViewModel(item: item))
         case let .artifactDetails(instance):
-            ArtifactDetailView(artifact: instance)
-                .onAppear { resolver.mainStore().markArtifactViewed(instance.type) }
+            ArtifactDetailView(viewModel: resolver.artifactDetailViewModel(artifact: instance))
         case let .achievementDetails(achievement):
             AchievementDetailsView(viewModel: resolver.achievementDetailsViewModel(achievement: achievement))
         case let .dialog(text):

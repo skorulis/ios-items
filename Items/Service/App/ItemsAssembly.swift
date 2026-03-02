@@ -73,7 +73,11 @@ final class ItemsAssembly: AutoInitModuleAssembly {
         container.register(AchievementDetailsViewModel.self) { (resolver: BaseResolver, achievement: Achievement) in
             AchievementDetailsViewModel.make(resolver: resolver, achievement: achievement)
         }
-        
+
+        container.register(ArtifactDetailViewModel.self) { (resolver: BaseResolver, artifact: ArtifactInstance) in
+            ArtifactDetailViewModel.make(resolver: resolver, artifact: artifact)
+        }
+
         container.register(MainPathRenderer.self) { MainPathRenderer(resolver: $0) }
     }
     
