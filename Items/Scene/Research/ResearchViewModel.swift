@@ -12,17 +12,18 @@ import SwiftUI
     
     private(set) var warehouse: Warehouse
     private(set) var lab: Laboratory
-    var selectedItem: BaseItem?
     var showingPicker: Bool = false
     
+    /// Updated by timer for smooth progress bar; used when computing progress.
+    var now: Date = Date()
+    
     private let researchService: ResearchService
-    private let calulations: CalculationsService
     private var cancellables: Set<AnyCancellable> = []
+    private var timer: Timer?
     
     @Resolvable<BaseResolver>
-    init(mainStore: MainStore, researchService: ResearchService, calulations: CalculationsService) {
+    init(mainStore: MainStore, researchService: ResearchService) {
         self.researchService = researchService
-        self.calulations = calulations
         
         self.warehouse = mainStore.warehouse
         self.lab = mainStore.lab
@@ -36,7 +37,6 @@ import SwiftUI
             self.lab = $0
         }
         .store(in: &cancellables)
-        
     }
 }
 
@@ -44,37 +44,44 @@ import SwiftUI
 
 extension ResearchViewModel {
     
-    var canStart: Bool {
-        guard let selectedItem else { return false }
-        return warehouse.quantity(selectedItem) > 0
+    func selectAndBeginResearch(item: BaseItem) {
+        researchService.startResearch(to: item, now: Date())
     }
     
-    func select(item: BaseItem) {
-        self.selectedItem = item
-    }
-    
-    func research() {
-        guard let selectedItem else { return }
-        
-        researchService.research(item: selectedItem)
-    }
-    
-    func itemDetails() {
-        guard let selectedItem else { return }
+    func viewItemDetails() {
+        guard let selectedItem = lab.currentResearch?.item else { return }
         coordinator?.custom(overlay: .card, MainPath.itemDetails(selectedItem))
     }
     
     var currentLevel: Int {
-        guard let selectedItem else { return 0 }
+        guard let selectedItem = lab.currentResearch?.item else { return 0 }
         return lab.currentLevel(item: selectedItem)
     }
     
-    var chance: Double {
-        let level = self.currentLevel
-        let mult = pow(1.5, Double(level))
-        
-        return calulations.baseResearchChance / mult
+    var totalSeconds: TimeInterval {
+        guard let selectedItem = lab.currentResearch?.item else { return 0 }
+        return researchService.progressFor(item: selectedItem, now: now).total
     }
     
+    var completedSeconds: TimeInterval {
+        guard let selectedItem = lab.currentResearch?.item else { return 0 }
+        return researchService.progressFor(item: selectedItem, now: now).completed
+    }
     
+    func startTimer() {
+        guard timer == nil else { return }
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+            guard let self else { return }
+            Task { @MainActor in
+                self.now = Date()
+                self.researchService.updateResearchProgress(now: self.now)
+            }
+        }
+        RunLoop.main.add(timer!, forMode: .common)
+    }
+    
+    func stopTimer() {
+        timer?.invalidate()
+        timer = nil
+    }
 }

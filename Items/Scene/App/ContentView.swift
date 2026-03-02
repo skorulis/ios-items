@@ -7,6 +7,7 @@ import SwiftUI
 struct ContentView: View {
     
     @Environment(\.resolver) private var resolver
+    @Environment(\.scenePhase) private var scenePhase
     @State var viewModel: ContentViewModel
     @State var creationCoordinator = Coordinator(root: MainPath.creation)
     @State var warehouseCoordinator = Coordinator(root: MainPath.warehouse)
@@ -30,7 +31,12 @@ struct ContentView: View {
             
             encyclopediaTab
         }
-        
+        .onAppear { viewModel.resumeResearchProgressIfNeeded() }
+        .onChange(of: scenePhase) { _, newPhase in
+            if newPhase == .active {
+                viewModel.resumeResearchProgressIfNeeded()
+            }
+        }
     }
     
     private var creationTab: some View {

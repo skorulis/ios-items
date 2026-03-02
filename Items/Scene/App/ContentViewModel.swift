@@ -13,11 +13,13 @@ import SwiftUI
     private(set) var warehouseNewCount: Int = 0
     
     private let achievementService: AchievementService
+    private let researchService: ResearchService
     private var cancellables: Set<AnyCancellable> = []
     
     @Resolvable<BaseResolver>
-    init(mainStore: MainStore, achievementService: AchievementService) {
+    init(mainStore: MainStore, achievementService: AchievementService, researchService: ResearchService) {
         self.achievementService = achievementService
+        self.researchService = researchService
         
         mainStore.$achievements.sink { achievements in
             self.showingAchievements = achievements.count > 0
@@ -36,4 +38,8 @@ import SwiftUI
 
 extension ContentViewModel {
     
+    /// Apply any research progress that accrued while the app was backgrounded or closed.
+    func resumeResearchProgressIfNeeded() {
+        researchService.resumeResearchProgressIfNeeded()
+    }
 }

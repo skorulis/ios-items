@@ -14,8 +14,15 @@ struct CalculationsService {
         self.mainStore = mainStore
     }
     
-    var baseResearchChance: Double {
-        return 0.2
+    /// Seconds required to complete the current research level (2 min base, doubles per level).
+    func researchDurationSeconds(for item: BaseItem) -> TimeInterval {
+        let level = mainStore.lab.currentLevel(item: item)
+        return researchDurationSeconds(for: item, level: level)
+    }
+    
+    func researchDurationSeconds(for item: BaseItem, level: Int) -> TimeInterval {
+        let baseDuration: TimeInterval = 120
+        return baseDuration * pow(2.0, Double(level))
     }
     
     var autoCreationMilliseconds: Double {

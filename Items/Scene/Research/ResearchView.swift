@@ -23,11 +23,13 @@ extension ResearchView: View {
             ItemPicker(
                 predicate: { viewModel.warehouse.quantity($0) > 0 },
                 onSelect: {
-                    viewModel.selectedItem = $0
+                    viewModel.selectAndBeginResearch(item: $0)
                     viewModel.showingPicker = false
                 }
             )
         }
+        .onAppear { viewModel.startTimer() }
+        .onDisappear { viewModel.stopTimer() }
     }
     
     private var content: some View {
@@ -38,21 +40,18 @@ extension ResearchView: View {
             }
             itemView
             Spacer()
-            button
         }
     }
     
     @ViewBuilder
     private var itemView: some View {
-        if let item = viewModel.selectedItem {
+        if let item = viewModel.lab.currentResearch?.item {
             VStack {
-                Button(action: viewModel.itemDetails) {
+                Button(action: { viewModel.viewItemDetails() }) {
                     ItemGridCell(item: item, quantity: viewModel.warehouse.quantity(item))
                 }
                 textBlock(item: item)
-                
                 progressBar(item: item)
-                
             }
             .padding(.horizontal, 16)
         }
@@ -61,23 +60,20 @@ extension ResearchView: View {
     private func textBlock(item: BaseItem) -> some View {
         VStack {
             Text("Level: \(viewModel.currentLevel)")
-            Text("Success chance: \(100 * viewModel.chance)%")
         }
     }
     
     private func progressBar(item: BaseItem) -> some View {
-        SegmentedResearchBar(
-            research: item.availableResearch,
-            level: viewModel.currentLevel
-        )
-    }
-    
-    private var button: some View {
-        Button("Research") {
-            viewModel.research()
+        VStack(spacing: 12) {
+            SegmentedResearchBar(
+                research: item.availableResearch,
+                level: viewModel.currentLevel
+            )
+            ResearchBarView(
+                totalSeconds: viewModel.totalSeconds,
+                completedSeconds: viewModel.completedSeconds
+            )
         }
-        .buttonStyle(CapsuleButtonStyle())
-        .disabled(!viewModel.canStart)
     }
     
     private var titleBar: some View {
@@ -94,4 +90,3 @@ extension ResearchView: View {
     assembler.resolver.mainStore().warehouse.add(item: .apple)
     return ResearchView(viewModel: assembler.resolver.researchViewModel())
 }
-
