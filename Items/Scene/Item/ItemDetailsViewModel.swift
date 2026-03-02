@@ -43,7 +43,8 @@ extension ItemDetailsViewModel {
 
     var nextLevelArtifactChanceString: String? {
         guard let nextQuality = model.item.quality.next else { return nil }
-        let chance = calculations.artifactChance(quality: nextQuality)
+        let researchLevel = model.lab.currentLevel(item: model.item)
+        let chance = calculations.artifactChance(quality: nextQuality, researchLevel: researchLevel)
         let value = String(format: "%.1f%%", chance * 100)
         if nextQuality == .junk {
             return "Discovery chance \(value)"
