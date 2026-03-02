@@ -8,12 +8,24 @@ struct EncyclopediaEntry {
     let condition: UnlockRequirement?
     let childItems: [EncyclopediaEntry]
     
+    init(
+        title: String,
+        body: String,
+        condition: UnlockRequirement? = nil,
+        childItems: [EncyclopediaEntry] = [],
+    ) {
+        self.title = title
+        self.body = body
+        self.condition = condition
+        self.childItems = childItems
+    }
+    
     static var root: Self {
         .init(
             title: "Encyclopedia",
             body: "",
-            condition: nil,
             childItems: [
+                Self.warehouse,
                 Self.essences,
             ]
         )
@@ -29,6 +41,13 @@ extension EncyclopediaEntry {
             body: "All items contain essences that can be used to craft new items.",
             condition: .essencesUnlocked(1),
             childItems: Essence.allCases.map { Self.essenceEntry($0) }
+        )
+    }
+    
+    static var warehouse: Self {
+        .init(
+            title: "Warehouse",
+            body: HelpStrings.warehouse,
         )
     }
 }
