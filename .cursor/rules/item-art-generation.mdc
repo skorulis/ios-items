@@ -1,0 +1,74 @@
+---
+description: Consistent item art generation for Items game
+alwaysApply: true
+---
+
+# Item Art Generation
+
+When asked to create or update item images for this project, follow these rules to keep the art consistent.
+
+## Visual Style
+
+- **Overall look**
+  - Make a single, isolated game item centered in frame.
+  - No background, no props, no text, no logo.
+  - Transparent background PNG (no visible background color or gradient).
+- **Rendering style**
+  - 2D stylized, cartoony illustration.
+  - Clean, thick dark outline around the item.
+  - Simple, readable shapes with slightly exaggerated proportions.
+  - Soft cell shading with 2–3 tone highlights and shadows (similar to a mobile RPG inventory icon).
+- **Lighting and color**
+  - Single soft light source from the upper left.
+  - Subtle glossy highlights on shiny/metal/magic surfaces.
+  - High contrast, saturated colors so the item reads clearly at small sizes.
+
+## Composition & Framing
+
+- Item must be fully visible with no cropping.
+- Item must face the viewer in a clear, readable angle (3/4 or straight-on, whichever is most iconic).
+- Center the item and keep margins roughly equal on all sides.
+- Avoid extreme perspective or complex scenes.
+
+## Technical Constraints
+
+- Generate square images with a size of 384x384
+- Keep the file size of the image small
+- Output format should be PNG with transparency.
+- Keep edges clean so the icon looks good on dark and light UI backgrounds.
+
+## Prompt Template
+
+When generating a new item image, use a prompt like this and replace the placeholders:
+
+```text
+Highly detailed 2D game inventory icon of a single [ITEM NAME] for a fantasy crafting RPG, in the style of a cartoony mobile game.
+
+The [ITEM NAME] should represent: [ESSENCES / THEMES, e.g. wealth, technology, magic, life, dark, earth, light].
+
+Visual style: bold dark outline, simple stylized shapes, saturated colors, 2–3 tone cell shading, soft light from the upper left, subtle glossy highlights where appropriate. No text, no logo, no extra props.
+
+Framing: item centered, fully visible, on a transparent background, square canvas, no background elements, just the object.
+```
+
+## Mapping From Code to Art
+
+When `BaseItem` is mentioned, use the following as guidance:
+
+- `apple`: bright red apple similar to existing icon.
+- `rock`: small, chunky gray stone with simple facets.
+- `gear`: metal gear / cog with a slight metallic shine.
+- `potionFlask` → “glass potion flask” (empty by default unless specified).
+- `copperFlorin` → “copper coin” icon.
+- `silverFlorin` → “silver coin” icon.
+- `goldFlorin` → “gold coin” icon.
+- `lens`: circular glass lens with light/technology hints.
+- `humanSkull`: stylized human skull icon with mild dark tone (but still cartoony, not gory).
+
+When creating new items, derive their look from:
+
+- Their `name` and any mention of essences (e.g. wealth, technology, magic, life, dark, earth, light).
+- Their rarity/quality (junk, common, good) if provided: higher quality can have slightly more ornamentation and subtle glow.
+
+Create an Xcode .imageset under Items/Resource/Assets.xcassets 
+Once an image is generated, run `swiftgen`.

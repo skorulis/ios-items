@@ -13,6 +13,8 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
     case potionFlask
     case copperFlorin
     case hourglass
+    case lens
+    case humanSkull
     
     
     // Common
@@ -45,12 +47,16 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
             return Asset.BaseItem.silverCoin.swiftUIImage
         case .goldFlorin:
             return Asset.BaseItem.goldCoin.swiftUIImage
+        case .lens:
+            return Asset.BaseItem.lens.swiftUIImage
+        case .humanSkull:
+            return nil
         }
     }
     
     var quality: ItemQuality {
         switch self {
-        case .apple, .rock, .hourglass, .copperFlorin, .gear, .potionFlask:
+        case .apple, .rock, .hourglass, .copperFlorin, .gear, .potionFlask, .lens, .humanSkull:
             return .junk
         case .silverFlorin:
             return .common
@@ -77,6 +83,10 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
             return [.wealth]
         case .goldFlorin:
             return [.wealth]
+        case .lens:
+            return [.light, .technology]
+        case .humanSkull:
+            return [.dark]
         }
     }
     
@@ -102,6 +112,14 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
             return [
                 "A glass flask for mixing or storing potions",
                 "The glass is embued with a subtle magic that prevents the contents from losing potency over time",
+            ]
+        case .lens:
+            return [
+                "A piece of glass shaped to focus light"
+            ]
+        case .humanSkull:
+            return [
+                "The skull of a long dead soldier. No telling which side they were on."
             ]
         default:
             return []

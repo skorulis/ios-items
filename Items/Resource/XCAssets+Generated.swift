@@ -32,6 +32,7 @@ internal enum Asset {
     internal static let gear = ImageAsset(name: "gear")
     internal static let goldCoin = ImageAsset(name: "goldCoin")
     internal static let hourglass = ImageAsset(name: "hourglass")
+    internal static let lens = ImageAsset(name: "lens")
     internal static let rock = ImageAsset(name: "rock")
     internal static let silverCoin = ImageAsset(name: "silverCoin")
   }

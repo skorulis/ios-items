@@ -12,6 +12,8 @@ extension BaseItem {
             return .eternalHourglass
         case .copperFlorin:
             return .luckyCoin
+        case .lens:
+            return .perfectLens
         default:
             return nil
         }
@@ -21,12 +23,10 @@ extension BaseItem {
 extension Artifact {
     var baseItem: BaseItem {
         switch self {
-        case .frictionlessGear:
-            return .gear
-        case .eternalHourglass:
-            return .hourglass
-        case .luckyCoin:
-            return .copperFlorin
+        case .frictionlessGear: return .gear
+        case .eternalHourglass: return .hourglass
+        case .luckyCoin: return .copperFlorin
+        case .perfectLens: return .lens
         }
     }
 }

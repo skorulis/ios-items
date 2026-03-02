@@ -33,7 +33,11 @@ struct CalculationsService {
     
     func doubleItemChance(item: BaseItem) -> Chance {
         let level = Double(mainStore.lab.currentLevel(item: item))
-        return Chance(level * 0.05)
+        var chance = Chance(level * 0.05)
+        if let coin = mainStore.warehouse.equippedArtifact(.luckyCoin) {
+            chance = chance.adding(percent: coin.type.luckyCoinMultipleItemChance(quality: coin.quality))
+        }
+        return chance
     }
     
     func artifactChance(quality: ItemQuality, researchLevel: Int) -> Chance {

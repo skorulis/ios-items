@@ -120,4 +120,12 @@ struct Warehouse: Codable {
     mutating func unequip(_ artifact: Artifact) {
         equippedArtifacts.removeAll { $0 == artifact }
     }
+    
+    func equippedArtifact(_ type: Artifact) -> ArtifactInstance? {
+        guard equippedArtifacts.contains(type),
+                let quality = artifacts[type]
+        else { return nil }
+        
+        return .init(type: type, quality: quality)
+    }
 }

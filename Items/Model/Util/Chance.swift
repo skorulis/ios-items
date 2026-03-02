@@ -27,5 +27,10 @@ struct Chance: Codable, Hashable {
         let roll = Double.random(in: 0...1)
         return roll <= fraction
     }
+    
+    func adding(percent: Int) -> Chance {
+        let newValue = value + (Double(percent) / 100)
+        return Chance(newValue)
+    }
 }
 
