@@ -1,6 +1,7 @@
 //  Created by Alexander Skorulis on 10/2/2026.
 
 import ASKCore
+import ASKCoordinator
 import Knit
 import SwiftUI
 
@@ -16,10 +17,15 @@ struct ItemsApp: App {
         return assembler
     }()
     
+    @State var mainCoordinator = Coordinator(root: MainPath.content)
+    
     var body: some Scene {
         WindowGroup {
-            ContentView(viewModel: assembler.resolver.contentViewModel())
+            CoordinatorView(coordinator: mainCoordinator)
+                .withRenderers(resolver: assembler.resolver)
+                .onAppear {
+                    assembler.resolver.toastService().coordinator = mainCoordinator
+                }
         }
-        .environment(\.resolver, assembler.resolver)
     }
 }

@@ -5,14 +5,16 @@ import KnitMacros
 import Foundation
 
 final class ResearchService {
-    
+
     private let mainStore: MainStore
     private let calculations: CalculationsService
-    
+    private let toastService: ToastService
+
     @Resolvable<BaseResolver>
-    init(mainStore: MainStore, calculations: CalculationsService) {
+    init(mainStore: MainStore, calculations: CalculationsService, toastService: ToastService) {
         self.mainStore = mainStore
         self.calculations = calculations
+        self.toastService = toastService
     }
 }
 
@@ -80,6 +82,7 @@ extension ResearchService {
     }
     
     private func applyUnlocks(for item: BaseItem, newLevel: Int) {
+        toastService.showToast("Researched \(item.name) to level \(newLevel)")
         let essences = item.availableResearch.unlockedEssences(level: newLevel)
         for e in essences {
             mainStore.concepts.essences.insert(e)

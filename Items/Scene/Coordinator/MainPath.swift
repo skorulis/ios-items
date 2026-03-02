@@ -7,6 +7,9 @@ import SwiftUI
 
 enum MainPath: CoordinatorPath {
     
+    // Root content
+    case content
+    
     case creation
     case warehouse
     case recipeList
@@ -36,6 +39,9 @@ struct MainPathRenderer: CoordinatorPathRenderer {
     @ViewBuilder
     func render(path: MainPath, in coordinator: Coordinator) -> some View {
         switch path {
+        case .content:
+            ContentView(viewModel: resolver.contentViewModel())
+                .environment(\.resolver, resolver)
         case .creation:
             CreationView(viewModel: coordinator.apply(resolver.creationViewModel()))
         case .warehouse:

@@ -32,6 +32,7 @@ struct ToastPathWrapper<Content: View>: View {
                 }
             }
         }
+        .padding(.bottom, 64) // Space for tab bar
         .animation(.easeInOut(duration: 0.15), value: isVisible)
         .onAppear {
             isVisible = true

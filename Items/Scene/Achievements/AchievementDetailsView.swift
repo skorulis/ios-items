@@ -27,7 +27,7 @@ extension AchievementDetailsView: View {
             HStack {
                 AvatarView(
                     text: viewModel.achievement.name,
-                    image: nil,
+                    image: viewModel.achievement.image,
                     border: Color.gray,
                 )
                 Text(viewModel.achievement.name)
