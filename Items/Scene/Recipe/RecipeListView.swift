@@ -40,9 +40,12 @@ extension RecipeListView: View {
     private var content: some View {
         List {
             ForEach(viewModel.recipes) { recipe in
-                RecipeCell(recipe: recipe, warehouse: viewModel.warehouse) {
-                    viewModel.addItem(to: recipe)
-                }
+                RecipeCell(
+                    recipe: recipe,
+                    warehouse: viewModel.warehouse,
+                    addPressed: { viewModel.addItem(to: recipe) },
+                    showDetailsPressed: { viewModel.showDetails(for: recipe) }
+                )
                 .listRowSeparator(.hidden)
             }
             .onDelete { indexSet in

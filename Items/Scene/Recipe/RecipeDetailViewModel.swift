@@ -8,15 +8,9 @@ import KnitMacros
 @MainActor
 final class RecipeDetailViewModel {
     
-    struct Model {
-        let recipe: Recipe
-        let qualityChances: [(ItemQuality, Double)]
-        let essenceBonuses: [(Essence, Double)]
-    }
-    
     private let itemGeneratorService: ItemGeneratorService
     
-    private(set) var model: Model
+    private(set) var model: RecipeDetailView.Model
     
     @Resolvable<BaseResolver>
     init(
@@ -30,7 +24,7 @@ final class RecipeDetailViewModel {
         let qualityChances = RecipeDetailViewModel.normalizedQualityChances(from: info.quality)
         let essenceBonuses = RecipeDetailViewModel.sortedEssenceBonuses(from: info.essenceBoosts)
         
-        self.model = Model(
+        self.model = RecipeDetailView.Model(
             recipe: recipe,
             qualityChances: qualityChances,
             essenceBonuses: essenceBonuses

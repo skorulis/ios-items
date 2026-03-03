@@ -9,6 +9,12 @@ import SwiftUI
 @MainActor
 struct RecipeDetailView {
     @State var viewModel: RecipeDetailViewModel
+    
+    struct Model {
+        let recipe: Recipe
+        let qualityChances: [(ItemQuality, Double)]
+        let essenceBonuses: [(Essence, Double)]
+    }
 }
 
 // MARK: - Rendering
@@ -20,7 +26,6 @@ extension RecipeDetailView: View {
             header
             qualitySection
             essenceSection
-            Spacer()
         }
         .padding()
     }
@@ -61,16 +66,13 @@ extension RecipeDetailView: View {
         }
     }
     
+    @ViewBuilder
     private var essenceSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("Essence bonuses")
-                .font(.headline)
-            
-            if viewModel.model.essenceBonuses.isEmpty {
-                Text("No essence bonuses")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-            } else {
+        if !viewModel.model.essenceBonuses.isEmpty {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Essence bonuses")
+                    .font(.headline)
+                
                 ForEach(viewModel.model.essenceBonuses, id: \.0) { essence, boost in
                     HStack {
                         Text(essence.name)

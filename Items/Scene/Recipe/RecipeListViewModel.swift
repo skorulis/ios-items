@@ -57,6 +57,10 @@ extension RecipeListViewModel {
         guard let index else { return }
         recipes[index].items.append(item)
     }
+
+    func showDetails(for recipe: Recipe) {
+        coordinator?.custom(overlay: .card, MainPath.recipeDetail(recipe))
+    }
     
     func delete(indexSet: IndexSet) {
         recipes.remove(atOffsets: indexSet)

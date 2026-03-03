@@ -9,6 +9,7 @@ import SwiftUI
     let recipe: Recipe
     let warehouse: Warehouse
     let addPressed: () -> Void
+    let showDetailsPressed: () -> Void
 }
 
 // MARK: - Rendering
@@ -24,8 +25,9 @@ extension RecipeCell: View {
             if recipe.items.count < 2 {
                 addButton
             }
-            
+
             Spacer()
+            detailsButton
         }
         .padding(8)
         .background(
@@ -56,6 +58,19 @@ extension RecipeCell: View {
                         .stroke(.gray, lineWidth: 1)
                 )
         }
+        .buttonStyle(.borderless)
+    }
+
+    private var detailsButton: some View {
+        Button(action: showDetailsPressed) {
+            Image(systemName: "info.circle")
+                .font(.title2.weight(.semibold))
+                .foregroundStyle(.blue)
+                .frame(width: 32, height: 32)
+                .padding(4)
+                .foregroundStyle(Color.black)
+        }
+        .buttonStyle(.borderless)
     }
     
     private var borderColor: Color {
@@ -76,20 +91,23 @@ extension RecipeCell: View {
             recipe: .init(items: []),
             warehouse: .init(),
             addPressed: {},
+            showDetailsPressed: {}
         )
         .padding(8)
         
         RecipeCell(
             recipe: .init(items: [.apple]),
             warehouse: .init(),
-            addPressed: {}
+            addPressed: {},
+            showDetailsPressed: {}
         )
         .padding(8)
         
         RecipeCell(
             recipe: .init(items: [.gear, .copperFlorin]),
             warehouse: .init(),
-            addPressed: {}
+            addPressed: {},
+            showDetailsPressed: {}
         )
         .padding(8)
         

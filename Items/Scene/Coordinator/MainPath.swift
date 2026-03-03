@@ -20,6 +20,7 @@ enum MainPath: CoordinatorPath {
     case itemDetails(BaseItem)
     case artifactDetails(ArtifactInstance)
     case achievementDetails(Achievement)
+    case recipeDetail(Recipe)
     
     // Present a block of text
     case dialog(String)
@@ -62,6 +63,8 @@ struct MainPathRenderer: CoordinatorPathRenderer {
             ArtifactDetailView(viewModel: resolver.artifactDetailViewModel(artifact: instance))
         case let .achievementDetails(achievement):
             AchievementDetailsView(viewModel: resolver.achievementDetailsViewModel(achievement: achievement))
+        case let .recipeDetail(recipe):
+            RecipeDetailView(viewModel: resolver.recipeDetailViewModel(recipe: recipe))
         case let .dialog(text):
             Text(text)
                 .padding(16)
