@@ -26,6 +26,7 @@ final class AchievementService {
     private func checkAchievements() {
         let toCheck = Achievement.allCases.filter { !mainStore.achievements.unlocked.contains($0) }
         let completed = toCheck.filter { isComplete(requirement: $0.requirement) }
+        guard completed.count > 0 else { return }
         mainStore.achievements.add(achievements: Set(completed))
         for achievement in completed {
             toastService.showToast("Achievement unlocked: \(achievement.name)")
@@ -44,6 +45,8 @@ final class AchievementService {
             return Int64(mainStore.concepts.essences.count)
         case let .essenceUnlocked(essence):
             return mainStore.concepts.essences.contains(essence) ? 1 : 0
+        case .artifactsUnlocked:
+            return Int64(Artifact.allCases.filter { mainStore.warehouse.quality($0) != nil }.count)
         }
     }
     
@@ -52,9 +55,10 @@ final class AchievementService {
         case let .itemsCreated(count),
              let .researchRuns(count),
              let .commonItemsCreated(count),
-             let .essencesUnlocked(count):
+             let .essencesUnlocked(count),
+             let .artifactsUnlocked(count):
             return count
-            
+
         case .essenceUnlocked:
             return 1
         }

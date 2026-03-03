@@ -9,7 +9,10 @@ enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
     case items1_000_000
     
     case common1
-    
+
+    case artifact1
+    case artifacts5
+
     var id: Self { self }
     
     var name: String {
@@ -18,6 +21,8 @@ enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
         case .items100: return "Getting somewhere"
         case .items1_000_000: return "That's a lot"
         case .common1: return "Filthy Commoner"
+        case .artifact1: return "First artifact"
+        case .artifacts5: return "Artifact collector"
         }
     }
     
@@ -31,6 +36,10 @@ enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
             return Image(systemName: "command")
         case .items1_000_000:
             return Image(systemName: "gauge.with.dots.needle.100percent")
+        case .artifact1:
+            return Image(systemName: "sparkle")
+        case .artifacts5:
+            return Image(systemName: "sparkles.2")
         }
     }
     
@@ -44,6 +53,10 @@ enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
             return .itemsCreated(1_000_000)
         case .common1:
             return .commonItemsCreated(1)
+        case .artifact1:
+            return .artifactsUnlocked(1)
+        case .artifacts5:
+            return .artifactsUnlocked(5)
         }
     }
     
@@ -56,6 +69,10 @@ enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
         case .items1_000_000:
             return .exceptional
         case .common1:
+            return .common
+        case .artifact1:
+            return .junk
+        case .artifacts5:
             return .common
         }
     }
@@ -70,6 +87,8 @@ enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
             return "1% increased chance to find common items"
         case .items1_000_000:
             return "TODO"
+        case .artifact1, .artifacts5:
+            return nil
         }
     }
     

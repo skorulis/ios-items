@@ -32,12 +32,28 @@ extension AchievementsView: View {
         let columns = [
             GridItem(.adaptive(minimum: 80)),
         ]
-        return LazyVGrid(columns: columns, spacing: 12) {
-            ForEach(Achievement.allCases) { achievement in
-                cell(achievement: achievement)
+        let grouped = Dictionary(grouping: Achievement.allCases, by: { $0.quality })
+
+        return LazyVStack(alignment: .leading, spacing: 16) {
+            ForEach(ItemQuality.allCases, id: \.self) { quality in
+                if let achievementsInQuality = grouped[quality], !achievementsInQuality.isEmpty {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text(quality.name)
+                            .font(.headline)
+                            .foregroundStyle(quality.color)
+                            .padding(.horizontal, 16)
+
+                        LazyVGrid(columns: columns, spacing: 12) {
+                            ForEach(achievementsInQuality) { achievement in
+                                cell(achievement: achievement)
+                            }
+                        }
+                        .padding(.horizontal, 16)
+                    }
+                }
             }
         }
-        .padding(16)
+        .padding(.vertical, 16)
     }
     
     @ViewBuilder

@@ -18,8 +18,11 @@ struct ToastPathWrapper<Content: View>: View {
         ZStack {
             if isVisible {
                 VStack {
+                    Button(action: onDismiss) {
+                        Toast(content: content)
+                    }
+                    
                     Spacer()
-                    Toast(content: content)
                 }
                 .transition(.opacity)
                 .task {
@@ -32,7 +35,6 @@ struct ToastPathWrapper<Content: View>: View {
                 }
             }
         }
-        .padding(.bottom, 64) // Space for tab bar
         .animation(.easeInOut(duration: 0.15), value: isVisible)
         .onAppear {
             isVisible = true
@@ -43,4 +45,11 @@ struct ToastPathWrapper<Content: View>: View {
         onDismiss()
     }
     
+}
+
+#Preview {
+    ToastPathWrapper(
+        isVisible: true,
+        content: { Text("Toast") },
+    )
 }
