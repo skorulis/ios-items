@@ -50,9 +50,9 @@ enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
     var bonusMessage: String? {
         switch self {
         case .items10:
-            return "Research unlocked"
+            return "Unlocks research"
         case .items100:
-            return "Sacrifices unlocked"
+            return "Unlocks sacrifices"
         case .common1:
             return "1% increased chance to find common items"
         case .items1_000_000:

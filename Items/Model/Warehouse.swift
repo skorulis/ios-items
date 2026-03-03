@@ -13,8 +13,8 @@ struct Warehouse: Codable {
     private var total: [BaseItem: Int] = [:]
     
     // New discoveries not yet viewed (persisted)
-    private var newItems: Set<BaseItem> = []
-    private var newArtifacts: Set<Artifact> = []
+    var newItems: Set<BaseItem> = []
+    var newArtifacts: Set<Artifact> = []
 
     // Equipped artifacts (max 2, order preserved)
     private(set) var equippedArtifacts: [Artifact] = []
@@ -60,6 +60,11 @@ struct Warehouse: Codable {
     
     var newDiscoveriesCount: Int {
         newItems.count + newArtifacts.count
+    }
+
+    mutating func clearNewDiscoveries() {
+        newItems.removeAll()
+        newArtifacts.removeAll()
     }
     
     mutating func remove(item: BaseItem, quantity: Int = 1) {

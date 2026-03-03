@@ -53,7 +53,7 @@ final class MainStore: ObservableObject {
         w.markViewed(artifact: artifact)
         warehouse = w
     }
-    
+
     private let store: PKeyValueStore
     private static let achievementsKey = "MainStore.achievements"
     private static let conceptsKey = "MainStore.concepts"

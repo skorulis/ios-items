@@ -7,12 +7,20 @@ import Knit
 @MainActor
 struct WarehouseView: View {
     @State var viewModel: WarehouseViewModel
-    
+
+    struct Model {
+        var newItemsToShow: Set<BaseItem> = []
+        var newArtifactsToShow: Set<Artifact> = []
+    }
+
     var body: some View {
         PageLayout(
             titleBar: { titleBar },
             content: { content }
         )
+        .onAppear {
+            viewModel.onAppear()
+        }
     }
     
     private var content: some View {
@@ -117,7 +125,7 @@ struct WarehouseView: View {
             Button(action: { viewModel.pressed(artifact: instance) }) {
                 ArtifactView(artifact: instance)
                     .overlay(alignment: .topTrailing) {
-                        if viewModel.warehouse.isNew(artifact: artifact) {
+                        if viewModel.isNew(artifact: artifact) {
                             Circle()
                                 .fill(.red)
                                 .frame(width: 10, height: 10)
@@ -138,7 +146,7 @@ struct WarehouseView: View {
                 ItemGridCell(
                     item: item,
                     quantity: viewModel.warehouse.quantity(item),
-                    showNewBadge: viewModel.warehouse.isNew(item: item)
+                    showNewBadge: viewModel.isNew(item: item)
                 )
             }
         } else {
