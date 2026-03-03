@@ -10,6 +10,8 @@ import SwiftUI
     
     private let mainStore: MainStore
     
+    var model = AchievementsView.Model()
+    
     @Resolvable<BaseResolver>
     init(mainStore: MainStore) {
         self.mainStore = mainStore
@@ -19,12 +21,18 @@ import SwiftUI
 // MARK: - Logic
 
 extension AchievementsViewModel {
-    
+
     func isComplete(achievement: Achievement) -> Bool {
-        mainStore.achievements.contains(achievement)
+        mainStore.achievements.unlocked.contains(achievement)
     }
     
     func showDetails(achievement: Achievement) {
+        model.newAchievementsToShow.remove(achievement)
         coordinator?.custom(overlay: .card, MainPath.achievementDetails(achievement))
+    }
+    
+    func onAppear() {
+        model.newAchievementsToShow = mainStore.achievements.new
+        mainStore.achievements.clearNewAchievements()
     }
 }

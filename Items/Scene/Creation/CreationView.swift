@@ -21,10 +21,10 @@ import SwiftUI
         var isCreating: Bool { creationInProgress != nil }
 
         var warehouse: Warehouse = Warehouse()
-        var achievements: Set<Achievement> = []
+        var achievements: Achievements = Achievements()
         var recipes: [Recipe] = []
         
-        var recipesAvailable: Bool { achievements.contains(.items10) }
+        var recipesAvailable: Bool { achievements.unlocked.contains(.items10) }
         
         var currentSacrifice: Recipe? {
             return recipes.first { recipe in
@@ -89,7 +89,10 @@ extension CreationView: View {
     @ViewBuilder
     private var maybeCreationAnimation: some View {
         if let creation = viewModel.model.creationInProgress {
-            ParticleCanvasView(movementDuration: creation.duration)
+            ParticleCanvasView(
+                movementDuration: creation.duration,
+                colors: Essence.allCases.map { $0.color },
+            )
                 .id(creation.id)
         }
     }

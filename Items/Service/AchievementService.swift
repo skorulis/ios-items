@@ -9,11 +9,13 @@ import KnitMacros
 final class AchievementService {
     
     private let mainStore: MainStore
+    private let toastService: ToastService
     private var cancellables: Set<AnyCancellable> = []
     
     @Resolvable<BaseResolver>
-    init(mainStore: MainStore) {
+    init(mainStore: MainStore, toastService: ToastService) {
         self.mainStore = mainStore
+        self.toastService = toastService
         
         self.mainStore.objectWillChange.delayedChange().sink { [unowned self] _ in
             self.checkAchievements()
@@ -22,9 +24,12 @@ final class AchievementService {
     }
     
     private func checkAchievements() {
-        let toCheck = Achievement.allCases.filter { !mainStore.achievements.contains($0) }
+        let toCheck = Achievement.allCases.filter { !mainStore.achievements.unlocked.contains($0) }
         let completed = toCheck.filter { isComplete(requirement: $0.requirement) }
-        mainStore.setAchievements(mainStore.achievements.union(completed))
+        mainStore.achievements.add(achievements: Set(completed))
+        for achievement in completed {
+            toastService.showToast("Achievement unlocked: \(achievement.name)")
+        }
     }
     
     func progressValue(requirement: UnlockRequirement) -> Int64 {

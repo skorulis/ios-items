@@ -65,6 +65,7 @@ struct ContentView: View {
                 Label("Achievements", systemImage: "fireworks")
             }
             .tag(2)
+            .badge(viewModel.achievementsNewCount > 0 ? "\(viewModel.achievementsNewCount)" : nil)
     }
     
     private var researchTab: some View {

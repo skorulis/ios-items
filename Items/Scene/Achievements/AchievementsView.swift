@@ -8,6 +8,10 @@ import SwiftUI
 
 @MainActor struct AchievementsView {
     @State var viewModel: AchievementsViewModel
+
+    struct Model {
+        var newAchievementsToShow: Set<Achievement> = []
+    }
 }
 
 // MARK: - Rendering
@@ -19,6 +23,9 @@ extension AchievementsView: View {
             titleBar: { titleBar},
             content: { content }
         )
+        .onAppear {
+            viewModel.onAppear()
+        }
     }
     
     private var content: some View {
@@ -36,11 +43,13 @@ extension AchievementsView: View {
     @ViewBuilder
     private func cell(achievement: Achievement) -> some View {
         let complete = viewModel.isComplete(achievement: achievement)
+        let isNew = viewModel.model.newAchievementsToShow.contains(achievement)
         Button(action: { viewModel.showDetails(achievement: achievement)}) {
             AvatarView(
                 text: achievement.name,
                 image: achievement.image,
                 border: Color.gray,
+                showNewBadge: isNew
             )
         }
         .grayscale(complete ? 0 : 1)

@@ -16,28 +16,7 @@ import SwiftUI
 extension ItemGridCell: View {
     
     var body: some View {
-        ZStack(alignment: .bottomTrailing) {
-            ItemView(item: item)
-            
-            if let quantity {
-                Text("\(quantity)")
-                    .monospaced()
-                    .bold()
-                    .font(.subheadline)
-                    .foregroundStyle(Color.white)
-                    .padding(2)
-                    .background(Capsule())
-                    .padding(2)
-            }
-        }
-        .overlay(alignment: .topTrailing) {
-            if showNewBadge {
-                Circle()
-                    .fill(.red)
-                    .frame(width: 10, height: 10)
-                    .padding(4)
-            }
-        }
+        ItemView(item: item, quantity: quantity, showNewBadge: showNewBadge)
     }
 }
 
@@ -47,6 +26,7 @@ extension ItemGridCell: View {
     VStack {
         ItemGridCell(item: .apple, quantity: nil)
         ItemGridCell(item: .apple, quantity: 10)
+        ItemGridCell(item: .potionFlask, quantity: 10, showNewBadge: true)
     }
     .background(Color.black)
     

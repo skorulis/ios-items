@@ -8,10 +8,12 @@ import SwiftUI
 @MainActor struct ItemView {
     let item: BaseItem
     let quantity: Int?
+    var showNewBadge: Bool = false
     
-    init(item: BaseItem, quantity: Int? = nil) {
+    init(item: BaseItem, quantity: Int? = nil, showNewBadge: Bool = false) {
         self.item = item
         self.quantity = quantity
+        self.showNewBadge = showNewBadge
     }
 }
 
@@ -25,6 +27,7 @@ extension ItemView: View {
             image: item.image,
             border: item.quality.color,
             badge: badgeText,
+            showNewBadge: showNewBadge,
         )
     }
     

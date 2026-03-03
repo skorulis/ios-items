@@ -30,7 +30,7 @@ final class MainStore: ObservableObject {
         }
     }
     
-    @Published private(set) var achievements: Set<Achievement> {
+    @Published var achievements: Achievements {
         didSet {
             try! self.store.set(codable: achievements, forKey: Self.achievementsKey)
         }
@@ -40,11 +40,6 @@ final class MainStore: ObservableObject {
         didSet {
             try! self.store.set(codable: concepts, forKey: Self.conceptsKey)
         }
-    }
-    
-    func setAchievements(_ achievements: Set<Achievement>) {
-        guard self.achievements != achievements else { return }
-        self.achievements = achievements
     }
     
     func markItemViewed(_ item: BaseItem) {
@@ -74,7 +69,13 @@ final class MainStore: ObservableObject {
         self.warehouse = (try? store.codable(forKey: Self.warehouseKey)) ?? Warehouse()
         self.statistics = (try? store.codable(forKey: Self.statisticsKey)) ?? Statistics()
         self.lab = (try? store.codable(forKey: Self.labKey)) ?? Laboratory()
-        self.achievements = (try? store.codable(forKey: Self.achievementsKey)) ?? []
+        if let stored: Achievements = try? store.codable(forKey: Self.achievementsKey) {
+            self.achievements = stored
+        } else if let legacy: [Achievement] = try? store.codable(forKey: Self.achievementsKey) {
+            self.achievements = Achievements(unlocked: Set(legacy), new: [])
+        } else {
+            self.achievements = Achievements()
+        }
         self.recipes = (try? store.codable(forKey: Self.recipesKey)) ?? []
         self.concepts = (try? store.codable(forKey: Self.conceptsKey)) ?? Concepts()
     }

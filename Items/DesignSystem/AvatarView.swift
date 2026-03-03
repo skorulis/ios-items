@@ -17,18 +17,21 @@ import SwiftUI
     private let border: Color
     
     private let badge: String?
+    private let showNewBadge: Bool
     
     init(
         text: String,
         image: Image?,
         border: Color,
         badge: String? = nil,
+        showNewBadge: Bool = false,
         size: Size = .medium,
     ) {
         self.text = text
         self.image = image
         self.border = border
         self.badge = badge
+        self.showNewBadge = showNewBadge
         self.size = size
     }
 
@@ -51,6 +54,14 @@ extension AvatarView: View {
         ZStack(alignment: .bottomTrailing) {
             mainCircle
             maybeBadge
+        }
+        .overlay(alignment: .topTrailing) {
+            if showNewBadge {
+                Circle()
+                    .fill(.red)
+                    .frame(width: 10, height: 10)
+                    .padding(4)
+            }
         }
     }
     
@@ -160,6 +171,13 @@ extension AvatarView.Size {
             }
         }
         
+        AvatarView(
+            text: "New",
+            image: nil,
+            border: .green,
+            showNewBadge: true,
+            size: .medium,
+        )
     }
     
     
