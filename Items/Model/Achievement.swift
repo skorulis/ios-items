@@ -13,6 +13,9 @@ enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
     case artifact1
     case artifacts5
 
+    case essence1
+    case allEssences
+
     var id: Self { self }
     
     var name: String {
@@ -23,6 +26,8 @@ enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
         case .common1: return "Filthy Commoner"
         case .artifact1: return "First artifact"
         case .artifacts5: return "Artifact collector"
+        case .essence1: return "First essence"
+        case .allEssences: return "Essence master"
         }
     }
     
@@ -40,6 +45,10 @@ enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
             return Image(systemName: "sparkle")
         case .artifacts5:
             return Image(systemName: "sparkles.2")
+        case .essence1:
+            return Image(systemName: "leaf")
+        case .allEssences:
+            return Image(systemName: "leaf.fill")
         }
     }
     
@@ -57,14 +66,18 @@ enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
             return .artifactsUnlocked(1)
         case .artifacts5:
             return .artifactsUnlocked(5)
+        case .essence1:
+            return .essencesUnlocked(1)
+        case .allEssences:
+            return .essencesUnlocked(Int64(Essence.allCases.count))
         }
     }
     
     var quality: ItemQuality {
         switch self {
-        case .items10, .artifact1:
+        case .items10, .artifact1, .essence1:
             return .junk
-        case .items100, .artifacts5, .common1:
+        case .items100, .artifacts5, .common1, .allEssences:
             return .common
         case .items1_000_000:
             return .exceptional
@@ -83,7 +96,7 @@ enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
             return "1% increased chance to find common items"
         case .items1_000_000:
             return "TODO"
-        case .artifacts5:
+        case .artifacts5, .essence1, .allEssences:
             return nil
         }
     }

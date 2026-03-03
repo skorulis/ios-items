@@ -14,8 +14,8 @@ final class ToastService {
     init() {}
 
     func showToast(_ message: String) {
+        print("Toast: \(message)")
         guard let coordinator else {
-            print(message)
             return
         }
         
