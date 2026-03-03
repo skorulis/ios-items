@@ -96,11 +96,15 @@ extension ResearchViewModel {
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
             guard let self else { return }
             Task { @MainActor in
-                self.now = Date()
-                self.researchService.updateResearchProgress(now: self.now)
+                self.updateResearchProgress()
             }
         }
         RunLoop.main.add(timer!, forMode: .common)
+    }
+    
+    func updateResearchProgress() {
+        self.now = Date()
+        self.researchService.updateResearchProgress(now: self.now)
     }
     
     func stopTimer() {

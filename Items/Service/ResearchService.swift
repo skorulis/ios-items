@@ -9,12 +9,25 @@ final class ResearchService {
     private let mainStore: MainStore
     private let calculations: CalculationsService
     private let toastService: ToastService
+    private var progressCheckTimer: Timer?
 
     @Resolvable<BaseResolver>
     init(mainStore: MainStore, calculations: CalculationsService, toastService: ToastService) {
         self.mainStore = mainStore
         self.calculations = calculations
         self.toastService = toastService
+    }
+
+    /// Start a timer that every 1s applies research progress when there is active research. Call once from app launch so research completes even when not on the Research tab.
+    func startProgressCheckTimer() {
+        guard progressCheckTimer == nil else { return }
+        progressCheckTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+            guard let self else { return }
+            if self.mainStore.lab.currentResearch != nil {
+                self.updateResearchProgress(now: Date())
+            }
+        }
+        RunLoop.main.add(progressCheckTimer!, forMode: .common)
     }
 }
 

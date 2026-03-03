@@ -51,7 +51,7 @@ extension AchievementDetailsView: View {
     let assembler = ItemsAssembly.testing()
     VStack {
         AchievementDetailsView(
-            viewModel: assembler.resolver.achievementDetailsViewModel(achievement: .items1)
+            viewModel: assembler.resolver.achievementDetailsViewModel(achievement: .items10)
         )
         .background(CardBackground())
         

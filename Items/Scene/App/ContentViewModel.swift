@@ -40,6 +40,7 @@ extension ContentViewModel {
     
     /// Apply any research progress that accrued while the app was backgrounded or closed.
     func resumeResearchProgressIfNeeded() {
+        researchService.startProgressCheckTimer()
         researchService.resumeResearchProgressIfNeeded()
     }
 }
