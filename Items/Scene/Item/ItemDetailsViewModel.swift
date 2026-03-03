@@ -12,12 +12,14 @@ import SwiftUI
     
     private let mainStore: MainStore
     private let calculations: CalculationsService
+    private let warehouseService: WarehouseService
     private var cancellables: Set<AnyCancellable> = []
     
     @Resolvable<BaseResolver>
-    init(@Argument item: BaseItem, mainStore: MainStore, calculations: CalculationsService) {
+    init(@Argument item: BaseItem, mainStore: MainStore, calculations: CalculationsService, warehouseService: WarehouseService) {
         self.mainStore = mainStore
         self.calculations = calculations
+        self.warehouseService = warehouseService
         
         model = .init(item: item, lab: mainStore.lab, warehouse: mainStore.warehouse)
         
@@ -61,6 +63,6 @@ extension ItemDetailsViewModel {
     }
     
     func markItemViewed() {
-        mainStore.markItemViewed(model.item)
+        warehouseService.markItemViewed(model.item)
     }
 }

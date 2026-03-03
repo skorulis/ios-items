@@ -33,6 +33,7 @@ import SwiftUI
     private let calculations: CalculationsService
     private let mainStore: MainStore
     private let recipeService: RecipeService
+    private let warehouseService: WarehouseService
     private var cancellables: Set<AnyCancellable> = []
     
     @Resolvable<BaseResolver>
@@ -41,11 +42,13 @@ import SwiftUI
         mainStore: MainStore,
         recipeService: RecipeService,
         calculations: CalculationsService,
+        warehouseService: WarehouseService,
     ) {
         self.itemGeneratorService = itemGeneratorService
         self.mainStore = mainStore
         self.recipeService = recipeService
         self.calculations = calculations
+        self.warehouseService = warehouseService
         
         mainStore.$warehouse.sink { [unowned self] in
             self.model.warehouse = $0
@@ -109,14 +112,14 @@ extension CreationViewModel {
         let item = itemGeneratorService.make(recipe: recipe)
         switch item {
         case let .base(baseItem, count):
-            mainStore.warehouse.add(item: baseItem, count: count)
+            warehouseService.add(item: baseItem, count: count)
             
             mainStore.statistics.itemsCreated += Int64(count)
             if count > 1 {
                 mainStore.statistics.doubleItemCreations += 1
             }
         case let .artifact(artifact):
-            mainStore.warehouse.add(artifact: artifact)
+            warehouseService.add(artifact: artifact)
         }
         
         self.model.createdItem = item

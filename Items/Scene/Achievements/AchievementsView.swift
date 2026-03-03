@@ -48,7 +48,7 @@ extension AchievementsView: View {
             AvatarView(
                 text: achievement.name,
                 image: achievement.image,
-                border: Color.gray,
+                border: achievement.quality.color,
                 showNewBadge: isNew
             )
         }

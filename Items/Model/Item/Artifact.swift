@@ -103,4 +103,8 @@ struct ArtifactInstance {
         type.bonusMessage(quality: quality)
     }
     
+    var name: String {
+        return "\(quality.name) \(type.name)"
+    }
+    
 }

@@ -11,13 +11,15 @@ import SwiftUI
     let artifact: ArtifactInstance
 
     private let mainStore: MainStore
+    private let warehouseService: WarehouseService
     private(set) var equippedArtifacts: [Artifact] = []
     private var cancellables = Set<AnyCancellable>()
 
     @Resolvable<BaseResolver>
-    init(@Argument artifact: ArtifactInstance, mainStore: MainStore) {
+    init(@Argument artifact: ArtifactInstance, mainStore: MainStore, warehouseService: WarehouseService) {
         self.artifact = artifact
         self.mainStore = mainStore
+        self.warehouseService = warehouseService
         equippedArtifacts = mainStore.warehouse.equippedArtifacts
         mainStore.$warehouse
             .map(\.equippedArtifacts)
@@ -35,14 +37,14 @@ extension ArtifactDetailViewModel {
     }
 
     func markArtifactViewed() {
-        mainStore.markArtifactViewed(artifact.type)
+        warehouseService.markArtifactViewed(artifact.type)
     }
 
     func equip() {
-        mainStore.warehouse.equip(artifact.type)
+        warehouseService.equip(artifact.type)
     }
 
     func unequip() {
-        mainStore.warehouse.unequip(artifact.type)
+        warehouseService.unequip(artifact.type)
     }
 }

@@ -25,7 +25,7 @@ enum ItemQuality: Codable, CaseIterable {
         case .junk:
             return .gray
         case .common:
-            return .yellow
+            return .black
         case .good:
             return .green
         case .rare:

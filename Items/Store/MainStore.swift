@@ -41,18 +41,6 @@ final class MainStore: ObservableObject {
             try! self.store.set(codable: concepts, forKey: Self.conceptsKey)
         }
     }
-    
-    func markItemViewed(_ item: BaseItem) {
-        var w = warehouse
-        w.markViewed(item: item)
-        warehouse = w
-    }
-    
-    func markArtifactViewed(_ artifact: Artifact) {
-        var w = warehouse
-        w.markViewed(artifact: artifact)
-        warehouse = w
-    }
 
     private let store: PKeyValueStore
     private static let achievementsKey = "MainStore.achievements"

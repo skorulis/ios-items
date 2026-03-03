@@ -119,7 +119,8 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
             ]
         case .humanSkull:
             return [
-                "The skull of a long dead soldier. No telling which side they were on."
+                "The skull of a long dead soldier. No telling which side they were on.",
+                "The owner of the skull died in battle, it still radiates the desire for revenge"
             ]
         default:
             return []

@@ -11,6 +11,7 @@ import SwiftUI
     var coordinator: Coordinator?
 
     private let mainStore: MainStore
+    private let warehouseService: WarehouseService
     private(set) var warehouse: Warehouse
     private(set) var lab: Laboratory
     var page: Page = .items {
@@ -23,8 +24,9 @@ import SwiftUI
     private var cancellables: Set<AnyCancellable> = []
 
     @Resolvable<BaseResolver>
-    init(mainStore: MainStore) {
+    init(mainStore: MainStore, warehouseService: WarehouseService) {
         self.mainStore = mainStore
+        self.warehouseService = warehouseService
         warehouse = mainStore.warehouse
         lab = mainStore.lab
 
@@ -53,6 +55,7 @@ extension WarehouseViewModel {
 extension WarehouseViewModel {
 
     func onAppear() {
+        // Capture current "new" state for the UI, but immediately clear persisted flags
         model.newItemsToShow = warehouse.newItems
         model.newArtifactsToShow = warehouse.newArtifacts
         
@@ -62,9 +65,9 @@ extension WarehouseViewModel {
     private func clearNew() {
         switch self.page {
         case .artifacts:
-            mainStore.warehouse.newArtifacts.removeAll()
+            warehouseService.clearNewArtifacts()
         case .items:
-            mainStore.warehouse.newItems.removeAll()
+            warehouseService.clearNewItems()
         }
     }
 

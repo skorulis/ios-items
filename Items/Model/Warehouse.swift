@@ -19,6 +19,18 @@ struct Warehouse: Codable {
     // Equipped artifacts (max 2, order preserved)
     private(set) var equippedArtifacts: [Artifact] = []
 
+    func isNewDiscovery(item: BaseItem) -> Bool {
+        return (total[item] ?? 0) == 0
+    }
+    
+    func isNewDiscovery(artifact: ArtifactInstance) -> Bool {
+        if let existing = artifacts[artifact.type] {
+            return artifact.quality > existing
+        } else {
+            return true
+        }
+    }
+    
     mutating func add(item: BaseItem, count: Int = 1) {
         let wasNewDiscovery = (total[item] ?? 0) == 0
         current[item, default: 0] += count
@@ -29,12 +41,7 @@ struct Warehouse: Codable {
     }
     
     mutating func add(artifact: ArtifactInstance) {
-        let wasNew: Bool
-        if let existing = artifacts[artifact.type] {
-            wasNew = artifact.quality > existing
-        } else {
-            wasNew = true
-        }
+        let wasNew = isNewDiscovery(artifact: artifact)
         let quality = artifacts[artifact.type, default: .junk]
         artifacts[artifact.type] = max(quality, artifact.quality)
         if wasNew {

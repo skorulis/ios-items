@@ -47,6 +47,19 @@ enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
         }
     }
     
+    var quality: ItemQuality {
+        switch self {
+        case .items10:
+            return .junk
+        case .items100:
+            return .common
+        case .items1_000_000:
+            return .exceptional
+        case .common1:
+            return .common
+        }
+    }
+    
     var bonusMessage: String? {
         switch self {
         case .items10:
