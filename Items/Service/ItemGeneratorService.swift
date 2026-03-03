@@ -17,16 +17,23 @@ final class ItemGeneratorService {
         self.calculations = calculations
     }
     
+    func recipeInfo(recipe: Recipe) -> RecipeInfo {
+        return RecipeInfo(
+            quality: qualityBonuses(recipe: recipe),
+            essenceBoosts: essenceBonuses(recipe: recipe)
+        )
+    }
+    
     func make(recipe: Recipe) -> Result {
-        let quality = selectQuality(recipe: recipe)
-
-        let essenceBonuses = essenceBonuses(recipe: recipe)
+        let info = recipeInfo(recipe: recipe)
+        let quality = info.randomQuality()
+        
         let options = BaseItem.allCases.filter { $0.quality == quality}
         
         let randomArray = RandomArray(items: options) { item in
             var chance: Double = 1
             for essence in item.essences {
-                chance *= essenceBonuses[essence, default: 1]
+                chance *= info.essenceBoosts[essence, default: 1]
             }
             return chance
         }
@@ -47,18 +54,7 @@ final class ItemGeneratorService {
         return .base(baseItem, 1)
     }
     
-    private func selectQuality(recipe: Recipe) -> ItemQuality {
-        let randomArray = RandomArray(items: ItemQuality.allCases) {
-            switch $0 {
-            case .junk: return 1
-            case .common: return 0.5 * Double(recipe.count(quality: .junk))
-            case .good: return 0.5 * Double(recipe.count(quality: .common))
-            case .rare: return 0.5 * Double(recipe.count(quality: .good))
-            case .exceptional: return 0.5 * Double(recipe.count(quality: .rare))
-            }
-        }
-        return randomArray.random ?? .junk
-    }
+    // MARK: - Private Functions
     
     private func maybeConvertToArtifact(baseItem: BaseItem) -> ArtifactInstance? {
         let itemLevel = mainStore.lab.currentLevel(item: baseItem)
@@ -87,11 +83,44 @@ final class ItemGeneratorService {
             return mutableResult
         }
     }
+    
+    private func qualityBonuses(recipe: Recipe) -> [ItemQuality: Double] {
+        Dictionary(
+            uniqueKeysWithValues: ItemQuality.allCases.map { quality in
+                let weight: Double
+                switch quality {
+                case .junk:
+                    weight = 1
+                case .common:
+                    weight = 0.5 * Double(recipe.count(quality: .junk))
+                case .good:
+                    weight = 0.5 * Double(recipe.count(quality: .common))
+                case .rare:
+                    weight = 0.5 * Double(recipe.count(quality: .good))
+                case .exceptional:
+                    weight = 0.5 * Double(recipe.count(quality: .rare))
+                }
+                return (quality, weight)
+            }
+        )
+    }
 }
 
 // MARK: - Inner Types
 
 extension ItemGeneratorService{
+    
+    struct RecipeInfo {
+        let quality: [ItemQuality: Double]
+        let essenceBoosts: [Essence: Double]
+        
+        fileprivate func randomQuality() -> ItemQuality {
+            let randomArray = RandomArray(items: ItemQuality.allCases) {
+                quality[$0] ?? 0
+            }
+            return randomArray.random ?? .junk
+        }
+    }
     
     enum Result {
         case base(BaseItem, Int)
