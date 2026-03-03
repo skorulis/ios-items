@@ -62,18 +62,12 @@ enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
     
     var quality: ItemQuality {
         switch self {
-        case .items10:
+        case .items10, .artifact1:
             return .junk
-        case .items100:
+        case .items100, .artifacts5, .common1:
             return .common
         case .items1_000_000:
             return .exceptional
-        case .common1:
-            return .common
-        case .artifact1:
-            return .junk
-        case .artifacts5:
-            return .common
         }
     }
     
@@ -83,11 +77,13 @@ enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
             return "Unlocks research"
         case .items100:
             return "Unlocks sacrifices"
+        case .artifact1:
+            return "Unlocks artifact slots"
         case .common1:
             return "1% increased chance to find common items"
         case .items1_000_000:
             return "TODO"
-        case .artifact1, .artifacts5:
+        case .artifacts5:
             return nil
         }
     }

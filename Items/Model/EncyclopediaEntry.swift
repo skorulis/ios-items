@@ -28,6 +28,7 @@ struct EncyclopediaEntry {
                 Self.warehouse,
                 Self.research,
                 Self.essences,
+                Self.artifacts,
             ]
         )
     }
@@ -56,6 +57,14 @@ extension EncyclopediaEntry {
         .init(
             title: "Research",
             body: HelpStrings.research,
+        )
+    }
+
+    static var artifacts: Self {
+        .init(
+            title: "Artifacts",
+            body: HelpStrings.artifacts,
+            condition: .artifactsUnlocked(1),
         )
     }
 }

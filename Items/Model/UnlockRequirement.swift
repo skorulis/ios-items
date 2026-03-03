@@ -15,6 +15,9 @@ enum UnlockRequirement: Codable {
 
     /// Number of distinct artifacts discovered (at any quality).
     case artifactsUnlocked(Int64)
+
+    /// A specific artifact has been discovered (at any quality).
+    case artifactUnlocked(Artifact)
 }
 
 extension UnlockRequirement {
@@ -33,6 +36,8 @@ extension UnlockRequirement {
             return "\(essence.name) discovered"
         case let .artifactsUnlocked(count):
             return "Discover \(count) artifact\(count == 1 ? "" : "s")"
+        case let .artifactUnlocked(artifact):
+            return "\(artifact.name) discovered"
         }
     }
 }

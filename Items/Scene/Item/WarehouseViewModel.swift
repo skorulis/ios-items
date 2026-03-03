@@ -39,6 +39,11 @@ import SwiftUI
             self.lab = $0
         }
         .store(in: &cancellables)
+
+        mainStore.$achievements.sink { [unowned self] _ in
+            self.model.showArtifactsTab = mainStore.achievements.unlocked.contains(.artifact1)
+        }
+        .store(in: &cancellables)
     }
 }
 

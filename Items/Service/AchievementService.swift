@@ -47,6 +47,8 @@ final class AchievementService {
             return mainStore.concepts.essences.contains(essence) ? 1 : 0
         case .artifactsUnlocked:
             return Int64(Artifact.allCases.filter { mainStore.warehouse.quality($0) != nil }.count)
+        case let .artifactUnlocked(artifact):
+            return mainStore.warehouse.quality(artifact) != nil ? 1 : 0
         }
     }
     
@@ -59,7 +61,7 @@ final class AchievementService {
              let .artifactsUnlocked(count):
             return count
 
-        case .essenceUnlocked:
+        case .essenceUnlocked, .artifactUnlocked:
             return 1
         }
     }

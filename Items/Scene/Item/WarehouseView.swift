@@ -11,6 +11,7 @@ struct WarehouseView: View {
     struct Model {
         var newItemsToShow: Set<BaseItem> = []
         var newArtifactsToShow: Set<Artifact> = []
+        var showArtifactsTab: Bool = false
     }
 
     var body: some View {
@@ -25,6 +26,19 @@ struct WarehouseView: View {
     
     private var content: some View {
         VStack(alignment: .leading, spacing: 12) {
+            maybePicker
+            switch viewModel.page {
+            case .items:
+                items
+            case .artifacts:
+                artifacts
+            }
+        }
+    }
+    
+    @ViewBuilder
+    private var maybePicker: some View {
+        if viewModel.model.showArtifactsTab {
             Picker("Page", selection: $viewModel.page) {
                 Text("Items")
                     .tag(WarehouseViewModel.Page.items)
@@ -33,13 +47,6 @@ struct WarehouseView: View {
             }
             .pickerStyle(.segmented)
             .padding(.horizontal, 16)
-
-            switch viewModel.page {
-            case .items:
-                items
-            case .artifacts:
-                artifacts
-            }
         }
     }
     

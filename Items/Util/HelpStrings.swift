@@ -23,4 +23,8 @@ enum HelpStrings {
     
     Only one item can be researched at a time. Switching to another item pauses the current one; selecting it again resumes from where you left off. Higher research levels unlock essences and improve item discovery and artifact chances.
     """
+
+    static let artifacts = """
+    Artifacts are unique items that give special bonuses when equipped in the warehouse.
+    """
 }
