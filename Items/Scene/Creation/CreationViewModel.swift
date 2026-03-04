@@ -99,10 +99,10 @@ extension CreationViewModel {
     
     func make() async {
         if model.creationInProgress != nil { return }
-        let duration = TimeInterval(calculations.itemCreationMilliseconds) / 1000
-        self.model.creationInProgress = CreationView.CreationInProgress(id: UUID(), duration: duration)
-        self.model.createdItem = nil
         let recipe = recipeService.nextAvailable()
+        let duration = TimeInterval(calculations.itemCreationMilliseconds) / 1000
+        self.model.creationInProgress = CreationView.CreationInProgress(id: UUID(), duration: duration, sacrificedItems: recipe.items)
+        self.model.createdItem = nil
         recipeService.consumeRecipe(recipe)
         mainStore.statistics.itemsSacrificed += Int64(recipe.items.count)
 

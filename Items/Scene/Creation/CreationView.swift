@@ -8,10 +8,12 @@ import SwiftUI
 
 @MainActor struct CreationView {
     @State var viewModel: CreationViewModel
+    @State private var sacrificesButtonFrame: CGRect = .zero
 
     struct CreationInProgress {
         let id: UUID
         let duration: TimeInterval
+        let sacrificedItems: [BaseItem]
     }
 
     struct Model {
@@ -43,6 +45,7 @@ extension CreationView: View {
     var body: some View {
         ZStack {
             maybeCreationAnimation
+            sacrificeAvatarsOverlay
             itemContainer
             VStack {
                 topBar
@@ -51,7 +54,9 @@ extension CreationView: View {
                 makeButton
             }
             .padding()
+            
         }
+        .coordinateSpace(name: "creation")
     }
     
     private var topBar: some View {
@@ -84,6 +89,7 @@ extension CreationView: View {
         }
         .buttonStyle(CapsuleButtonStyle())
         .opacity(viewModel.model.recipesAvailable ? 1 : 0)
+        .readFrame(frame: $sacrificesButtonFrame)
     }
     
     @ViewBuilder
@@ -96,7 +102,28 @@ extension CreationView: View {
                 .id(creation.id)
         }
     }
-    
+
+    @ViewBuilder
+    private var sacrificeAvatarsOverlay: some View {
+        GeometryReader { geo in
+            if let creation = viewModel.model.creationInProgress, !creation.sacrificedItems.isEmpty {
+                let startPosition = CGPoint(
+                    x: sacrificesButtonFrame.maxX - 20,
+                    y: sacrificesButtonFrame.midY,
+                )
+                let endPosition = CGPoint(x: geo.size.width / 2, y: geo.size.height / 2)
+                SacrificeAnimationView(
+                    items: creation.sacrificedItems,
+                    startPosition: startPosition,
+                    endPosition: endPosition,
+                    duration: creation.duration,
+                    animationId: creation.id
+                )
+            }
+        }
+        .allowsHitTesting(false)
+    }
+
     @ViewBuilder
     private var itemContainer: some View {
         if let item = viewModel.model.createdItem {
@@ -160,3 +187,4 @@ extension CreationView: View {
     let assembler = ItemsAssembly.testing()
     CreationView(viewModel: assembler.resolver.creationViewModel())
 }
+
