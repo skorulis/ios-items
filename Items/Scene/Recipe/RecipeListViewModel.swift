@@ -45,7 +45,9 @@ extension RecipeListViewModel {
     }
     
     func addRecipe() {
-        recipes.append(.init(items: []))
+        let newRecipe = Recipe(items: [])
+        recipes.append(newRecipe)
+        editingRecipe = newRecipe
     }
     
     func addItem(to recipe: Recipe) {
@@ -56,6 +58,11 @@ extension RecipeListViewModel {
         let index = recipes.firstIndex(where: { $0.id == recipe.id})
         guard let index else { return }
         recipes[index].items.append(item)
+    }
+
+    func removeItem(_ item: BaseItem, from recipe: Recipe) {
+        guard let index = recipes.firstIndex(where: { $0.id == recipe.id }) else { return }
+        recipes[index].items.removeAll { $0 == item }
     }
 
     func showDetails(for recipe: Recipe) {

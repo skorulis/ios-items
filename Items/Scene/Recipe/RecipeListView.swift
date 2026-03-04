@@ -44,7 +44,10 @@ extension RecipeListView: View {
                     recipe: recipe,
                     warehouse: viewModel.warehouse,
                     addPressed: { viewModel.addItem(to: recipe) },
-                    showDetailsPressed: { viewModel.showDetails(for: recipe) }
+                    showDetailsPressed: { viewModel.showDetails(for: recipe) },
+                    removeItemPressed: { item in
+                        viewModel.removeItem(item, from: recipe)
+                    }
                 )
                 .listRowSeparator(.hidden)
             }

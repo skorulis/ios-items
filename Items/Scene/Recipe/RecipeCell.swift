@@ -10,6 +10,7 @@ import SwiftUI
     let warehouse: Warehouse
     let addPressed: () -> Void
     let showDetailsPressed: () -> Void
+    let removeItemPressed: (BaseItem) -> Void
 }
 
 // MARK: - Rendering
@@ -38,12 +39,22 @@ extension RecipeCell: View {
     
     private func itemCell(item: BaseItem) -> some View {
         let borderColor: Color = warehouse.quantity(item) > 0 ? .green: .gray
-        return ItemView(item: item)
-            .padding(4)
-            .background(
-                RoundedRectangle(cornerRadius: 4)
-                    .stroke(borderColor, lineWidth: 1)
-            )
+        return ZStack(alignment: .topTrailing) {
+            ItemView(item: item)
+                .padding(4)
+                .background(
+                    RoundedRectangle(cornerRadius: 4)
+                        .stroke(borderColor, lineWidth: 1)
+                )
+            
+            Button(action: { removeItemPressed(item) }) {
+                Image(systemName: "minus.circle.fill")
+                    .font(.caption.weight(.bold))
+                    .foregroundStyle(.red)
+                    .padding(2)
+            }
+            .buttonStyle(.borderless)
+        }
     }
     
     private var addButton: some View {
@@ -65,8 +76,7 @@ extension RecipeCell: View {
         Button(action: showDetailsPressed) {
             Image(systemName: "info.circle")
                 .font(.title2.weight(.semibold))
-                .frame(width: 32, height: 32)
-                .padding(4)
+                .frame(width: 40, height: 40)
                 .foregroundStyle(Color.black)
         }
         .buttonStyle(.borderless)
@@ -90,7 +100,8 @@ extension RecipeCell: View {
             recipe: .init(items: []),
             warehouse: .init(),
             addPressed: {},
-            showDetailsPressed: {}
+            showDetailsPressed: {},
+            removeItemPressed: { _ in }
         )
         .padding(8)
         
@@ -98,7 +109,8 @@ extension RecipeCell: View {
             recipe: .init(items: [.apple]),
             warehouse: .init(),
             addPressed: {},
-            showDetailsPressed: {}
+            showDetailsPressed: {},
+            removeItemPressed: { _ in }
         )
         .padding(8)
         
@@ -106,7 +118,8 @@ extension RecipeCell: View {
             recipe: .init(items: [.gear, .copperFlorin]),
             warehouse: .init(),
             addPressed: {},
-            showDetailsPressed: {}
+            showDetailsPressed: {},
+            removeItemPressed: { _ in }
         )
         .padding(8)
         

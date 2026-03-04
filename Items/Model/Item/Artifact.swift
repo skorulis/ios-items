@@ -16,6 +16,21 @@ enum Artifact: Identifiable, Hashable, CaseIterable, Codable {
         String(describing: self).fromCaseName
     }
     
+    var description: String {
+        switch self {
+        case .frictionlessGear:
+            return "A gear that spins with no resistance, speeding up all item crafting."
+        case .eternalHourglass:
+            return "A timeless hourglass that accelerates automatic item creation."
+        case .luckyCoin:
+            return "A coin blessed with fortune, increasing the chance of double item rewards."
+        case .perfectLens:
+            return "A flawless lens that amplifies the power of light-based items."
+        case .sacrificalSkull:
+            return "A grim relic that strengthens the effects of sacrifices."
+        }
+    }
+    
     
 }
 
