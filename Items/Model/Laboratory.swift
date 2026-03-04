@@ -6,6 +6,8 @@ struct Laboratory: Codable {
     private var items: [BaseItem: ItemState] = [:]
     var currentResearch: CurrentResearch?
     
+    var hasNewResearchLevel: Bool = false
+    
     func currentLevel(item: BaseItem) -> Int {
         items[item]?.level ?? 0
     }

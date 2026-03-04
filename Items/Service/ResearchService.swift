@@ -97,6 +97,7 @@ extension ResearchService {
     }
     
     private func applyUnlocks(for item: BaseItem, newLevel: Int) {
+        mainStore.lab.hasNewResearchLevel = true
         toastService.showToast("Researched \(item.name) to level \(newLevel)")
         let essences = item.availableResearch.unlockedEssences(level: newLevel)
         for e in essences {

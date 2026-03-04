@@ -18,6 +18,7 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
     
     
     // Common
+    case quartzCrystal
     case silverFlorin
     
     // Good
@@ -51,6 +52,8 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
             return Asset.BaseItem.lens.swiftUIImage
         case .humanSkull:
             return Asset.BaseItem.humanSkull.swiftUIImage
+        case .quartzCrystal:
+            return Asset.BaseItem.quartzCrystal.swiftUIImage
         }
     }
     
@@ -58,7 +61,7 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
         switch self {
         case .apple, .rock, .hourglass, .copperFlorin, .gear, .potionFlask, .lens, .humanSkull:
             return .junk
-        case .silverFlorin:
+        case .quartzCrystal, .silverFlorin:
             return .common
         case .goldFlorin:
             return .good
@@ -87,6 +90,8 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
             return [.light, .technology]
         case .humanSkull:
             return [.dark]
+        case .quartzCrystal:
+            return [.earth, .light]
         }
     }
     
@@ -121,6 +126,11 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
             return [
                 "The skull of a long dead soldier. No telling which side they were on.",
                 "The owner of the skull died in battle, it still radiates the desire for revenge"
+            ]
+        case .quartzCrystal:
+            return [
+                "A clear crystal that catches and bends light",
+                "Formed deep in the earth, it holds both stone and radiance"
             ]
         default:
             return []

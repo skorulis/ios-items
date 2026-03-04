@@ -12,6 +12,7 @@ import SwiftUI
     private(set) var showingAchievements: Bool = false
     private(set) var warehouseNewCount: Int = 0
     private(set) var achievementsNewCount: Int = 0
+    private(set) var hasNewResearchLevel: Bool = false
     
     private let mainStore: MainStore
     private let achievementService: AchievementService
@@ -38,6 +39,11 @@ import SwiftUI
         mainStore.$warehouse
             .map(\.newDiscoveriesCount)
             .sink { [weak self] in self?.warehouseNewCount = $0 }
+            .store(in: &cancellables)
+
+        mainStore.$lab
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] in self?.hasNewResearchLevel = $0.hasNewResearchLevel }
             .store(in: &cancellables)
     }
 }

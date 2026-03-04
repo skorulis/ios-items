@@ -34,6 +34,7 @@ internal enum Asset {
     internal static let hourglass = ImageAsset(name: "hourglass")
     internal static let humanSkull = ImageAsset(name: "humanSkull")
     internal static let lens = ImageAsset(name: "lens")
+    internal static let quartzCrystal = ImageAsset(name: "quartzCrystal")
     internal static let rock = ImageAsset(name: "rock")
     internal static let silverCoin = ImageAsset(name: "silverCoin")
   }

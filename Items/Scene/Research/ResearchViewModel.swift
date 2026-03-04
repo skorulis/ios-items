@@ -12,6 +12,7 @@ import SwiftUI
     
     private(set) var warehouse: Warehouse
     private(set) var lab: Laboratory
+    private let mainStore: MainStore
     var showingPicker: Bool = false
     
     /// Updated by timer for smooth progress bar; used when computing progress.
@@ -24,6 +25,7 @@ import SwiftUI
     @Resolvable<BaseResolver>
     init(mainStore: MainStore, researchService: ResearchService) {
         self.researchService = researchService
+        self.mainStore = mainStore
         
         self.warehouse = mainStore.warehouse
         self.lab = mainStore.lab
@@ -127,5 +129,11 @@ extension ResearchViewModel {
     func stopTimer() {
         timer?.invalidate()
         timer = nil
+    }
+    
+    func onAppear() {
+        startTimer()
+        updateResearchProgress()
+        mainStore.lab.hasNewResearchLevel = false
     }
 }

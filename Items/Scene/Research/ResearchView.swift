@@ -28,10 +28,7 @@ extension ResearchView: View {
                 }
             )
         }
-        .onAppear {
-            viewModel.startTimer()
-            viewModel.updateResearchProgress()
-        }
+        .onAppear { viewModel.onAppear() }
         .onDisappear { viewModel.stopTimer() }
     }
     

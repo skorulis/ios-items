@@ -75,6 +75,7 @@ struct ContentView: View {
                 Label("Research", systemImage: "flask.fill")
             }
             .tag(3)
+            .badge(viewModel.hasNewResearchLevel ? "1" : nil)
     }
     
     private var encyclopediaTab: some View {
