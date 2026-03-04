@@ -14,6 +14,16 @@ import SwiftUI
         let id: UUID
         let duration: TimeInterval
         let sacrificedItems: [BaseItem]
+        
+        var creationColors: [Color] {
+            if sacrificedItems.isEmpty {
+                return Essence.allCases.map { $0.color }
+            } else {
+                return sacrificedItems
+                    .flatMap { $0.essences }
+                    .map { $0.color }
+            }
+        }
     }
 
     struct Model {
@@ -97,9 +107,9 @@ extension CreationView: View {
         if let creation = viewModel.model.creationInProgress {
             ParticleCanvasView(
                 movementDuration: creation.duration,
-                colors: Essence.allCases.map { $0.color },
+                colors: creation.creationColors,
             )
-                .id(creation.id)
+            .id(creation.id)
         }
     }
 
