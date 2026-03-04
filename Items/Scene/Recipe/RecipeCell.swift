@@ -65,7 +65,6 @@ extension RecipeCell: View {
         Button(action: showDetailsPressed) {
             Image(systemName: "info.circle")
                 .font(.title2.weight(.semibold))
-                .foregroundStyle(.blue)
                 .frame(width: 32, height: 32)
                 .padding(4)
                 .foregroundStyle(Color.black)

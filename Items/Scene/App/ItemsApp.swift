@@ -21,7 +21,7 @@ struct ItemsApp: App {
     
     var body: some Scene {
         WindowGroup {
-            CoordinatorView(coordinator: mainCoordinator)
+            CoordinatorView(coordinator: mainCoordinator, useNavigationStack: false)
                 .withRenderers(resolver: assembler.resolver)
                 .onAppear {
                     assembler.resolver.toastService().coordinator = mainCoordinator
