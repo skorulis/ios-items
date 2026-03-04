@@ -7,7 +7,10 @@ enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
     case items10
     case items100
     case items1_000_000
-    
+
+    case sacrificed1
+    case sacrificed1000
+
     case common1
 
     case artifact1
@@ -23,6 +26,8 @@ enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
         case .items10: return "Baby steps"
         case .items100: return "Getting somewhere"
         case .items1_000_000: return "That's a lot"
+        case .sacrificed1: return "First sacrifice"
+        case .sacrificed1000: return "Mass sacrifice"
         case .common1: return "Filthy Commoner"
         case .artifact1: return "First artifact"
         case .artifacts5: return "Artifact collector"
@@ -41,6 +46,10 @@ enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
             return Image(systemName: "command")
         case .items1_000_000:
             return Image(systemName: "gauge.with.dots.needle.100percent")
+        case .sacrificed1:
+            return Image(systemName: "flame")
+        case .sacrificed1000:
+            return Image(systemName: "flame.fill")
         case .artifact1:
             return Image(systemName: "sparkle")
         case .artifacts5:
@@ -60,6 +69,10 @@ enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
             return .itemsCreated(100)
         case .items1_000_000:
             return .itemsCreated(1_000_000)
+        case .sacrificed1:
+            return .itemsSacrificed(1)
+        case .sacrificed1000:
+            return .itemsSacrificed(1000)
         case .common1:
             return .commonItemsCreated(1)
         case .artifact1:
@@ -75,9 +88,9 @@ enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
     
     var quality: ItemQuality {
         switch self {
-        case .items10, .artifact1, .essence1:
+        case .items10, .artifact1, .essence1, .sacrificed1:
             return .junk
-        case .items100, .artifacts5, .common1, .allEssences:
+        case .items100, .artifacts5, .common1, .allEssences, .sacrificed1000:
             return .common
         case .items1_000_000:
             return .exceptional
@@ -96,7 +109,7 @@ enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
             return "1% increased chance to find common items"
         case .items1_000_000:
             return "TODO"
-        case .artifacts5, .essence1, .allEssences:
+        case .sacrificed1, .sacrificed1000, .artifacts5, .essence1, .allEssences:
             return nil
         }
     }

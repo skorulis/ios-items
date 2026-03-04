@@ -37,6 +37,8 @@ final class AchievementService {
         switch requirement {
         case .itemsCreated:
             return mainStore.statistics.itemsCreated
+        case .itemsSacrificed:
+            return mainStore.statistics.itemsSacrificed
         case .researchRuns:
             return mainStore.statistics.researchRuns
         case .commonItemsCreated:
@@ -55,6 +57,7 @@ final class AchievementService {
     func progressTotal(requirement: UnlockRequirement) -> Int64 {
         switch requirement {
         case let .itemsCreated(count),
+             let .itemsSacrificed(count),
              let .researchRuns(count),
              let .commonItemsCreated(count),
              let .essencesUnlocked(count),

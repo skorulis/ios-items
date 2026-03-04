@@ -4,6 +4,7 @@ import Foundation
 
 enum UnlockRequirement: Codable {
     case itemsCreated(Int64)
+    case itemsSacrificed(Int64)
     case researchRuns(Int64)
     case commonItemsCreated(Int64)
     
@@ -26,6 +27,8 @@ extension UnlockRequirement {
         switch self {
         case let .itemsCreated(count):
             return "Create \(count) items"
+        case let .itemsSacrificed(count):
+            return "Sacrifice \(count) item\(count == 1 ? "" : "s")"
         case let .researchRuns(count):
             return "Research \(count) times"
         case let .commonItemsCreated(count):
