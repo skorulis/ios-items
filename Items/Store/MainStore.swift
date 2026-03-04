@@ -42,10 +42,17 @@ final class MainStore: ObservableObject {
         }
     }
 
+    @Published var notifications: Notifications {
+        didSet {
+            try? self.store.set(codable: notifications, forKey: Self.notificationsKey)
+        }
+    }
+
     private let store: PKeyValueStore
     private static let achievementsKey = "MainStore.achievements"
     private static let conceptsKey = "MainStore.concepts"
     private static let labKey = "MainStore.lab"
+    private static let notificationsKey = "MainStore.notifications"
     private static let recipesKey = "MainStore.recipes"
     private static let statisticsKey = "MainStore.statistics"
     private static let warehouseKey = "MainStore.warehouse"
@@ -53,18 +60,13 @@ final class MainStore: ObservableObject {
     @Resolvable<BaseResolver>
     init(store: PKeyValueStore) {
         self.store = store
-        
+
         self.warehouse = (try? store.codable(forKey: Self.warehouseKey)) ?? Warehouse()
         self.statistics = (try? store.codable(forKey: Self.statisticsKey)) ?? Statistics()
         self.lab = (try? store.codable(forKey: Self.labKey)) ?? Laboratory()
-        if let stored: Achievements = try? store.codable(forKey: Self.achievementsKey) {
-            self.achievements = stored
-        } else if let legacy: [Achievement] = try? store.codable(forKey: Self.achievementsKey) {
-            self.achievements = Achievements(unlocked: Set(legacy), new: [])
-        } else {
-            self.achievements = Achievements()
-        }
+        self.achievements = (try? store.codable(forKey: Self.achievementsKey)) ?? Achievements()
         self.recipes = (try? store.codable(forKey: Self.recipesKey)) ?? []
         self.concepts = (try? store.codable(forKey: Self.conceptsKey)) ?? Concepts()
+        self.notifications = (try? store.codable(forKey: Self.notificationsKey)) ?? Notifications()
     }
 }

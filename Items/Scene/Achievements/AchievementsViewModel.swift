@@ -32,7 +32,7 @@ extension AchievementsViewModel {
     }
     
     func onAppear() {
-        model.newAchievementsToShow = mainStore.achievements.new
-        mainStore.achievements.clearNewAchievements()
+        model.newAchievementsToShow = mainStore.notifications.newAchievements
+        mainStore.notifications.clearNewAchievements()
     }
 }

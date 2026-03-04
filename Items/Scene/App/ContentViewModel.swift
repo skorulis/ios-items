@@ -10,10 +10,8 @@ import SwiftUI
     
     private(set) var showingResearch: Bool = false
     private(set) var showingAchievements: Bool = false
-    private(set) var warehouseNewCount: Int = 0
-    private(set) var achievementsNewCount: Int = 0
-    private(set) var hasNewResearchLevel: Bool = false
-    
+    private(set) var notifications: Notifications = Notifications()
+
     private let mainStore: MainStore
     private let achievementService: AchievementService
     private let researchService: ResearchService
@@ -30,21 +28,12 @@ import SwiftUI
             self.showingResearch = achievements.unlocked.contains(.items10)
         }
         .store(in: &cancellables)
-        
-        mainStore.$achievements
-            .map(\.new.count)
-            .sink { [weak self] in self?.achievementsNewCount = $0 }
-            .store(in: &cancellables)
-        
-        mainStore.$warehouse
-            .map(\.newDiscoveriesCount)
-            .sink { [weak self] in self?.warehouseNewCount = $0 }
+
+        mainStore.$notifications
+            .sink { [weak self] in self?.notifications = $0 }
             .store(in: &cancellables)
 
-        mainStore.$lab
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] in self?.hasNewResearchLevel = $0.hasNewResearchLevel }
-            .store(in: &cancellables)
+        self.notifications = mainStore.notifications
     }
 }
 

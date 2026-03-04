@@ -134,6 +134,6 @@ extension ResearchViewModel {
     func onAppear() {
         startTimer()
         updateResearchProgress()
-        mainStore.lab.hasNewResearchLevel = false
+        mainStore.notifications.clearNewResearchLevel()
     }
 }

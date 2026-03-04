@@ -61,9 +61,9 @@ extension WarehouseViewModel {
 
     func onAppear() {
         // Capture current "new" state for the UI, but immediately clear persisted flags
-        model.newItemsToShow = warehouse.newItems
-        model.newArtifactsToShow = warehouse.newArtifacts
-        
+        model.newItemsToShow = mainStore.notifications.newItems
+        model.newArtifactsToShow = mainStore.notifications.newArtifacts
+
         clearNew()
     }
     

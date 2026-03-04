@@ -27,7 +27,9 @@ final class AchievementService {
         let toCheck = Achievement.allCases.filter { !mainStore.achievements.unlocked.contains($0) }
         let completed = toCheck.filter { isComplete(requirement: $0.requirement) }
         guard completed.count > 0 else { return }
-        mainStore.achievements.add(achievements: Set(completed))
+        let newAchievements = Set(completed)
+        mainStore.achievements.add(achievements: newAchievements)
+        mainStore.notifications.recordNewAchievements(newAchievements)
         for achievement in completed {
             toastService.showToast("Achievement unlocked: \(achievement.name)")
         }

@@ -25,10 +25,12 @@ extension WarehouseService {
 
     /// Add items to the warehouse.
     func add(item: BaseItem, count: Int = 1) {
-        if !mainStore.warehouse.hasDiscovered(item) {
-            toastService.showToast("Discovered \(item.name)")
-        }
+        let wasNewDiscovery = !mainStore.warehouse.hasDiscovered(item)
         mainStore.warehouse.add(item: item, count: count)
+        if wasNewDiscovery {
+            toastService.showToast("Discovered \(item.name)")
+            mainStore.notifications.recordNewItemDiscovery(item)
+        }
     }
 
     /// Remove items from the warehouse.
@@ -38,39 +40,42 @@ extension WarehouseService {
 
     /// Add / upgrade an artifact in the warehouse.
     func add(artifact: ArtifactInstance) {
-        if mainStore.warehouse.isNewDiscovery(artifact: artifact) {
+        let wasNewDiscovery = mainStore.warehouse.isNewDiscovery(artifact: artifact)
+        mainStore.warehouse.add(artifact: artifact)
+        if wasNewDiscovery {
             if artifact.quality == .junk {
                 toastService.showToast("Discovered \(artifact.type.name)")
             } else {
                 toastService.showToast("Upgraded \(artifact.type.name)")
             }
+            mainStore.notifications.recordNewArtifactDiscovery(artifact.type)
         }
-        mainStore.warehouse.add(artifact: artifact)
     }
 
     /// Mark an item as viewed so it no longer appears as new.
     func markItemViewed(_ item: BaseItem) {
-        mainStore.warehouse.markViewed(item: item)
+        mainStore.notifications.markItemViewed(item)
     }
 
     /// Mark an artifact as viewed so it no longer appears as new.
     func markArtifactViewed(_ artifact: Artifact) {
-        mainStore.warehouse.markViewed(artifact: artifact)
+        mainStore.notifications.markArtifactViewed(artifact)
     }
 
     /// Clear all "new" flags for items.
     func clearNewItems() {
-        mainStore.warehouse.newItems.removeAll()
+        mainStore.notifications.clearNewItems()
     }
 
     /// Clear all "new" flags for artifacts.
     func clearNewArtifacts() {
-        mainStore.warehouse.newArtifacts.removeAll()
+        mainStore.notifications.clearNewArtifacts()
     }
 
     /// Clear all "new" discovery flags.
     func clearNewDiscoveries() {
-        mainStore.warehouse.clearNewDiscoveries()
+        mainStore.notifications.clearNewItems()
+        mainStore.notifications.clearNewArtifacts()
     }
 
     /// Equip an artifact in the warehouse.

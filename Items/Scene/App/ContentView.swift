@@ -55,7 +55,7 @@ struct ContentView: View {
                 Label("Warehouse", systemImage: "shippingbox")
             }
             .tag(1)
-            .badge(viewModel.warehouseNewCount > 0 ? "\(viewModel.warehouseNewCount)" : nil)
+            .badge(viewModel.notifications.warehouseNewCount > 0 ? "\(viewModel.notifications.warehouseNewCount)" : nil)
     }
     
     private var achievementsTab: some View {
@@ -65,7 +65,7 @@ struct ContentView: View {
                 Label("Achievements", systemImage: "fireworks")
             }
             .tag(2)
-            .badge(viewModel.achievementsNewCount > 0 ? "\(viewModel.achievementsNewCount)" : nil)
+            .badge(viewModel.notifications.achievementsNewCount > 0 ? "\(viewModel.notifications.achievementsNewCount)" : nil)
     }
     
     private var researchTab: some View {
@@ -75,7 +75,9 @@ struct ContentView: View {
                 Label("Research", systemImage: "flask.fill")
             }
             .tag(3)
-            .badge(viewModel.hasNewResearchLevel ? "1" : nil)
+            .badge(
+                viewModel.notifications.newResearchLevels > 0 ? "\(viewModel.notifications.newResearchLevels)" : nil
+            )
     }
     
     private var encyclopediaTab: some View {
