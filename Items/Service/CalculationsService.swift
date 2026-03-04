@@ -52,4 +52,10 @@ struct CalculationsService {
         let levelMultiplier = pow(2.0, Double(researchLevel))
         return Chance(min(1.0, base * levelMultiplier))
     }
+
+    /// Research speed boost from equipped Perfect Lens (0 if none equipped).
+    func researchSpeedBoostPercent() -> Int {
+        guard let lens = mainStore.warehouse.equippedArtifact(.perfectLens) else { return 0 }
+        return lens.type.perfectLensResearchBoost(quality: lens.quality)
+    }
 }

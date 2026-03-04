@@ -63,6 +63,9 @@ extension ResearchView: View {
     private func textBlock(item: BaseItem) -> some View {
         VStack {
             Text("Level: \(viewModel.currentLevel)")
+            if viewModel.researchBoostPercent > 0 {
+                Text("Research speed: +\(viewModel.researchBoostPercent)%")
+            }
         }
     }
     

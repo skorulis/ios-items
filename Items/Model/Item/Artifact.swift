@@ -25,7 +25,7 @@ enum Artifact: Identifiable, Hashable, CaseIterable, Codable {
         case .luckyCoin:
             return "A coin blessed with fortune, increasing the chance of double item rewards."
         case .perfectLens:
-            return "A flawless lens that amplifies the power of light-based items."
+            return "A flawless lens that boosts research."
         case .sacrificalSkull:
             return "A grim relic that strengthens the effects of sacrifices."
         }
@@ -68,7 +68,7 @@ extension Artifact {
         }
     }
     
-    func perfectLensLightBoost(quality: ItemQuality) -> Int {
+    func perfectLensResearchBoost(quality: ItemQuality) -> Int {
         switch quality {
         case .junk: return 25
         case .common: return 50
@@ -101,7 +101,7 @@ extension Artifact {
         case .luckyCoin:
             return "Increase the chance of double items by \(luckyCoinMultipleItemChance(quality: quality))%"
         case .perfectLens:
-            return "Boost generating light based items by \(perfectLensLightBoost(quality: quality))%"
+            return "Boost research speed by \(perfectLensResearchBoost(quality: quality))%"
         case .sacrificalSkull:
             return "Increase the effect of sacrifices by \(sacrificalSkullSacrificeEffectMultiplier(quality: quality))%"
         }

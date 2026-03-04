@@ -48,7 +48,9 @@ extension ResearchService {
         let item = current.item
         
         let startDate = current.startDate
-        var elapsed = now.timeIntervalSince(startDate) + lab.accumulatedSeconds(for: item)
+        let boostMultiplier = 1.0 + Double(calculations.researchSpeedBoostPercent()) / 100.0
+        let liveElapsed = now.timeIntervalSince(startDate) * boostMultiplier
+        var elapsed = lab.accumulatedSeconds(for: item) + liveElapsed
         var level = lab.currentLevel(item: item)
         
         var totalRequired = calculations.researchDurationSeconds(for: item, level: level)
@@ -110,10 +112,16 @@ extension ResearchService {
         let accumulated = lab.accumulatedSeconds(for: item)
         if let current = lab.currentResearch, current.item == item {
             let start = current.startDate
-            let liveElapsed = now.timeIntervalSince(start)
+            let boostMultiplier = 1.0 + Double(calculations.researchSpeedBoostPercent()) / 100.0
+            let liveElapsed = now.timeIntervalSince(start) * boostMultiplier
             return (min(accumulated + liveElapsed, total), total)
         }
         return (accumulated, total)
+    }
+
+    /// Research speed boost percent from equipped Perfect Lens (for UI).
+    func researchSpeedBoostPercent() -> Int {
+        calculations.researchSpeedBoostPercent()
     }
     
     /// Call on app launch or when returning to foreground to catch up research progress.

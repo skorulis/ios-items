@@ -35,5 +35,33 @@ struct CalculationServiceTests {
         // Common base 0.02, level 2 = 4x -> 0.08
         expectApproximate(calculationService.artifactChance(quality: .common, researchLevel: 2).fraction, 0.08)
     }
+
+    // MARK: - researchSpeedBoostPercent
+
+    @Test
+    func researchSpeedBoostPercent_withNoLens_returnsZero() {
+        mainStore.warehouse = Warehouse()
+        #expect(calculationService.researchSpeedBoostPercent() == 0)
+    }
+
+    @Test
+    func researchSpeedBoostPercent_withLensOwnedButNotEquipped_returnsZero() {
+        mainStore.warehouse = Warehouse()
+        var warehouse = mainStore.warehouse
+        warehouse.add(artifact: ArtifactInstance(type: .perfectLens, quality: .common))
+        mainStore.warehouse = warehouse
+        #expect(calculationService.researchSpeedBoostPercent() == 0)
+    }
+
+    @Test
+    func researchSpeedBoostPercent_withEquippedLens_returnsBoostByQuality() {
+        for (quality, expectedPercent) in [(ItemQuality.junk, 25), (.common, 50), (.good, 75), (.rare, 100), (.exceptional, 150)] {
+            var warehouse = mainStore.warehouse
+            warehouse.add(artifact: ArtifactInstance(type: .perfectLens, quality: quality))
+            warehouse.equip(.perfectLens)
+            mainStore.warehouse = warehouse
+            #expect(calculationService.researchSpeedBoostPercent() == expectedPercent, "quality: \(quality)")
+        }
+    }
 }
 

@@ -90,13 +90,30 @@ extension ResearchViewModel {
         guard cost > 0 else { return false }
         return warehouse.quantity(selectedItem) >= cost
     }
+
+    var researchBoostPercent: Int {
+        researchService.researchSpeedBoostPercent()
+    }
+
+    /// Timer interval shortens when research is boosted so the progress bar updates more frequently.
+    private var timerInterval: TimeInterval {
+        let multiplier = 1.0 + Double(researchBoostPercent) / 100.0
+        return max(0.25, 1.0 / multiplier)
+    }
     
     func startTimer() {
         guard timer == nil else { return }
-        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+        scheduleTimer()
+    }
+    
+    private func scheduleTimer() {
+        timer = Timer.scheduledTimer(withTimeInterval: timerInterval, repeats: false) { [weak self] _ in
             guard let self else { return }
             Task { @MainActor in
                 self.updateResearchProgress()
+                self.timer?.invalidate()
+                self.timer = nil
+                self.scheduleTimer()
             }
         }
         RunLoop.main.add(timer!, forMode: .common)
