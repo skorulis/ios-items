@@ -104,7 +104,7 @@ extension CreationViewModel {
         self.model.createdItem = nil
         let recipe = recipeService.nextAvailable()
         recipeService.consumeRecipe(recipe)
-        mainStore.statistics.itemsDestroyed += Int64(recipe.items.count)
+        mainStore.statistics.itemsSacrificed += Int64(recipe.items.count)
 
         try? await Task.sleep(for: .milliseconds(calculations.itemCreationMilliseconds))
         self.model.creationInProgress = nil

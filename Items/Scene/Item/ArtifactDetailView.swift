@@ -35,6 +35,10 @@ extension ArtifactDetailView: View {
                     Spacer()
                 }
 
+                Text(viewModel.artifact.type.description)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+
                 Text(viewModel.artifact.bonusMessage)
             }
 

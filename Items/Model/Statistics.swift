@@ -5,7 +5,7 @@ import Foundation
 struct Statistics: Codable {
     var itemsCreated: Int64 = 0
     var doubleItemCreations: Int64 = 0
-    var itemsDestroyed: Int64 = 0
+    var itemsSacrificed: Int64 = 0
     
     var researchRuns: Int64 = 0
 }
