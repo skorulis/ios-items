@@ -12,6 +12,7 @@ struct UpgradeCostItem: Codable, Hashable {
 enum PortalUpgrade: Codable, Hashable, CaseIterable, Identifiable {
     case portalAutomation
     case researchLab
+    case researchLabLevel2
     case sacrifices
     case portalGlow
 
@@ -21,6 +22,7 @@ enum PortalUpgrade: Codable, Hashable, CaseIterable, Identifiable {
         switch self {
         case .portalAutomation: return "Portal Automation"
         case .researchLab: return "Research Lab"
+        case .researchLabLevel2: return "Research Lab II"
         case .sacrifices: return "Sacrifices"
         case .portalGlow: return "Portal Glow"
         }
@@ -32,6 +34,8 @@ enum PortalUpgrade: Codable, Hashable, CaseIterable, Identifiable {
         case .researchLab: return "Unlocks the Research lab."
         case .sacrifices: return "Unlocks the Sacrifices feature."
         case .portalGlow: return "Enhances the portal's visual aura."
+        default:
+            return self.bonus?.text ?? "TODO: Set manual description or add bonus"
         }
     }
 
@@ -39,6 +43,7 @@ enum PortalUpgrade: Codable, Hashable, CaseIterable, Identifiable {
         switch self {
         case .portalAutomation: return Image(systemName: "play.circle.fill")
         case .researchLab: return Image(systemName: "flask.fill")
+        case .researchLabLevel2: return Image(systemName: "flask.fill")
         case .sacrifices: return Image(systemName: "flame.fill")
         case .portalGlow: return Image(systemName: "circle.hexagongrid.fill")
         }
@@ -56,6 +61,11 @@ enum PortalUpgrade: Codable, Hashable, CaseIterable, Identifiable {
             .init(item: .lens, quantity: 1),
             .init(item: .copperFlorin, quantity: 2),
         ]
+        case .researchLabLevel2: return [
+            .init(item: .potionFlask, quantity: 2),
+            .init(item: .lens, quantity: 2),
+            .init(item: .silverFlorin, quantity: 1),
+        ]
         case .sacrifices: return [
             .init(item: .humanSkull, quantity: 1),
             .init(item: .copperFlorin, quantity: 3),
@@ -65,6 +75,26 @@ enum PortalUpgrade: Codable, Hashable, CaseIterable, Identifiable {
             .init(item: .silverFlorin, quantity: 1),
             .init(item: .humanSkull, quantity: 1)
         ]
+        }
+    }
+
+    /// Optional requirement that must be met before this upgrade becomes available.
+    var requirement: UnlockRequirement? {
+        switch self {
+        case .researchLabLevel2:
+            return .upgradePurchased(.researchLab)
+        default:
+            return nil
+        }
+    }
+
+    /// Optional gameplay bonus granted by this upgrade.
+    var bonus: Bonus? {
+        switch self {
+        case .researchLabLevel2:
+            return .researchSpeed(10)
+        default:
+            return nil
         }
     }
 }

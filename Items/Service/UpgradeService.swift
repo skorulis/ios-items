@@ -7,10 +7,12 @@ import KnitMacros
 final class UpgradeService {
 
     private let mainStore: MainStore
+    private let achievementService: AchievementService
 
     @Resolvable<BaseResolver>
-    init(mainStore: MainStore) {
+    init(mainStore: MainStore, achievementService: AchievementService) {
         self.mainStore = mainStore
+        self.achievementService = achievementService
     }
 }
 
@@ -23,11 +25,14 @@ extension UpgradeService {
         let warehouse = mainStore.warehouse
         let purchased = mainStore.portalUpgrades.purchased
         return PortalUpgrade.allCases.filter { upgrade in
-            !purchased.contains(upgrade) && canPurchase(upgrade, warehouse: warehouse)
+            !purchased.contains(upgrade)
+                && isUnlocked(upgrade)
+                && canPurchase(upgrade, warehouse: warehouse)
         }
     }
 
     func canPurchase(_ upgrade: PortalUpgrade, warehouse: Warehouse? = nil) -> Bool {
+        guard isUnlocked(upgrade) else { return false }
         let w = warehouse ?? mainStore.warehouse
         return upgrade.cost.allSatisfy { w.quantity($0.item) >= $0.quantity }
     }
@@ -45,4 +50,11 @@ extension UpgradeService {
         }
         mainStore.portalUpgrades.purchased.insert(upgrade)
     }
+
+    /// Whether the given upgrade's unlock requirement (if any) has been satisfied.
+    func isUnlocked(_ upgrade: PortalUpgrade) -> Bool {
+        guard let requirement = upgrade.requirement else { return true }
+        return achievementService.isComplete(requirement: requirement)
+    }
+
 }

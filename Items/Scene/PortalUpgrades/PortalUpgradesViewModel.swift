@@ -44,7 +44,10 @@ import SwiftUI
 
 extension PortalUpgradesViewModel {
     var availableToPurchase: [PortalUpgrade] {
-        PortalUpgrade.allCases.filter { !purchasedUpgrades.purchased.contains($0) }
+        PortalUpgrade.allCases.filter { upgrade in
+            !purchasedUpgrades.purchased.contains(upgrade)
+                && upgradeService.isUnlocked(upgrade)
+        }
     }
 
     var purchased: [PortalUpgrade] {

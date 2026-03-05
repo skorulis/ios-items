@@ -55,7 +55,12 @@ struct CalculationsService {
 
     /// Research speed boost from equipped Perfect Lens (0 if none equipped).
     func researchSpeedBoostPercent() -> Int {
-        guard let lens = mainStore.warehouse.equippedArtifact(.perfectLens) else { return 0 }
-        return lens.type.perfectLensResearchBoost(quality: lens.quality)
+        var result = 0
+        if let lens = mainStore.warehouse.equippedArtifact(.perfectLens) {
+            result += lens.type.perfectLensResearchBoost(quality: lens.quality)
+        }
+        result += mainStore.portalUpgrades.bonuses.researchSpeed
+        
+        return result
     }
 }
