@@ -55,6 +55,10 @@ extension ContentView: View {
             if viewModel.model.showingEncyclopedia {
                 encyclopediaTab
             }
+
+#if DEBUG
+            debugTab
+#endif
             
         }
         .onAppear { viewModel.resumeResearchProgressIfNeeded() }
@@ -102,6 +106,16 @@ extension ContentView: View {
             }
             .tag(4)
     }
+
+#if DEBUG
+    private var debugTab: some View {
+        DebugView(viewModel: resolver!.debugViewModel())
+            .tabItem {
+                Label("Debug", systemImage: "ladybug")
+            }
+            .tag(5)
+    }
+#endif
     
 }
 
