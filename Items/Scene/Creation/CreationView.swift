@@ -40,6 +40,8 @@ import SwiftUI
         var upgradesAvailable: Bool { achievements.unlocked.contains(.items10) }
         var firstItem: Bool { !achievements.unlocked.contains(.items1) }
         var automationUnlocked: Bool = false
+        var showingResearch: Bool = false
+        var researchBadgeCount: Int = 0
 
         var currentSacrifice: Recipe? {
             return recipes.first { recipe in
@@ -59,8 +61,11 @@ extension CreationView: View {
         ZStack {
             PortalView(
                 upgradesButton: viewModel.model.upgradesAvailable
-                ? .init(action: viewModel.showPortalUpgrades, badge: 0)
-                : nil
+                    ? .init(action: viewModel.showPortalUpgrades, badge: 0)
+                    : nil,
+                researchButton: viewModel.model.showingResearch
+                    ? .init(action: viewModel.showResearch, badge: viewModel.model.researchBadgeCount)
+                    : nil
             )
             maybeCreationAnimation
             sacrificeAvatarsOverlay

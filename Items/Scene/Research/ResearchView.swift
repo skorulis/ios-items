@@ -1,5 +1,6 @@
 //Created by Alexander Skorulis on 13/2/2026.
 
+import ASKCoordinator
 import Foundation
 import Knit
 import SwiftUI
@@ -15,10 +16,10 @@ import SwiftUI
 extension ResearchView: View {
     
     var body: some View {
-        VStack(spacing: 0) {
-            titleBar
-            content
-        }
+        PageLayout(
+            titleBar: { titleBar},
+            content: { content}
+        )
         .sheet(isPresented: $viewModel.showingPicker) {
             ItemPicker(
                 predicate: { viewModel.warehouse.quantity($0) > 0 },
@@ -88,6 +89,7 @@ extension ResearchView: View {
     private var titleBar: some View {
         TitleBar(
             title: "Research",
+            backAction: { viewModel.coordinator?.pop() },
             trailing: { helpButton }
         )
     }

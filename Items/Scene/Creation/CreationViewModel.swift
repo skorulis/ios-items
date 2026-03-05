@@ -67,8 +67,17 @@ import SwiftUI
 
         mainStore.$portalUpgrades.sink { [unowned self] in
             self.model.automationUnlocked = $0.purchased.contains(.portalAutomation)
+            self.model.showingResearch = $0.purchased.contains(.researchLab)
         }
         .store(in: &cancellables)
+
+        mainStore.$notifications.sink { [unowned self] in
+            self.model.researchBadgeCount = $0.newResearchLevels
+        }
+        .store(in: &cancellables)
+
+        self.model.showingResearch = mainStore.portalUpgrades.purchased.contains(.researchLab)
+        self.model.researchBadgeCount = mainStore.notifications.newResearchLevels
     }
     
     deinit {
@@ -141,5 +150,8 @@ extension CreationViewModel {
     func showDetails(item: BaseItem) {
         coordinator?.custom(overlay: .card, MainPath.itemDetails(item))
     }
-    
+
+    func showResearch() {
+        coordinator?.push(MainPath.research)
+    }
 }

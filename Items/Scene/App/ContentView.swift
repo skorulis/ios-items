@@ -12,7 +12,6 @@ struct ContentView {
     @State var viewModel: ContentViewModel
     @State var creationCoordinator = Coordinator(root: MainPath.creation)
     @State var warehouseCoordinator = Coordinator(root: MainPath.warehouse)
-    @State var researchCoordinator = Coordinator(root: MainPath.research)
     @State var achievementsCoordinator = Coordinator(root: MainPath.achievements)
     @State var tab5Coordinator = Coordinator(root: MainPath.encyclopediaEntry(.root))
     @State private var selectedTab: Int = 0
@@ -24,17 +23,13 @@ struct ContentView {
 
 extension ContentView {
     struct Model {
-        var showingResearch: Bool = false
         var showingWarehouse: Bool = false
         var showingAchievements: Bool = false
         var showingEncyclopedia: Bool = false
         var notifications: Notifications = Notifications()
-        
+
         var tabBarHidden: Bool {
-            return !showingResearch
-            && !showingWarehouse
-            && !showingAchievements
-            && !showingEncyclopedia
+            !showingWarehouse && !showingAchievements && !showingEncyclopedia
         }
     }
 }
@@ -52,11 +47,7 @@ extension ContentView: View {
             if viewModel.model.showingWarehouse {
                 warehouseTab
             }
-            
-            if viewModel.model.showingResearch {
-                researchTab
-            }
-            
+
             if viewModel.model.showingAchievements {
                 achievementsTab
             }
@@ -102,19 +93,7 @@ extension ContentView: View {
             .tag(2)
             .badge(model.notifications.achievementsNewCount > 0 ? "\(model.notifications.achievementsNewCount)" : nil)
     }
-    
-    private var researchTab: some View {
-        CoordinatorView(coordinator: researchCoordinator)
-            .withRenderers(resolver: resolver!)
-            .tabItem {
-                Label("Research", systemImage: "flask.fill")
-            }
-            .tag(3)
-            .badge(
-                model.notifications.newResearchLevels > 0 ? "\(model.notifications.newResearchLevels)" : nil
-            )
-    }
-    
+
     private var encyclopediaTab: some View {
         CoordinatorView(coordinator: tab5Coordinator)
             .withRenderers(resolver: resolver!)

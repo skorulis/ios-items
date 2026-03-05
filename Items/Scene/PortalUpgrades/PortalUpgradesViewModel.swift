@@ -20,11 +20,13 @@ import SwiftUI
     var purchasedUpgrades: PortalUpgrades
 
     private let mainStore: MainStore
+    private let upgradeService: UpgradeService
     private var cancellables: Set<AnyCancellable> = []
 
     @Resolvable<BaseResolver>
-    init(mainStore: MainStore) {
+    init(mainStore: MainStore, upgradeService: UpgradeService) {
         self.mainStore = mainStore
+        self.upgradeService = upgradeService
         self.warehouse = mainStore.warehouse
         self.purchasedUpgrades = mainStore.portalUpgrades
         mainStore.$warehouse.sink { [weak self] in
@@ -49,20 +51,17 @@ extension PortalUpgradesViewModel {
         PortalUpgrade.allCases.filter { purchasedUpgrades.purchased.contains($0) }
     }
 
+    /// Number of upgrades that can currently be purchased (not yet owned and affordable).
+    var purchasableUpgradeCount: Int {
+        upgradeService.purchasableUpgradeCount()
+    }
+
     func canPurchase(_ upgrade: PortalUpgrade) -> Bool {
-        upgrade.cost.allSatisfy { warehouse.quantity($0.item) >= $0.quantity }
+        upgradeService.canPurchase(upgrade, warehouse: warehouse)
     }
 
     func purchase(_ upgrade: PortalUpgrade) {
-        guard canPurchase(upgrade) else { return }
-        var w = mainStore.warehouse
-        for costItem in upgrade.cost {
-            w.remove(item: costItem.item, quantity: costItem.quantity)
-        }
-        mainStore.warehouse = w
-        var up = mainStore.portalUpgrades
-        up.purchased.insert(upgrade)
-        mainStore.portalUpgrades = up
+        upgradeService.purchase(upgrade)
     }
 
     func pop() {

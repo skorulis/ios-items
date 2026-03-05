@@ -10,6 +10,7 @@ import SwiftUI
 struct PortalView: View {
 
     var upgradesButton: Button?
+    var researchButton: Button?
 
     var body: some View {
         ZStack {
@@ -28,17 +29,29 @@ struct PortalView: View {
 
     @ViewBuilder
     private var cornerButtons: some View {
-        if let upgradesButton {
+        if upgradesButton != nil || researchButton != nil {
             VStack {
                 HStack {
-                    PortalCornerButton(
-                        icon: Image(systemName: "arrow.up.circle.fill"),
-                        action: upgradesButton.action,
-                        badge: upgradesButton.badge
-                    )
+                    if let upgradesButton {
+                        PortalCornerButton(
+                            icon: Image(systemName: "arrow.up.circle.fill"),
+                            action: upgradesButton.action,
+                            badge: upgradesButton.badge
+                        )
+                    }
                     Spacer(minLength: 0)
                 }
                 Spacer(minLength: 0)
+                HStack {
+                    Spacer(minLength: 0)
+                    if let researchButton {
+                        PortalCornerButton(
+                            icon: Image(systemName: "flask.fill"),
+                            action: researchButton.action,
+                            badge: researchButton.badge
+                        )
+                    }
+                }
             }
             .padding()
         }

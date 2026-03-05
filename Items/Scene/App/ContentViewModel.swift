@@ -21,17 +21,10 @@ import SwiftUI
         self.achievementService = achievementService
         self.researchService = researchService
         
-        self.model.showingResearch = mainStore.portalUpgrades.purchased.contains(.researchLab)
-
         mainStore.$achievements.sink { achievements in
             self.model.showingAchievements = achievements.unlocked.count > 0
             self.model.showingEncyclopedia = achievements.unlocked.count > 0
             self.model.showingWarehouse = achievements.unlocked.contains(.items1)
-        }
-        .store(in: &cancellables)
-
-        mainStore.$portalUpgrades.sink { [weak self] in
-            self?.model.showingResearch = $0.purchased.contains(.researchLab)
         }
         .store(in: &cancellables)
 
