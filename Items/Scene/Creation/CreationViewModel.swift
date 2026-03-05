@@ -1,6 +1,7 @@
 //Created by Alexander Skorulis on 11/2/2026.
 
 import ASKCoordinator
+import ASKCore
 import Combine
 import Foundation
 import Knit
@@ -30,6 +31,7 @@ import SwiftUI
     private let itemGeneratorService: ItemGeneratorService
     private let calculations: CalculationsService
     private let mainStore: MainStore
+    private let upgradeService: UpgradeService
     private let recipeService: RecipeService
     private let warehouseService: WarehouseService
     private var cancellables: Set<AnyCancellable> = []
@@ -40,12 +42,14 @@ import SwiftUI
         mainStore: MainStore,
         recipeService: RecipeService,
         calculations: CalculationsService,
+        upgradeService: UpgradeService,
         warehouseService: WarehouseService,
     ) {
         self.itemGeneratorService = itemGeneratorService
         self.mainStore = mainStore
         self.recipeService = recipeService
         self.calculations = calculations
+        self.upgradeService = upgradeService
         self.warehouseService = warehouseService
         
         self.model.automationUnlocked = mainStore.portalUpgrades.purchased.contains(.portalAutomation)
@@ -53,6 +57,14 @@ import SwiftUI
 
         mainStore.$warehouse.sink { [unowned self] in
             self.model.warehouse = $0
+            self.updateUpgradeBadgeCount()
+        }
+        .store(in: &cancellables)
+        
+        mainStore.$portalUpgrades
+            .delayedChange()
+            .sink { [unowned self] _ in
+            self.updateUpgradeBadgeCount()
         }
         .store(in: &cancellables)
 
@@ -63,6 +75,7 @@ import SwiftUI
 
         mainStore.$achievements.sink { [unowned self] in
             self.model.achievements = $0
+            self.updateUpgradeBadgeCount()
         }
         .store(in: &cancellables)
 
@@ -70,6 +83,7 @@ import SwiftUI
             self.model.automationUnlocked = $0.purchased.contains(.portalAutomation)
             self.model.sacrificesUnlocked = $0.purchased.contains(.sacrifices)
             self.model.showingResearch = $0.purchased.contains(.researchLab)
+            self.updateUpgradeBadgeCount()
         }
         .store(in: &cancellables)
 
@@ -80,6 +94,7 @@ import SwiftUI
 
         self.model.showingResearch = mainStore.portalUpgrades.purchased.contains(.researchLab)
         self.model.researchBadgeCount = mainStore.notifications.newResearchLevels
+        self.updateUpgradeBadgeCount()
     }
     
     deinit {
@@ -106,6 +121,10 @@ import SwiftUI
         makeTimer?.invalidate()
         makeTimer = nil
         autoTimerProgress = nil
+    }
+
+    private func updateUpgradeBadgeCount() {
+        model.upgradesBadgeCount = upgradeService.purchasableUpgrades().count
     }
 }
 

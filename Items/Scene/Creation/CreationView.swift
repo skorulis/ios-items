@@ -45,6 +45,7 @@ import SwiftUI
         var sacrificesUnlocked: Bool = false
         var showingResearch: Bool = false
         var researchBadgeCount: Int = 0
+        var upgradesBadgeCount: Int = 0
 
         var currentSacrifice: Recipe? {
             return recipes.first { recipe in
@@ -64,7 +65,7 @@ extension CreationView: View {
         ZStack {
             PortalView(
                 upgradesButton: viewModel.model.upgradesAvailable
-                    ? .init(action: viewModel.showPortalUpgrades, badge: 0)
+                    ? .init(action: viewModel.showPortalUpgrades, badge: viewModel.model.upgradesBadgeCount)
                     : nil,
                 researchButton: viewModel.model.showingResearch
                     ? .init(action: viewModel.showResearch, badge: viewModel.model.researchBadgeCount)
