@@ -7,10 +7,14 @@ import SwiftUI
 extension CoordinatorView {
     func withRenderers(resolver: BaseResolver) -> Self {
         self.with(renderer: resolver.mainPathRenderer())
-        .with(overlay: .card) { view in
+            .with(renderer: CircularPathRenderer(mainPathRenderer: resolver.mainPathRenderer()))
+        .with(overlay: .card) { view, _ in
             AnyView(CardPathWrapper { view })
         }
-        .with(overlay: .toast) { view in
+        .with(overlay: .circularReveal) { view, path in
+            AnyView(CircularRevealPathWrapper(path: path) { view })
+        }
+        .with(overlay: .toast) { view, _ in
             AnyView(ToastPathWrapper { view })
         }
     }

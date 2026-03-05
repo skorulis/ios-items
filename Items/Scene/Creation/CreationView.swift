@@ -65,10 +65,18 @@ extension CreationView: View {
         ZStack {
             PortalView(
                 upgradesButton: viewModel.model.upgradesAvailable
-                    ? .init(action: viewModel.showPortalUpgrades, badge: viewModel.model.upgradesBadgeCount)
+                    ? .init(
+                        action: viewModel.showPortalUpgrades,
+                        badge: viewModel.model.upgradesBadgeCount,
+                        frameBinding: $viewModel.upgradeButtonFrame,
+                    )
                     : nil,
                 researchButton: viewModel.model.showingResearch
-                    ? .init(action: viewModel.showResearch, badge: viewModel.model.researchBadgeCount)
+                    ? .init(
+                        action: viewModel.showResearch,
+                        badge: viewModel.model.researchBadgeCount,
+                        frameBinding: $viewModel.researchButtonFrame,
+                    )
                     : nil
             )
             maybeCreationAnimation

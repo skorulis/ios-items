@@ -15,6 +15,9 @@ import SwiftUI
     var model = CreationView.Model()
     var coordinator: ASKCoordinator.Coordinator?
     
+    @ObservationIgnored var upgradeButtonFrame: CGRect = .zero
+    @ObservationIgnored var researchButtonFrame: CGRect = .zero
+    
     var automateCreation: Bool = false {
         didSet {
             if automateCreation {
@@ -165,7 +168,8 @@ extension CreationViewModel {
     }
 
     func showPortalUpgrades() {
-        coordinator?.push(MainPath.portalUpgrades)
+        let path = CircularAnimationPath(sourceRect: upgradeButtonFrame, mainPath: .portalUpgrades)
+        coordinator?.custom(overlay: .circularReveal, path)
     }
     
     func showDetails(item: BaseItem) {
@@ -173,6 +177,7 @@ extension CreationViewModel {
     }
 
     func showResearch() {
-        coordinator?.push(MainPath.research)
+        let path = CircularAnimationPath(sourceRect: researchButtonFrame, mainPath: .research)
+        coordinator?.custom(overlay: .circularReveal, path)
     }
 }

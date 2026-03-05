@@ -8,11 +8,13 @@ import SwiftUI
 
 @MainActor struct PortalUpgradesView {
     @State var viewModel: PortalUpgradesViewModel
+    @Environment(\.dismissCircularReveal) private var dismissCircularReveal
 }
 
 // MARK: - Rendering
 
 extension PortalUpgradesView: View {
+    
     var body: some View {
         PageLayout(
             titleBar: { titleBar },
@@ -23,7 +25,13 @@ extension PortalUpgradesView: View {
     private var titleBar: some View {
         TitleBar(
             title: "Portal Upgrades",
-            backAction: { viewModel.pop() }
+            backAction: {
+                if let dismissCircularReveal {
+                    dismissCircularReveal()
+                } else {
+                    viewModel.pop()
+                }
+            }
         )
     }
 

@@ -9,6 +9,7 @@ import SwiftUI
 
 @MainActor struct ResearchView {
     @State var viewModel: ResearchViewModel
+    @Environment(\.dismissCircularReveal) private var dismissCircularReveal
 }
 
 // MARK: - Rendering
@@ -89,7 +90,7 @@ extension ResearchView: View {
     private var titleBar: some View {
         TitleBar(
             title: "Research",
-            backAction: { viewModel.coordinator?.pop() },
+            backAction: { dismissCircularReveal?() },
             trailing: { helpButton }
         )
     }

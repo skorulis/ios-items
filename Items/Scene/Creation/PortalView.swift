@@ -36,7 +36,8 @@ struct PortalView: View {
                         PortalCornerButton(
                             icon: Image(systemName: "arrow.up.circle.fill"),
                             action: upgradesButton.action,
-                            badge: upgradesButton.badge
+                            badge: upgradesButton.badge,
+                            frameBinding: upgradesButton.frameBinding,
                         )
                     }
                     Spacer(minLength: 0)
@@ -48,7 +49,8 @@ struct PortalView: View {
                         PortalCornerButton(
                             icon: Image(systemName: "flask.fill"),
                             action: researchButton.action,
-                            badge: researchButton.badge
+                            badge: researchButton.badge,
+                            frameBinding: researchButton.frameBinding,
                         )
                     }
                 }
@@ -62,6 +64,7 @@ extension PortalView {
     struct Button {
         let action: () -> Void
         let badge: Int
+        let frameBinding: Binding<CGRect>
     }
 }
 
@@ -72,6 +75,7 @@ struct PortalCornerButton: View {
     let icon: Image
     let action: () -> Void
     var badge: Int? = nil
+    let frameBinding: Binding<CGRect>
 
     private let size: CGFloat = 44
 
@@ -97,6 +101,7 @@ struct PortalCornerButton: View {
             }
         }
         .buttonStyle(.plain)
+        .readFrame(frame: frameBinding)
     }
 }
 
@@ -104,7 +109,7 @@ struct PortalCornerButton: View {
 
 #Preview("Portal view with upgrades") {
     PortalView(
-        upgradesButton: .init(action: {}, badge: 0),
+        upgradesButton: .init(action: {}, badge: 0, frameBinding: .constant(.zero)),
     )
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .background(Color.black.opacity(0.3))
