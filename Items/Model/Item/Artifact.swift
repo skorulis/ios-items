@@ -101,7 +101,7 @@ extension Artifact {
         case .luckyCoin:
             return "Increase the chance of double items by \(luckyCoinMultipleItemChance(quality: quality))%"
         case .perfectLens:
-            return "Boost research speed by \(perfectLensResearchBoost(quality: quality))%"
+            return Bonus.researchSpeed(perfectLensResearchBoost(quality: quality)).text
         case .sacrificalSkull:
             return "Increase the effect of sacrifices by \(sacrificalSkullSacrificeEffectMultiplier(quality: quality))%"
         }

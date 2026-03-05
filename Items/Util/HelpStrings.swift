@@ -11,6 +11,8 @@ enum HelpStrings {
     """
 
     static let recipeList = """
+    Nothing from this dimension can go into the portal, but you can send the discovered items back. This changes the frequency of the portal which causes different items to be returned.
+    
     The Sacrifices screen lets you define rules for what items will be sacrificed on the next item generation.
     Each time an item is generated it will pick the first sacrifice option which has ingredients in your warehouse and consume them.
     Sacrificing low quality items helps to create specific higher quality ones.

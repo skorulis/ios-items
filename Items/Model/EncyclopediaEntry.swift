@@ -46,7 +46,16 @@ extension EncyclopediaEntry {
             
             Who knows what wonders this place contains, perhaps by studying the items you can slowly piece together what this dimension is.
             """,
-            childItems: [Self.portalUpgrades]
+            childItems: [Self.portalUpgrades, Self.sacrifices]
+        )
+    }
+
+    static var sacrifices: Self {
+        .init(
+            title: "Sacrifices",
+            body: HelpStrings.recipeList,
+            condition: .upgradePurchased(.sacrifices),
+            childItems: []
         )
     }
 

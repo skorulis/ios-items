@@ -19,6 +19,9 @@ enum UnlockRequirement: Codable {
 
     /// A specific artifact has been discovered (at any quality).
     case artifactUnlocked(Artifact)
+
+    /// A specific portal upgrade has been purchased.
+    case upgradePurchased(PortalUpgrade)
 }
 
 extension UnlockRequirement {
@@ -41,6 +44,8 @@ extension UnlockRequirement {
             return "Discover \(count) artifact\(count == 1 ? "" : "s")"
         case let .artifactUnlocked(artifact):
             return "\(artifact.name) discovered"
+        case let .upgradePurchased(upgrade):
+            return "Purchase \(upgrade.name)"
         }
     }
 }
