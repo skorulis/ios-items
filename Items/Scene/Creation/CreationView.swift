@@ -57,7 +57,11 @@ extension CreationView: View {
     
     var body: some View {
         ZStack {
-            dimensionalPortalBackground
+            PortalView(
+                upgradesButton: viewModel.model.upgradesAvailable
+                ? .init(action: viewModel.showPortalUpgrades, badge: 0)
+                : nil
+            )
             maybeCreationAnimation
             sacrificeAvatarsOverlay
             itemContainer
@@ -82,21 +86,11 @@ extension CreationView: View {
     
     private var topBar: some View {
         HStack {
-            if viewModel.model.upgradesAvailable {
-                upgradesButton
-            }
             Spacer()
             if viewModel.model.recipesAvailable {
                 sacficesButton
             }
         }
-    }
-
-    private var upgradesButton: some View {
-        Button(action: viewModel.showPortalUpgrades) {
-            Text("Upgrades")
-        }
-        .buttonStyle(CapsuleButtonStyle())
     }
     
     private var sacficesButton: some View {
