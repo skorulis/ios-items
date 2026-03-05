@@ -51,11 +51,6 @@ extension PortalUpgradesViewModel {
         PortalUpgrade.allCases.filter { purchasedUpgrades.purchased.contains($0) }
     }
 
-    /// Number of upgrades that can currently be purchased (not yet owned and affordable).
-    var purchasableUpgradeCount: Int {
-        upgradeService.purchasableUpgradeCount()
-    }
-
     func canPurchase(_ upgrade: PortalUpgrade) -> Bool {
         upgradeService.canPurchase(upgrade, warehouse: warehouse)
     }

@@ -49,6 +49,7 @@ import SwiftUI
         self.warehouseService = warehouseService
         
         self.model.automationUnlocked = mainStore.portalUpgrades.purchased.contains(.portalAutomation)
+        self.model.sacrificesUnlocked = mainStore.portalUpgrades.purchased.contains(.sacrifices)
 
         mainStore.$warehouse.sink { [unowned self] in
             self.model.warehouse = $0
@@ -67,6 +68,7 @@ import SwiftUI
 
         mainStore.$portalUpgrades.sink { [unowned self] in
             self.model.automationUnlocked = $0.purchased.contains(.portalAutomation)
+            self.model.sacrificesUnlocked = $0.purchased.contains(.sacrifices)
             self.model.showingResearch = $0.purchased.contains(.researchLab)
         }
         .store(in: &cancellables)

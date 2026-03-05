@@ -16,12 +16,14 @@ import SwiftUI
         let sacrificedItems: [BaseItem]
         
         var creationColors: [Color] {
-            if sacrificedItems.isEmpty {
+            let fromSacrfice = sacrificedItems
+                .flatMap { $0.essences }
+                .map { $0.color }
+            
+            if fromSacrfice.isEmpty {
                 return Essence.allCases.map { $0.color }
             } else {
-                return sacrificedItems
-                    .flatMap { $0.essences }
-                    .map { $0.color }
+               return fromSacrfice
             }
         }
     }
@@ -40,6 +42,7 @@ import SwiftUI
         var upgradesAvailable: Bool { achievements.unlocked.contains(.items10) }
         var firstItem: Bool { !achievements.unlocked.contains(.items1) }
         var automationUnlocked: Bool = false
+        var sacrificesUnlocked: Bool = false
         var showingResearch: Bool = false
         var researchBadgeCount: Int = 0
 
@@ -92,12 +95,12 @@ extension CreationView: View {
     private var topBar: some View {
         HStack {
             Spacer()
-            if viewModel.model.recipesAvailable {
+            if viewModel.model.sacrificesUnlocked {
                 sacficesButton
             }
         }
     }
-    
+
     private var sacficesButton: some View {
         Button(action: viewModel.showRecipes) {
             HStack {
@@ -118,7 +121,6 @@ extension CreationView: View {
             }
         }
         .buttonStyle(CapsuleButtonStyle())
-        .opacity(viewModel.model.recipesAvailable ? 1 : 0)
         .readFrame(frame: $sacrificesButtonFrame)
     }
     
