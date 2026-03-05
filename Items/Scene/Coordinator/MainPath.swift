@@ -15,6 +15,7 @@ enum MainPath: CoordinatorPath {
     case recipeList
     case research
     case achievements
+    case portalUpgrades
     case encyclopediaEntry(EncyclopediaEntry)
     
     case itemDetails(BaseItem)
@@ -53,6 +54,8 @@ struct MainPathRenderer: CoordinatorPathRenderer {
             ResearchView(viewModel: coordinator.apply(resolver.researchViewModel()))
         case .achievements:
             AchievementsView(viewModel: coordinator.apply(resolver.achievementsViewModel()))
+        case .portalUpgrades:
+            PortalUpgradesView(viewModel: coordinator.apply(resolver.portalUpgradesViewModel()))
         case let .encyclopediaEntry(entry):
             EncyclopediaView(
                 viewModel: coordinator.apply(resolver.encyclopediaViewModel(entry: entry))

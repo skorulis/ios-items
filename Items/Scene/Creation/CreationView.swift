@@ -37,8 +37,10 @@ import SwiftUI
         var recipes: [Recipe] = []
         
         var recipesAvailable: Bool { achievements.unlocked.contains(.items10) }
+        var upgradesAvailable: Bool { achievements.unlocked.contains(.items10) }
         var firstItem: Bool { !achievements.unlocked.contains(.items1) }
-        
+        var automationUnlocked: Bool = false
+
         var currentSacrifice: Recipe? {
             return recipes.first { recipe in
                 recipe.items.count > 0 &&
@@ -62,7 +64,7 @@ extension CreationView: View {
             VStack {
                 topBar
                 Spacer()
-                autoToggle
+                autoToggleIfUnlocked
                 makeButton
             }
             .padding()
@@ -80,11 +82,21 @@ extension CreationView: View {
     
     private var topBar: some View {
         HStack {
+            if viewModel.model.upgradesAvailable {
+                upgradesButton
+            }
             Spacer()
             if viewModel.model.recipesAvailable {
                 sacficesButton
             }
         }
+    }
+
+    private var upgradesButton: some View {
+        Button(action: viewModel.showPortalUpgrades) {
+            Text("Upgrades")
+        }
+        .buttonStyle(CapsuleButtonStyle())
     }
     
     private var sacficesButton: some View {
@@ -167,14 +179,17 @@ extension CreationView: View {
         }
     }
     
-    private var autoToggle: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            Toggle(isOn: $viewModel.automateCreation) {
-                HStack {
-                    Text("Auto")
-                    if viewModel.automateCreation, let timer = viewModel.autoTimerProgress {
-                        TimerProgressView(model: timer)
-                            .frame(width: 32, height: 32)
+    @ViewBuilder
+    private var autoToggleIfUnlocked: some View {
+        if viewModel.model.automationUnlocked {
+            VStack(alignment: .leading, spacing: 6) {
+                Toggle(isOn: $viewModel.automateCreation) {
+                    HStack {
+                        Text("Auto")
+                        if viewModel.automateCreation, let timer = viewModel.autoTimerProgress {
+                            TimerProgressView(model: timer)
+                                .frame(width: 32, height: 32)
+                        }
                     }
                 }
             }

@@ -35,6 +35,12 @@ final class MainStore: ObservableObject {
             try! self.store.set(codable: achievements, forKey: Self.achievementsKey)
         }
     }
+
+    @Published var portalUpgrades: PortalUpgrades {
+        didSet {
+            try! self.store.set(codable: portalUpgrades, forKey: Self.portalUpgradesKey)
+        }
+    }
     
     @Published var concepts: Concepts {
         didSet {
@@ -50,6 +56,7 @@ final class MainStore: ObservableObject {
 
     private let store: PKeyValueStore
     private static let achievementsKey = "MainStore.achievements"
+    private static let portalUpgradesKey = "MainStore.portalUpgrades"
     private static let conceptsKey = "MainStore.concepts"
     private static let labKey = "MainStore.lab"
     private static let notificationsKey = "MainStore.notifications"
@@ -65,6 +72,7 @@ final class MainStore: ObservableObject {
         self.statistics = (try? store.codable(forKey: Self.statisticsKey)) ?? Statistics()
         self.lab = (try? store.codable(forKey: Self.labKey)) ?? Laboratory()
         self.achievements = (try? store.codable(forKey: Self.achievementsKey)) ?? Achievements()
+        self.portalUpgrades = (try? store.codable(forKey: Self.portalUpgradesKey)) ?? PortalUpgrades()
         self.recipes = (try? store.codable(forKey: Self.recipesKey)) ?? []
         self.concepts = (try? store.codable(forKey: Self.conceptsKey)) ?? Concepts()
         self.notifications = (try? store.codable(forKey: Self.notificationsKey)) ?? Notifications()

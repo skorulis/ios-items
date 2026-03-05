@@ -48,18 +48,25 @@ import SwiftUI
         self.calculations = calculations
         self.warehouseService = warehouseService
         
+        self.model.automationUnlocked = mainStore.portalUpgrades.purchased.contains(.portalAutomation)
+
         mainStore.$warehouse.sink { [unowned self] in
             self.model.warehouse = $0
         }
         .store(in: &cancellables)
-        
+
         mainStore.$recipes.sink { [unowned self] in
             self.model.recipes = $0
         }
         .store(in: &cancellables)
-        
+
         mainStore.$achievements.sink { [unowned self] in
             self.model.achievements = $0
+        }
+        .store(in: &cancellables)
+
+        mainStore.$portalUpgrades.sink { [unowned self] in
+            self.model.automationUnlocked = $0.purchased.contains(.portalAutomation)
         }
         .store(in: &cancellables)
     }
@@ -125,6 +132,10 @@ extension CreationViewModel {
     
     func showRecipes() {
         coordinator?.push(MainPath.recipeList)
+    }
+
+    func showPortalUpgrades() {
+        coordinator?.push(MainPath.portalUpgrades)
     }
     
     func showDetails(item: BaseItem) {
