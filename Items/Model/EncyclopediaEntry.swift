@@ -46,6 +46,17 @@ extension EncyclopediaEntry {
             
             Who knows what wonders this place contains, perhaps by studying the items you can slowly piece together what this dimension is.
             """,
+            childItems: [Self.portalUpgrades]
+        )
+    }
+
+    static var portalUpgrades: Self {
+        .init(
+            title: "Portal Upgrades",
+            body: """
+            You can use some of the items being pulled through the portal to add upgrades. This will help to access more of the hidden dimension
+            """,
+            condition: .itemsCreated(10),
             childItems: []
         )
     }
