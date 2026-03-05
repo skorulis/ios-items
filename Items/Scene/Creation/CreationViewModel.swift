@@ -12,11 +12,9 @@ import SwiftUI
     private var makeTimer: Timer?
     
     var model = CreationView.Model()
-    
     var coordinator: ASKCoordinator.Coordinator?
     
-    var automateCreation: Bool = false
-    {
+    var automateCreation: Bool = false {
         didSet {
             if automateCreation {
                 startMakeTimer()

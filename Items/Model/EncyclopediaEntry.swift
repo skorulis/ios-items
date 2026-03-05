@@ -25,6 +25,7 @@ struct EncyclopediaEntry {
             title: "Encyclopedia",
             body: "",
             childItems: [
+                Self.portal,
                 Self.warehouse,
                 Self.research,
                 Self.essences,
@@ -37,6 +38,18 @@ struct EncyclopediaEntry {
 // MARK: - Root child items
 
 extension EncyclopediaEntry {
+    static var portal: Self {
+        .init(
+            title: "The Portal",
+            body: """
+            Your portal to another dimension works. When activated, it pulled an object from another dimension.
+            
+            Who knows what wonders this place contains, perhaps by studying the items you can slowly piece together what this dimension is.
+            """,
+            childItems: []
+        )
+    }
+
     static var essences: Self {
         .init(
             title: "Essence",

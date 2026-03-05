@@ -4,8 +4,9 @@ import ASKCoordinator
 import Knit
 import SwiftUI
 
-struct ContentView: View {
-    
+// MARK: - Memory footprint
+
+struct ContentView {
     @Environment(\.resolver) private var resolver
     @Environment(\.scenePhase) private var scenePhase
     @State var viewModel: ContentViewModel
@@ -16,20 +17,54 @@ struct ContentView: View {
     @State var tab5Coordinator = Coordinator(root: MainPath.encyclopediaEntry(.root))
     @State private var selectedTab: Int = 0
     
+    var model: Model { viewModel.model }
+}
+
+// MARK: - Inner Types
+
+extension ContentView {
+    struct Model {
+        var showingResearch: Bool = false
+        var showingWarehouse: Bool = false
+        var showingAchievements: Bool = false
+        var showingEncyclopedia: Bool = false
+        var notifications: Notifications = Notifications()
+        
+        var tabBarHidden: Bool {
+            return !showingResearch
+            && !showingWarehouse
+            && !showingAchievements
+            && !showingEncyclopedia
+        }
+    }
+}
+
+// MARK: - Rendering
+
+extension ContentView: View {
+    
     var body: some View {
         TabView(selection: $selectedTab) {
             creationTab
-            warehouseTab
+                .toolbar(model.tabBarHidden ? .hidden : .visible, for: .tabBar)
+                .animation(.default, value: model.tabBarHidden)
             
-            if viewModel.showingResearch {
+            if viewModel.model.showingWarehouse {
+                warehouseTab
+            }
+            
+            if viewModel.model.showingResearch {
                 researchTab
             }
             
-            if viewModel.showingAchievements {
+            if viewModel.model.showingAchievements {
                 achievementsTab
             }
             
-            encyclopediaTab
+            if viewModel.model.showingEncyclopedia {
+                encyclopediaTab
+            }
+            
         }
         .onAppear { viewModel.resumeResearchProgressIfNeeded() }
         .onChange(of: scenePhase) { _, newPhase in
@@ -55,7 +90,7 @@ struct ContentView: View {
                 Label("Warehouse", systemImage: "shippingbox")
             }
             .tag(1)
-            .badge(viewModel.notifications.warehouseNewCount > 0 ? "\(viewModel.notifications.warehouseNewCount)" : nil)
+            .badge(model.notifications.warehouseNewCount > 0 ? "\(model.notifications.warehouseNewCount)" : nil)
     }
     
     private var achievementsTab: some View {
@@ -65,7 +100,7 @@ struct ContentView: View {
                 Label("Achievements", systemImage: "fireworks")
             }
             .tag(2)
-            .badge(viewModel.notifications.achievementsNewCount > 0 ? "\(viewModel.notifications.achievementsNewCount)" : nil)
+            .badge(model.notifications.achievementsNewCount > 0 ? "\(model.notifications.achievementsNewCount)" : nil)
     }
     
     private var researchTab: some View {
@@ -76,7 +111,7 @@ struct ContentView: View {
             }
             .tag(3)
             .badge(
-                viewModel.notifications.newResearchLevels > 0 ? "\(viewModel.notifications.newResearchLevels)" : nil
+                model.notifications.newResearchLevels > 0 ? "\(model.notifications.newResearchLevels)" : nil
             )
     }
     

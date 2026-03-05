@@ -37,6 +37,7 @@ import SwiftUI
         var recipes: [Recipe] = []
         
         var recipesAvailable: Bool { achievements.unlocked.contains(.items10) }
+        var firstItem: Bool { !achievements.unlocked.contains(.items1) }
         
         var currentSacrifice: Recipe? {
             return recipes.first { recipe in
@@ -54,6 +55,7 @@ extension CreationView: View {
     
     var body: some View {
         ZStack {
+            dimensionalPortalBackground
             maybeCreationAnimation
             sacrificeAvatarsOverlay
             itemContainer
@@ -67,6 +69,13 @@ extension CreationView: View {
             
         }
         .coordinateSpace(name: "creation")
+    }
+    
+    private var dimensionalPortalBackground: some View {
+        Asset.Creation.dimensionalPortal.swiftUIImage
+            .resizable()
+            .scaledToFit()
+            .frame(maxWidth: 280, maxHeight: 280)
     }
     
     private var topBar: some View {
@@ -182,7 +191,7 @@ extension CreationView: View {
                 if viewModel.model.isCreating {
                     ProgressView()
                 }
-                Text("Create an item")
+                Text(viewModel.model.firstItem ? "Unlock the portal" : "Create an item")
                     .opacity(viewModel.model.isCreating ? 0 : 1)
             }
         }

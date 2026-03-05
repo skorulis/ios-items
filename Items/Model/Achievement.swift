@@ -4,6 +4,7 @@ import Foundation
 import SwiftUI
 
 enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
+    case items1
     case items10
     case items100
     case items1_000_000
@@ -23,6 +24,7 @@ enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
     
     var name: String {
         switch self {
+        case .items1: return "Portal unlocked"
         case .items10: return "Baby steps"
         case .items100: return "Getting somewhere"
         case .items1_000_000: return "That's a lot"
@@ -38,6 +40,8 @@ enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
     
     var image: Image? {
         switch self {
+        case .items1:
+            return Image(systemName: "line.3.crossed.swirl.circle")
         case .items10:
             return Image(systemName: "waterbottle")
         case .items100:
@@ -63,6 +67,8 @@ enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
     
     var requirement: UnlockRequirement {
         switch self {
+        case .items1:
+            return .itemsCreated(1)
         case .items10:
             return .itemsCreated(10)
         case .items100:
@@ -88,7 +94,7 @@ enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
     
     var quality: ItemQuality {
         switch self {
-        case .items10, .artifact1, .essence1, .sacrificed1:
+        case .items1, .items10, .artifact1, .essence1, .sacrificed1:
             return .junk
         case .items100, .artifacts5, .common1, .allEssences, .sacrificed1000:
             return .common
@@ -99,6 +105,7 @@ enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
     
     var bonusMessage: String? {
         switch self {
+        case .items1: return nil
         case .items10:
             return "Unlocks research"
         case .items100:

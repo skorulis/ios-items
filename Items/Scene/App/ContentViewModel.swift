@@ -8,9 +8,7 @@ import SwiftUI
 
 @Observable final class ContentViewModel {
     
-    private(set) var showingResearch: Bool = false
-    private(set) var showingAchievements: Bool = false
-    private(set) var notifications: Notifications = Notifications()
+    var model: ContentView.Model = .init()
 
     private let mainStore: MainStore
     private let achievementService: AchievementService
@@ -24,16 +22,19 @@ import SwiftUI
         self.researchService = researchService
         
         mainStore.$achievements.sink { achievements in
-            self.showingAchievements = achievements.unlocked.count > 0
-            self.showingResearch = achievements.unlocked.contains(.items10)
+            self.model.showingAchievements = achievements.unlocked.count > 0
+            self.model.showingEncyclopedia = achievements.unlocked.count > 0
+            self.model.showingResearch = achievements.unlocked.contains(.items10)
+            self.model.showingWarehouse = achievements.unlocked.contains(.items1)
         }
         .store(in: &cancellables)
+        
 
         mainStore.$notifications
-            .sink { [weak self] in self?.notifications = $0 }
+            .sink { [weak self] in self?.model.notifications = $0 }
             .store(in: &cancellables)
 
-        self.notifications = mainStore.notifications
+        self.model.notifications = mainStore.notifications
     }
 }
 
