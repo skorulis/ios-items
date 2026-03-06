@@ -15,6 +15,7 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
     case hourglass
     case lens
     case humanSkull
+    case waxSeal
 
     // Common
     case whetstone
@@ -33,6 +34,7 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
     case portalShard
     case soulEmber
     case anchorStone
+    case memorySeed
 
     var id: Self { self }
     
@@ -86,16 +88,20 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
             return nil
         case .anchorStone:
             return nil
+        case .waxSeal:
+            return nil
+        case .memorySeed:
+            return nil
         }
     }
     
     var quality: ItemQuality {
         switch self {
-        case .apple, .rock, .hourglass, .copperFlorin, .gear, .potionFlask, .lens, .humanSkull:
+        case .apple, .rock, .hourglass, .copperFlorin, .gear, .potionFlask, .lens, .humanSkull, .waxSeal:
             return .junk
         case .quartzCrystal, .silverFlorin, .steelArrowhead, .book, .merchantSigil, .giantThorn, .embuedChalk, .whetstone, .metalBloom:
             return .common
-        case .goldFlorin, .jadeFigurine, .portalShard, .soulEmber, .anchorStone:
+        case .goldFlorin, .jadeFigurine, .portalShard, .soulEmber, .anchorStone, .memorySeed:
             return .good
         }
     }
@@ -146,6 +152,10 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
             return [.dark, .magic]
         case .anchorStone:
             return [.earth, .magic]
+        case .waxSeal:
+            return [.knowledge]
+        case .memorySeed:
+            return [.life, .knowledge]
         }
     }
     
@@ -244,6 +254,16 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
             return [
                 "A small, smooth stone with a hole through the center.",
                 "Used to keep a steady position when dealing with portal forces",
+            ]
+        case .waxSeal:
+            return [
+                "A used seal from a letter or document. The message is gone; only the stamped wax remains.",
+            ]
+        case .memorySeed:
+            return [
+                "A seed that holds a memory, locked inside until it is grown.",
+                "Those who nurture it to bloom are said to receive the memory as a vision.",
+                "Once the plant has grown more seeds can be harvested to be either sold or grown again to revist the memory",
             ]
         default:
             return []
