@@ -35,6 +35,7 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
     case soulEmber
     case anchorStone
     case memorySeed
+    case nullLantern
 
     var id: Self { self }
     
@@ -92,6 +93,8 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
             return nil
         case .memorySeed:
             return nil
+        case .nullLantern:
+            return nil
         }
     }
     
@@ -101,7 +104,7 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
             return .junk
         case .quartzCrystal, .silverFlorin, .steelArrowhead, .book, .merchantSigil, .giantThorn, .embuedChalk, .whetstone, .metalBloom:
             return .common
-        case .goldFlorin, .jadeFigurine, .portalShard, .soulEmber, .anchorStone, .memorySeed:
+        case .goldFlorin, .jadeFigurine, .portalShard, .soulEmber, .anchorStone, .memorySeed, .nullLantern:
             return .good
         }
     }
@@ -156,6 +159,8 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
             return [.knowledge]
         case .memorySeed:
             return [.life, .knowledge]
+        case .nullLantern:
+            return [.dark, .technology]
         }
     }
     
@@ -264,6 +269,11 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
                 "A seed that holds a memory, locked inside until it is grown.",
                 "Those who nurture it to bloom are said to receive the memory as a vision.",
                 "Once the plant has grown more seeds can be harvested to be either sold or grown again to revist the memory",
+            ]
+        case .nullLantern:
+            return [
+                "A lantern whose workings erase light instead of casting it, swallowing reflections and magical glows in a small radius.",
+                "Can be used to hide runes and wards from those trying to search for magical items."
             ]
         default:
             return []

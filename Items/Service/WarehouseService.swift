@@ -62,20 +62,16 @@ extension WarehouseService {
         mainStore.notifications.markArtifactViewed(artifact)
     }
 
-    /// Clear all "new" flags for items.
     func clearNewItems() {
-        mainStore.notifications.clearNewItems()
+        if !mainStore.notifications.newItems.isEmpty {
+            mainStore.notifications.newItems.removeAll()
+        }
     }
 
-    /// Clear all "new" flags for artifacts.
     func clearNewArtifacts() {
-        mainStore.notifications.clearNewArtifacts()
-    }
-
-    /// Clear all "new" discovery flags.
-    func clearNewDiscoveries() {
-        mainStore.notifications.clearNewItems()
-        mainStore.notifications.clearNewArtifacts()
+        if !mainStore.notifications.newArtifacts.isEmpty {
+            mainStore.notifications.newArtifacts.removeAll()
+        }
     }
 
     /// Equip an artifact in the warehouse.

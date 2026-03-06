@@ -42,14 +42,6 @@ struct Notifications: Codable, Equatable {
         newResearchLevels += 1
     }
 
-    mutating func clearNewItems() {
-        newItems.removeAll()
-    }
-
-    mutating func clearNewArtifacts() {
-        newArtifacts.removeAll()
-    }
-
     mutating func clearNewAchievements() {
         newAchievements.removeAll()
     }

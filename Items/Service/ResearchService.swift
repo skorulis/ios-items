@@ -54,13 +54,16 @@ extension ResearchService {
         var level = lab.currentLevel(item: item)
         
         var totalRequired = calculations.researchDurationSeconds(for: item, level: level)
+        var saveRequired: Bool = false
         while totalRequired > 0 && elapsed >= totalRequired {
             elapsed -= totalRequired
             level += 1
             lab.setState(level: level, accumulatedSeconds: 0, for: item)
             applyUnlocks(for: item, newLevel: level)
             totalRequired = calculations.researchDurationSeconds(for: item, level: level)
+            saveRequired = true
         }
+        guard saveRequired else { return }
         
         lab.setState(level: level, accumulatedSeconds: elapsed, for: item)
         lab.setCurrentResearch(item: item, startDate: now)
