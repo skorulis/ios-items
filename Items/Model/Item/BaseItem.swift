@@ -36,6 +36,13 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
     case anchorStone
     case memorySeed
     case nullLantern
+    
+    // Rare
+    case axisHeart
+    case nullWeaveCloak
+    case oathforgedChain
+    case sunwellPhial
+    case heartgear
 
     var id: Self { self }
     
@@ -95,6 +102,16 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
             return nil
         case .nullLantern:
             return nil
+        case .heartgear:
+            return nil
+        case .nullWeaveCloak:
+            return nil
+        case .axisHeart:
+            return nil
+        case .oathforgedChain:
+            return nil
+        case .sunwellPhial:
+            return nil
         }
     }
     
@@ -106,6 +123,8 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
             return .common
         case .goldFlorin, .jadeFigurine, .portalShard, .soulEmber, .anchorStone, .memorySeed, .nullLantern:
             return .good
+        case .axisHeart, .nullWeaveCloak, .oathforgedChain, .sunwellPhial, .heartgear:
+            return .rare
         }
     }
     
@@ -161,6 +180,16 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
             return [.life, .knowledge]
         case .nullLantern:
             return [.dark, .technology]
+        case .nullWeaveCloak:
+            return [.dark, .technology]
+        case .axisHeart:
+            return [.magic, .earth]
+        case .oathforgedChain:
+            return [.wealth, .technology]
+        case .sunwellPhial:
+            return [.light, .life]
+        case .heartgear:
+            return [.life, .technology]
         }
     }
     
@@ -176,6 +205,14 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
         case .copperFlorin:
             return [
                 "The base currency in the realm of Relicara"
+            ]
+        case .gear:
+            return [
+                "A mechanical gear that forms part of a machine",
+            ]
+        case .hourglass:
+            return [
+                "A simple means of keeping track of time",
             ]
         case .silverFlorin:
             return [
@@ -275,8 +312,32 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
                 "A lantern whose workings erase light instead of casting it, swallowing reflections and magical glows in a small radius.",
                 "Can be used to hide runes and wards from those trying to search for magical items."
             ]
-        default:
-            return []
+        case .axisHeart:
+            return [
+                "A faceted gemstone formed where multiple ley lines cross. An star shaped asterism is visible when looking at the gem",
+                "Touching the gemstone gives a feeling of the landscape where it was formed."
+            ]
+        case .nullWeaveCloak:
+            return [
+                "A dark cloak threaded with fine metallic strands that disrupt detection sigils and sensors, creating a dead zone around the wearer.",
+                "It conceals both magic and machinery from scrutiny, but also interferes with the operation of some items."
+            ]
+        case .oathforgedChain:
+            return [
+                "A short length of chain forged where each link is forced by an oath.",
+                "It tightens and rattles when a pact is broken, no matter how carefully the words were twisted."
+            ]
+        case .sunwellPhial:
+            return [
+                "A sealed vial of liquid light drawn from a long lost spring.",
+                "A few drops can revive withered plants make them grow."
+            ]
+        case .heartgear:
+            return [
+                "A small, ticking implant of brass and living root worn over the chest to steady a failing heart",
+                "Its roots wind around flesh and bone, turning every pulse into a precise mechanical rhythm.",
+                "Can be used to keep someone alive long past when their body should have given out"
+            ]
         }
     }
 }

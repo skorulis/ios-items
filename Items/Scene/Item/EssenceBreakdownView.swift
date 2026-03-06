@@ -53,7 +53,7 @@ extension EssenceBreakdownView: View {
                         .tag(Optional(quality))
                 }
             }
-            .pickerStyle(.segmented)
+            .pickerStyle(.menu)
         }
     }
 

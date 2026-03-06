@@ -89,7 +89,7 @@ extension WarehouseViewModel {
     }
 
     func showEssenceBreakdown() {
-        coordinator?.custom(overlay: .card, MainPath.essenceBreakdown)
+        coordinator?.push(MainPath.essenceBreakdown)
     }
 
     func pressed(artifact: ArtifactInstance) {
