@@ -69,6 +69,7 @@ final class ItemsAssembly: AutoInitModuleAssembly {
         container.register(ResearchViewModel.self) { ResearchViewModel.make(resolver: $0) }
         container.register(AchievementsViewModel.self) { AchievementsViewModel.make(resolver: $0) }
         container.register(PortalUpgradesViewModel.self) { PortalUpgradesViewModel.make(resolver: $0) }
+        container.register(EssenceBreakdownViewModel.self) { EssenceBreakdownViewModel.make(resolver: $0) }
         
         container.register(EncyclopediaViewModel.self) { (resolver: BaseResolver, entry: EncyclopediaEntry) in
             EncyclopediaViewModel.make(resolver: resolver, entry: entry)

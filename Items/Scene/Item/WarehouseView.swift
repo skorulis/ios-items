@@ -166,8 +166,18 @@ struct WarehouseView: View {
         TitleBar(
             title: "Warehouse",
             backAction: { viewModel.coordinator?.retreat() },
-            trailing: { helpButton }
+            trailing: { HStack(spacing: 8) { essenceBreakdownButton; helpButton } }
         )
+    }
+
+    private var essenceBreakdownButton: some View {
+        Button(action: { viewModel.showEssenceBreakdown() }) {
+            Image(systemName: "chart.pie")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 24, height: 24)
+                .foregroundStyle(Color.black)
+        }
     }
 
     private var helpButton: some View {

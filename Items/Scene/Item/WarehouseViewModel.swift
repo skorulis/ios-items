@@ -88,6 +88,10 @@ extension WarehouseViewModel {
         coordinator?.custom(overlay: .card, MainPath.dialog(HelpStrings.warehouse))
     }
 
+    func showEssenceBreakdown() {
+        coordinator?.custom(overlay: .card, MainPath.essenceBreakdown)
+    }
+
     func pressed(artifact: ArtifactInstance) {
         model.newArtifactsToShow.remove(artifact.type)
         coordinator?.custom(overlay: .card, MainPath.artifactDetails(artifact))
