@@ -12,6 +12,7 @@ nonisolated enum Essence: Identifiable, Hashable, Codable, CaseIterable {
     case magic
     case technology
     case wealth
+    case knowledge
     
     var id: Self { self }
     var name: String { String(describing: self).fromCaseName }
@@ -27,6 +28,7 @@ extension Essence {
         case .light: return .yellow
         case .dark: return .black
         case .earth: return .brown
+        case .knowledge: return .cyan
         }
     }
 }

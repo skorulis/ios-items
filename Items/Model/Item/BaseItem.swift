@@ -15,15 +15,25 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
     case hourglass
     case lens
     case humanSkull
-    
-    
+
     // Common
+    case whetstone
     case quartzCrystal
     case silverFlorin
-    
+    case steelArrowhead
+    case book
+    case merchantSigil
+    case giantThorn
+    case embuedChalk
+    case metalBloom
+
     // Good
     case goldFlorin
-    
+    case jadeFigurine
+    case portalShard
+    case soulEmber
+    case anchorStone
+
     var id: Self { self }
     
     var name: String {
@@ -54,6 +64,28 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
             return Asset.BaseItem.humanSkull.swiftUIImage
         case .quartzCrystal:
             return Asset.BaseItem.quartzCrystal.swiftUIImage
+        case .steelArrowhead:
+            return nil
+        case .book:
+            return nil
+        case .jadeFigurine:
+            return nil
+        case .merchantSigil:
+            return nil
+        case .giantThorn:
+            return nil
+        case .portalShard:
+            return nil
+        case .whetstone:
+            return nil
+        case .embuedChalk:
+            return nil
+        case .metalBloom:
+            return nil
+        case .soulEmber:
+            return nil
+        case .anchorStone:
+            return nil
         }
     }
     
@@ -61,9 +93,9 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
         switch self {
         case .apple, .rock, .hourglass, .copperFlorin, .gear, .potionFlask, .lens, .humanSkull:
             return .junk
-        case .quartzCrystal, .silverFlorin:
+        case .quartzCrystal, .silverFlorin, .steelArrowhead, .book, .merchantSigil, .giantThorn, .embuedChalk, .whetstone, .metalBloom:
             return .common
-        case .goldFlorin:
+        case .goldFlorin, .jadeFigurine, .portalShard, .soulEmber, .anchorStone:
             return .good
         }
     }
@@ -92,6 +124,28 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
             return [.dark]
         case .quartzCrystal:
             return [.earth, .light]
+        case .steelArrowhead:
+            return [.dark, .technology]
+        case .book:
+            return [.light, .knowledge]
+        case .jadeFigurine:
+            return [.earth, .wealth]
+        case .merchantSigil:
+            return [.wealth, .magic]
+        case .giantThorn:
+            return [.life, .earth]
+        case .portalShard:
+            return [.magic, .light]
+        case .whetstone:
+            return [.earth, .technology]
+        case .embuedChalk:
+            return [.knowledge, .magic]
+        case .metalBloom:
+            return [.life, .technology]
+        case .soulEmber:
+            return [.dark, .magic]
+        case .anchorStone:
+            return [.earth, .magic]
         }
     }
     
@@ -134,6 +188,62 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
             return [
                 "A clear crystal that catches and bends light",
                 "Formed deep in the earth, it holds both stone and radiance"
+            ]
+        case .steelArrowhead:
+            return [
+                "A plain but well constructed broadhead arrowhead.",
+                "The marks on the side show evidence of the forging"
+            ]
+        case .book:
+            return [
+                "Bound pages of paper in an unknown language",
+                "The words mean nothing to you, but perhaps the portal can understand them"
+            ]
+        case .jadeFigurine:
+            return [
+                "Carved from green jade; it's a humanoid figure but it's impossible to tell what the subject was",
+                "There are a large number of the same figurine, perhaps this is a religions relic.",
+            ]
+        case .merchantSigil:
+            return [
+                "A hexagon made of an unknown material with a different logo on each side",
+                "It marks a trade pact made between 2 merchants"
+            ]
+        case .giantThorn:
+            return [
+                "Shaped like a rose thorn only over 10cm long with a iridescent coloring",
+                "The thorn is harder than steel, this could easily be used as a weapon"
+            ]
+        case .portalShard:
+            return [
+                "Crystallized energy from a closed or unstable portal.",
+                "It seems the people of this dimension also had access to portals."
+            ]
+        case .whetstone:
+            return [
+                "A flat stone for sharpening blades; every smith and soldier carries one.",
+                "Keeping an edge is the difference between a clean cut and a messy one.",
+            ]
+        case .embuedChalk:
+            return [
+                "It looks like regular chalk but it's warm to the touch. Using it to draw leaves a line that glows faintly.",
+                "Can be used to create wards or runes.",
+            ]
+        case .metalBloom:
+            return [
+                "A flower with fine metal lines running through its petals and stem. Part bloom, part vein of ore.",
+                "It's hard to say whether the metal grows naturally or if the plant has been deliberately altered.",
+                "The petals don't wilt no matter how long since it has been picked",
+            ]
+        case .soulEmber:
+            return [
+                "A dull ember that never goes out. Uncomfortable to hold.",
+                "Said to contain the last spark of a dying persons soul. Used as storage so the soul can be consumed at a later time"
+            ]
+        case .anchorStone:
+            return [
+                "A small, smooth stone with a hole through the center.",
+                "Used to keep a steady position when dealing with portal forces",
             ]
         default:
             return []
