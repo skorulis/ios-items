@@ -6,7 +6,7 @@ import KnitMacros
 
 @Observable final class DebugViewModel {
 
-    private let mainStore: MainStore
+    let mainStore: MainStore
 
     @Resolvable<BaseResolver>
     init(mainStore: MainStore) {
@@ -18,7 +18,6 @@ import KnitMacros
 
 extension DebugViewModel {
 
-    /// Reset all purchased portal upgrades back to the default state.
     func resetUpgrades() {
         mainStore.portalUpgrades = PortalUpgrades()
     }

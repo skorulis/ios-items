@@ -34,6 +34,11 @@ extension DebugView: View {
                 viewModel.resetUpgrades()
             }
             .buttonStyle(CapsuleButtonStyle())
+            
+            Button("Reset warehouse") {
+                viewModel.mainStore.warehouse = .init()
+            }
+            .buttonStyle(CapsuleButtonStyle())
 
             Spacer()
         }

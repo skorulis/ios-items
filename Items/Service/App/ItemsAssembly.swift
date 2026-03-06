@@ -49,6 +49,7 @@ final class ItemsAssembly: AutoInitModuleAssembly {
             .inObjectScope(.container)
         container.register(ResearchService.self) { ResearchService.make(resolver: $0) }
         container.register(UpgradeService.self) { UpgradeService.make(resolver: $0) }
+            .inObjectScope(.container)
         container.register(CalculationsService.self) { CalculationsService.make(resolver: $0) }
     }
     

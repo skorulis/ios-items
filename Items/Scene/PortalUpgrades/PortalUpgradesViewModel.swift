@@ -55,7 +55,7 @@ extension PortalUpgradesViewModel {
     }
 
     func canPurchase(_ upgrade: PortalUpgrade) -> Bool {
-        upgradeService.canPurchase(upgrade, warehouse: warehouse)
+        upgradeService.canPurchase(upgrade)
     }
 
     func purchase(_ upgrade: PortalUpgrade) {

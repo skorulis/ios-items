@@ -100,7 +100,10 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
         case .apple:
             return ["Tastes good and keeps doctors away"]
         case .rock:
-            return ["A stupid rock which may or may not repel tigers"]
+            return [
+                    "Looks like an ordinary rock",
+                    "Even this simple rock has a connection back to its home dimension"
+            ]
         case .copperFlorin:
             return [
                 "The base currency in the realm of Relicara"

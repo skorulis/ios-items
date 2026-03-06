@@ -1,18 +1,31 @@
 //Created by Alexander Skorulis on 5/3/2026.
 
+import ASKCore
+import Combine
 import Foundation
 import Knit
 import KnitMacros
 
-final class UpgradeService {
+final class UpgradeService: ObservableObject {
 
     private let mainStore: MainStore
     private let achievementService: AchievementService
+    private var cancellables: Set<AnyCancellable> = []
+
+    @Published var purchasableUpgrades: [PortalUpgrade] = []
 
     @Resolvable<BaseResolver>
     init(mainStore: MainStore, achievementService: AchievementService) {
         self.mainStore = mainStore
         self.achievementService = achievementService
+
+        mainStore.$portalUpgrades
+            .combineLatest(mainStore.$achievements)
+            .combineLatest(mainStore.$warehouse)
+            .delayedChange()
+            .sink { [unowned self] _ in self.updatePurchasableUpgrades() }
+            .store(in: &cancellables)
+        
     }
 }
 
@@ -21,20 +34,22 @@ final class UpgradeService {
 extension UpgradeService {
 
     /// Number of upgrades that are not yet purchased and can be afforded with the current warehouse.
-    func purchasableUpgrades() -> [PortalUpgrade] {
-        let warehouse = mainStore.warehouse
+    private func updatePurchasableUpgrades() {
         let purchased = mainStore.portalUpgrades.purchased
-        return PortalUpgrade.allCases.filter { upgrade in
+        let newValue = PortalUpgrade.allCases.filter { upgrade in
             !purchased.contains(upgrade)
                 && isUnlocked(upgrade)
-                && canPurchase(upgrade, warehouse: warehouse)
+                && canPurchase(upgrade)
+        }
+        
+        if newValue != purchasableUpgrades {
+            purchasableUpgrades = newValue
         }
     }
 
-    func canPurchase(_ upgrade: PortalUpgrade, warehouse: Warehouse? = nil) -> Bool {
+    func canPurchase(_ upgrade: PortalUpgrade) -> Bool {
         guard isUnlocked(upgrade) else { return false }
-        let w = warehouse ?? mainStore.warehouse
-        return upgrade.cost.allSatisfy { w.quantity($0.item) >= $0.quantity }
+        return upgrade.cost.allSatisfy { mainStore.warehouse.quantity($0.item) >= $0.quantity }
     }
 }
 
