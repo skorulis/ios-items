@@ -21,5 +21,11 @@ extension DebugViewModel {
     func resetUpgrades() {
         mainStore.portalUpgrades = PortalUpgrades()
     }
+    
+    func addItems() {
+        for item in BaseItem.allCases {
+            mainStore.warehouse.add(item: item, count: 1)
+        }
+    }
 }
 

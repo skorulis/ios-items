@@ -75,21 +75,21 @@ enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
         case .quartzCrystal:
             return Asset.BaseItem.quartzCrystal.swiftUIImage
         case .steelArrowhead:
-            return nil
+            return Asset.BaseItem.steelArrowhead.swiftUIImage
         case .book:
-            return nil
+            return Asset.BaseItem.book.swiftUIImage
         case .jadeFigurine:
-            return nil
+            return Asset.BaseItem.jadeFiguring.swiftUIImage
         case .merchantSigil:
-            return nil
+            return Asset.BaseItem.merchantSigil.swiftUIImage
         case .giantThorn:
             return nil
         case .portalShard:
-            return nil
+            return Asset.BaseItem.portalShard.swiftUIImage
         case .whetstone:
-            return nil
+            return Asset.BaseItem.whetstone.swiftUIImage
         case .embuedChalk:
-            return nil
+            return Asset.BaseItem.embuedChalk.swiftUIImage
         case .metalBloom:
             return nil
         case .soulEmber:

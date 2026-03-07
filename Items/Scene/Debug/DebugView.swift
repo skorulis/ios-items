@@ -39,6 +39,11 @@ extension DebugView: View {
                 viewModel.mainStore.warehouse = .init()
             }
             .buttonStyle(CapsuleButtonStyle())
+            
+            Button("Add all items") {
+                viewModel.addItems()
+            }
+            .buttonStyle(CapsuleButtonStyle())
 
             Spacer()
         }
