@@ -110,6 +110,8 @@ enum PortalUpgrade: Codable, Hashable, CaseIterable, Identifiable {
         switch self {
         case .researchLabLevel2:
             return .researchSpeed(10)
+        case .artifactSlot, .artifactSlotLevel2, .artifactSlotLevel3:
+            return .artifactSlots(1)
         default:
             return nil
         }

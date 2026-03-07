@@ -44,6 +44,11 @@ extension DebugView: View {
                 viewModel.addItems()
             }
             .buttonStyle(CapsuleButtonStyle())
+            
+            Button("Add all artifacts") {
+                viewModel.addArtifacts()
+            }
+            .buttonStyle(CapsuleButtonStyle())
 
             Spacer()
         }

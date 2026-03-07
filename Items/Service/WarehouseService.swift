@@ -11,11 +11,13 @@ final class WarehouseService {
 
     private let mainStore: MainStore
     private let toastService: ToastService
+    private let calculationService: CalculationsService
 
     @Resolvable<BaseResolver>
-    init(mainStore: MainStore, toastService: ToastService) {
+    init(mainStore: MainStore, toastService: ToastService, calculationService: CalculationsService) {
         self.mainStore = mainStore
         self.toastService = toastService
+        self.calculationService = calculationService
     }
 }
 
@@ -76,7 +78,13 @@ extension WarehouseService {
 
     /// Equip an artifact in the warehouse.
     func equip(_ artifact: Artifact) {
-        mainStore.warehouse.equip(artifact)
+        let maxSlots = calculationService.maxArtifactSlots()
+        for index in 0..<maxSlots {
+            if mainStore.warehouse.equippedSlots[index] == nil {
+                mainStore.warehouse.equip(artifact, slot: index)
+                return
+            }
+        }
     }
 
     /// Unequip an artifact in the warehouse.

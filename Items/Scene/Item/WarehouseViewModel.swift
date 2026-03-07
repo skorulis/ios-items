@@ -12,8 +12,10 @@ import SwiftUI
 
     private let mainStore: MainStore
     private let warehouseService: WarehouseService
+    private let calculationService: CalculationsService
     private(set) var warehouse: Warehouse
     private(set) var lab: Laboratory
+    
     var page: Page = .items {
         didSet {
             clearNew()
@@ -24,9 +26,13 @@ import SwiftUI
     private var cancellables: Set<AnyCancellable> = []
 
     @Resolvable<BaseResolver>
-    init(mainStore: MainStore, warehouseService: WarehouseService) {
+    init(mainStore: MainStore,
+         warehouseService: WarehouseService,
+         calculationService: CalculationsService
+    ) {
         self.mainStore = mainStore
         self.warehouseService = warehouseService
+        self.calculationService = calculationService
         warehouse = mainStore.warehouse
         lab = mainStore.lab
 
@@ -84,12 +90,25 @@ extension WarehouseViewModel {
         model.newArtifactsToShow.contains(artifact)
     }
 
+    var maxArtifactSlots: Int {
+        calculationService.maxArtifactSlots()
+    }
+
     func showInfo() {
         coordinator?.custom(overlay: .card, MainPath.dialog(HelpStrings.warehouse))
     }
 
     func showEssenceBreakdown() {
         coordinator?.push(MainPath.essenceBreakdown)
+    }
+    
+    func artifactSlotPresed(index: Int) {
+        if let artifact = mainStore.warehouse.equippedSlots[index],
+           let instance = warehouse.artifactInstance(artifact) {
+            pressed(artifact: instance)
+        } else {
+            // TODO: Show picker
+        }
     }
 
     func pressed(artifact: ArtifactInstance) {

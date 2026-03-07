@@ -55,7 +55,9 @@ struct WarehouseView: View {
             GridItem(.adaptive(minimum: 80)),
         ]
         return VStack(alignment: .leading, spacing: 16) {
-            equippedSection
+            if viewModel.maxArtifactSlots > 0 {
+                equippedSection
+            }
             Text("All Artifacts")
                 .font(.headline)
                 .padding(.horizontal, 16)
@@ -74,27 +76,17 @@ struct WarehouseView: View {
                 .font(.headline)
                 .padding(.horizontal, 16)
 
-            HStack(spacing: 12) {
-                Spacer()
-                ForEach(0..<2, id: \.self) { index in
-                    equippedSlot(index: index)
-                }
-                Spacer()
+            let maxSlots = viewModel.maxArtifactSlots
+            let slotContents = viewModel.warehouse.equippedSlotsContents(upToSlotCount: maxSlots)
+            let slots = (0..<maxSlots).map { index in
+                slotContents[index].flatMap { viewModel.warehouse.artifactInstance($0) }
             }
+            ArtifactSlotView(slots: slots, size: .large) { index in
+                viewModel.artifactSlotPresed(index: index)
+            }
+            .frame(maxWidth: .infinity)
+            .frame(height: 200)
             .padding(.horizontal, 16)
-        }
-    }
-
-    @ViewBuilder
-    private func equippedSlot(index: Int) -> some View {
-        let equipped = viewModel.warehouse.equippedArtifacts
-        if index < equipped.count, let instance = viewModel.warehouse.artifactInstance(equipped[index]) {
-            Button(action: { viewModel.pressed(artifact: instance) }) {
-                ArtifactView(artifact: instance)
-            }
-        } else {
-            AvatarView.emptyState(size: .medium)
-                .grayscale(0.9)
         }
     }
     
@@ -165,7 +157,6 @@ struct WarehouseView: View {
     private var titleBar: some View {
         TitleBar(
             title: "Warehouse",
-            backAction: { viewModel.coordinator?.retreat() },
             trailing: { HStack(spacing: 8) { essenceBreakdownButton; helpButton } }
         )
     }

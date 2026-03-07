@@ -12,8 +12,8 @@ struct Warehouse: Codable {
     // Total items that have been found
     private var total: [BaseItem: Int] = [:]
 
-    // Equipped artifacts (max 2, order preserved)
-    private(set) var equippedArtifacts: [Artifact] = []
+    // Equipped artifacts
+    var equippedSlots: [Int: Artifact] = [:]
 
     func isNewDiscovery(item: BaseItem) -> Bool {
         return (total[item] ?? 0) == 0
@@ -82,25 +82,36 @@ struct Warehouse: Codable {
             .reduce(0) { $0 + $1.value }
     }
 
-    mutating func equip(_ artifact: Artifact) {
-        guard artifactInstance(artifact) != nil else { return }
-        if equippedArtifacts.contains(artifact) { return }
-        if equippedArtifacts.count < 2 {
-            equippedArtifacts.append(artifact)
-        } else {
-            equippedArtifacts[1] = artifact
-        }
+    /// Ordered list of equipped artifacts by slot index (for backward compatibility).
+    var equippedArtifacts: [Artifact] {
+        equippedSlots.sorted(by: { $0.key < $1.key }).map(\.value)
+    }
+
+    /// Slot contents for the given slot count. Returns [Artifact?] where index matches slot; nil = empty.
+    func equippedSlotsContents(upToSlotCount count: Int) -> [Artifact?] {
+        (0..<count).map { equippedSlots[$0] }
+    }
+
+    /// Equip an artifact into a specific slot (replaces whatever is in that slot).
+    mutating func equip(_ artifact: Artifact, slot: Int) {
+        guard artifactInstance(artifact) != nil, slot >= 0 else { return }
+        equippedSlots[slot] = artifact
     }
 
     mutating func unequip(_ artifact: Artifact) {
-        equippedArtifacts.removeAll { $0 == artifact }
+        if let key = equippedSlots.first(where: { $0.value == artifact })?.key {
+            equippedSlots.removeValue(forKey: key)
+        }
     }
-    
+
+    mutating func unequip(slot: Int) {
+        equippedSlots.removeValue(forKey: slot)
+    }
+
     func equippedArtifact(_ type: Artifact) -> ArtifactInstance? {
-        guard equippedArtifacts.contains(type),
-                let quality = artifacts[type]
+        guard equippedSlots.values.contains(type),
+              let quality = artifacts[type]
         else { return nil }
-        
         return .init(type: type, quality: quality)
     }
 }

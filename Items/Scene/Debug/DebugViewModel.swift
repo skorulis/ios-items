@@ -7,10 +7,12 @@ import KnitMacros
 @Observable final class DebugViewModel {
 
     let mainStore: MainStore
+    let warehouseService: WarehouseService
 
     @Resolvable<BaseResolver>
-    init(mainStore: MainStore) {
+    init(mainStore: MainStore, warehouseService: WarehouseService) {
         self.mainStore = mainStore
+        self.warehouseService = warehouseService
     }
 }
 
@@ -25,6 +27,17 @@ extension DebugViewModel {
     func addItems() {
         for item in BaseItem.allCases {
             mainStore.warehouse.add(item: item, count: 1)
+        }
+    }
+    
+    func addArtifacts() {
+        for artifact in Artifact.allCases {
+            if let existing = mainStore.warehouse.artifactInstance(artifact),
+               let next = existing.quality.next {
+                warehouseService.add(artifact: .init(type: artifact, quality: next))
+            } else {
+                warehouseService.add(artifact: .init(type: artifact, quality: .junk))
+            }
         }
     }
 }
