@@ -14,6 +14,9 @@ enum PortalUpgrade: Codable, Hashable, CaseIterable, Identifiable {
     case researchLab
     case researchLabLevel2
     case sacrifices
+    case artifactSlot
+    case artifactSlotLevel2
+    case artifactSlotLevel3
 
     var id: Self { self }
 
@@ -23,6 +26,9 @@ enum PortalUpgrade: Codable, Hashable, CaseIterable, Identifiable {
         case .researchLab: return "Research Lab"
         case .researchLabLevel2: return "Research Lab II"
         case .sacrifices: return "Sacrifices"
+        case .artifactSlot: return "Artifact Slot"
+        case .artifactSlotLevel2: return "Artifact Slot II"
+        case .artifactSlotLevel3: return "Artifact Slot III"
         }
     }
 
@@ -31,6 +37,9 @@ enum PortalUpgrade: Codable, Hashable, CaseIterable, Identifiable {
         case .portalAutomation: return "Automatically pulls items out of the portal."
         case .researchLab: return "Unlocks the Research lab."
         case .sacrifices: return "Unlocks the Sacrifices feature."
+        case .artifactSlot: return "Unlocks one equipped artifact slot."
+        case .artifactSlotLevel2: return "Unlocks a second equipped artifact slot."
+        case .artifactSlotLevel3: return "Unlocks a third equipped artifact slot."
         default:
             return self.bonus?.text ?? "TODO: Set manual description or add bonus"
         }
@@ -42,6 +51,7 @@ enum PortalUpgrade: Codable, Hashable, CaseIterable, Identifiable {
         case .researchLab: return Image(systemName: "flask.fill")
         case .researchLabLevel2: return Image(systemName: "flask.fill")
         case .sacrifices: return Image(systemName: "flame.fill")
+        case .artifactSlot, .artifactSlotLevel2, .artifactSlotLevel3: return Image(systemName: "square.stack.3d.up.fill")
         }
     }
 
@@ -66,6 +76,18 @@ enum PortalUpgrade: Codable, Hashable, CaseIterable, Identifiable {
             .init(item: .humanSkull, quantity: 1),
             .init(item: .copperFlorin, quantity: 3),
         ]
+        case .artifactSlot: return [
+            .init(item: .lens, quantity: 1),
+            .init(item: .copperFlorin, quantity: 2),
+        ]
+        case .artifactSlotLevel2: return [
+            .init(item: .lens, quantity: 2),
+            .init(item: .silverFlorin, quantity: 1),
+        ]
+        case .artifactSlotLevel3: return [
+            .init(item: .lens, quantity: 3),
+            .init(item: .goldFlorin, quantity: 1),
+        ]
         }
     }
 
@@ -74,6 +96,10 @@ enum PortalUpgrade: Codable, Hashable, CaseIterable, Identifiable {
         switch self {
         case .researchLabLevel2:
             return .upgradePurchased(.researchLab)
+        case .artifactSlotLevel2:
+            return .upgradePurchased(.artifactSlot)
+        case .artifactSlotLevel3:
+            return .upgradePurchased(.artifactSlotLevel2)
         default:
             return nil
         }

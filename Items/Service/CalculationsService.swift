@@ -53,7 +53,10 @@ struct CalculationsService {
         return Chance(min(1.0, base * levelMultiplier))
     }
 
-    /// Research speed boost from equipped Perfect Lens (0 if none equipped).
+    func maxArtifactSlots() -> Int {
+        return mainStore.portalUpgrades.bonuses.artifactSlots
+    }
+
     func researchSpeedBoostPercent() -> Int {
         var result = 0
         if let lens = mainStore.warehouse.equippedArtifact(.perfectLens) {
