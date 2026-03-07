@@ -22,8 +22,8 @@ struct PortalUpgradesViewSnapshotTests {
     @Test
     func portalUpgrades_purchase_segment_some_affordable() {
         let mainStore = assembler.resolver.mainStore()
-        mainStore.warehouse.add(item: .gear, count: 1)
-        mainStore.warehouse.add(item: .copperFlorin, count: 2)
+        mainStore.warehouse.add(item: .gear, count: 50)
+        mainStore.warehouse.add(item: .copperFlorin, count: 50)
 
         let viewModel = assembler.resolver.portalUpgradesViewModel()
         let view = PortalUpgradesView(viewModel: viewModel)

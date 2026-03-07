@@ -44,8 +44,8 @@ struct WarehouseViewSnapshotTests {
         // Add and equip a couple of artifacts.
         mainStore.warehouse.add(artifact: ArtifactInstance(type: .frictionlessGear, quality: .good))
         mainStore.warehouse.add(artifact: ArtifactInstance(type: .luckyCoin, quality: .common))
-        mainStore.warehouse.equip(.frictionlessGear)
-        mainStore.warehouse.equip(.luckyCoin)
+        mainStore.warehouse.equip(.frictionlessGear, slot: 0)
+        mainStore.warehouse.equip(.luckyCoin, slot: 1)
 
         let viewModel = assembler.resolver.warehouseViewModel()
         viewModel.page = .artifacts

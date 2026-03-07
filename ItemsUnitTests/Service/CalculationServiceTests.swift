@@ -58,7 +58,7 @@ struct CalculationServiceTests {
         for (quality, expectedPercent) in [(ItemQuality.junk, 25), (.common, 50), (.good, 75), (.rare, 100), (.exceptional, 150)] {
             var warehouse = mainStore.warehouse
             warehouse.add(artifact: ArtifactInstance(type: .perfectLens, quality: quality))
-            warehouse.equip(.perfectLens)
+            warehouse.equip(.perfectLens, slot: 0)
             mainStore.warehouse = warehouse
             #expect(calculationService.researchSpeedBoostPercent() == expectedPercent, "quality: \(quality)")
         }
