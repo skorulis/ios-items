@@ -51,6 +51,7 @@ final class ItemsAssembly: AutoInitModuleAssembly {
         container.register(UpgradeService.self) { UpgradeService.make(resolver: $0) }
             .inObjectScope(.container)
         container.register(CalculationsService.self) { CalculationsService.make(resolver: $0) }
+            .inObjectScope(.container)
     }
     
     @MainActor
@@ -89,6 +90,10 @@ final class ItemsAssembly: AutoInitModuleAssembly {
 
         container.register(ArtifactDetailViewModel.self) { (resolver: BaseResolver, artifact: ArtifactInstance) in
             ArtifactDetailViewModel.make(resolver: resolver, artifact: artifact)
+        }
+
+        container.register(ArtifactPickerViewModel.self) { (resolver: BaseResolver, slot: Int) in
+            ArtifactPickerViewModel.make(resolver: resolver, slot: slot)
         }
 
         container.register(MainPathRenderer.self) { MainPathRenderer(resolver: $0) }

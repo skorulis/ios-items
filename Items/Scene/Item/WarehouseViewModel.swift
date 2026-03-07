@@ -50,6 +50,11 @@ import SwiftUI
             self.model.showArtifactsTab = mainStore.achievements.unlocked.contains(.artifact1)
         }
         .store(in: &cancellables)
+        
+        calculationService.$maxArtifactSlots.sink { [unowned self] in
+            self.model.maxArtifactSlots = $0
+        }
+        .store(in: &cancellables)
     }
 }
 
@@ -90,10 +95,6 @@ extension WarehouseViewModel {
         model.newArtifactsToShow.contains(artifact)
     }
 
-    var maxArtifactSlots: Int {
-        calculationService.maxArtifactSlots()
-    }
-
     func showInfo() {
         coordinator?.custom(overlay: .card, MainPath.dialog(HelpStrings.warehouse))
     }
@@ -107,7 +108,7 @@ extension WarehouseViewModel {
            let instance = warehouse.artifactInstance(artifact) {
             pressed(artifact: instance)
         } else {
-            // TODO: Show picker
+            coordinator?.custom(overlay: .card, MainPath.artifactPicker(slot: index))
         }
     }
 

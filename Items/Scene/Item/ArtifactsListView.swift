@@ -8,11 +8,10 @@ import Knit
 @MainActor
 struct ArtifactsListView: View {
     let warehouse: Warehouse
-    var onArtifactPressed: ((ArtifactInstance) -> Void)? = nil
-    var isNew: ((Artifact) -> Bool)? = nil
-    
     // Artifacts to show in the list
     var artifacts: [Artifact] = Artifact.allCases
+    var onArtifactPressed: ((ArtifactInstance) -> Void)? = nil
+    var isNew: ((Artifact) -> Bool)? = nil
 
     private let columns = [
         GridItem(.adaptive(minimum: 80)),

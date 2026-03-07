@@ -1,17 +1,27 @@
 //Created by Alexander Skorulis on 15/2/2026.
 
+import Combine
 import Foundation
 import Knit
 import KnitMacros
 
 // Service for providing all sorts of shared calculations
-struct CalculationsService {
+final class CalculationsService: ObservableObject {
     
     private let mainStore: MainStore
+    
+    @Published var maxArtifactSlots: Int = 0
+    
+    private var cancellables: Set<AnyCancellable> = []
     
     @Resolvable<BaseResolver>
     init(mainStore: MainStore) {
         self.mainStore = mainStore
+        
+        mainStore.$portalUpgrades.sink { [unowned self] portalUpgrades in
+            self.updateMaxArtifactSlots(portalUpgrades: portalUpgrades)
+        }
+        .store(in: &cancellables)
     }
     
     /// Seconds required to complete the current research level (2 min base, doubles per level).
@@ -53,8 +63,11 @@ struct CalculationsService {
         return Chance(min(1.0, base * levelMultiplier))
     }
 
-    func maxArtifactSlots() -> Int {
-        return mainStore.portalUpgrades.bonuses.artifactSlots
+    private func updateMaxArtifactSlots(portalUpgrades: PortalUpgrades) {
+        let value = portalUpgrades.bonuses.artifactSlots
+        if value != maxArtifactSlots {
+            maxArtifactSlots = value
+        }
     }
 
     func researchSpeedBoostPercent() -> Int {

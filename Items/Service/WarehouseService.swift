@@ -78,13 +78,18 @@ extension WarehouseService {
 
     /// Equip an artifact in the warehouse.
     func equip(_ artifact: Artifact) {
-        let maxSlots = calculationService.maxArtifactSlots()
+        let maxSlots = calculationService.maxArtifactSlots
         for index in 0..<maxSlots {
             if mainStore.warehouse.equippedSlots[index] == nil {
                 mainStore.warehouse.equip(artifact, slot: index)
                 return
             }
         }
+    }
+
+    /// Equip an artifact into a specific slot.
+    func equip(_ artifact: Artifact, slot: Int) {
+        mainStore.warehouse.equip(artifact, slot: slot)
     }
 
     /// Unequip an artifact in the warehouse.

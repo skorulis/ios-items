@@ -21,6 +21,7 @@ enum MainPath: CoordinatorPath {
     
     case itemDetails(BaseItem)
     case artifactDetails(ArtifactInstance)
+    case artifactPicker(slot: Int)
     case achievementDetails(Achievement)
     case recipeDetail(Recipe)
     
@@ -67,6 +68,8 @@ struct MainPathRenderer: CoordinatorPathRenderer {
             ItemDetailsView(viewModel: resolver.itemDetailsViewModel(item: item))
         case let .artifactDetails(instance):
             ArtifactDetailView(viewModel: resolver.artifactDetailViewModel(artifact: instance))
+        case let .artifactPicker(slot):
+            ArtifactPickerView(viewModel: resolver.artifactPickerViewModel(slot: slot))
         case let .achievementDetails(achievement):
             AchievementDetailsView(viewModel: resolver.achievementDetailsViewModel(achievement: achievement))
         case let .recipeDetail(recipe):

@@ -12,6 +12,7 @@ struct WarehouseView: View {
         var newItemsToShow: Set<BaseItem> = []
         var newArtifactsToShow: Set<Artifact> = []
         var showArtifactsTab: Bool = false
+        var maxArtifactSlots: Int = 0
     }
 
     var body: some View {
@@ -52,7 +53,7 @@ struct WarehouseView: View {
     
     private var artifacts: some View {
         VStack(alignment: .leading, spacing: 16) {
-            if viewModel.maxArtifactSlots > 0 {
+            if viewModel.model.maxArtifactSlots > 0 {
                 equippedSection
             }
             ArtifactsListView(
@@ -69,7 +70,7 @@ struct WarehouseView: View {
                 .font(.headline)
                 .padding(.horizontal, 16)
 
-            let maxSlots = viewModel.maxArtifactSlots
+            let maxSlots = viewModel.model.maxArtifactSlots
             let slotContents = viewModel.warehouse.equippedSlotsContents(upToSlotCount: maxSlots)
             let slots = (0..<maxSlots).map { index in
                 slotContents[index].flatMap { viewModel.warehouse.artifactInstance($0) }
