@@ -89,6 +89,11 @@ import SwiftUI
             self.model.researchBadgeCount = $0.newResearchLevels
         }
         .store(in: &cancellables)
+        
+        calculations.$maxArtifactSlots.sink { [unowned self] in
+            self.model.maxArtifacts = $0
+        }
+        .store(in: &cancellables)
 
         self.model.showingResearch = mainStore.portalUpgrades.purchased.contains(.researchLab)
         self.model.researchBadgeCount = mainStore.notifications.newResearchLevels
@@ -169,5 +174,11 @@ extension CreationViewModel {
     func showResearch() {
         let path = CircularAnimationPath(sourceRect: researchButtonFrame, mainPath: .research)
         coordinator?.custom(overlay: .circularReveal, path)
+    }
+
+    func artifactSlotPressed(index: Int) {
+        let slotContents = mainStore.warehouse.equippedSlotsContents(upToSlotCount: model.maxArtifacts)
+        guard index < slotContents.count else { return }
+        coordinator?.custom(overlay: .card, MainPath.artifactPicker(slot: index))
     }
 }

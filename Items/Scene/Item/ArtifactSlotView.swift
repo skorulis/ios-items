@@ -44,10 +44,9 @@ private extension ArtifactSlotView {
     var slotCount: Int {
         max(1, slots.count)
     }
-
-    /// Radius of the ring (center to slot center). Single slot is not on a ring.
-    func ringRadius(avatarDiameter: CGFloat) -> CGFloat {
-        return avatarDiameter * (0.8)
+    
+    var ringRadius: CGFloat {
+        size.avatarSize.diameter * 0.8
     }
 
     /// Angle in radians for slot at index (0 = top, clockwise).
@@ -65,7 +64,7 @@ extension ArtifactSlotView: View {
         GeometryReader { geo in
             let avatarSize = size.avatarSize
             let diameter = avatarSize.diameter
-            let radius = ringRadius(avatarDiameter: diameter)
+            let radius = ringRadius
             let center = CGPoint(x: geo.size.width / 2, y: geo.size.height / 2)
 
             ZStack {
@@ -88,6 +87,7 @@ extension ArtifactSlotView: View {
             .frame(width: geo.size.width, height: geo.size.height)
         }
         .aspectRatio(1, contentMode: .fit)
+        .frame(width: ringRadius * 2, height: ringRadius * 2)
     }
 
     @ViewBuilder
@@ -125,7 +125,7 @@ extension ArtifactSlotView: View {
 
 #Preview("1 slot - empty") {
     ArtifactSlotView(slots: [nil], size: .large)
-        .frame(width: 160, height: 160)
+        
 }
 
 #Preview("1 slot - filled") {
@@ -133,7 +133,6 @@ extension ArtifactSlotView: View {
         slots: [ArtifactInstance(type: .frictionlessGear, quality: .good)],
         size: .large
     )
-    .frame(width: 160, height: 160)
 }
 
 #Preview("2 slots - mixed") {
@@ -144,7 +143,6 @@ extension ArtifactSlotView: View {
         ],
         size: .large
     )
-    .frame(width: 200, height: 200)
 }
 
 #Preview("3 slots - ring") {
@@ -156,5 +154,5 @@ extension ArtifactSlotView: View {
         ],
         size: .small
     )
-    .frame(width: 140, height: 140)
+    .border(Color.red)
 }

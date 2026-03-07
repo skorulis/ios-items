@@ -71,10 +71,8 @@ struct WarehouseView: View {
                 .padding(.horizontal, 16)
 
             let maxSlots = viewModel.model.maxArtifactSlots
-            let slotContents = viewModel.warehouse.equippedSlotsContents(upToSlotCount: maxSlots)
-            let slots = (0..<maxSlots).map { index in
-                slotContents[index].flatMap { viewModel.warehouse.artifactInstance($0) }
-            }
+            let slots = viewModel.warehouse.equippedSlotsContents(upToSlotCount: maxSlots)
+            
             ArtifactSlotView(slots: slots, size: .large) { index in
                 viewModel.artifactSlotPresed(index: index)
             }

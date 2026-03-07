@@ -46,6 +46,11 @@ import SwiftUI
         var showingResearch: Bool = false
         var researchBadgeCount: Int = 0
         var upgradesBadgeCount: Int = 0
+        
+        var maxArtifacts: Int = 0
+        var artifactSlots: [ArtifactInstance?] {
+            warehouse.equippedSlotsContents(upToSlotCount: maxArtifacts)
+        }
 
         var currentSacrifice: Recipe? {
             return recipes.first { recipe in
@@ -77,7 +82,8 @@ extension CreationView: View {
                         badge: viewModel.model.researchBadgeCount,
                         frameBinding: $viewModel.researchButtonFrame,
                     )
-                    : nil
+                    : nil,
+                artifactButton: artifactSlotView,
             )
             maybeCreationAnimation
             sacrificeAvatarsOverlay
@@ -92,6 +98,15 @@ extension CreationView: View {
             
         }
         .coordinateSpace(name: "creation")
+    }
+    
+    private var artifactSlotView: ArtifactSlotView? {
+        guard viewModel.model.artifactSlots.count > 0 else { return nil }
+        return ArtifactSlotView(
+            slots: viewModel.model.artifactSlots,
+            size: .small,
+            onSlotPressed: { viewModel.artifactSlotPressed(index: $0) }
+        )
     }
     
     private var dimensionalPortalBackground: some View {

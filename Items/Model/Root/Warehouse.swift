@@ -88,8 +88,15 @@ struct Warehouse: Codable {
     }
 
     /// Slot contents for the given slot count. Returns [Artifact?] where index matches slot; nil = empty.
-    func equippedSlotsContents(upToSlotCount count: Int) -> [Artifact?] {
-        (0..<count).map { equippedSlots[$0] }
+    func equippedSlotsContents(upToSlotCount count: Int) -> [ArtifactInstance?] {
+        let artifacts = (0..<count).map { equippedSlots[$0] }
+        return artifacts.map { artifact in
+            if let artifact {
+                return artifactInstance(artifact)
+            } else {
+                return nil
+            }
+        }
     }
 
     /// Equip an artifact into a specific slot (replaces whatever is in that slot).

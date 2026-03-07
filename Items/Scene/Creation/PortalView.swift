@@ -9,8 +9,9 @@ import SwiftUI
 /// Encapsulates the dimensional portal background and corner action buttons.
 struct PortalView: View {
 
-    var upgradesButton: Button?
-    var researchButton: Button?
+    let upgradesButton: Button?
+    let researchButton: Button?
+    let artifactButton: ArtifactSlotView?
 
     var body: some View {
         ZStack {
@@ -44,6 +45,9 @@ struct PortalView: View {
                 }
                 Spacer(minLength: 0)
                 HStack {
+                    if let artifactButton {
+                        artifactButton
+                    }
                     Spacer(minLength: 0)
                     if let researchButton {
                         PortalCornerButton(
@@ -110,6 +114,11 @@ struct PortalCornerButton: View {
 #Preview("Portal view with upgrades") {
     PortalView(
         upgradesButton: .init(action: {}, badge: 0, frameBinding: .constant(.zero)),
+        researchButton: nil,
+        artifactButton: ArtifactSlotView(
+            slots: [.init(type: .eternalHourglass, quality: .junk), nil],
+            size: .small,
+        )
     )
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .background(Color.black.opacity(0.3))

@@ -104,12 +104,7 @@ extension WarehouseViewModel {
     }
     
     func artifactSlotPresed(index: Int) {
-        if let artifact = mainStore.warehouse.equippedSlots[index],
-           let instance = warehouse.artifactInstance(artifact) {
-            pressed(artifact: instance)
-        } else {
-            coordinator?.custom(overlay: .card, MainPath.artifactPicker(slot: index))
-        }
+        coordinator?.custom(overlay: .card, MainPath.artifactPicker(slot: index))
     }
 
     func pressed(artifact: ArtifactInstance) {
