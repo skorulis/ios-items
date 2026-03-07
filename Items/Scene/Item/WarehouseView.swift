@@ -51,22 +51,15 @@ struct WarehouseView: View {
     }
     
     private var artifacts: some View {
-        let columns = [
-            GridItem(.adaptive(minimum: 80)),
-        ]
-        return VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: 16) {
             if viewModel.maxArtifactSlots > 0 {
                 equippedSection
             }
-            Text("All Artifacts")
-                .font(.headline)
-                .padding(.horizontal, 16)
-            LazyVGrid(columns: columns, spacing: 12) {
-                ForEach(Artifact.allCases) { artifact in
-                    artifactCell(artifact: artifact)
-                }
-            }
-            .padding(16)
+            ArtifactsListView(
+                warehouse: viewModel.warehouse,
+                onArtifactPressed: { viewModel.pressed(artifact: $0) },
+                isNew: { viewModel.isNew(artifact: $0) }
+            )
         }
     }
 
@@ -116,26 +109,6 @@ struct WarehouseView: View {
             }
         }
         .padding(.vertical, 16)
-    }
-    
-    @ViewBuilder
-    private func artifactCell(artifact: Artifact) -> some View {
-        if let instance = viewModel.warehouse.artifactInstance(artifact) {
-            Button(action: { viewModel.pressed(artifact: instance) }) {
-                ArtifactView(artifact: instance)
-                    .overlay(alignment: .topTrailing) {
-                        if viewModel.isNew(artifact: artifact) {
-                            Circle()
-                                .fill(.red)
-                                .frame(width: 10, height: 10)
-                                .padding(4)
-                        }
-                    }
-            }
-        } else {
-            AvatarView.emptyState(size: .medium)
-                .grayscale(0.9)
-        }
     }
     
     @ViewBuilder
