@@ -14,7 +14,6 @@ enum PortalUpgrade: Codable, Hashable, CaseIterable, Identifiable {
     case researchLab
     case researchLabLevel2
     case sacrifices
-    case portalGlow
 
     var id: Self { self }
 
@@ -24,7 +23,6 @@ enum PortalUpgrade: Codable, Hashable, CaseIterable, Identifiable {
         case .researchLab: return "Research Lab"
         case .researchLabLevel2: return "Research Lab II"
         case .sacrifices: return "Sacrifices"
-        case .portalGlow: return "Portal Glow"
         }
     }
 
@@ -33,7 +31,6 @@ enum PortalUpgrade: Codable, Hashable, CaseIterable, Identifiable {
         case .portalAutomation: return "Automatically pulls items out of the portal."
         case .researchLab: return "Unlocks the Research lab."
         case .sacrifices: return "Unlocks the Sacrifices feature."
-        case .portalGlow: return "Enhances the portal's visual aura."
         default:
             return self.bonus?.text ?? "TODO: Set manual description or add bonus"
         }
@@ -45,7 +42,6 @@ enum PortalUpgrade: Codable, Hashable, CaseIterable, Identifiable {
         case .researchLab: return Image(systemName: "flask.fill")
         case .researchLabLevel2: return Image(systemName: "flask.fill")
         case .sacrifices: return Image(systemName: "flame.fill")
-        case .portalGlow: return Image(systemName: "circle.hexagongrid.fill")
         }
     }
 
@@ -70,11 +66,6 @@ enum PortalUpgrade: Codable, Hashable, CaseIterable, Identifiable {
             .init(item: .humanSkull, quantity: 1),
             .init(item: .copperFlorin, quantity: 3),
         ]
-        case .portalGlow: return [
-            .init(item: .lens, quantity: 1),
-            .init(item: .silverFlorin, quantity: 1),
-            .init(item: .humanSkull, quantity: 1)
-        ]
         }
     }
 
@@ -97,4 +88,5 @@ enum PortalUpgrade: Codable, Hashable, CaseIterable, Identifiable {
             return nil
         }
     }
+
 }
