@@ -5,6 +5,7 @@ import Foundation
 enum Bonus {
     case researchSpeed(Int)
     case artifactSlots(Int)
+    case qualityBoost(Int, ItemQuality)
     
     var text: String {
         switch self {
@@ -12,6 +13,8 @@ enum Bonus {
             return "Boost research speed by \(int)%"
         case let .artifactSlots(int):
             return "Add \(int) artifact slot"
+        case let .qualityBoost(amount, quality):
+            return "Boost the chance to find \(quality.name) items by \(amount) percent"
         }
     }
     

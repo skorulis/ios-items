@@ -103,7 +103,19 @@ enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
         }
     }
     
+    var bonus: Bonus? {
+        switch self {
+        case .sacrificed1:
+            return .qualityBoost(1, .common)
+        default:
+            return nil
+        }
+    }
+    
     var bonusMessage: String? {
+        if let bonus {
+            return bonus.text
+        }
         switch self {
         case .items1: return nil
         case .items10:
