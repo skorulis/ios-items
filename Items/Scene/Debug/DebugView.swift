@@ -50,6 +50,11 @@ extension DebugView: View {
             }
             .buttonStyle(CapsuleButtonStyle())
 
+            Button("Show toast") {
+                viewModel.showTestToast()
+            }
+            .buttonStyle(CapsuleButtonStyle())
+
             Spacer()
         }
         .padding(.horizontal, 16)

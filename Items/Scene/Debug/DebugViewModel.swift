@@ -8,11 +8,13 @@ import KnitMacros
 
     let mainStore: MainStore
     let warehouseService: WarehouseService
+    private let toastService: ToastService
 
     @Resolvable<BaseResolver>
-    init(mainStore: MainStore, warehouseService: WarehouseService) {
+    init(mainStore: MainStore, warehouseService: WarehouseService, toastService: ToastService) {
         self.mainStore = mainStore
         self.warehouseService = warehouseService
+        self.toastService = toastService
     }
 }
 
@@ -39,6 +41,10 @@ extension DebugViewModel {
                 warehouseService.add(artifact: .init(type: artifact, quality: .junk))
             }
         }
+    }
+
+    func showTestToast() {
+        toastService.showToast("Debug toast • \(UUID().uuidString)")
     }
 }
 
