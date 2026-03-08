@@ -22,7 +22,7 @@ struct ArtifactsListView: View {
             warehouse.artifactInstance(artifact)?.quality
         }
         LazyVStack(alignment: .leading, spacing: 16) {
-            ForEach(ItemQuality.allCases, id: \.self) { quality in
+            ForEach(ItemQuality.allCases.reversed(), id: \.self) { quality in
                 if let artifactsInQuality = grouped[quality as ItemQuality?], !artifactsInQuality.isEmpty {
                     qualitySection(quality: quality, artifacts: artifactsInQuality)
                 }

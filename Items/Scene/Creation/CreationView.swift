@@ -92,7 +92,7 @@ extension CreationView: View {
                 topBar
                 Spacer()
                 autoToggleIfUnlocked
-                makeButton
+                makeButtonRow
             }
             .padding()
             
@@ -221,22 +221,31 @@ extension CreationView: View {
         }
     }
     
-    private var makeButton: some View {
-        Button(action: {
-            Task {
-                await viewModel.make()
-            }
-        }) {
-            ZStack {
-                if viewModel.model.isCreating {
-                    ProgressView()
+    private var makeButtonRow: some View {
+        HStack(spacing: 12) {
+            Button(action: {
+                Task {
+                    await viewModel.make()
                 }
-                Text(viewModel.model.firstItem ? "Unlock the portal" : "Create an item")
-                    .opacity(viewModel.model.isCreating ? 0 : 1)
+            }) {
+                ZStack {
+                    if viewModel.model.isCreating {
+                        ProgressView()
+                    }
+                    Text(viewModel.model.firstItem ? "Unlock the portal" : "Create an item")
+                        .opacity(viewModel.model.isCreating ? 0 : 1)
+                }
             }
+            .buttonStyle(CapsuleButtonStyle())
+            .disabled(viewModel.model.isCreating)
+            
+            Button(action: viewModel.showCurrentRecipeDetail) {
+                Image(systemName: "info.circle")
+                    .font(.title2)
+            }
+            .buttonStyle(.plain)
+            .disabled(viewModel.model.isCreating)
         }
-        .buttonStyle(CapsuleButtonStyle())
-        .disabled(viewModel.model.isCreating)
     }
 }
 

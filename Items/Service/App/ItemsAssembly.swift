@@ -85,8 +85,10 @@ final class ItemsAssembly: AutoInitModuleAssembly {
         }
 
         container.register(RecipeDetailViewModel.self) { (resolver: BaseResolver, recipe: Recipe) in
-            RecipeDetailViewModel.make(resolver: resolver, recipe: recipe)
+            RealRecipeDetailViewModel.make(resolver: resolver, recipe: recipe)
         }
+
+        container.register(CurrentRecipeDetailViewModel.self) { CurrentRecipeDetailViewModel.make(resolver: $0) }
 
         container.register(ArtifactDetailViewModel.self) { (resolver: BaseResolver, artifact: ArtifactInstance) in
             ArtifactDetailViewModel.make(resolver: resolver, artifact: artifact)

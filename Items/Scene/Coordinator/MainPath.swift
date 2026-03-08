@@ -24,7 +24,8 @@ enum MainPath: CoordinatorPath {
     case artifactPicker(slot: Int)
     case achievementDetails(Achievement)
     case recipeDetail(Recipe)
-    
+    case currentRecipeDetail
+
     // Present a block of text
     case dialog(String)
     
@@ -74,6 +75,8 @@ struct MainPathRenderer: CoordinatorPathRenderer {
             AchievementDetailsView(viewModel: resolver.achievementDetailsViewModel(achievement: achievement))
         case let .recipeDetail(recipe):
             RecipeDetailView(viewModel: resolver.recipeDetailViewModel(recipe: recipe))
+        case .currentRecipeDetail:
+            RecipeDetailView(viewModel: resolver.currentRecipeDetailViewModel())
         case let .dialog(text):
             Text(text)
                 .padding(16)

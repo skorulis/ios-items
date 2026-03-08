@@ -162,6 +162,10 @@ extension CreationViewModel {
         coordinator?.push(MainPath.recipeList)
     }
 
+    func showCurrentRecipeDetail() {
+        coordinator?.custom(overlay: .card, MainPath.currentRecipeDetail)
+    }
+
     func showPortalUpgrades() {
         let path = CircularAnimationPath(sourceRect: upgradeButtonFrame, mainPath: .portalUpgrades)
         coordinator?.custom(overlay: .circularReveal, path)

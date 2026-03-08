@@ -7,6 +7,8 @@ struct Recipe: Identifiable, Codable {
     
     var items: [BaseItem]
     
+    static var empty: Self { .init(items: []) }
+    
     func count(quality: ItemQuality) -> Int {
         items.filter { $0.quality == quality }.count
     }

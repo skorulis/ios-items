@@ -4,34 +4,12 @@ import Foundation
 import Knit
 import KnitMacros
 
-@Observable
-@MainActor
-final class RecipeDetailViewModel {
-    
-    private let itemGeneratorService: ItemGeneratorService
-    
-    private(set) var model: RecipeDetailView.Model
-    
-    @Resolvable<BaseResolver>
-    init(
-        itemGeneratorService: ItemGeneratorService,
-        @Argument recipe: Recipe
-    ) {
-        self.itemGeneratorService = itemGeneratorService
-        
-        let info = itemGeneratorService.recipeInfo(recipe: recipe)
-        
-        let qualityChances = RecipeDetailViewModel.normalizedQualityChances(from: info.quality)
-        let essenceBonuses = RecipeDetailViewModel.sortedEssenceBonuses(from: info.essenceBoosts)
-        
-        self.model = RecipeDetailView.Model(
-            recipe: recipe,
-            qualityChances: qualityChances,
-            essenceBonuses: essenceBonuses
-        )
-    }
-    
-    private static func normalizedQualityChances(
+@MainActor protocol RecipeDetailViewModel {
+    var model: RecipeDetailView.Model { get }
+}
+
+extension RecipeDetailViewModel {
+    static func normalizedQualityChances(
         from weights: [ItemQuality: Double]
     ) -> [(ItemQuality, Double)] {
         let total = weights.values.reduce(0, +)
@@ -48,7 +26,7 @@ final class RecipeDetailViewModel {
             }
     }
     
-    private static func sortedEssenceBonuses(
+    static func sortedEssenceBonuses(
         from boosts: [Essence: Double]
     ) -> [(Essence, Double)] {
         boosts
@@ -56,6 +34,34 @@ final class RecipeDetailViewModel {
             .sorted { lhs, rhs in
                 lhs.0.name < rhs.0.name
             }
+    }
+}
+
+@Observable
+@MainActor
+final class RealRecipeDetailViewModel: RecipeDetailViewModel {
+    
+    private let itemGeneratorService: ItemGeneratorService
+    
+    private(set) var model: RecipeDetailView.Model
+    
+    @Resolvable<BaseResolver>
+    init(
+        itemGeneratorService: ItemGeneratorService,
+        @Argument recipe: Recipe
+    ) {
+        self.itemGeneratorService = itemGeneratorService
+        
+        let info = itemGeneratorService.recipeInfo(recipe: recipe)
+        
+        let qualityChances = Self.normalizedQualityChances(from: info.quality)
+        let essenceBonuses = Self.sortedEssenceBonuses(from: info.essenceBoosts)
+        
+        self.model = RecipeDetailView.Model(
+            recipe: recipe,
+            qualityChances: qualityChances,
+            essenceBonuses: essenceBonuses
+        )
     }
 }
 
