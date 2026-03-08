@@ -107,6 +107,8 @@ enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
         switch self {
         case .sacrificed1:
             return .qualityBoost(1, .common)
+        case .common1:
+            return .qualityBoost(1, .common)
         default:
             return nil
         }
@@ -124,11 +126,13 @@ enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
             return "Unlocks sacrifices"
         case .artifact1:
             return "Unlocks artifact slots"
-        case .common1:
-            return "1% increased chance to find common items"
+        case .artifacts5:
+            return "Unlock second artifact slot"
+        case .essence1:
+            return "Encyclopedia entry unlocked"
         case .items1_000_000:
             return "TODO"
-        case .sacrificed1, .sacrificed1000, .artifacts5, .essence1, .allEssences:
+        default:
             return nil
         }
     }

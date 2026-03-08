@@ -84,8 +84,16 @@ final class ItemGeneratorService {
         }
     }
     
+    private var activeBonuses: [Bonus] {
+        let fromAchievements = Achievement.allCases
+            .filter { mainStore.achievements.unlocked.contains($0) }
+            .compactMap(\.bonus)
+        return fromAchievements + mainStore.portalUpgrades.bonuses
+    }
+
     private func qualityBonuses(recipe: Recipe) -> [ItemQuality: Double] {
-        Dictionary(
+        let qualityBoosts = activeBonuses.qualityBoosts
+        return Dictionary(
             uniqueKeysWithValues: ItemQuality.allCases.map { quality in
                 let weight: Double
                 switch quality {
@@ -100,7 +108,9 @@ final class ItemGeneratorService {
                 case .exceptional:
                     weight = 0.5 * Double(recipe.count(quality: .rare))
                 }
-                return (quality, weight)
+                let boostPercent = Double(qualityBoosts[quality] ?? 0)
+                let boostedWeight = weight * (1 + boostPercent / 100)
+                return (quality, boostedWeight)
             }
         )
     }

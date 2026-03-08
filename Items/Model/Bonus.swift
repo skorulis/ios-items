@@ -14,7 +14,7 @@ enum Bonus {
         case let .artifactSlots(int):
             return "Add \(int) artifact slot"
         case let .qualityBoost(amount, quality):
-            return "Boost the chance to find \(quality.name) items by \(amount) percent"
+            return "Boost the chance to find \(quality.name) items by \(amount)%"
         }
     }
     
@@ -35,14 +35,29 @@ enum Bonus {
             return 0
         }
     }
+
+    /// For qualityBoost case: (quality, percent). Nil for other bonus types.
+    var qualityBoostValue: (ItemQuality, Int)? {
+        if case let .qualityBoost(amount, quality) = self {
+            return (quality, amount)
+        }
+        return nil
+    }
 }
 
 extension Array where Element == Bonus {
     var researchSpeed: Int {
         return self.map { $0.researchSpeedBoost }.reduce(0, +)
     }
-    
+
     var artifactSlots: Int {
         return self.map { $0.artifactSlotBoost }.reduce(0, +)
+    }
+
+    /// Sum of quality boost percent per quality (e.g. [.common: 1] means +1% chance for common).
+    var qualityBoosts: [ItemQuality: Int] {
+        return self.compactMap(\.qualityBoostValue).reduce(into: [:]) { result, pair in
+            result[pair.0, default: 0] += pair.1
+        }
     }
 }
