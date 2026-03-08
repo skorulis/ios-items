@@ -4,4 +4,5 @@ import Foundation
 
 struct Recipes: Codable, Equatable {
     var list: [Recipe] = []
+    var sacrificesEnabled: Bool = true
 }

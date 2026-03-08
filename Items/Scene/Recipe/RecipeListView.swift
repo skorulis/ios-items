@@ -55,7 +55,7 @@ extension RecipeListView: View {
                 viewModel.delete(indexSet: indexSet)
             }
             .onMove { indices, newOffset in
-                viewModel.recipes.move(fromOffsets: indices, toOffset: newOffset)
+                viewModel.moveRecipes(fromOffsets: indices, toOffset: newOffset)
             }
         }
         .listStyle(.plain)
@@ -65,8 +65,21 @@ extension RecipeListView: View {
         TitleBar(
             title: "Sacrifices",
             backAction: { viewModel.coordinator?.pop() },
-            trailing: { helpButton }
+            trailing: {
+                HStack(spacing: 16) {
+                    sacrificesToggle
+                    helpButton
+                }
+            }
         )
+    }
+
+    private var sacrificesToggle: some View {
+        Toggle("", isOn: Binding(
+            get: { viewModel.sacrificesEnabled },
+            set: { viewModel.setSacrificesEnabled($0) }
+        ))
+        .labelsHidden()
     }
     
     private var helpButton: some View {

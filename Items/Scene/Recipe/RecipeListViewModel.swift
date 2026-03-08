@@ -11,12 +11,9 @@ import SwiftUI
     
     var coordinator: ASKCoordinator.Coordinator?
     
-    var recipes: [Recipe] {
-        didSet {
-            mainStore.recipes = Recipes(list: recipes)
-        }
-    }
+    private(set) var recipes: [Recipe]
     var warehouse: Warehouse
+    var sacrificesEnabled: Bool = true
     
     var editingRecipe: Recipe?
     
@@ -28,7 +25,8 @@ import SwiftUI
         self.mainStore = mainStore
         warehouse = mainStore.warehouse
         recipes = mainStore.recipes.list
-        
+        sacrificesEnabled = mainStore.recipes.sacrificesEnabled
+
         mainStore.$warehouse.sink { [unowned self] in
             self.warehouse = $0
         }
@@ -36,6 +34,7 @@ import SwiftUI
 
         mainStore.$recipes.sink { [unowned self] in
             self.recipes = $0.list
+            self.sacrificesEnabled = $0.sacrificesEnabled
         }
         .store(in: &cancellables)
     }
@@ -51,7 +50,7 @@ extension RecipeListViewModel {
     
     func addRecipe() {
         let newRecipe = Recipe(items: [])
-        recipes.append(newRecipe)
+        mainStore.recipes.list.append(newRecipe)
         editingRecipe = newRecipe
     }
     
@@ -62,12 +61,12 @@ extension RecipeListViewModel {
     func addItem(recipe: Recipe, item: BaseItem) {
         let index = recipes.firstIndex(where: { $0.id == recipe.id})
         guard let index else { return }
-        recipes[index].items.append(item)
+        mainStore.recipes.list[index].items.append(item)
     }
 
     func removeItem(_ item: BaseItem, from recipe: Recipe) {
         guard let index = recipes.firstIndex(where: { $0.id == recipe.id }) else { return }
-        recipes[index].items.removeAll { $0 == item }
+        mainStore.recipes.list[index].items.removeAll { $0 == item }
     }
 
     func showDetails(for recipe: Recipe) {
@@ -75,8 +74,16 @@ extension RecipeListViewModel {
     }
     
     func delete(indexSet: IndexSet) {
-        recipes.remove(atOffsets: indexSet)
+        mainStore.recipes.list.remove(atOffsets: indexSet)
+    }
+
+    func setSacrificesEnabled(_ enabled: Bool) {
+        mainStore.recipes.sacrificesEnabled = enabled
     }
     
+    func moveRecipes(fromOffsets source: IndexSet, toOffset destination: Int) {
+        mainStore.recipes.list.move(fromOffsets: source, toOffset: destination)
+    }
+
 }
 

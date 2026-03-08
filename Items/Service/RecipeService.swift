@@ -20,8 +20,11 @@ final class RecipeService {
         }
     }
     
-    // Find the next recipe which can be used (
+    // Find the next recipe which can be used
     func nextAvailable() -> Recipe {
+        guard mainStore.recipes.sacrificesEnabled else {
+            return .init(items: [])
+        }
         for recipe in mainStore.recipes.list {
             let possible = recipe.items.allSatisfy { mainStore.warehouse.quantity($0) > 0 }
             if possible { return recipe }

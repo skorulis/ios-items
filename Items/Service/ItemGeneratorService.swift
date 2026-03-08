@@ -109,7 +109,7 @@ final class ItemGeneratorService {
                     weight = 0.5 * Double(recipe.count(quality: .rare))
                 }
                 let boostPercent = Double(qualityBoosts[quality] ?? 0)
-                let boostedWeight = weight * (1 + boostPercent / 100)
+                let boostedWeight = weight + (boostPercent / 100)
                 return (quality, boostedWeight)
             }
         )
