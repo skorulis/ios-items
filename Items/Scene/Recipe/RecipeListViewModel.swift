@@ -13,7 +13,7 @@ import SwiftUI
     
     var recipes: [Recipe] {
         didSet {
-            mainStore.recipes = recipes
+            mainStore.recipes = Recipes(list: recipes)
         }
     }
     var warehouse: Warehouse
@@ -27,10 +27,15 @@ import SwiftUI
     init(mainStore: MainStore) {
         self.mainStore = mainStore
         warehouse = mainStore.warehouse
-        recipes = mainStore.recipes
+        recipes = mainStore.recipes.list
         
         mainStore.$warehouse.sink { [unowned self] in
             self.warehouse = $0
+        }
+        .store(in: &cancellables)
+
+        mainStore.$recipes.sink { [unowned self] in
+            self.recipes = $0.list
         }
         .store(in: &cancellables)
     }

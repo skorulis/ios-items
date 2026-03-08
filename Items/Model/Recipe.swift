@@ -2,7 +2,7 @@
 
 import Foundation
 
-struct Recipe: Identifiable, Codable {
+struct Recipe: Identifiable, Codable, Equatable {
     var id = UUID()
     
     var items: [BaseItem]

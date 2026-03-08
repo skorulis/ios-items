@@ -14,7 +14,7 @@ struct RecipeListViewSnapshotTests {
     @Test
     func recipeList_empty_state() {
         let mainStore = assembler.resolver.mainStore()
-        mainStore.recipes = []
+        mainStore.recipes = Recipes(list: [])
         
         let viewModel = assembler.resolver.recipeListViewModel()
         let view = RecipeListView(viewModel: viewModel)
@@ -29,7 +29,7 @@ struct RecipeListViewSnapshotTests {
         // Seed some recipes for display
         let recipe1 = Recipe(items: [.apple])
         let recipe2 = Recipe(items: [.gear, .copperFlorin])
-        mainStore.recipes = [recipe1, recipe2]
+        mainStore.recipes = Recipes(list: [recipe1, recipe2])
         
         let viewModel = assembler.resolver.recipeListViewModel()
         let view = RecipeListView(viewModel: viewModel)

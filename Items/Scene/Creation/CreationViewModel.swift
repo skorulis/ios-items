@@ -69,7 +69,7 @@ import SwiftUI
         .store(in: &cancellables)
 
         mainStore.$recipes.sink { [unowned self] in
-            self.model.recipes = $0
+            self.model.recipes = $0.list
         }
         .store(in: &cancellables)
 

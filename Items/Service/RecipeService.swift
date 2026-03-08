@@ -22,7 +22,7 @@ final class RecipeService {
     
     // Find the next recipe which can be used (
     func nextAvailable() -> Recipe {
-        for recipe in mainStore.recipes {
+        for recipe in mainStore.recipes.list {
             let possible = recipe.items.allSatisfy { mainStore.warehouse.quantity($0) > 0 }
             if possible { return recipe }
         }
