@@ -66,10 +66,10 @@ extension UpgradeService {
         mainStore.portalUpgrades.purchased.insert(upgrade)
     }
 
-    /// Whether the given upgrade's unlock requirement (if any) has been satisfied.
+    /// Whether the given upgrade's unlock requirements have all been satisfied.
     func isUnlocked(_ upgrade: PortalUpgrade) -> Bool {
-        guard let requirement = upgrade.requirement else { return true }
-        return achievementService.isComplete(requirement: requirement)
+        guard !upgrade.requirements.isEmpty else { return true }
+        return upgrade.requirements.allSatisfy { achievementService.isComplete(requirement: $0) }
     }
 
 }

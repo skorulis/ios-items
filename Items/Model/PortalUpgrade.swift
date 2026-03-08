@@ -91,17 +91,20 @@ enum PortalUpgrade: Codable, Hashable, CaseIterable, Identifiable {
         }
     }
 
-    /// Optional requirement that must be met before this upgrade becomes available.
-    var requirement: UnlockRequirement? {
+    /// Requirements that must all be met before this upgrade becomes available.
+    var requirements: [UnlockRequirement] {
         switch self {
         case .researchLabLevel2:
-            return .upgradePurchased(.researchLab)
+            return [.upgradePurchased(.researchLab)]
         case .artifactSlotLevel2:
-            return .upgradePurchased(.artifactSlot)
+            return [
+                .upgradePurchased(.artifactSlot),
+                .achievementUnlocked(.artifacts5),
+            ]
         case .artifactSlotLevel3:
-            return .upgradePurchased(.artifactSlotLevel2)
+            return [.upgradePurchased(.artifactSlotLevel2)]
         default:
-            return nil
+            return []
         }
     }
 

@@ -55,6 +55,8 @@ final class AchievementService {
             return mainStore.warehouse.quality(artifact) != nil ? 1 : 0
         case let .upgradePurchased(upgrade):
             return mainStore.portalUpgrades.purchased.contains(upgrade) ? 1 : 0
+        case let .achievementUnlocked(achievement):
+            return mainStore.achievements.unlocked.contains(achievement) ? 1 : 0
         }
     }
     
@@ -68,7 +70,7 @@ final class AchievementService {
              let .artifactsUnlocked(count):
             return count
 
-        case .essenceUnlocked, .artifactUnlocked, .upgradePurchased:
+        case .essenceUnlocked, .artifactUnlocked, .upgradePurchased, .achievementUnlocked:
             return 1
         }
     }
