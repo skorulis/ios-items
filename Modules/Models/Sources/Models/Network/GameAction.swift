@@ -5,4 +5,5 @@ import Foundation
 // POST actions that can currently be done
 public enum GameAction: String, Codable {
     case makeItem
+    case purchaseUpgrade
 }

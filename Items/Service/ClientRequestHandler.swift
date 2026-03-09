@@ -89,13 +89,20 @@ final class ClientRequestHandler {
     }
     
     private func getAvailableActions() -> [GameAction] {
-        return [.makeItem]
+        var result: [GameAction] = [.makeItem]
+        if mainStore.achievements.unlocked.contains(.items10) {
+            result.append(.purchaseUpgrade)
+        }
+        return result
     }
     
     private func getAvailableData() -> [GameData] {
         var result: [GameData] = [.items]
         if mainStore.achievements.unlocked.contains(.artifact1) {
             result.append(.artifacts)
+        }
+        if mainStore.achievements.unlocked.contains(.items10) {
+            result.append(.upgrades)
         }
         
         return result

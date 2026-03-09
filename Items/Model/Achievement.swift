@@ -122,7 +122,7 @@ enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
         switch self {
         case .items1: return nil
         case .items10:
-            return "Unlocks research"
+            return "Unlocks portal upgrades"
         case .items100:
             return "Unlocks sacrifices"
         case .artifact1:

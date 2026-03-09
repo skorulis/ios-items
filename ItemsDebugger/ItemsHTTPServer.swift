@@ -40,7 +40,7 @@ final class ItemsHTTPServer {
             return try Self.makeResponse(payload: payload)
         }
         
-        app.post("upgrades", "purchase") { request async throws -> Response in
+        app.post("upgrades/purchase") { request async throws -> Response in
             guard let id = try? request.query.get(String.self, at: "id") else {
                 throw Abort(.badRequest, reason: "Missing query parameter: id")
             }
@@ -129,6 +129,8 @@ extension GameAction {
         switch self {
         case .makeItem:
             return "/make"
+        case .purchaseUpgrade:
+            return "/upgrades/purchase{?id}"
         }
     }
 }
