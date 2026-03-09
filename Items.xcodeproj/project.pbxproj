@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FA110F042F5E4E1003DE626 /* Network.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA110F032F5E4E1003DE626 /* Network.framework */; };
+		FA111D252F5E54BE00F67CF9 /* LCLWebSocket in Frameworks */ = {isa = PBXBuildFile; productRef = FA111D242F5E54BE00F67CF9 /* LCLWebSocket */; };
 		FA6D90A32F3B334E003DE626 /* ASKCoordinator in Frameworks */ = {isa = PBXBuildFile; productRef = FA6D90A22F3B334E003DE626 /* ASKCoordinator */; };
 		FA6D90A62F3B3389003DE626 /* Knit in Frameworks */ = {isa = PBXBuildFile; productRef = FA6D90A52F3B3389003DE626 /* Knit */; };
 		FA6D90A82F3B3389003DE626 /* KnitMacros in Frameworks */ = {isa = PBXBuildFile; productRef = FA6D90A72F3B3389003DE626 /* KnitMacros */; };
@@ -32,7 +34,21 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		FA110EFA2F5E4E0D00F67CF9 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		FA110EFC2F5E4E0D00F67CF9 /* ItemsDebugger */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ItemsDebugger; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA110F032F5E4E1003DE626 /* Network.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Network.framework; path = System/Library/Frameworks/Network.framework; sourceTree = SDKROOT; };
 		FA6D90922F3B32F1003DE626 /* Items.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Items.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA6D90B72F3B34B7003DE626 /* knitconfig.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = knitconfig.json; sourceTree = "<group>"; };
 		FAE3A1A92F552500008860EC /* ItemsUnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ItemsUnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -40,6 +56,11 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		FA110EFD2F5E4E0D00F67CF9 /* ItemsDebugger */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = ItemsDebugger;
+			sourceTree = "<group>";
+		};
 		FA6D90942F3B32F1003DE626 /* Items */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Items;
@@ -58,6 +79,15 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		FA110EF92F5E4E0D00F67CF9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FA111D252F5E54BE00F67CF9 /* LCLWebSocket in Frameworks */,
+				FA110F042F5E4E1003DE626 /* Network.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FA6D908F2F3B32F1003DE626 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -87,6 +117,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		FA11115D2F5E50AD00F67CF9 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				FA110F032F5E4E1003DE626 /* Network.framework */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		FA6D90892F3B32F1003DE626 = {
 			isa = PBXGroup;
 			children = (
@@ -94,7 +132,9 @@
 				FA6D90942F3B32F1003DE626 /* Items */,
 				FAE3A1AA2F552500008860EC /* ItemsUnitTests */,
 				FB0000000000000000000005 /* ItemsSnapshotTests */,
+				FA110EFD2F5E4E0D00F67CF9 /* ItemsDebugger */,
 				FA6D90932F3B32F1003DE626 /* Products */,
+				FA11115D2F5E50AD00F67CF9 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -104,6 +144,7 @@
 				FA6D90922F3B32F1003DE626 /* Items.app */,
 				FAE3A1A92F552500008860EC /* ItemsUnitTests.xctest */,
 				FB0000000000000000000006 /* ItemsSnapshotTests.xctest */,
+				FA110EFC2F5E4E0D00F67CF9 /* ItemsDebugger */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -111,6 +152,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		FA110EFB2F5E4E0D00F67CF9 /* ItemsDebugger */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FA110F002F5E4E0D00F67CF9 /* Build configuration list for PBXNativeTarget "ItemsDebugger" */;
+			buildPhases = (
+				FA110EF82F5E4E0D00F67CF9 /* Sources */,
+				FA110EF92F5E4E0D00F67CF9 /* Frameworks */,
+				FA110EFA2F5E4E0D00F67CF9 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				FA110EFD2F5E4E0D00F67CF9 /* ItemsDebugger */,
+			);
+			name = ItemsDebugger;
+			packageProductDependencies = (
+				FA111D242F5E54BE00F67CF9 /* LCLWebSocket */,
+			);
+			productName = ItemsDebugger;
+			productReference = FA110EFC2F5E4E0D00F67CF9 /* ItemsDebugger */;
+			productType = "com.apple.product-type.tool";
+		};
 		FA6D90912F3B32F1003DE626 /* Items */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = FA6D909D2F3B32F3003DE626 /* Build configuration list for PBXNativeTarget "Items" */;
@@ -195,6 +259,9 @@
 				LastSwiftUpdateCheck = 2630;
 				LastUpgradeCheck = 2620;
 				TargetAttributes = {
+					FA110EFB2F5E4E0D00F67CF9 = {
+						CreatedOnToolsVersion = 26.3;
+					};
 					FA6D90912F3B32F1003DE626 = {
 						CreatedOnToolsVersion = 26.2;
 					};
@@ -222,6 +289,7 @@
 				FA6D90A42F3B3389003DE626 /* XCRemoteSwiftPackageReference "knit" */,
 				FA777FFD2F3FE15E000C40C3 /* XCRemoteSwiftPackageReference "ASKCore" */,
 				FB0000000000000000000001 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
+				FA111D232F5E54BE00F67CF9 /* XCRemoteSwiftPackageReference "lcl-websocket" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = FA6D90932F3B32F1003DE626 /* Products */;
@@ -231,6 +299,7 @@
 				FA6D90912F3B32F1003DE626 /* Items */,
 				FAE3A1A82F552500008860EC /* ItemsUnitTests */,
 				FB0000000000000000000004 /* ItemsSnapshotTests */,
+				FA110EFB2F5E4E0D00F67CF9 /* ItemsDebugger */,
 			);
 		};
 /* End PBXProject section */
@@ -261,6 +330,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		FA110EF82F5E4E0D00F67CF9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FA6D908E2F3B32F1003DE626 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -302,6 +378,36 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		FA110F012F5E4E0D00F67CF9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = X4S6MUZL2D;
+				ENABLE_HARDENED_RUNTIME = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.2;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		FA110F022F5E4E0D00F67CF9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = X4S6MUZL2D;
+				ENABLE_HARDENED_RUNTIME = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.2;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 		FA6D909B2F3B32F3003DE626 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -433,6 +539,7 @@
 				DEVELOPMENT_TEAM = X4S6MUZL2D;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSAllowsLocalNetworking = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -465,6 +572,7 @@
 				DEVELOPMENT_TEAM = X4S6MUZL2D;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSAllowsLocalNetworking = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -574,6 +682,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		FA110F002F5E4E0D00F67CF9 /* Build configuration list for PBXNativeTarget "ItemsDebugger" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FA110F012F5E4E0D00F67CF9 /* Debug */,
+				FA110F022F5E4E0D00F67CF9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		FA6D908D2F3B32F1003DE626 /* Build configuration list for PBXProject "Items" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -613,6 +730,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		FA111D232F5E54BE00F67CF9 /* XCRemoteSwiftPackageReference "lcl-websocket" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Local-Connectivity-Lab/lcl-websocket";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.1;
+			};
+		};
 		FA6D90A12F3B334E003DE626 /* XCRemoteSwiftPackageReference "ASKCoordinator" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/skorulis/ASKCoordinator";
@@ -648,6 +773,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		FA111D242F5E54BE00F67CF9 /* LCLWebSocket */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA111D232F5E54BE00F67CF9 /* XCRemoteSwiftPackageReference "lcl-websocket" */;
+			productName = LCLWebSocket;
+		};
 		FA6D90A22F3B334E003DE626 /* ASKCoordinator */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = FA6D90A12F3B334E003DE626 /* XCRemoteSwiftPackageReference "ASKCoordinator" */;

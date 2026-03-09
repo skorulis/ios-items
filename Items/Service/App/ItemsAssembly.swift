@@ -52,6 +52,8 @@ final class ItemsAssembly: AutoInitModuleAssembly {
             .inObjectScope(.container)
         container.register(CalculationsService.self) { CalculationsService.make(resolver: $0) }
             .inObjectScope(.container)
+        container.register(DebugConnectionService.self) { DebugConnectionService.make(resolver: $0) }
+            .inObjectScope(.container)
     }
     
     @MainActor

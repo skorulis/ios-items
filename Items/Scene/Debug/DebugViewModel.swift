@@ -9,12 +9,14 @@ import KnitMacros
     let mainStore: MainStore
     let warehouseService: WarehouseService
     private let toastService: ToastService
+    let debugConnectionService: DebugConnectionService
 
     @Resolvable<BaseResolver>
-    init(mainStore: MainStore, warehouseService: WarehouseService, toastService: ToastService) {
+    init(mainStore: MainStore, warehouseService: WarehouseService, toastService: ToastService, debugConnectionService: DebugConnectionService) {
         self.mainStore = mainStore
         self.warehouseService = warehouseService
         self.toastService = toastService
+        self.debugConnectionService = debugConnectionService
     }
 }
 

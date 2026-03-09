@@ -30,6 +30,8 @@ extension DebugView: View {
 
     private var content: some View {
         VStack(alignment: .leading, spacing: 16) {
+            debuggerSection
+
             Button("Reset portal upgrades") {
                 viewModel.resetUpgrades()
             }
@@ -59,6 +61,51 @@ extension DebugView: View {
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 8)
+    }
+
+    private var debuggerSection: some View {
+        DebuggerConnectionSection(service: viewModel.debugConnectionService)
+    }
+}
+
+// MARK: - Debugger connection section (observes service for state updates)
+
+private struct DebuggerConnectionSection: View {
+    let service: DebugConnectionService
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Debugger connection")
+                .font(.headline)
+            TextField("Host", text: Binding(
+                get: { service.host },
+                set: { service.host = $0 }
+            ))
+            .textFieldStyle(.roundedBorder)
+            .autocapitalization(.none)
+            .disableAutocorrection(true)
+
+            HStack(spacing: 12) {
+                switch service.connectionState {
+                case .disconnected:
+                    Button("Connect") {
+                        service.connect()
+                    }
+                    .buttonStyle(CapsuleButtonStyle())
+                case .connecting:
+                    Text("Connecting…")
+                        .foregroundStyle(.secondary)
+                case .connected:
+                    Button("Disconnect") {
+                        service.disconnect()
+                    }
+                    .buttonStyle(CapsuleButtonStyle())
+                    Text("Connected")
+                        .foregroundStyle(.secondary)
+                }
+            }
+        }
+        .padding(.vertical, 4)
     }
 }
 
