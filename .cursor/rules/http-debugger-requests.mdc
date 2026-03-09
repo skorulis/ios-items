@@ -1,0 +1,74 @@
+---
+description: How to add new HTTP debugger requests (ItemsDebugger ↔ Items app)
+globs: "**/ItemsClientRequest.swift,**/ItemsClientResponse.swift,**/ClientRequestHandler.swift,**/ItemsHTTPServer.swift,**/WebSocketServer.swift,**/InputListener.swift"
+alwaysApply: false
+---
+
+# Adding New HTTP Debugger Requests
+
+New debugger HTTP endpoints follow a fixed pattern across the **Models** module, the **Items** app, and **ItemsDebugger**. Update these places in order.
+
+## 1. Request type (Models)
+
+**File:** `Modules/Models/Sources/Models/Network/ItemsClientRequest.swift`
+
+Add a new case to `ItemsClientRequest.Payload`:
+
+- **No parameters:** `case getFoo` (e.g. `getItems`, `getUpgrades`)
+- **With parameter:** `case doThing(SomeType)` (e.g. `purchaseUpgrade(PortalUpgrade)`). Use types that are already in Models and `Codable` (e.g. enums with raw values).
+
+## 2. Response type (Models)
+
+**File:** `Modules/Models/Sources/Models/Network/ItemsClientResponse.swift`
+
+- For **success with a custom payload:** add a case such as `case foo(FooPayload)` and define a `Codable` struct (e.g. `UpgradesPayload`) in the same file if needed.
+- For **simple success:** use existing `case ok`.
+- For **failure:** return `case error(String)`; `ItemsHTTPServer` will turn this into a 400 with the message.
+
+## 3. App handler (Items)
+
+**File:** `Items/Service/ClientRequestHandler.swift`
+
+- In `handle(request: ItemsClientRequest.Payload)`, add a `switch` case for the new request.
+- Implement the logic (read from `mainStore` or call services). Inject new services via the initializer if required.
+- Return the appropriate `ItemsClientResponse.Payload` (e.g. `.ok`, `.error("reason")`, or a custom case).
+
+## 4. HTTP route and JSON (ItemsDebugger)
+
+**File:** `ItemsDebugger/ItemsHTTPServer.swift`
+
+- **Route:** In `run(app:)`, add `app.get("path")` or `app.post("path", "sub")`. Use `getResponse(request: .yourNewCase)` (or with parameters, e.g. `.purchaseUpgrade(upgrade)`). Parse query/body from `request` when needed; validate and throw `Abort(.badRequest, reason:)` for invalid input.
+- **Convert:** In `convert(payload:)`, add a `case` for the new response payload that returns a JSON-serializable value (e.g. `[String: Any]`, structs, or existing types like `HTTPPortalUpgrade`). For `.error`, the switch should not be reached because `makeResponse` throws first; use `case .error: fatalError("...")` to satisfy exhaustiveness.
+
+Error responses are handled in `makeResponse(payload:)`: when the payload is `.error(message)`, it throws `Abort(.badRequest, reason: message)` and does not return 200.
+
+## 5. GameData and GameAction (discoverability)
+
+**GameData** and **GameAction** tell clients which parts of the game are currently available. They are returned by the `getActions` request and form the basis of the HATEOAS `_links` in the actions response.
+
+- **New GET requests** → add a case to **GameData** (Models).  
+  **Files:** `Modules/Models/Sources/Models/Network/GameData.swift`, `ItemsDebugger/ItemsHTTPServer.swift` (extension `GameData` → add `href` for the new case), `Items/Service/ClientRequestHandler.swift` (in `getAvailableData()` return the new case when that data is available; use achievement or other gating if needed).
+
+- **New POST requests** → add a case to **GameAction** (Models).  
+  **Files:** `Modules/Models/Sources/Models/Network/GameAction.swift`, `ItemsDebugger/ItemsHTTPServer.swift` (extension `GameAction` → add `href` for the new case), `Items/Service/ClientRequestHandler.swift` (in `getAvailableActions()` return the new case when that action is available).
+
+This way clients can call `GET /actions` to see which data endpoints (GameData) and which action endpoints (GameAction) are currently valid.
+
+## 6. Optional: WebSocket logging and CLI
+
+- **WebSocketServer:** In the `onText` handler’s `switch response.payload`, add a case to log the new response (e.g. `case .ok: print("OK")`) so debugger console output stays clear.
+- **InputListener:** To support a CLI command that triggers the request, add a `case` in `handle(line:)` that calls `perform(request: .yourNewCase)`.
+
+## Quick reference
+
+| Layer        | File / location                    | Action |
+|-------------|-------------------------------------|--------|
+| Models      | `ItemsClientRequest.swift`         | Add `Payload` case |
+| Models      | `ItemsClientResponse.swift`        | Add `Payload` case (and DTO if needed) |
+| Models      | `GameData.swift`                   | **GET only:** Add case; then add `href` in ItemsHTTPServer and include in `getAvailableData()` |
+| Models      | `GameAction.swift`                 | **POST only:** Add case; then add `href` in ItemsHTTPServer and include in `getAvailableActions()` |
+| Items app   | `ClientRequestHandler.swift`       | Handle new case, return success or `.error`; if GET/POST, add to `getAvailableData()` / `getAvailableActions()` |
+| ItemsDebugger | `ItemsHTTPServer.run(app:)`       | Add route; parse query/body; call `getResponse(request:)` |
+| ItemsDebugger | `ItemsHTTPServer.convert(payload:)` | Add case to map payload to JSON |
+| ItemsDebugger | `ItemsHTTPServer` (GameData/GameAction extensions) | Add `href` for new GET/POST so `/actions` _links are correct |
+| Optional    | `WebSocketServer`, `InputListener`  | Log response and/or add CLI command |

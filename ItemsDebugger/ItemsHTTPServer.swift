@@ -13,7 +13,13 @@ final class ItemsHTTPServer {
     }
     
     func run(app: Application, ) {
-        // HTTP endpoint to trigger a `makeItem` request on the connected client and return the JSON response.
+        
+        // Get the available actions that the client can perform
+        app.get("actions") { _ async throws -> Response in
+            let payload = try await self.getResponse(request: .getActions)
+            return try Self.makeResponse(payload: payload)
+        }
+        
         app.post("make") { _ async throws -> Response in
             let payload = try await self.getResponse(request: .makeItem)
             return try Self.makeResponse(payload: payload)
@@ -42,11 +48,6 @@ final class ItemsHTTPServer {
                 throw Abort(.badRequest, reason: "Unknown upgrade id: \(id)")
             }
             let payload = try await self.getResponse(request: .purchaseUpgrade(upgrade))
-            return try Self.makeResponse(payload: payload)
-        }
-        
-        app.get("actions") { _ async throws -> Response in
-            let payload = try await self.getResponse(request: .getActions)
             return try Self.makeResponse(payload: payload)
         }
     }
@@ -118,7 +119,7 @@ extension GameData {
         switch self {
         case .items: return "/items"
         case .artifacts: return "/artifacts"
-        case .upgrades: return "upgrades"
+        case .upgrades: return "/upgrades"
         }
     }
 }
