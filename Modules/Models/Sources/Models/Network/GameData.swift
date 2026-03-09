@@ -6,4 +6,5 @@ import Foundation
 public enum GameData: Codable {
     case items
     case artifacts
+    case upgrades
 }

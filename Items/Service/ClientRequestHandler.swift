@@ -59,6 +59,17 @@ final class ClientRequestHandler {
                 }
             }
             return .artifacts(artifactsWithQuality)
+        case .getUpgrades:
+            let purchased = Array(mainStore.portalUpgrades.purchased)
+            let available = PortalUpgrade.allCases.filter { upgrade in
+                !mainStore.portalUpgrades.purchased.contains(upgrade)
+            }
+            return .upgrades(
+                UpgradesPayload(
+                    purchased: purchased,
+                    available: available
+                )
+            )
         }
     }
     

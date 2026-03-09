@@ -18,7 +18,7 @@ final class ItemsHTTPServer {
             return try Self.response(payload: payload)
         }
         
-        app.get("item") { _ async throws -> Response in
+        app.get("items") { _ async throws -> Response in
             guard let payload = await clients.send(request: .getItems) else {
                 throw Abort(.serviceUnavailable, reason: "No client connected or no response received")
             }
@@ -28,6 +28,14 @@ final class ItemsHTTPServer {
         
         app.get("artifacts") { _ async throws -> Response in
             guard let payload = await clients.send(request: .getArtifacts) else {
+                throw Abort(.serviceUnavailable, reason: "No client connected or no response received")
+            }
+            
+            return try Self.response(payload: payload)
+        }
+        
+        app.get("upgrades") { _ async throws -> Response in
+            guard let payload = await clients.send(request: .getUpgrades) else {
                 throw Abort(.serviceUnavailable, reason: "No client connected or no response received")
             }
             
@@ -82,6 +90,11 @@ final class ItemsHTTPServer {
                     quality.name
                 )
             })
+        case let .upgrades(upgrades):
+            return [
+                "purchased": upgrades.purchased.map { HTTPPortalUpgrade(upgrade: $0) },
+                "available": upgrades.available.map { HTTPPortalUpgrade(upgrade: $0) },
+            ]
         }
     }
 }
@@ -91,6 +104,7 @@ extension GameData {
         switch self {
         case .items: return "/items"
         case .artifacts: return "/artifacts"
+        case .upgrades: return "upgrades"
         }
     }
 }

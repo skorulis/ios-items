@@ -27,11 +27,10 @@ extension PortalUpgradeCell: View {
                 Text(upgrade.name)
                     .font(.headline)
             }
-            if let description = upgrade.description {
-                Text(description)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
+            Text(upgrade.description)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+            
             HStack(spacing: 8) {
                 ForEach(Array(upgrade.cost.enumerated()), id: \.offset) { _, costItem in
                     AvatarView(

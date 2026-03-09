@@ -15,7 +15,7 @@ public struct UpgradeCostItem: Codable, Hashable {
     }
 }
 
-public enum PortalUpgrade: Codable, Hashable, CaseIterable, Identifiable {
+public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable {
     case portalAutomation
     case researchLab
     case researchLabLevel2
@@ -48,7 +48,7 @@ public enum PortalUpgrade: Codable, Hashable, CaseIterable, Identifiable {
         }
     }
 
-    public var description: String? {
+    public var description: String {
         switch self {
         case .portalAutomation: return "Automatically pulls items out of the portal."
         case .researchLab: return "Unlocks the Research lab."

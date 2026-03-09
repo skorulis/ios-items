@@ -3,7 +3,7 @@
 import Foundation
 
 /// Simple items that only have quantity
-public enum BaseItem: Hashable, Equatable, CaseIterable, Identifiable, Codable {
+public enum BaseItem: String, Hashable, Equatable, CaseIterable, Identifiable, Codable {
     // Junk
     case apple
     case rock

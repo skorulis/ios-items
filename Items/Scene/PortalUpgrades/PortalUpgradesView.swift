@@ -91,11 +91,9 @@ extension PortalUpgradesView: View {
                 Text(upgrade.name)
                     .font(.headline)
             }
-            if let description = upgrade.description {
-                Text(description)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
+            Text(upgrade.description)
+                .font(.caption)
+                .foregroundStyle(.secondary)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(12)

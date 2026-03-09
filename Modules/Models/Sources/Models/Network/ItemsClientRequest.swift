@@ -19,5 +19,6 @@ public struct ItemsClientRequest: Codable {
         case getActions
         case makeItem
         case getArtifacts
+        case getUpgrades
     }
 }

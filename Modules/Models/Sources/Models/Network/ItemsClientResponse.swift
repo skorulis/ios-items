@@ -20,5 +20,16 @@ public struct ItemsClientResponse: Codable {
         case makeItemResult(MakeItemResult)
         case actions([GameAction], [GameData])
         case artifacts([Artifact: ItemQuality])
+        case upgrades(UpgradesPayload)
+    }
+}
+
+public struct UpgradesPayload: Codable {
+    public let purchased: [PortalUpgrade]
+    public let available: [PortalUpgrade]
+    
+    public init(purchased: [PortalUpgrade], available: [PortalUpgrade]) {
+        self.purchased = purchased
+        self.available = available
     }
 }
