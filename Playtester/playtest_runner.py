@@ -12,23 +12,27 @@ from config import BASE_URL, MAX_STEPS_PER_EPISODE, MODEL_NAME
 from items_env import ItemsEnv, ItemsEnvError
 from tools import build_tools_from_links, dispatch_tool_call
 
-SYSTEM_PROMPT = """You are a QA playtester for the game "Items" (a crafting/inventory game). Your job is to explore the game via the available tools, try different actions, and gather information about balance, progression, and possible bugs.
+SYSTEM_PROMPT = """You are a playtester for the game "Items" (a crafting/inventory game). Your goal is to **maximise the number of achievements reached**.
 
 - Use the get_* tools to inspect current state (items, artifacts, upgrades).
 - Use the post_* tools to perform actions (e.g. craft an item, purchase an upgrade).
-- Do not spam the same action repeatedly; explore systematically.
-- After you have explored enough (e.g. tried several actions and seen the state), respond with a short message saying you are done testing this run, and summarize what you did in 1-2 sentences. Do not use tools after that."""
+- Do not spam the same request repeatedly; explore systematically.
+- **Check achievements first**: Use get_achievements to see which achievements are completed and which are incomplete. Incomplete achievements list their requirement (what you need to do to unlock them).
+- **Plan then act**: Use get_items, get_upgrades, get_artifacts (if available) to understand current state. Then use post_* tools to take actions that progress toward incomplete achievements (e.g. craft items with post_make, buy upgrades with post_upgrades_purchase).
+- **Iterate**: Keep taking actions that move you toward incomplete achievements until you cannot progress further or have tried the main options.
+- **Finish**: When you have maximised achievements (or hit a wall), respond with a short message saying you are done. Summarise how many achievements you reached and what you did. Do not use tools after that.
 
-REPORT_PROMPT = """You just completed a playtest session for the game "Items". Below is the transcript of the session (state snapshots and tool calls/results).
+Do not repeat the same action over and over; vary your approach to unlock different achievements."""
+
+REPORT_PROMPT = """You just completed a playtest session for the game "Items" with the goal of maximising achievements. Below is the transcript of the session (state snapshots and tool calls/results).
 
 Write a structured feedback report with these sections:
 
-1. **Overall impression**: 2-3 sentences on how the session went.
-2. **Balance issues**: Bullet list; for each: title, severity (minor/major/blocker), what happened, suspected cause if any.
-3. **Progression & pacing**: Any issues with unlock pace or clarity of goals.
-4. **UX / clarity**: Confusing wording, unclear goals, or unclear feedback.
-5. **Bugs or edge cases**: Odd behavior, soft locks, inconsistent state.
-6. **Suggestions**: Concrete ideas for tweaks.
+1. **Achievements**: How many were reached; which ones; which incomplete ones you could not unlock and why.
+2. **What worked well**: Actions or sequences that reliably unlocked achievements; clear requirements; good feedback.
+3. **What did not work well**: Unclear requirements, actions that did not progress achievements, balance or pacing issues, confusing feedback.
+4. **Bugs or edge cases**: Odd behaviour, soft locks, inconsistent state.
+5. **Suggestions**: Concrete ideas to make achievement progression clearer or more satisfying.
 
 Format as markdown. Be concise."""
 
@@ -45,7 +49,7 @@ def run_episode(env: ItemsEnv, client: OpenAI, model: str, max_steps: int) -> tu
 
     messages: list[dict[str, Any]] = [
         {"role": "system", "content": SYSTEM_PROMPT},
-        {"role": "user", "content": "Current game state:\n\n" + env.get_state_summary() + "\n\nExplore the game and report when done."},
+        {"role": "user", "content": "Current game state:\n\n" + env.get_state_summary() + "\n\nYour goal: maximise the number of achievements reached. Check get_achievements, then take actions to unlock incomplete ones. Report when done."},
     ]
     step = 0
     while step < max_steps:
@@ -93,7 +97,7 @@ def run_episode(env: ItemsEnv, client: OpenAI, model: str, max_steps: int) -> tu
 
         messages.append({
             "role": "user",
-            "content": "Updated state:\n\n" + env.get_state_summary() + "\n\nContinue or say you're done.",
+            "content": "Updated state:\n\n" + env.get_state_summary() + "\n\nContinue working toward more achievements, or say you're done and summarise how many you reached.",
         })
 
     transcript = _format_transcript(messages)

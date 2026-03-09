@@ -57,7 +57,7 @@ This way clients can call `GET /actions` to see which data endpoints (GameData) 
 ## 6. Optional: WebSocket logging and CLI
 
 - **WebSocketServer:** In the `onText` handler’s `switch response.payload`, add a case to log the new response (e.g. `case .ok: print("OK")`) so debugger console output stays clear.
-- **InputListener:** To support a CLI command that triggers the request, add a `case` in `handle(line:)` that calls `perform(request: .yourNewCase)`.
+- **InputListener:** Do not update this to handle new commands.
 
 ## Quick reference
 
