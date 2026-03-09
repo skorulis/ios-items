@@ -12,6 +12,7 @@
 		FA111E572F5E609000F67CF9 /* Models in Frameworks */ = {isa = PBXBuildFile; productRef = FA111E562F5E609000F67CF9 /* Models */; };
 		FA111FAA2F5E691400F67CF9 /* Models in Frameworks */ = {isa = PBXBuildFile; productRef = FA111E562F5E609000F67CF9 /* Models */; };
 		FA111FAB2F5E691400F67CF9 /* Models in Frameworks */ = {isa = PBXBuildFile; productRef = FA111E562F5E609000F67CF9 /* Models */; };
+		FA1120FA2F5E776F00F67CF9 /* Models in Frameworks */ = {isa = PBXBuildFile; productRef = FA1120F92F5E776F00F67CF9 /* Models */; };
 		FA6D90A32F3B334E003DE626 /* ASKCoordinator in Frameworks */ = {isa = PBXBuildFile; productRef = FA6D90A22F3B334E003DE626 /* ASKCoordinator */; };
 		FA6D90A62F3B3389003DE626 /* Knit in Frameworks */ = {isa = PBXBuildFile; productRef = FA6D90A52F3B3389003DE626 /* Knit */; };
 		FA6D90A82F3B3389003DE626 /* KnitMacros in Frameworks */ = {isa = PBXBuildFile; productRef = FA6D90A72F3B3389003DE626 /* KnitMacros */; };
@@ -86,6 +87,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA1120FA2F5E776F00F67CF9 /* Models in Frameworks */,
 				FA111D252F5E54BE00F67CF9 /* LCLWebSocket in Frameworks */,
 				FA110F042F5E4E1003DE626 /* Network.framework in Frameworks */,
 			);
@@ -131,6 +133,13 @@
 			name = "Recovered References";
 			sourceTree = "<group>";
 		};
+		FA1120F82F5E776F00F67CF9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		FA6D90892F3B32F1003DE626 = {
 			isa = PBXGroup;
 			children = (
@@ -141,6 +150,7 @@
 				FA110EFD2F5E4E0D00F67CF9 /* ItemsDebugger */,
 				FA6D90932F3B32F1003DE626 /* Products */,
 				FA11115D2F5E50AD00F67CF9 /* Recovered References */,
+				FA1120F82F5E776F00F67CF9 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -169,7 +179,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				FA111E5B2F5E60E500F67CF9 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				FA110EFD2F5E4E0D00F67CF9 /* ItemsDebugger */,
@@ -177,6 +186,7 @@
 			name = ItemsDebugger;
 			packageProductDependencies = (
 				FA111D242F5E54BE00F67CF9 /* LCLWebSocket */,
+				FA1120F92F5E776F00F67CF9 /* Models */,
 			);
 			productName = ItemsDebugger;
 			productReference = FA110EFC2F5E4E0D00F67CF9 /* ItemsDebugger */;
@@ -372,10 +382,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		FA111E5B2F5E60E500F67CF9 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			productRef = FA111E5A2F5E60E500F67CF9 /* Models */;
-		};
 		FA6D90BA2F3B34FC003DE626 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			productRef = FA6D90B92F3B34FC003DE626 /* KnitBuildPlugin */;
@@ -804,7 +810,7 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = Models;
 		};
-		FA111E5A2F5E60E500F67CF9 /* Models */ = {
+		FA1120F92F5E776F00F67CF9 /* Models */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = FA111E552F5E608F00F67CF9 /* XCLocalSwiftPackageReference "Modules/Models" */;
 			productName = Models;

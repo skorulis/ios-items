@@ -31,13 +31,17 @@ while let line = readLine() {
     switch input.lowercased() {
     case "help":
         print("Commands:")
-        print("  help   – show this message")
-        print("  status – show number of connected clients")
-        print("  quit   – exit the debugger")
-        print("  <text> – send the text as a command to all connected app clients")
+        print("  help     – show this message")
+        print("  status   – show number of connected clients")
+        print("  getitems – request items from the app client")
+        print("  quit     – exit the debugger")
+        print("  <text>   – send the text as a command to the app client")
     case "status":
         let count = connectedClients.count
         print("Connected clients: \(count)")
+    case "getitems", "get_items", "get-items":
+        connectedClients.sendGetItemsRequest()
+        print("Requested items from client")
     case "quit", "exit":
         print("Goodbye.")
         exit(0)

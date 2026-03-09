@@ -3,6 +3,7 @@
 import Foundation
 import Knit
 import KnitMacros
+import Models
 
 private let defaultPort = 8765
 private let debuggerHostKey = "debuggerHost"
@@ -28,9 +29,12 @@ final class DebugConnectionService {
 
     private var webSocketTask: URLSessionWebSocketTask?
     private let session = URLSession(configuration: .default)
+    private let clientRequestHandler: ClientRequestHandler
 
     @Resolvable<BaseResolver>
-    init() {}
+    init(clientRequestHandler: ClientRequestHandler) {
+        self.clientRequestHandler = clientRequestHandler
+    }
 
     var isConnected: Bool {
         connectionState == .connected
@@ -55,14 +59,60 @@ final class DebugConnectionService {
     private func receiveLoop() {
         webSocketTask?.receive { [weak self] result in
             Task { @MainActor in
+                guard let self else { return }
                 switch result {
-                case .success:
-                    self?.receiveLoop()
+                case let .success(message):
+                    self.handle(message)
+                    self.receiveLoop()
                 case .failure:
-                    self?.connectionState = .disconnected
-                    self?.webSocketTask = nil
+                    self.connectionState = .disconnected
+                    self.webSocketTask = nil
                 }
             }
+        }
+    }
+
+    @MainActor
+    private func handle(_ message: URLSessionWebSocketTask.Message) {
+        let data: Data?
+        switch message {
+        case let .string(text):
+            data = text.data(using: .utf8)
+        case let .data(raw):
+            data = raw
+        @unknown default:
+            data = nil
+        }
+
+        guard let data else { return }
+
+        let decoder = JSONDecoder()
+        do {
+            let request = try decoder.decode(ClientRequest.self, from: data)
+            let response = clientRequestHandler.handle(request: request)
+            send(response: response)
+        } catch {
+            print("DebugConnectionService decode error: \(error)")
+        }
+    }
+
+    private func send(response: ClientResponse) {
+        guard connectionState == .connected else { return }
+        let encoder = JSONEncoder()
+        do {
+            let data = try encoder.encode(response)
+            guard let json = String(data: data, encoding: .utf8) else {
+                print("DebugConnectionService encode error: unable to build UTF-8 string from JSON data")
+                return
+            }
+
+            webSocketTask?.send(.string(json)) { [weak self] _ in
+                Task { @MainActor in
+                    if self?.connectionState == .connected { }
+                }
+            }
+        } catch {
+            print("DebugConnectionService encode error: \(error)")
         }
     }
 
