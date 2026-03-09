@@ -1,6 +1,7 @@
 //Created by Alexander Skorulis on 10/2/2026.
 
 import Foundation
+import Models
 
 struct Warehouse: Codable {
     // Current item storage

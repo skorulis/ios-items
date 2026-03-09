@@ -1,22 +1,21 @@
-//Created by Alexander Skorulis on 15/2/2026.
+// Created by Alexander Skorulis on 15/2/2026.
 
 import Foundation
 
-enum Artifact: Identifiable, Hashable, CaseIterable, Codable {
-    
+public enum Artifact: Identifiable, Hashable, CaseIterable, Codable {
     case frictionlessGear
     case eternalHourglass
     case luckyCoin
     case perfectLens
     case sacrificalSkull
-    
-    var id: Self { self }
-    
-    var name: String {
+
+    public var id: Self { self }
+
+    public var name: String {
         String(describing: self).fromCaseName
     }
-    
-    var description: String {
+
+    public var description: String {
         switch self {
         case .frictionlessGear:
             return "A gear that spins with no resistance, speeding up all item crafting."
@@ -30,14 +29,11 @@ enum Artifact: Identifiable, Hashable, CaseIterable, Codable {
             return "A grim relic that strengthens the effects of sacrifices."
         }
     }
-    
-    
 }
 
 // MARK: - Bonuses
 
-extension Artifact {
-    
+public extension Artifact {
     func frictionlessGearTimeReduction(quality: ItemQuality) -> Int {
         switch quality {
         case .junk: return 100
@@ -47,7 +43,7 @@ extension Artifact {
         case .exceptional: return 500
         }
     }
-    
+
     func eternalHourglassTimeReduction(quality: ItemQuality) -> Int {
         switch quality {
         case .junk: return 500
@@ -57,7 +53,7 @@ extension Artifact {
         case .exceptional: return 2500
         }
     }
-    
+
     func luckyCoinMultipleItemChance(quality: ItemQuality) -> Int {
         switch quality {
         case .junk: return 10
@@ -67,7 +63,7 @@ extension Artifact {
         case .exceptional: return 50
         }
     }
-    
+
     func perfectLensResearchBoost(quality: ItemQuality) -> Int {
         switch quality {
         case .junk: return 25
@@ -77,7 +73,7 @@ extension Artifact {
         case .exceptional: return 150
         }
     }
-    
+
     func sacrificalSkullSacrificeEffectMultiplier(quality: ItemQuality) -> Int {
         switch quality {
         case .junk: return 25
@@ -91,7 +87,7 @@ extension Artifact {
 
 // MARK: - Bonus message
 
-extension Artifact {
+public extension Artifact {
     func bonusMessage(quality: ItemQuality) -> String {
         switch self {
         case .frictionlessGear:
@@ -110,16 +106,20 @@ extension Artifact {
 
 // MARK: -
 
-struct ArtifactInstance {
-    let type: Artifact
-    let quality: ItemQuality
-    
-    var bonusMessage: String {
+public struct ArtifactInstance {
+    public let type: Artifact
+    public let quality: ItemQuality
+
+    public var bonusMessage: String {
         type.bonusMessage(quality: quality)
     }
-    
-    var name: String {
+
+    public var name: String {
         return "\(quality.name) \(type.name)"
     }
-    
+
+    public init(type: Artifact, quality: ItemQuality) {
+        self.type = type
+        self.quality = quality
+    }
 }

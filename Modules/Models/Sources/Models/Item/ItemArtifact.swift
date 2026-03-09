@@ -1,9 +1,8 @@
-//Created by Alexander Skorulis on 15/2/2026.
+// Created by Alexander Skorulis on 15/2/2026.
 
 import Foundation
 
-extension BaseItem {
-    
+public extension BaseItem {
     var associatedArtifact: Artifact? {
         switch self {
         case .gear:
@@ -20,7 +19,7 @@ extension BaseItem {
     }
 }
 
-extension Artifact {
+public extension Artifact {
     var baseItem: BaseItem {
         switch self {
         case .frictionlessGear: return .gear

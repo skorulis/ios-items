@@ -1,8 +1,9 @@
 //Created by Alexander Skorulis on 13/2/2026.
 
+import Foundation
 import Knit
 import KnitMacros
-import Foundation
+import Models
 
 final class ResearchService {
 

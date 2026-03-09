@@ -2,6 +2,7 @@
 
 @testable import Items
 import Knit
+import Models
 import SnapshotTesting
 import SwiftUI
 import Testing

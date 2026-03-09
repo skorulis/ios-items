@@ -3,6 +3,7 @@
 import Foundation
 import Knit
 import KnitMacros
+import Models
 
 @MainActor protocol RecipeDetailViewModel {
     var model: RecipeDetailView.Model { get }

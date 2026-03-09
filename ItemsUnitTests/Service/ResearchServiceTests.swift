@@ -1,9 +1,10 @@
 // Created by Cursor on 3/3/2026.
 
 @testable import Items
-import Knit
-import Testing
 import Foundation
+import Knit
+import Models
+import Testing
 
 @MainActor
 struct ResearchServiceTests {

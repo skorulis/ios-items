@@ -4,6 +4,7 @@ import ASKCoordinator
 import Combine
 import Knit
 import KnitMacros
+import Models
 import SwiftUI
 
 @Observable final class WarehouseViewModel: CoordinatorViewModel {

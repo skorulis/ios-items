@@ -3,6 +3,7 @@
 import Combine
 import Foundation
 import Knit
+import Models
 import KnitMacros
 
 // Service for providing all sorts of shared calculations

@@ -1,7 +1,8 @@
 //Created by Alexander Skorulis on 16/2/2026.
 
-import Knit
 import Foundation
+import Knit
+import Models
 import SwiftUI
 
 // MARK: - Memory footprint

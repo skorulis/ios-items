@@ -1,6 +1,7 @@
 //Created by Alexander Skorulis on 21/2/2026.
 
 import Foundation
+import Models
 
 struct EncyclopediaEntry {
     let title: String

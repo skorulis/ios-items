@@ -1,7 +1,8 @@
 //Created by Alexander Skorulis on 11/2/2026.
 
-import SwiftUI
 import Knit
+import Models
+import SwiftUI
 
 /// Reusable list of artifacts grouped by rarity (quality).
 /// Can be used in Warehouse, Encyclopedia, or other screens.

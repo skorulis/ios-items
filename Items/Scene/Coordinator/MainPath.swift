@@ -3,6 +3,7 @@
 import ASKCoordinator
 import Foundation
 import Knit
+import Models
 import SwiftUI
 
 enum MainPath: CoordinatorPath {

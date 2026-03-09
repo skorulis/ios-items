@@ -1,6 +1,7 @@
 // Created by Alexander Skorulis on 5/3/2026.
 
 import Foundation
+import Models
 
 /// Owns all notification state for what badges, "new" indicators, and alerts should be shown.
 /// Values are written by MainStore (from warehouse discoveries, achievements, research) and persisted.

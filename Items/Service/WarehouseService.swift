@@ -3,6 +3,7 @@
 import Foundation
 import Knit
 import KnitMacros
+import Models
 
 /// Service responsible for all mutations to `MainStore.warehouse`.
 /// This ensures that changes always go through `MainStore` so persistence

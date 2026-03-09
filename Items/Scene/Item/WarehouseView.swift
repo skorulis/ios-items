@@ -1,8 +1,9 @@
 //Created by Alexander Skorulis on 11/2/2026.
 
 import ASKCoordinator
-import SwiftUI
 import Knit
+import Models
+import SwiftUI
 
 @MainActor
 struct WarehouseView: View {

@@ -5,6 +5,7 @@ import Combine
 import Foundation
 import Knit
 import KnitMacros
+import Models
 
 final class AchievementService {
     

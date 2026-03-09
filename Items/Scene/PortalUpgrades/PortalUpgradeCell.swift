@@ -1,6 +1,7 @@
 //Created by Alexander Skorulis on 5/3/2026.
 
 import Foundation
+import Models
 import SwiftUI
 
 // MARK: - Memory footprint

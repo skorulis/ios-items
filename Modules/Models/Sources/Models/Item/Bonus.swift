@@ -1,14 +1,14 @@
-//Created by Alexander Skorulis on 5/3/2026.
+// Created by Alexander Skorulis on 5/3/2026.
 
 import Foundation
 
-enum Bonus {
+public enum Bonus {
     case researchSpeed(Int)
     case artifactSlots(Int)
     case qualityBoost(Int, ItemQuality)
     case booksForResearch(ItemQuality)
 
-    var text: String {
+    public var text: String {
         switch self {
         case let .researchSpeed(int):
             return "Boost research speed by \(int)%"
@@ -20,8 +20,8 @@ enum Bonus {
             return "Use books to research \(quality.name) items"
         }
     }
-    
-    var researchSpeedBoost: Int {
+
+    public var researchSpeedBoost: Int {
         switch self {
         case let .researchSpeed(int):
             return int
@@ -29,8 +29,8 @@ enum Bonus {
             return 0
         }
     }
-    
-    var artifactSlotBoost: Int {
+
+    public var artifactSlotBoost: Int {
         switch self {
         case .artifactSlots(let int):
             return int
@@ -40,7 +40,7 @@ enum Bonus {
     }
 
     /// For qualityBoost case: (quality, percent). Nil for other bonus types.
-    var qualityBoostValue: (ItemQuality, Int)? {
+    public var qualityBoostValue: (ItemQuality, Int)? {
         if case let .qualityBoost(amount, quality) = self {
             return (quality, amount)
         }
@@ -48,13 +48,13 @@ enum Bonus {
     }
 
     /// Quality tier unlocked for book-based research. Nil for other bonus types.
-    var booksForResearchQuality: ItemQuality? {
+    public var booksForResearchQuality: ItemQuality? {
         if case let .booksForResearch(quality) = self { return quality }
         return nil
     }
 }
 
-extension Array where Element == Bonus {
+public extension Array where Element == Bonus {
     var researchSpeed: Int {
         return self.map { $0.researchSpeedBoost }.reduce(0, +)
     }

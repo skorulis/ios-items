@@ -1,7 +1,8 @@
 //Created by Alexander Skorulis on 7/3/2026.
 
-import SwiftUI
 import Knit
+import Models
+import SwiftUI
 
 /// Picker shown when tapping an empty artifact slot. Lists discovered artifacts that are not already equipped.
 @MainActor

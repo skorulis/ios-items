@@ -2,6 +2,7 @@
 
 import Foundation
 import Knit
+import Models
 import SwiftUI
 
 // MARK: - Memory footprint

@@ -1,16 +1,16 @@
-//Created by Alexander Skorulis on 13/2/2026.
+// Created by Alexander Skorulis on 13/2/2026.
 
 import Foundation
 import SwiftUI
 
-enum ItemQuality: Codable, CaseIterable {
+public enum ItemQuality: Codable, CaseIterable, Comparable {
     case junk
     case common
     case good
     case rare
     case exceptional
-    
-    var next: ItemQuality? {
+
+    public var next: ItemQuality? {
         switch self {
         case .junk: return .common
         case .common: return .good
@@ -19,8 +19,8 @@ enum ItemQuality: Codable, CaseIterable {
         case .exceptional: return nil
         }
     }
-    
-    var color: Color {
+
+    public var color: Color {
         switch self {
         case .junk:
             return .gray
@@ -34,12 +34,12 @@ enum ItemQuality: Codable, CaseIterable {
             return .orange
         }
     }
-    
-    var name: String {
+
+    public var name: String {
         String(describing: self).capitalized
     }
-    
-    var artifactChanceMultiplier: Double {
+
+    public var artifactChanceMultiplier: Double {
         switch self {
         case .junk:
             return 1
@@ -53,6 +53,10 @@ enum ItemQuality: Codable, CaseIterable {
             return 0.001
         }
     }
-}
 
-extension ItemQuality: Comparable {}
+    public static func < (lhs: ItemQuality, rhs: ItemQuality) -> Bool {
+        let order = ItemQuality.allCases
+        guard let l = order.firstIndex(of: lhs), let r = order.firstIndex(of: rhs) else { return false }
+        return l < r
+    }
+}

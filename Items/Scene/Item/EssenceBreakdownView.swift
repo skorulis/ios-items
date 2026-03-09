@@ -3,6 +3,7 @@
 import ASKCoordinator
 import Charts
 import Knit
+import Models
 import SwiftUI
 
 // MARK: - Memory footprint

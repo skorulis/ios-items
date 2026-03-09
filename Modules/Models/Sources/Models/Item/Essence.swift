@@ -1,10 +1,9 @@
-//Created by Alexander Skorulis on 13/2/2026.
+// Created by Alexander Skorulis on 13/2/2026.
 
 import Foundation
 import SwiftUI
 
-nonisolated enum Essence: Identifiable, Hashable, Codable, CaseIterable {
-    
+public nonisolated enum Essence: Identifiable, Hashable, Codable, CaseIterable {
     case dark
     case earth
     case life
@@ -13,12 +12,12 @@ nonisolated enum Essence: Identifiable, Hashable, Codable, CaseIterable {
     case technology
     case wealth
     case knowledge
-    
-    var id: Self { self }
-    var name: String { String(describing: self).fromCaseName }
+
+    public var id: Self { self }
+    public var name: String { String(describing: self).fromCaseName }
 }
 
-extension Essence {
+public extension Essence {
     var color: Color {
         switch self {
         case .life: return .green

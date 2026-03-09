@@ -3,6 +3,7 @@
 import ASKCore
 import Foundation
 import Knit
+import Models
 import SwiftUI
 
 final class ItemsAssembly: AutoInitModuleAssembly {

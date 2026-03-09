@@ -1,6 +1,7 @@
 //Created by Alexander Skorulis on 5/3/2026.
 
 import Foundation
+import Models
 import SwiftUI
 
 /// A single line in an upgrade's cost: item type and required quantity.

@@ -1,6 +1,7 @@
 //Created by Alexander Skorulis on 13/2/2026.
 
 import Foundation
+import Models
 
 struct Laboratory: Codable {
     private var items: [BaseItem: ItemState] = [:]

@@ -1,6 +1,7 @@
 //Created by Alexander Skorulis on 16/2/2026.
 
 import Foundation
+import Models
 import SwiftUI
 
 enum Achievement: Codable, Hashable, CaseIterable, Identifiable {

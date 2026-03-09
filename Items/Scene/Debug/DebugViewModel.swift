@@ -3,6 +3,7 @@
 import Foundation
 import Knit
 import KnitMacros
+import Models
 
 @Observable final class DebugViewModel {
 

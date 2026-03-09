@@ -3,6 +3,7 @@
 import Foundation
 import Knit
 import KnitMacros
+import Models
 
 /// Class that creates new items
 /// Functions in this class are non mutating and only return the result

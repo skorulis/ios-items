@@ -10,6 +10,8 @@
 		FA110F042F5E4E1003DE626 /* Network.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA110F032F5E4E1003DE626 /* Network.framework */; };
 		FA111D252F5E54BE00F67CF9 /* LCLWebSocket in Frameworks */ = {isa = PBXBuildFile; productRef = FA111D242F5E54BE00F67CF9 /* LCLWebSocket */; };
 		FA111E572F5E609000F67CF9 /* Models in Frameworks */ = {isa = PBXBuildFile; productRef = FA111E562F5E609000F67CF9 /* Models */; };
+		FA111FAA2F5E691400F67CF9 /* Models in Frameworks */ = {isa = PBXBuildFile; productRef = FA111E562F5E609000F67CF9 /* Models */; };
+		FA111FAB2F5E691400F67CF9 /* Models in Frameworks */ = {isa = PBXBuildFile; productRef = FA111E562F5E609000F67CF9 /* Models */; };
 		FA6D90A32F3B334E003DE626 /* ASKCoordinator in Frameworks */ = {isa = PBXBuildFile; productRef = FA6D90A22F3B334E003DE626 /* ASKCoordinator */; };
 		FA6D90A62F3B3389003DE626 /* Knit in Frameworks */ = {isa = PBXBuildFile; productRef = FA6D90A52F3B3389003DE626 /* Knit */; };
 		FA6D90A82F3B3389003DE626 /* KnitMacros in Frameworks */ = {isa = PBXBuildFile; productRef = FA6D90A72F3B3389003DE626 /* KnitMacros */; };
@@ -105,6 +107,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA111FAA2F5E691400F67CF9 /* Models in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +115,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA111FAB2F5E691400F67CF9 /* Models in Frameworks */,
 				FB0000000000000000000003 /* SnapshotTesting in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -224,6 +228,7 @@
 			);
 			name = ItemsUnitTests;
 			packageProductDependencies = (
+				FA111E562F5E609000F67CF9 /* Models */,
 			);
 			productName = ItemsUnitTests;
 			productReference = FAE3A1A92F552500008860EC /* ItemsUnitTests.xctest */;
@@ -247,6 +252,7 @@
 			);
 			name = ItemsSnapshotTests;
 			packageProductDependencies = (
+				FA111E562F5E609000F67CF9 /* Models */,
 				FB0000000000000000000002 /* SnapshotTesting */,
 			);
 			productName = ItemsSnapshotTests;

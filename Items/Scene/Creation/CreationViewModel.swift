@@ -6,6 +6,7 @@ import Combine
 import Foundation
 import Knit
 import KnitMacros
+import Models
 import SwiftUI
 
 @Observable final class CreationViewModel: CoordinatorViewModel {

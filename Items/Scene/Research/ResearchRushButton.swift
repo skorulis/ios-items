@@ -1,6 +1,7 @@
 //Created by Cursor on 3/3/2026.
 
 import Foundation
+import Models
 import SwiftUI
 
 @MainActor

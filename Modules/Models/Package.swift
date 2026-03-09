@@ -5,6 +5,10 @@ import PackageDescription
 
 let package = Package(
     name: "Models",
+    platforms: [
+        .iOS(.v15),
+        .macOS(.v12),
+    ],
     products: [
         .library(
             name: "Models",
@@ -14,6 +18,10 @@ let package = Package(
     targets: [
         .target(
             name: "Models"
+        ),
+        .testTarget(
+            name: "ModelsTests",
+            dependencies: ["Models"]
         ),
     ]
 )

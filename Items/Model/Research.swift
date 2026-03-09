@@ -1,6 +1,7 @@
 //Created by Alexander Skorulis on 13/2/2026.
 
 import Foundation
+import Models
 import SwiftUI
 
 // Research that has been done about an item
