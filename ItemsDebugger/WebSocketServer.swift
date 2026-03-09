@@ -12,7 +12,7 @@ private func parseClientResponse(_ data: Data) -> ItemsClientResponse? {
 final class ConnectedClients: @unchecked Sendable {
     private let lock = NSLock()
     private var client: Vapor.WebSocket?
-    private var pendingResponses: [UUID: CheckedContinuation<ItemsClientResponse.Payload?, Never>] = [:]
+    private var pendingResponses: [String: CheckedContinuation<ItemsClientResponse.Payload?, Never>] = [:]
 
     func setConnection(_ websocket: Vapor.WebSocket?) {
         lock.lock()
@@ -93,6 +93,8 @@ enum WebSocketServer {
         app.http.server.configuration.port = port
 
         let clients = connectedClients ?? ConnectedClients()
+        let server = ItemsHTTPServer()
+        server.run(app: app, clients: clients)
 
         app.webSocket("") { _, ws in
             clients.setConnection(ws)

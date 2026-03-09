@@ -5,11 +5,12 @@ import Foundation
 // Requests sent to the client
 public struct ItemsClientRequest: Codable {
 
-    public let id: UUID = .init()
+    public let id: String
     public let payload: Payload
 
     public init(payload: Payload) {
         self.payload = payload
+        self.id = UUID().uuidString
     }
 
     // The actual request type sent over the wire

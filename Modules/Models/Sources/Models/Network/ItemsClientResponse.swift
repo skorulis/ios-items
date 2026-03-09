@@ -6,10 +6,10 @@ import Foundation
 public struct ItemsClientResponse: Codable {
 
     // Will match the request ID
-    public let id: UUID
+    public let id: String
     public let payload: Payload
 
-    public init(id: UUID, payload: Payload) {
+    public init(id: String, payload: Payload) {
         self.id = id
         self.payload = payload
     }

@@ -26,6 +26,7 @@ final class ClientRequestHandler {
     }
 
     func handle(request: ItemsClientRequest) -> ItemsClientResponse {
+        print("Handling request with ID: \(request.id)")
         let result = handle(request: request.payload)
         return ItemsClientResponse(id: request.id, payload: result)
     }
