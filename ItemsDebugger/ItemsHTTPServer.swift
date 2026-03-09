@@ -6,52 +6,59 @@ import Vapor
 
 final class ItemsHTTPServer {
     
-    init() {}
+    let clients: ConnectedClients
     
-    func run(app: Application, clients: ConnectedClients) {
+    init(clients: ConnectedClients) {
+        self.clients = clients
+    }
+    
+    func run(app: Application, ) {
         // HTTP endpoint to trigger a `makeItem` request on the connected client and return the JSON response.
         app.post("make") { _ async throws -> Response in
-            guard let payload = await clients.send(request: .makeItem) else {
-                throw Abort(.serviceUnavailable, reason: "No client connected or no response received")
-            }
-            
-            return try Self.response(payload: payload)
+            let payload = try await self.getResponse(request: .makeItem)
+            return try Self.makeResponse(payload: payload)
         }
         
         app.get("items") { _ async throws -> Response in
-            guard let payload = await clients.send(request: .getItems) else {
-                throw Abort(.serviceUnavailable, reason: "No client connected or no response received")
-            }
-            
-            return try Self.response(payload: payload)
+            let payload = try await self.getResponse(request: .getItems)
+            return try Self.makeResponse(payload: payload)
         }
         
         app.get("artifacts") { _ async throws -> Response in
-            guard let payload = await clients.send(request: .getArtifacts) else {
-                throw Abort(.serviceUnavailable, reason: "No client connected or no response received")
-            }
-            
-            return try Self.response(payload: payload)
+            let payload = try await self.getResponse(request: .getArtifacts)
+            return try Self.makeResponse(payload: payload)
         }
         
         app.get("upgrades") { _ async throws -> Response in
-            guard let payload = await clients.send(request: .getUpgrades) else {
-                throw Abort(.serviceUnavailable, reason: "No client connected or no response received")
+            let payload = try await self.getResponse(request: .getUpgrades)
+            return try Self.makeResponse(payload: payload)
+        }
+        
+        app.post("upgrades", "purchase") { request async throws -> Response in
+            guard let id = try? request.query.get(String.self, at: "id") else {
+                throw Abort(.badRequest, reason: "Missing query parameter: id")
             }
-            
-            return try Self.response(payload: payload)
+            guard let upgrade = PortalUpgrade(rawValue: id) else {
+                throw Abort(.badRequest, reason: "Unknown upgrade id: \(id)")
+            }
+            let payload = try await self.getResponse(request: .purchaseUpgrade(upgrade))
+            return try Self.makeResponse(payload: payload)
         }
         
         app.get("actions") { _ async throws -> Response in
-            guard let payload = await clients.send(request: .getActions) else {
-                throw Abort(.serviceUnavailable, reason: "No client connected or no response received")
-            }
-            
-            return try Self.response(payload: payload)
+            let payload = try await self.getResponse(request: .getActions)
+            return try Self.makeResponse(payload: payload)
         }
     }
     
-    static func response(payload: ItemsClientResponse.Payload) throws -> Response {
+    private func getResponse(request: ItemsClientRequest.Payload) async throws -> ItemsClientResponse.Payload {
+        guard let payload = await clients.send(request: request) else {
+            throw Abort(.serviceUnavailable, reason: "No client connected or no response received")
+        }
+        return payload
+    }
+    
+    static func makeResponse(payload: ItemsClientResponse.Payload) throws -> Response {
         if case let .error(message) = payload {
             throw Abort(.badRequest, reason: message)
         }
@@ -98,6 +105,10 @@ final class ItemsHTTPServer {
                 "purchased": upgrades.purchased.map { HTTPPortalUpgrade(upgrade: $0) },
                 "available": upgrades.available.map { HTTPPortalUpgrade(upgrade: $0) },
             ]
+        case .ok:
+            return ["status": "ok"]
+        case .error:
+            fatalError("error payload should be handled in response(payload:)")
         }
     }
 }

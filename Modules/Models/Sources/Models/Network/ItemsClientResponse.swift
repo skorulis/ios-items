@@ -22,6 +22,7 @@ public struct ItemsClientResponse: Codable {
         case artifacts([Artifact: ItemQuality])
         case upgrades(UpgradesPayload)
         case error(String)
+        case ok
     }
 }
 

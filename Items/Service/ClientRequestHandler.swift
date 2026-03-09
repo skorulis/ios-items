@@ -11,18 +11,21 @@ final class ClientRequestHandler {
     private let itemGeneratorService: ItemGeneratorService
     private let recipeService: RecipeService
     private let warehouseService: WarehouseService
+    private let upgradeService: UpgradeService
 
     @Resolvable<BaseResolver>
     init(
         mainStore: MainStore,
         itemGeneratorService: ItemGeneratorService,
         recipeService: RecipeService,
-        warehouseService: WarehouseService
+        warehouseService: WarehouseService,
+        upgradeService: UpgradeService
     ) {
         self.mainStore = mainStore
         self.itemGeneratorService = itemGeneratorService
         self.recipeService = recipeService
         self.warehouseService = warehouseService
+        self.upgradeService = upgradeService
     }
 
     func handle(request: ItemsClientRequest) -> ItemsClientResponse {
@@ -70,6 +73,18 @@ final class ClientRequestHandler {
                     available: available
                 )
             )
+        case let .purchaseUpgrade(upgrade):
+            if mainStore.portalUpgrades.purchased.contains(upgrade) {
+                return .error("Upgrade already purchased")
+            }
+            if !upgradeService.isUnlocked(upgrade) {
+                return .error("Upgrade is not unlocked")
+            }
+            if !upgradeService.canPurchase(upgrade) {
+                return .error("Cannot afford upgrade")
+            }
+            upgradeService.purchase(upgrade)
+            return .ok
         }
     }
     
