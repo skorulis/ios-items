@@ -88,7 +88,7 @@ final class DebugConnectionService {
 
         let decoder = JSONDecoder()
         do {
-            let request = try decoder.decode(ClientRequest.self, from: data)
+            let request = try decoder.decode(ItemsClientRequest.self, from: data)
             let response = clientRequestHandler.handle(request: request)
             send(response: response)
         } catch {
@@ -96,7 +96,7 @@ final class DebugConnectionService {
         }
     }
 
-    private func send(response: ClientResponse) {
+    private func send(response: ItemsClientResponse) {
         guard connectionState == .connected else { return }
         let encoder = JSONEncoder()
         do {

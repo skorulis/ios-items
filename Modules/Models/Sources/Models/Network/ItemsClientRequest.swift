@@ -3,7 +3,7 @@
 import Foundation
 
 // Requests sent to the client
-public enum ClientRequest: Codable {
+public enum ItemsClientRequest: Codable {
 
     case getItems
     case makeItem

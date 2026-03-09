@@ -26,7 +26,7 @@ final class ClientRequestHandler {
     }
 
     @MainActor
-    func handle(request: ClientRequest) -> ClientResponse {
+    func handle(request: ItemsClientRequest) -> ItemsClientResponse {
         switch request {
         case .getItems:
             let itemsWithCount = BaseItem.allCases.reduce(into: [BaseItem: Int]()) { dict, item in

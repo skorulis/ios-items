@@ -3,7 +3,7 @@
 import Foundation
 
 // A response from the client
-public enum ClientResponse: Codable {
+public enum ItemsClientResponse: Codable {
 
     case items([BaseItem: Int])
     case makeItemResult(MakeItemResult)

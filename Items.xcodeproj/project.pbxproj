@@ -8,11 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		FA110F042F5E4E1003DE626 /* Network.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA110F032F5E4E1003DE626 /* Network.framework */; };
-		FA111D252F5E54BE00F67CF9 /* LCLWebSocket in Frameworks */ = {isa = PBXBuildFile; productRef = FA111D242F5E54BE00F67CF9 /* LCLWebSocket */; };
 		FA111E572F5E609000F67CF9 /* Models in Frameworks */ = {isa = PBXBuildFile; productRef = FA111E562F5E609000F67CF9 /* Models */; };
 		FA111FAA2F5E691400F67CF9 /* Models in Frameworks */ = {isa = PBXBuildFile; productRef = FA111E562F5E609000F67CF9 /* Models */; };
 		FA111FAB2F5E691400F67CF9 /* Models in Frameworks */ = {isa = PBXBuildFile; productRef = FA111E562F5E609000F67CF9 /* Models */; };
 		FA1120FA2F5E776F00F67CF9 /* Models in Frameworks */ = {isa = PBXBuildFile; productRef = FA1120F92F5E776F00F67CF9 /* Models */; };
+		FA1121122F5E9F0900F67CF9 /* Vapor in Frameworks */ = {isa = PBXBuildFile; productRef = FA1121112F5E9F0900F67CF9 /* Vapor */; };
 		FA6D90A32F3B334E003DE626 /* ASKCoordinator in Frameworks */ = {isa = PBXBuildFile; productRef = FA6D90A22F3B334E003DE626 /* ASKCoordinator */; };
 		FA6D90A62F3B3389003DE626 /* Knit in Frameworks */ = {isa = PBXBuildFile; productRef = FA6D90A52F3B3389003DE626 /* Knit */; };
 		FA6D90A82F3B3389003DE626 /* KnitMacros in Frameworks */ = {isa = PBXBuildFile; productRef = FA6D90A72F3B3389003DE626 /* KnitMacros */; };
@@ -88,7 +88,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA1120FA2F5E776F00F67CF9 /* Models in Frameworks */,
-				FA111D252F5E54BE00F67CF9 /* LCLWebSocket in Frameworks */,
+				FA1121122F5E9F0900F67CF9 /* Vapor in Frameworks */,
 				FA110F042F5E4E1003DE626 /* Network.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -185,8 +185,8 @@
 			);
 			name = ItemsDebugger;
 			packageProductDependencies = (
-				FA111D242F5E54BE00F67CF9 /* LCLWebSocket */,
 				FA1120F92F5E776F00F67CF9 /* Models */,
+				FA1121112F5E9F0900F67CF9 /* Vapor */,
 			);
 			productName = ItemsDebugger;
 			productReference = FA110EFC2F5E4E0D00F67CF9 /* ItemsDebugger */;
@@ -309,8 +309,8 @@
 				FA6D90A42F3B3389003DE626 /* XCRemoteSwiftPackageReference "knit" */,
 				FA777FFD2F3FE15E000C40C3 /* XCRemoteSwiftPackageReference "ASKCore" */,
 				FB0000000000000000000001 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
-				FA111D232F5E54BE00F67CF9 /* XCRemoteSwiftPackageReference "lcl-websocket" */,
 				FA111E552F5E608F00F67CF9 /* XCLocalSwiftPackageReference "Modules/Models" */,
+				FA1121102F5E9F0900F67CF9 /* XCRemoteSwiftPackageReference "vapor" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = FA6D90932F3B32F1003DE626 /* Products */;
@@ -758,12 +758,12 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		FA111D232F5E54BE00F67CF9 /* XCRemoteSwiftPackageReference "lcl-websocket" */ = {
+		FA1121102F5E9F0900F67CF9 /* XCRemoteSwiftPackageReference "vapor" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Local-Connectivity-Lab/lcl-websocket";
+			repositoryURL = "https://github.com/vapor/vapor";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.1.1;
+				minimumVersion = 4.121.3;
 			};
 		};
 		FA6D90A12F3B334E003DE626 /* XCRemoteSwiftPackageReference "ASKCoordinator" */ = {
@@ -801,11 +801,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		FA111D242F5E54BE00F67CF9 /* LCLWebSocket */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = FA111D232F5E54BE00F67CF9 /* XCRemoteSwiftPackageReference "lcl-websocket" */;
-			productName = LCLWebSocket;
-		};
 		FA111E562F5E609000F67CF9 /* Models */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Models;
@@ -814,6 +809,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = FA111E552F5E608F00F67CF9 /* XCLocalSwiftPackageReference "Modules/Models" */;
 			productName = Models;
+		};
+		FA1121112F5E9F0900F67CF9 /* Vapor */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA1121102F5E9F0900F67CF9 /* XCRemoteSwiftPackageReference "vapor" */;
+			productName = Vapor;
 		};
 		FA6D90A22F3B334E003DE626 /* ASKCoordinator */ = {
 			isa = XCSwiftPackageProductDependency;
