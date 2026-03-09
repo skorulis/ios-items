@@ -16,13 +16,34 @@ final class ItemsHTTPServer {
             }
             
             return try Self.response(payload: payload)
-        }    
+        }
+        
+        app.get("item") { _ async throws -> Response in
+            guard let payload = await clients.send(request: .getItems) else {
+                throw Abort(.serviceUnavailable, reason: "No client connected or no response received")
+            }
+            
+            return try Self.response(payload: payload)
+        }
     }
     
     static func response(payload: ItemsClientResponse.Payload) throws -> Response {
-        let data = try JSONEncoder().encode(payload)
+        let converted = convert(payload: payload)
+        let data = try JSONEncoder().encode(converted)
         var headers = HTTPHeaders()
         headers.contentType = .json
         return Response(status: .ok, headers: headers, body: .init(data: data))
+    }
+    
+    static func convert(payload: ItemsClientResponse.Payload) -> Codable {
+        switch payload {
+        case let .items(items):
+            return Dictionary(uniqueKeysWithValues: items.map { (key, value) in
+                // In this example, we convert the integer key to a string key
+                return (String(describing: key), value)
+            })
+        case let .makeItemResult(makeItemResult):
+            return makeItemResult
+        }
     }
 }
