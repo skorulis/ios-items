@@ -30,7 +30,7 @@ import SwiftUI
     }
 
     struct Model {
-        var createdItem: ItemGeneratorService.Result?
+        var createdItem: MakeItemResult?
         var creationInProgress: CreationInProgress?
 
         var isCreating: Bool { creationInProgress != nil }

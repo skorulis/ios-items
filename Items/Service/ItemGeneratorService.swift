@@ -25,7 +25,7 @@ final class ItemGeneratorService {
         )
     }
     
-    func make(recipe: Recipe) -> Result {
+    func make(recipe: Recipe) -> MakeItemResult {
         let info = recipeInfo(recipe: recipe)
         let quality = info.randomQuality()
         
@@ -131,11 +131,6 @@ extension ItemGeneratorService{
             }
             return randomArray.random ?? .junk
         }
-    }
-    
-    enum Result {
-        case base(BaseItem, Int)
-        case artifact(ArtifactInstance)
     }
 }
 

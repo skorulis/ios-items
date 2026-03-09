@@ -4,6 +4,7 @@ import Foundation
 
 // Requests sent to the client
 public enum ClientRequest: Codable {
-    
+
     case getItems
+    case makeItem(BaseItem)
 }
