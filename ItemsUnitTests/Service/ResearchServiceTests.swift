@@ -187,7 +187,7 @@ struct ResearchServiceTests {
         mainStore.warehouse.add(item: item, count: 5)
         researchService.startResearch(to: item, now: start)
         
-        researchService.rushResearch(to: item, now: start)
+        researchService.rushResearch(to: item, useBooks: false, now: start)
         
         #expect(mainStore.lab.currentLevel(item: item) == 1)
         #expect(mainStore.lab.accumulatedSeconds(for: item) == 0)
@@ -207,7 +207,7 @@ struct ResearchServiceTests {
         let halfway = start.addingTimeInterval(60)
         researchService.updateResearchProgress(now: halfway)
         
-        researchService.rushResearch(to: item, now: halfway)
+        researchService.rushResearch(to: item, useBooks: false, now: halfway)
         
         #expect(mainStore.lab.currentLevel(item: item) == 1)
         expectApproximate(mainStore.lab.accumulatedSeconds(for: item), 0)
@@ -224,7 +224,7 @@ struct ResearchServiceTests {
         mainStore.warehouse.add(item: item, count: 1) // need 2 to rush level 0
         researchService.startResearch(to: item, now: start)
         
-        researchService.rushResearch(to: item, now: start)
+        researchService.rushResearch(to: item, useBooks: false, now: start)
         
         #expect(mainStore.lab.currentLevel(item: item) == 0)
         #expect(mainStore.warehouse.quantity(item) == 1)
@@ -241,7 +241,7 @@ struct ResearchServiceTests {
         mainStore.warehouse.add(item: item, count: 5)
         researchService.startResearch(to: item, now: start)
         
-        researchService.rushResearch(to: item, now: start)
+        researchService.rushResearch(to: item, useBooks: false, now: start)
         
         let expectedEssences = item.availableResearch.unlockedEssences(level: 1)
         for essence in expectedEssences {
@@ -262,7 +262,7 @@ struct ResearchServiceTests {
         let afterMinute = start.addingTimeInterval(60)
         researchService.updateResearchProgress(now: afterMinute)
         
-        researchService.rushResearch(to: item, now: afterMinute)
+        researchService.rushResearch(to: item, useBooks: false, now: afterMinute)
         
         // Cost should be 1 (60s remaining), so 3 - 1 = 2 left
         #expect(mainStore.lab.currentLevel(item: item) == 1)
