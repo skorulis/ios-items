@@ -92,6 +92,16 @@ public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable {
         }
     }
 
+    /// When non-nil, this achievement is hidden until the condition is met.
+    public var visibilityRequirement: UnlockRequirement? {
+        switch self {
+        case .sacrificed1, .sacrificed1000:
+            return .upgradePurchased(.sacrifices)
+        default:
+            return nil
+        }
+    }
+
     public var quality: ItemQuality {
         switch self {
         case .items1, .items10, .artifact1, .essence1, .sacrificed1:

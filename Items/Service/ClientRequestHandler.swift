@@ -8,6 +8,7 @@ import Models
 final class ClientRequestHandler {
 
     private let mainStore: MainStore
+    private let achivementService: AchievementService
     private let itemGeneratorService: ItemGeneratorService
     private let recipeService: RecipeService
     private let warehouseService: WarehouseService
@@ -16,12 +17,14 @@ final class ClientRequestHandler {
     @Resolvable<BaseResolver>
     init(
         mainStore: MainStore,
+        achivementService: AchievementService,
         itemGeneratorService: ItemGeneratorService,
         recipeService: RecipeService,
         warehouseService: WarehouseService,
         upgradeService: UpgradeService
     ) {
         self.mainStore = mainStore
+        self.achivementService = achivementService
         self.itemGeneratorService = itemGeneratorService
         self.recipeService = recipeService
         self.warehouseService = warehouseService
@@ -74,7 +77,9 @@ final class ClientRequestHandler {
             )
         case .getAchievements:
             let unlocked = mainStore.achievements.unlocked
-            let incomplete = Achievement.allCases.filter { !unlocked.contains($0) }
+            let incomplete = Achievement.allCases.filter {
+                !unlocked.contains($0) && achivementService.isVisible(achievement: $0)
+            }
             return .achievements(completed: Array(unlocked), incomplete: incomplete)
         case let .purchaseUpgrade(upgrade):
             if mainStore.portalUpgrades.purchased.contains(upgrade) {

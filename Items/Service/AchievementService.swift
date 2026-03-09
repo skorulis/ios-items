@@ -36,6 +36,13 @@ final class AchievementService {
         }
     }
     
+    func isVisible(achievement: Achievement) -> Bool {
+        guard let requirement = achievement.visibilityRequirement else {
+            return true
+        }
+        return isComplete(requirement: requirement)
+    }
+    
     func progressValue(requirement: UnlockRequirement) -> Int64 {
         switch requirement {
         case .itemsCreated:
