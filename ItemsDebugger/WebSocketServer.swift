@@ -93,8 +93,8 @@ enum WebSocketServer {
         app.http.server.configuration.port = port
 
         let clients = connectedClients ?? ConnectedClients()
-        let server = ItemsHTTPServer()
-        server.run(app: app, clients: clients)
+        let server = ItemsHTTPServer(clients: clients)
+        server.run(app: app)
 
         app.webSocket("") { _, ws in
             clients.setConnection(ws)
