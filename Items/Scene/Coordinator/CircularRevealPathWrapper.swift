@@ -67,6 +67,7 @@ struct CircularRevealPathWrapper<Content: View>: View {
             )
 
             content()
+                .background(ignoresSafeAreaEdges: .all)
                 .modifier(CircularRevealMaskModifier(progress: revealProgress, center: center))
                 .environment(\.dismissCircularReveal, requestDismiss)
         }
