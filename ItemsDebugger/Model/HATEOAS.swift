@@ -2,6 +2,10 @@
 
 import Foundation
 
+struct HATEOAS: Codable {
+    let _links: [Link]
+}
+
 struct Link: Codable {
     let href: String
     let action: String

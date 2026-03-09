@@ -5,4 +5,5 @@ import Foundation
 // GET actions to access app data
 public enum GameData: Codable {
     case items
+    case artifacts
 }

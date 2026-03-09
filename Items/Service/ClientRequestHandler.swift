@@ -48,7 +48,10 @@ final class ClientRequestHandler {
             let result = itemGeneratorService.makeAndStore(recipe: recipe)
             return .makeItemResult(result)
         case .getActions:
-            return .actions([.makeItem])
+            return .actions(
+                getAvailableActions(),
+                getAvailableData(),
+            )
         case .getArtifacts:
             let artifactsWithQuality = Artifact.allCases.reduce(into: [Artifact: ItemQuality]()) { dict, artifact in
                 if let quality = mainStore.warehouse.quality(artifact) {
@@ -57,5 +60,18 @@ final class ClientRequestHandler {
             }
             return .artifacts(artifactsWithQuality)
         }
+    }
+    
+    private func getAvailableActions() -> [GameAction] {
+        return [.makeItem]
+    }
+    
+    private func getAvailableData() -> [GameData] {
+        var result: [GameData] = [.items]
+        if mainStore.achievements.unlocked.contains(.artifact1) {
+            result.append(.artifacts)
+        }
+        
+        return result
     }
 }

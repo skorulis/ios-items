@@ -60,13 +60,21 @@ final class ItemsHTTPServer {
             })
         case let .makeItemResult(makeItemResult):
             return makeItemResult
-        case let .actions(actions):
-            return actions.map { action in
+        case let .actions(actions, data):
+            let actionLinks = actions.map { action in
                 return Link(
                     href: action.href,
                     action: "POST",
                 )
             }
+            let dataLinks = data.map { data in
+                return Link(
+                    href: data.href,
+                    action: "GET",
+                )
+            }
+            
+            return HATEOAS(_links: dataLinks + actionLinks)
         case let .artifacts(artifacts):
             return Dictionary(uniqueKeysWithValues: artifacts.map { (artifact, quality) in
                 (
@@ -74,6 +82,15 @@ final class ItemsHTTPServer {
                     quality.name
                 )
             })
+        }
+    }
+}
+
+extension GameData {
+    var href: String {
+        switch self {
+        case .items: return "/items"
+        case .artifacts: return "/artifacts"
         }
     }
 }
