@@ -126,6 +126,11 @@ enum WebSocketServer {
                     }
                 case let .actions(actions):
                     print("Actions: \(actions)")
+                case let .artifacts(artifacts):
+                    print("Client artifacts:")
+                    for (artifact, quality) in artifacts.sorted(by: { $0.key.name < $1.key.name }) {
+                        print("  \(artifact.name): \(quality.name)")
+                    }
                 }
             }
 

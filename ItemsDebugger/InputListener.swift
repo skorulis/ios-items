@@ -44,6 +44,9 @@ final class InputListener {
         case "getitems", "get_items", "get-items":
             print("Requested items from client")
             perform(request: .getItems)
+        case "getartifacts", "get_artifacts", "get-artifacts":
+            print("Requested artifacts from client")
+            perform(request: .getArtifacts)
         case "makeitem":
             print("Make item")
             perform(request: .makeItem)

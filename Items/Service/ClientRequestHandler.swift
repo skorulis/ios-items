@@ -49,6 +49,13 @@ final class ClientRequestHandler {
             return .makeItemResult(result)
         case .getActions:
             return .actions([.makeItem])
+        case .getArtifacts:
+            let artifactsWithQuality = Artifact.allCases.reduce(into: [Artifact: ItemQuality]()) { dict, artifact in
+                if let quality = mainStore.warehouse.quality(artifact) {
+                    dict[artifact] = quality
+                }
+            }
+            return .artifacts(artifactsWithQuality)
         }
     }
 }

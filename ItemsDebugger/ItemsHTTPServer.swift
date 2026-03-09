@@ -26,6 +26,14 @@ final class ItemsHTTPServer {
             return try Self.response(payload: payload)
         }
         
+        app.get("artifacts") { _ async throws -> Response in
+            guard let payload = await clients.send(request: .getArtifacts) else {
+                throw Abort(.serviceUnavailable, reason: "No client connected or no response received")
+            }
+            
+            return try Self.response(payload: payload)
+        }
+        
         app.get("actions") { _ async throws -> Response in
             guard let payload = await clients.send(request: .getActions) else {
                 throw Abort(.serviceUnavailable, reason: "No client connected or no response received")
@@ -59,6 +67,13 @@ final class ItemsHTTPServer {
                     action: "POST",
                 )
             }
+        case let .artifacts(artifacts):
+            return Dictionary(uniqueKeysWithValues: artifacts.map { (artifact, quality) in
+                (
+                    String(describing: artifact),
+                    quality.name
+                )
+            })
         }
     }
 }

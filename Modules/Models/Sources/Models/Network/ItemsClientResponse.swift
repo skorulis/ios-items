@@ -13,11 +13,12 @@ public struct ItemsClientResponse: Codable {
         self.id = id
         self.payload = payload
     }
-
+    
     // The actual response type sent over the wire
     public enum Payload: Codable {
         case items([BaseItem: Int])
         case makeItemResult(MakeItemResult)
         case actions([GameAction])
+        case artifacts([Artifact: ItemQuality])
     }
 }

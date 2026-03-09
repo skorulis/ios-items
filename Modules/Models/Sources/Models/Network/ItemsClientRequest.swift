@@ -12,11 +12,12 @@ public struct ItemsClientRequest: Codable {
         self.payload = payload
         self.id = UUID().uuidString
     }
-
+    
     // The actual request type sent over the wire
     public enum Payload: Codable {
         case getItems
         case getActions
         case makeItem
+        case getArtifacts
     }
 }
