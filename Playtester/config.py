@@ -11,3 +11,8 @@ MODEL_NAME: str = os.environ.get("ITEMS_PLAYTEST_MODEL", "gpt-4o-mini")
 # Example: OPENAI_API_BASE=http://localhost:11434/v1 and ITEMS_PLAYTEST_MODEL=llama3.2
 OPENAI_API_BASE: str | None = os.environ.get("OPENAI_API_BASE") or None
 OPENAI_API_KEY: str | None = os.environ.get("OPENAI_API_KEY") or None
+
+# OpenRouter: free models with tool calling. Get a key at https://openrouter.ai/keys
+# Set OPENROUTER_API_KEY to use OpenRouter; ITEMS_PLAYTEST_MODEL can override the default.
+OPENROUTER_API_BASE: str = "https://openrouter.ai/api/v1"
+OPENROUTER_DEFAULT_MODEL: str = "arcee-ai/trinity-large-preview:free"

@@ -8,7 +8,15 @@ from typing import Any
 
 from openai import OpenAI
 
-from config import BASE_URL, MAX_STEPS_PER_EPISODE, MODEL_NAME
+from config import (
+    BASE_URL,
+    MAX_STEPS_PER_EPISODE,
+    MODEL_NAME,
+    OPENAI_API_BASE as CONFIG_OPENAI_BASE,
+    OPENAI_API_KEY as CONFIG_OPENAI_KEY,
+    OPENROUTER_API_BASE,
+    OPENROUTER_DEFAULT_MODEL,
+)
 from items_env import ItemsEnv, ItemsEnvError
 from tools import build_tools_from_links, dispatch_tool_call
 
@@ -155,13 +163,29 @@ def main() -> None:
     import os
     base_url = os.environ.get("ITEMS_DEBUGGER_URL", BASE_URL)
     max_steps = int(os.environ.get("ITEMS_MAX_STEPS", str(MAX_STEPS_PER_EPISODE)))
-    model = os.environ.get("ITEMS_PLAYTEST_MODEL", MODEL_NAME)
-    api_base = os.environ.get("OPENAI_API_BASE") or OPENAI_API_BASE
-    api_key = os.environ.get("OPENAI_API_KEY") or OPENAI_API_KEY
+    api_base = os.environ.get("OPENAI_API_BASE")
+    api_key = os.environ.get("OPENAI_API_KEY")
+    openrouter_key = os.environ.get("OPENROUTER_API_KEY")
+
+    if openrouter_key:
+        api_base = OPENROUTER_API_BASE
+        api_key = openrouter_key
+        model = os.environ.get("ITEMS_PLAYTEST_MODEL") or OPENROUTER_DEFAULT_MODEL
+        system_name = "OpenRouter"
+    else:
+        model = os.environ.get("ITEMS_PLAYTEST_MODEL", MODEL_NAME)
+        api_base = api_base or CONFIG_OPENAI_BASE
+        api_key = api_key or CONFIG_OPENAI_KEY
+        system_name = "OpenAI" if not api_base else "Local"
 
     if not api_base and not api_key:
-        print("Set OPENAI_API_KEY for OpenAI, or OPENAI_API_BASE for a free local server (e.g. Ollama).", file=sys.stderr)
+        print(
+            "Set OPENAI_API_KEY for OpenAI, OPENROUTER_API_KEY for free OpenRouter models, or OPENAI_API_BASE for a local server (e.g. Ollama).",
+            file=sys.stderr,
+        )
         sys.exit(1)
+
+    print(f"System: {system_name}  Model: {model}", file=sys.stderr)
 
     env = ItemsEnv(base_url=base_url)
     try:
