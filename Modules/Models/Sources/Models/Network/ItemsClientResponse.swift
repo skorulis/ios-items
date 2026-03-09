@@ -3,8 +3,20 @@
 import Foundation
 
 // A response from the client
-public enum ItemsClientResponse: Codable {
+public struct ItemsClientResponse: Codable {
 
-    case items([BaseItem: Int])
-    case makeItemResult(MakeItemResult)
+    // Will match the request ID
+    public let id: UUID
+    public let payload: Payload
+
+    public init(id: UUID, payload: Payload) {
+        self.id = id
+        self.payload = payload
+    }
+
+    // The actual response type sent over the wire
+    public enum Payload: Codable {
+        case items([BaseItem: Int])
+        case makeItemResult(MakeItemResult)
+    }
 }

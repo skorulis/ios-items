@@ -3,8 +3,18 @@
 import Foundation
 
 // Requests sent to the client
-public enum ItemsClientRequest: Codable {
+public struct ItemsClientRequest: Codable {
 
-    case getItems
-    case makeItem
+    public let id: UUID = .init()
+    public let payload: Payload
+
+    public init(payload: Payload) {
+        self.payload = payload
+    }
+
+    // The actual request type sent over the wire
+    public enum Payload: Codable {
+        case getItems
+        case makeItem
+    }
 }

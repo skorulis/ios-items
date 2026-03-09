@@ -33,16 +33,23 @@ final class ConnectedClients: @unchecked Sendable {
         return client != nil ? 1 : 0
     }
 
-    func send(request: ItemsClientRequest) {
+    func send(request payload: ItemsClientRequest.Payload) async -> ItemsClientResponse.Payload? {
         guard let websocket = client else {
             print("no client connected")
-            return
+            return nil
         }
-        guard let data = try? JSONEncoder().encode(request) else { return }
+        let request = ItemsClientRequest(payload: payload)
+
+        guard let data = try? JSONEncoder().encode(request) else {
+            return nil
+        }
         let string = String(data: data, encoding: .utf8) ?? ""
         websocket.eventLoop.execute {
             websocket.send(string)
         }
+        
+        // TODO: Wait for response
+        return nil
     }
 
     /// Sends text to the connected client. Safe to call from any thread. No-op if no client.
@@ -84,7 +91,7 @@ enum WebSocketServer {
                     print("WebSocketServer decode error for: \(text)")
                     return
                 }
-                switch response {
+                switch response.payload {
                 case let .items(itemsWithCount):
                     if itemsWithCount.isEmpty {
                         print("Client items: (empty)")

@@ -25,8 +25,13 @@ final class ClientRequestHandler {
         self.warehouseService = warehouseService
     }
 
-    @MainActor
     func handle(request: ItemsClientRequest) -> ItemsClientResponse {
+        let result = handle(request: request.payload)
+        return ItemsClientResponse(id: request.id, payload: result)
+    }
+    
+    @MainActor
+    func handle(request: ItemsClientRequest.Payload) -> ItemsClientResponse.Payload {
         switch request {
         case .getItems:
             let itemsWithCount = BaseItem.allCases.reduce(into: [BaseItem: Int]()) { dict, item in
