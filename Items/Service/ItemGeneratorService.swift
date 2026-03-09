@@ -11,11 +11,13 @@ final class ItemGeneratorService {
     
     private let mainStore: MainStore
     private let calculations: CalculationsService
+    private let warehouseService: WarehouseService
     
     @Resolvable<BaseResolver>
-    init(mainStore: MainStore, calculations: CalculationsService) {
+    init(mainStore: MainStore, calculations: CalculationsService, warehouseService: WarehouseService) {
         self.mainStore = mainStore
         self.calculations = calculations
+        self.warehouseService = warehouseService
     }
     
     func recipeInfo(recipe: Recipe) -> RecipeInfo {
@@ -23,6 +25,22 @@ final class ItemGeneratorService {
             quality: qualityBonuses(recipe: recipe),
             essenceBoosts: essenceBonuses(recipe: recipe)
         )
+    }
+    
+    func makeAndStore(recipe: Recipe) -> MakeItemResult {
+        let item = make(recipe: recipe)
+        switch item {
+        case let .base(baseItem, count):
+            warehouseService.add(item: baseItem, count: count)
+            
+            mainStore.statistics.itemsCreated += Int64(count)
+            if count > 1 {
+                mainStore.statistics.doubleItemCreations += 1
+            }
+        case let .artifact(artifact):
+            warehouseService.add(artifact: artifact)
+        }
+        return item
     }
     
     func make(recipe: Recipe) -> MakeItemResult {

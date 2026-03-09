@@ -6,14 +6,25 @@ import Foundation
 import Models
 
 final class ClientRequestHandler {
-    
+
     private let mainStore: MainStore
-    
+    private let itemGeneratorService: ItemGeneratorService
+    private let recipeService: RecipeService
+    private let warehouseService: WarehouseService
+
     @Resolvable<BaseResolver>
-    init(mainStore: MainStore) {
+    init(
+        mainStore: MainStore,
+        itemGeneratorService: ItemGeneratorService,
+        recipeService: RecipeService,
+        warehouseService: WarehouseService
+    ) {
         self.mainStore = mainStore
+        self.itemGeneratorService = itemGeneratorService
+        self.recipeService = recipeService
+        self.warehouseService = warehouseService
     }
-    
+
     @MainActor
     func handle(request: ClientRequest) -> ClientResponse {
         switch request {
@@ -25,6 +36,11 @@ final class ClientRequestHandler {
                 }
             }
             return .items(itemsWithCount)
+
+        case .makeItem:
+            let recipe = recipeService.nextAvailable()
+            let result = itemGeneratorService.makeAndStore(recipe: recipe)
+            return .makeItemResult(result)
         }
     }
 }

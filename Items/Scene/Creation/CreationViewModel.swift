@@ -143,20 +143,7 @@ extension CreationViewModel {
         try? await Task.sleep(for: .milliseconds(calculations.itemCreationMilliseconds))
         self.model.creationInProgress = nil
         
-        let item = itemGeneratorService.make(recipe: recipe)
-        switch item {
-        case let .base(baseItem, count):
-            warehouseService.add(item: baseItem, count: count)
-            
-            mainStore.statistics.itemsCreated += Int64(count)
-            if count > 1 {
-                mainStore.statistics.doubleItemCreations += 1
-            }
-        case let .artifact(artifact):
-            warehouseService.add(artifact: artifact)
-        }
-        
-        self.model.createdItem = item
+        self.model.createdItem = itemGeneratorService.makeAndStore(recipe: recipe)
     }
     
     func showRecipes() {

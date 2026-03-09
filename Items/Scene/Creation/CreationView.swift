@@ -191,7 +191,7 @@ extension CreationView: View {
     }
     
     @ViewBuilder
-    private func createdItem(item: ItemGeneratorService.Result) -> some View {
+    private func createdItem(item: MakeItemResult) -> some View {
         switch item {
         case let .base(baseItem, count):
             Button(action: { viewModel.showDetails(item: baseItem) }) {

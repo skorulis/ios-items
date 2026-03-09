@@ -6,5 +6,5 @@ import Foundation
 public enum ClientRequest: Codable {
 
     case getItems
-    case makeItem(BaseItem)
+    case makeItem
 }
