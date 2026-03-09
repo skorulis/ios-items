@@ -80,15 +80,16 @@ extension ResearchService {
     }
     
     /// Instantly completes the current research level for the given item by consuming items and applying unlocks.
-    func rushResearch(to item: BaseItem, now: Date = Date()) {
+    func rushResearch(to item: BaseItem, useBooks: Bool, now: Date = Date()) {
         var lab = mainStore.lab
         var warehouse = mainStore.warehouse
         
         let cost = rushCost(for: item, now: now)
-        guard cost > 0, warehouse.quantity(item) >= cost else { return }
+        let consumedItem: BaseItem = useBooks ? .book : item
+        guard cost > 0, warehouse.quantity(consumedItem) >= cost else { return }
         
         let currentLevel = lab.currentLevel(item: item)
-        warehouse.remove(item: item, quantity: cost)
+        warehouse.remove(item: consumedItem, quantity: cost)
         
         let newLevel = currentLevel + 1
         lab.setState(level: newLevel, accumulatedSeconds: 0, for: item)

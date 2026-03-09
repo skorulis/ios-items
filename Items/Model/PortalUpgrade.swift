@@ -17,6 +17,11 @@ enum PortalUpgrade: Codable, Hashable, CaseIterable, Identifiable {
     case artifactSlot
     case artifactSlotLevel2
     case artifactSlotLevel3
+    case knowledgeSiphon
+    case knowledgeSiphonLevel2
+    case knowledgeSiphonLevel3
+    case knowledgeSiphonLevel4
+    case knowledgeSiphonLevel5
 
     var id: Self { self }
 
@@ -29,6 +34,11 @@ enum PortalUpgrade: Codable, Hashable, CaseIterable, Identifiable {
         case .artifactSlot: return "Artifact Slot"
         case .artifactSlotLevel2: return "Artifact Slot II"
         case .artifactSlotLevel3: return "Artifact Slot III"
+        case .knowledgeSiphon: return "Knowledge Siphon"
+        case .knowledgeSiphonLevel2: return "Knowledge Siphon II"
+        case .knowledgeSiphonLevel3: return "Knowledge Siphon III"
+        case .knowledgeSiphonLevel4: return "Knowledge Siphon IV"
+        case .knowledgeSiphonLevel5: return "Knowledge Siphon V"
         }
     }
 
@@ -52,6 +62,7 @@ enum PortalUpgrade: Codable, Hashable, CaseIterable, Identifiable {
         case .researchLabLevel2: return Image(systemName: "flask.fill")
         case .sacrifices: return Image(systemName: "flame.fill")
         case .artifactSlot, .artifactSlotLevel2, .artifactSlotLevel3: return Image(systemName: "square.stack.3d.up.fill")
+        case .knowledgeSiphon, .knowledgeSiphonLevel2, .knowledgeSiphonLevel3, .knowledgeSiphonLevel4, .knowledgeSiphonLevel5: return Image(systemName: "book.fill")
         }
     }
 
@@ -88,6 +99,31 @@ enum PortalUpgrade: Codable, Hashable, CaseIterable, Identifiable {
             .init(item: .lens, quantity: 3),
             .init(item: .goldFlorin, quantity: 1),
         ]
+        case .knowledgeSiphon: return [
+            .init(item: .book, quantity: 2),
+            .init(item: .lens, quantity: 1),
+            .init(item: .silverFlorin, quantity: 1),
+        ]
+        case .knowledgeSiphonLevel2: return [
+            .init(item: .book, quantity: 4),
+            .init(item: .lens, quantity: 2),
+            .init(item: .silverFlorin, quantity: 2),
+        ]
+        case .knowledgeSiphonLevel3: return [
+            .init(item: .book, quantity: 6),
+            .init(item: .lens, quantity: 3),
+            .init(item: .goldFlorin, quantity: 1),
+        ]
+        case .knowledgeSiphonLevel4: return [
+            .init(item: .book, quantity: 10),
+            .init(item: .lens, quantity: 4),
+            .init(item: .goldFlorin, quantity: 2),
+        ]
+        case .knowledgeSiphonLevel5: return [
+            .init(item: .book, quantity: 14),
+            .init(item: .lens, quantity: 5),
+            .init(item: .goldFlorin, quantity: 3),
+        ]
         }
     }
 
@@ -103,6 +139,16 @@ enum PortalUpgrade: Codable, Hashable, CaseIterable, Identifiable {
             ]
         case .artifactSlotLevel3:
             return [.upgradePurchased(.artifactSlotLevel2)]
+        case .knowledgeSiphon:
+            return [.upgradePurchased(.researchLab)]
+        case .knowledgeSiphonLevel2:
+            return [.upgradePurchased(.knowledgeSiphon)]
+        case .knowledgeSiphonLevel3:
+            return [.upgradePurchased(.knowledgeSiphonLevel2)]
+        case .knowledgeSiphonLevel4:
+            return [.upgradePurchased(.knowledgeSiphonLevel3)]
+        case .knowledgeSiphonLevel5:
+            return [.upgradePurchased(.knowledgeSiphonLevel4)]
         default:
             return []
         }
@@ -115,6 +161,16 @@ enum PortalUpgrade: Codable, Hashable, CaseIterable, Identifiable {
             return .researchSpeed(10)
         case .artifactSlot, .artifactSlotLevel2, .artifactSlotLevel3:
             return .artifactSlots(1)
+        case .knowledgeSiphon:
+            return .booksForResearch(.junk)
+        case .knowledgeSiphonLevel2:
+            return .booksForResearch(.common)
+        case .knowledgeSiphonLevel3:
+            return .booksForResearch(.good)
+        case .knowledgeSiphonLevel4:
+            return .booksForResearch(.rare)
+        case .knowledgeSiphonLevel5:
+            return .booksForResearch(.exceptional)
         default:
             return nil
         }

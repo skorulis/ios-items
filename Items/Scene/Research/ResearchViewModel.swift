@@ -39,7 +39,15 @@ import SwiftUI
             self.lab = $0
         }
         .store(in: &cancellables)
+
+        mainStore.$portalUpgrades.sink { [unowned self] in
+            self.portalBonuses = $0.bonuses
+        }
+        .store(in: &cancellables)
     }
+
+    /// Bonuses from purchased portal upgrades (so UI updates when upgrades are purchased).
+    private(set) var portalBonuses: [Bonus] = []
 }
 
 // MARK: - Logic
@@ -54,7 +62,7 @@ extension ResearchViewModel {
         guard let item = lab.currentResearch?.item else { return }
         let now = Date()
         self.now = now
-        researchService.rushResearch(to: item, now: now)
+        researchService.rushResearch(to: item, useBooks: false, now: now)
     }
     
     func viewItemDetails() {
@@ -91,6 +99,27 @@ extension ResearchViewModel {
         let cost = rushCost
         guard cost > 0 else { return false }
         return warehouse.quantity(selectedItem) >= cost
+    }
+
+    /// True when Knowledge Siphon is purchased for the current research item's quality tier.
+    var canUseBooksForResearchForCurrentItem: Bool {
+        guard let item = lab.currentResearch?.item else { return false }
+        return portalBonuses.canUseBooksForResearch(quality: item.quality)
+    }
+
+    /// Can rush using books: upgrade allows it for this quality and we have enough books.
+    var canRushWithBooks: Bool {
+        guard canUseBooksForResearchForCurrentItem else { return false }
+        let cost = rushCost
+        guard cost > 0 else { return false }
+        return warehouse.quantity(.book) >= cost
+    }
+
+    func rushResearchWithBooks() {
+        guard let item = lab.currentResearch?.item else { return }
+        let now = Date()
+        self.now = now
+        researchService.rushResearch(to: item, useBooks: true, now: now)
     }
 
     var researchBoostPercent: Int {

@@ -78,12 +78,22 @@ extension ResearchView: View {
                 totalSeconds: viewModel.totalSeconds,
                 completedSeconds: viewModel.completedSeconds
             )
-            ResearchRushButton(
-                item: item,
-                cost: viewModel.rushCost,
-                isEnabled: viewModel.canRush,
-                action: { viewModel.rushCurrentResearch() }
-            )
+            HStack(spacing: 12) {
+                ResearchRushButton(
+                    item: item,
+                    cost: viewModel.rushCost,
+                    isEnabled: viewModel.canRush,
+                    action: { viewModel.rushCurrentResearch() }
+                )
+                if viewModel.canUseBooksForResearchForCurrentItem {
+                    ResearchRushButton(
+                        item: .book,
+                        cost: viewModel.rushCost,
+                        isEnabled: viewModel.canRushWithBooks,
+                        action: { viewModel.rushResearchWithBooks() }
+                    )
+                }
+            }
         }
     }
     

@@ -6,7 +6,8 @@ enum Bonus {
     case researchSpeed(Int)
     case artifactSlots(Int)
     case qualityBoost(Int, ItemQuality)
-    
+    case booksForResearch(ItemQuality)
+
     var text: String {
         switch self {
         case let .researchSpeed(int):
@@ -15,6 +16,8 @@ enum Bonus {
             return "Add \(int) artifact slot"
         case let .qualityBoost(amount, quality):
             return "Boost the chance to find \(quality.name) items by \(amount)%"
+        case let .booksForResearch(quality):
+            return "Use books to research \(quality.name) items"
         }
     }
     
@@ -43,6 +46,12 @@ enum Bonus {
         }
         return nil
     }
+
+    /// Quality tier unlocked for book-based research. Nil for other bonus types.
+    var booksForResearchQuality: ItemQuality? {
+        if case let .booksForResearch(quality) = self { return quality }
+        return nil
+    }
 }
 
 extension Array where Element == Bonus {
@@ -59,5 +68,16 @@ extension Array where Element == Bonus {
         return self.compactMap(\.qualityBoostValue).reduce(into: [:]) { result, pair in
             result[pair.0, default: 0] += pair.1
         }
+    }
+
+    /// Highest quality tier that can use books for research. Nil if none unlocked.
+    var maxBooksForResearchQuality: ItemQuality? {
+        compactMap(\.booksForResearchQuality).max()
+    }
+
+    /// Whether books can be used to research items of the given quality (unlocked tier must be >= quality).
+    func canUseBooksForResearch(quality: ItemQuality) -> Bool {
+        guard let maxQuality = maxBooksForResearchQuality else { return false }
+        return quality <= maxQuality
     }
 }
