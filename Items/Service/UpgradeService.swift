@@ -3,6 +3,7 @@
 import ASKCore
 import Combine
 import Foundation
+import Models
 import Knit
 import KnitMacros
 
