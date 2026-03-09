@@ -7,7 +7,8 @@ public enum GameData: Codable {
     case items
     case artifacts
     case upgrades
-    
+    case achievements
+
     public var description: String {
         switch self {
         case .items:
@@ -16,6 +17,8 @@ public enum GameData: Codable {
             return "Get the current level of artifacts"
         case .upgrades:
             return "Get the current available and purchased upgrades"
+        case .achievements:
+            return "Get the current achievements (completed and incomplete)"
         }
     }
 }

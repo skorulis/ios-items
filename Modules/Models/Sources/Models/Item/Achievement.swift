@@ -1,10 +1,9 @@
-//Created by Alexander Skorulis on 16/2/2026.
+// Created by Alexander Skorulis on 16/2/2026.
 
 import Foundation
-import Models
 import SwiftUI
 
-enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
+public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable {
     case items1
     case items10
     case items100
@@ -21,9 +20,9 @@ enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
     case essence1
     case allEssences
 
-    var id: Self { self }
-    
-    var name: String {
+    public var id: Self { self }
+
+    public var name: String {
         switch self {
         case .items1: return "Portal unlocked"
         case .items10: return "Baby steps"
@@ -38,8 +37,8 @@ enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
         case .allEssences: return "Essence master"
         }
     }
-    
-    var image: Image? {
+
+    public var image: Image? {
         switch self {
         case .items1:
             return Image(systemName: "line.3.crossed.swirl.circle")
@@ -65,8 +64,8 @@ enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
             return Image(systemName: "leaf.fill")
         }
     }
-    
-    var requirement: UnlockRequirement {
+
+    public var requirement: UnlockRequirement {
         switch self {
         case .items1:
             return .itemsCreated(1)
@@ -92,8 +91,8 @@ enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
             return .essencesUnlocked(Int64(Essence.allCases.count))
         }
     }
-    
-    var quality: ItemQuality {
+
+    public var quality: ItemQuality {
         switch self {
         case .items1, .items10, .artifact1, .essence1, .sacrificed1:
             return .junk
@@ -103,8 +102,8 @@ enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
             return .exceptional
         }
     }
-    
-    var bonus: Bonus? {
+
+    public var bonus: Bonus? {
         switch self {
         case .sacrificed1:
             return .qualityBoost(1, .common)
@@ -114,8 +113,8 @@ enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
             return nil
         }
     }
-    
-    var bonusMessage: String? {
+
+    public var bonusMessage: String? {
         if let bonus {
             return bonus.text
         }
@@ -137,5 +136,4 @@ enum Achievement: Codable, Hashable, CaseIterable, Identifiable {
             return nil
         }
     }
-    
 }

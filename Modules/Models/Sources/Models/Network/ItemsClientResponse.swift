@@ -21,6 +21,7 @@ public struct ItemsClientResponse: Codable {
         case actions([GameAction], [GameData])
         case artifacts([Artifact: ItemQuality])
         case upgrades(UpgradesPayload)
+        case achievements(completed: [Achievement], incomplete: [Achievement])
         case error(String)
         case ok
     }

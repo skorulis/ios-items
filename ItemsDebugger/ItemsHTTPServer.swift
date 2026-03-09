@@ -39,7 +39,12 @@ final class ItemsHTTPServer {
             let payload = try await self.getResponse(request: .getUpgrades)
             return try Self.makeResponse(payload: payload)
         }
-        
+
+        app.get("achievements") { _ async throws -> Response in
+            let payload = try await self.getResponse(request: .getAchievements)
+            return try Self.makeResponse(payload: payload)
+        }
+
         app.post("upgrades/purchase") { request async throws -> Response in
             guard let id = try? request.query.get(String.self, at: "id") else {
                 throw Abort(.badRequest, reason: "Missing query parameter: id")
@@ -108,6 +113,11 @@ final class ItemsHTTPServer {
                 "purchased": upgrades.purchased.map { HTTPPortalUpgrade(upgrade: $0) },
                 "available": upgrades.available.map { HTTPPortalUpgrade(upgrade: $0) },
             ]
+        case let .achievements(completed, incomplete):
+            return [
+                "completed": completed.map { HTTPAchievement(achievement: $0) },
+                "incomplete": incomplete.map { HTTPAchievement(achievement: $0) },
+            ]
         case .ok:
             return ["status": "ok"]
         case .error:
@@ -122,6 +132,7 @@ extension GameData {
         case .items: return "/items"
         case .artifacts: return "/artifacts"
         case .upgrades: return "/upgrades"
+        case .achievements: return "/achievements"
         }
     }
 }

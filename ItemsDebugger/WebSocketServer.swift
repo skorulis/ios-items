@@ -129,6 +129,8 @@ enum WebSocketServer {
                     for (artifact, quality) in artifacts.sorted(by: { $0.key.name < $1.key.name }) {
                         print("  \(artifact.name): \(quality.name)")
                     }
+                case let .achievements(achievements):
+                    print("Client achievements: \(achievements.completed.count) completed, \(achievements.incomplete.count) incomplete")
                 case let .error(message):
                     print("Client error: \(message)")
                 default:

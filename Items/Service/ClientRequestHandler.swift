@@ -72,6 +72,10 @@ final class ClientRequestHandler {
                     available: available
                 )
             )
+        case .getAchievements:
+            let unlocked = mainStore.achievements.unlocked
+            let incomplete = Achievement.allCases.filter { !unlocked.contains($0) }
+            return .achievements(completed: Array(unlocked), incomplete: incomplete)
         case let .purchaseUpgrade(upgrade):
             if mainStore.portalUpgrades.purchased.contains(upgrade) {
                 return .error("Upgrade already purchased")
@@ -96,14 +100,15 @@ final class ClientRequestHandler {
     }
     
     private func getAvailableData() -> [GameData] {
-        var result: [GameData] = [.items]
+        var result: [GameData] = [.items, .achievements]
         if mainStore.achievements.unlocked.contains(.artifact1) {
             result.append(.artifacts)
         }
         if mainStore.achievements.unlocked.contains(.items10) {
             result.append(.upgrades)
         }
-        
+        result.append(.achievements)
+
         return result
     }
 }

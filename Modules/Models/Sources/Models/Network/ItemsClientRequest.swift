@@ -20,6 +20,7 @@ public struct ItemsClientRequest: Codable {
         case makeItem
         case getArtifacts
         case getUpgrades
+        case getAchievements
         case purchaseUpgrade(PortalUpgrade)
     }
 }

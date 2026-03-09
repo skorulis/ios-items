@@ -3,6 +3,7 @@
 import ASKCoordinator
 import Knit
 import KnitMacros
+import Models
 import SwiftUI
 
 @Observable final class AchievementsViewModel: CoordinatorViewModel {

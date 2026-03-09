@@ -18,3 +18,15 @@ struct HTTPPortalUpgrade: Codable {
             .mapValues { $0[0].quantity }
     }
 }
+
+public struct HTTPAchievement: Codable {
+    public let id: String
+    public let requirementText: String
+    public let bonusText: String?
+
+    public init(achievement: Achievement) {
+        self.id = achievement.rawValue
+        self.requirementText = achievement.requirement.description
+        self.bonusText = achievement.bonusMessage
+    }
+}

@@ -1,17 +1,16 @@
-//Created by Alexander Skorulis on 22/2/2026.
+// Created by Alexander Skorulis on 22/2/2026.
 
 import Foundation
-import Models
 
-enum UnlockRequirement: Codable {
+public enum UnlockRequirement: Codable {
     case itemsCreated(Int64)
     case itemsSacrificed(Int64)
     case researchRuns(Int64)
     case commonItemsCreated(Int64)
-    
+
     // How many essences have been unlocked
     case essencesUnlocked(Int64)
-    
+
     // If a specific essence has been unlocked
     case essenceUnlocked(Essence)
 
@@ -26,11 +25,9 @@ enum UnlockRequirement: Codable {
 
     /// A specific achievement has been unlocked.
     case achievementUnlocked(Achievement)
-
 }
 
-extension UnlockRequirement {
-    
+public extension UnlockRequirement {
     var description: String {
         switch self {
         case let .itemsCreated(count):
