@@ -14,7 +14,11 @@ def link_to_openai_tool(link: Link) -> dict[str, Any]:
     for q in link.query_params_from_href():
         params[q] = {"type": "string", "description": f"Query parameter: {q}"}
 
-    if link.action == "GET":
+    if link.description and link.description.strip():
+        description = link.description.strip()
+        if params:
+            description += f" Parameters: {', '.join(params)}."
+    elif link.action == "GET":
         description = f"Fetch data from {link.href}."
     else:
         desc_extra = f" Parameters: {', '.join(params)}." if params else ""

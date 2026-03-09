@@ -18,6 +18,7 @@ class Link:
 
     href: str
     action: str  # "GET" or "POST"
+    description: str = ""  # Optional: human-readable description from the API
 
     @property
     def tool_name(self) -> str:
@@ -63,7 +64,11 @@ class ItemsEnv:
 
         raw = data.get("_links", [])
         self._links = [
-            Link(href=item["href"], action=item.get("action", "GET"))
+            Link(
+                href=item["href"],
+                action=item.get("action", "GET"),
+                description=item.get("description") or "",
+            )
             for item in raw
             if isinstance(item.get("href"), str)
         ]

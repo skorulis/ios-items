@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import sys
+import threading
 from typing import Any
 
 from openai import OpenAI
@@ -22,6 +23,7 @@ from tools import build_tools_from_links, dispatch_tool_call
 
 SYSTEM_PROMPT = """You are a playtester for the game "Items" (a crafting/inventory game). Your goal is to **maximise the number of achievements reached**.
 
+- Use /actions to get the currently available endpoints
 - Use the get_* tools to inspect current state (items, artifacts, upgrades).
 - Use the post_* tools to perform actions (e.g. craft an item, purchase an upgrade).
 - Do not spam the same request repeatedly; explore systematically.
@@ -45,9 +47,16 @@ Write a structured feedback report with these sections:
 Format as markdown. Be concise."""
 
 
-def run_episode(env: ItemsEnv, client: OpenAI, model: str, max_steps: int) -> tuple[list[dict[str, Any]], str]:
+def run_episode(
+    env: ItemsEnv,
+    client: OpenAI,
+    model: str,
+    max_steps: int,
+    stop_event: threading.Event | None = None,
+) -> tuple[list[dict[str, Any]], str]:
     """
     Run one playtest episode. Returns (message_history, final_report_text).
+    If stop_event is set (e.g. by the user typing "stop"), the loop exits and the report is generated from the current transcript.
     """
     env.fetch_actions()
     links = env._links
@@ -61,6 +70,8 @@ def run_episode(env: ItemsEnv, client: OpenAI, model: str, max_steps: int) -> tu
     ]
     step = 0
     while step < max_steps:
+        if stop_event and stop_event.is_set():
+            break
         step += 1
         response = client.chat.completions.create(
             model=model,
@@ -107,6 +118,9 @@ def run_episode(env: ItemsEnv, client: OpenAI, model: str, max_steps: int) -> tu
             "role": "user",
             "content": "Updated state:\n\n" + env.get_state_summary() + "\n\nContinue working toward more achievements, or say you're done and summarise how many you reached.",
         })
+
+    if stop_event and stop_event.is_set():
+        print("Stop requested; generating report from current transcript.", file=sys.stderr)
 
     transcript = _format_transcript(messages)
     report = _request_report(client, model, transcript)
@@ -159,6 +173,20 @@ def _request_report(client: OpenAI, model: str, transcript: str) -> str:
         return f"Failed to generate report: {e}"
 
 
+def _stdin_stop_listener(stop_event: threading.Event) -> None:
+    """Daemon thread: read stdin; set stop_event when user types 'stop', 'quit', or Enter."""
+    try:
+        while True:
+            line = sys.stdin.readline()
+            if not line:
+                break
+            if line.strip().lower() in ("stop", "quit", "q", ""):
+                stop_event.set()
+                break
+    except (EOFError, OSError):
+        pass
+
+
 def main() -> None:
     import os
     base_url = os.environ.get("ITEMS_DEBUGGER_URL", BASE_URL)
@@ -202,8 +230,16 @@ def main() -> None:
     elif api_base:
         client_kwargs["api_key"] = "ollama"
     client = OpenAI(**client_kwargs)
-    print("Starting playtest episode...")
-    messages, report = run_episode(env, client, model, max_steps)
+
+    stop_event: threading.Event | None = None
+    if sys.stdin.isatty():
+        stop_event = threading.Event()
+        t = threading.Thread(target=_stdin_stop_listener, args=(stop_event,), daemon=True)
+        t.start()
+        print("Type 'stop' or press Enter to finish early and generate report.", file=sys.stderr)
+
+    print("Starting playtest episode...", file=sys.stderr)
+    messages, report = run_episode(env, client, model, max_steps, stop_event=stop_event)
     print("\n--- Feedback report ---\n")
     print(report)
     print("\n--- End report ---")
