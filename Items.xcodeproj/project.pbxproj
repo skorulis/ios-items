@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		FA110F042F5E4E1003DE626 /* Network.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA110F032F5E4E1003DE626 /* Network.framework */; };
 		FA111D252F5E54BE00F67CF9 /* LCLWebSocket in Frameworks */ = {isa = PBXBuildFile; productRef = FA111D242F5E54BE00F67CF9 /* LCLWebSocket */; };
+		FA111E572F5E609000F67CF9 /* Models in Frameworks */ = {isa = PBXBuildFile; productRef = FA111E562F5E609000F67CF9 /* Models */; };
 		FA6D90A32F3B334E003DE626 /* ASKCoordinator in Frameworks */ = {isa = PBXBuildFile; productRef = FA6D90A22F3B334E003DE626 /* ASKCoordinator */; };
 		FA6D90A62F3B3389003DE626 /* Knit in Frameworks */ = {isa = PBXBuildFile; productRef = FA6D90A52F3B3389003DE626 /* Knit */; };
 		FA6D90A82F3B3389003DE626 /* KnitMacros in Frameworks */ = {isa = PBXBuildFile; productRef = FA6D90A72F3B3389003DE626 /* KnitMacros */; };
@@ -92,6 +93,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA111E572F5E609000F67CF9 /* Models in Frameworks */,
 				FA6D90A62F3B3389003DE626 /* Knit in Frameworks */,
 				FA6D90A82F3B3389003DE626 /* KnitMacros in Frameworks */,
 				FA6D90A32F3B334E003DE626 /* ASKCoordinator in Frameworks */,
@@ -163,6 +165,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				FA111E5B2F5E60E500F67CF9 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				FA110EFD2F5E4E0D00F67CF9 /* ItemsDebugger */,
@@ -197,6 +200,7 @@
 				FA6D90A52F3B3389003DE626 /* Knit */,
 				FA6D90A72F3B3389003DE626 /* KnitMacros */,
 				FA777FFE2F3FE15E000C40C3 /* ASKCore */,
+				FA111E562F5E609000F67CF9 /* Models */,
 			);
 			productName = Items;
 			productReference = FA6D90922F3B32F1003DE626 /* Items.app */;
@@ -290,6 +294,7 @@
 				FA777FFD2F3FE15E000C40C3 /* XCRemoteSwiftPackageReference "ASKCore" */,
 				FB0000000000000000000001 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
 				FA111D232F5E54BE00F67CF9 /* XCRemoteSwiftPackageReference "lcl-websocket" */,
+				FA111E552F5E608F00F67CF9 /* XCLocalSwiftPackageReference "Modules/Models" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = FA6D90932F3B32F1003DE626 /* Products */;
@@ -361,6 +366,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		FA111E5B2F5E60E500F67CF9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = FA111E5A2F5E60E500F67CF9 /* Models */;
+		};
 		FA6D90BA2F3B34FC003DE626 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			productRef = FA6D90B92F3B34FC003DE626 /* KnitBuildPlugin */;
@@ -729,6 +738,13 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		FA111E552F5E608F00F67CF9 /* XCLocalSwiftPackageReference "Modules/Models" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Modules/Models;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		FA111D232F5E54BE00F67CF9 /* XCRemoteSwiftPackageReference "lcl-websocket" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -777,6 +793,15 @@
 			isa = XCSwiftPackageProductDependency;
 			package = FA111D232F5E54BE00F67CF9 /* XCRemoteSwiftPackageReference "lcl-websocket" */;
 			productName = LCLWebSocket;
+		};
+		FA111E562F5E609000F67CF9 /* Models */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Models;
+		};
+		FA111E5A2F5E60E500F67CF9 /* Models */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA111E552F5E608F00F67CF9 /* XCLocalSwiftPackageReference "Modules/Models" */;
+			productName = Models;
 		};
 		FA6D90A22F3B334E003DE626 /* ASKCoordinator */ = {
 			isa = XCSwiftPackageProductDependency;
