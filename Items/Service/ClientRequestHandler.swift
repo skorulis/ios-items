@@ -47,6 +47,8 @@ final class ClientRequestHandler {
             let recipe = recipeService.nextAvailable()
             let result = itemGeneratorService.makeAndStore(recipe: recipe)
             return .makeItemResult(result)
+        case .getActions:
+            return .actions([.makeItem])
         }
     }
 }

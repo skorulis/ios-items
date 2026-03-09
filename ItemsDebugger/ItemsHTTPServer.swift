@@ -25,6 +25,14 @@ final class ItemsHTTPServer {
             
             return try Self.response(payload: payload)
         }
+        
+        app.get("actions") { _ async throws -> Response in
+            guard let payload = await clients.send(request: .getActions) else {
+                throw Abort(.serviceUnavailable, reason: "No client connected or no response received")
+            }
+            
+            return try Self.response(payload: payload)
+        }
     }
     
     static func response(payload: ItemsClientResponse.Payload) throws -> Response {
@@ -44,6 +52,22 @@ final class ItemsHTTPServer {
             })
         case let .makeItemResult(makeItemResult):
             return makeItemResult
+        case let .actions(actions):
+            return actions.map { action in
+                return Link(
+                    href: action.href,
+                    action: "POST",
+                )
+            }
+        }
+    }
+}
+
+extension GameAction {
+    var href: String {
+        switch self {
+        case .makeItem:
+            return "/make"
         }
     }
 }

@@ -124,6 +124,8 @@ enum WebSocketServer {
                     case let .artifact(artifact):
                         print("Created artifact: \(artifact.name)")
                     }
+                case let .actions(actions):
+                    print("Actions: \(actions)")
                 }
             }
 

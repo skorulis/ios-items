@@ -16,6 +16,7 @@ public struct ItemsClientRequest: Codable {
     // The actual request type sent over the wire
     public enum Payload: Codable {
         case getItems
+        case getActions
         case makeItem
     }
 }

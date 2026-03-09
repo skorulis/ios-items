@@ -18,5 +18,6 @@ public struct ItemsClientResponse: Codable {
     public enum Payload: Codable {
         case items([BaseItem: Int])
         case makeItemResult(MakeItemResult)
+        case actions([GameAction])
     }
 }
