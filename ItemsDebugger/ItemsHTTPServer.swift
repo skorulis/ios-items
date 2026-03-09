@@ -52,6 +52,9 @@ final class ItemsHTTPServer {
     }
     
     static func response(payload: ItemsClientResponse.Payload) throws -> Response {
+        if case let .error(message) = payload {
+            throw Abort(.badRequest, reason: message)
+        }
         let converted = convert(payload: payload)
         let data = try JSONEncoder().encode(converted)
         var headers = HTTPHeaders()
