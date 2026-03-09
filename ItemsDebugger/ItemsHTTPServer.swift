@@ -83,12 +83,14 @@ final class ItemsHTTPServer {
             let actionLinks = actions.map { action in
                 return Link(
                     href: action.href,
+                    description: action.description,
                     action: "POST",
                 )
             }
             let dataLinks = data.map { data in
                 return Link(
                     href: data.href,
+                    description: data.description,
                     action: "GET",
                 )
             }

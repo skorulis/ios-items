@@ -8,5 +8,6 @@ struct HATEOAS: Codable {
 
 struct Link: Codable {
     let href: String
+    let description: String
     let action: String
 }

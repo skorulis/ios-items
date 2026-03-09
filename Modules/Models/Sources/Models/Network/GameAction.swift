@@ -6,4 +6,13 @@ import Foundation
 public enum GameAction: String, Codable {
     case makeItem
     case purchaseUpgrade
+    
+    public var description: String {
+        switch self {
+        case .makeItem:
+            return "Pull a new random item from the portal"
+        case .purchaseUpgrade:
+            return "Purchase an upgrade to the portal"
+        }
+    }
 }
