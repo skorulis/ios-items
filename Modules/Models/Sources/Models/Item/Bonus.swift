@@ -7,6 +7,7 @@ public enum Bonus {
     case artifactSlots(Int)
     case qualityBoost(Int, ItemQuality)
     case booksForResearch(ItemQuality)
+    case artifactDiscovery(Int)
 
     public var text: String {
         switch self {
@@ -18,6 +19,8 @@ public enum Bonus {
             return "Boost the chance to find \(quality.name) items by \(amount)%"
         case let .booksForResearch(quality):
             return "Use books to research \(quality.name) items"
+        case let .artifactDiscovery(percent):
+            return "Boost artifact discovery chance by \(percent)%"
         }
     }
 
@@ -52,6 +55,11 @@ public enum Bonus {
         if case let .booksForResearch(quality) = self { return quality }
         return nil
     }
+    
+    public var artifactDiscoveryPercent: Int {
+        if case let .artifactDiscovery(int) = self { return int }
+        return 0
+    }
 }
 
 public extension Array where Element == Bonus {
@@ -61,6 +69,10 @@ public extension Array where Element == Bonus {
 
     var artifactSlots: Int {
         return self.map { $0.artifactSlotBoost }.reduce(0, +)
+    }
+    
+    var artifactDiscovery: Int {
+        return self.map { $0.artifactDiscoveryPercent }.reduce(0, +)
     }
 
     /// Sum of quality boost percent per quality (e.g. [.common: 1] means +1% chance for common).

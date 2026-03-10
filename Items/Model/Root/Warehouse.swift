@@ -122,4 +122,8 @@ struct Warehouse: Codable {
         else { return nil }
         return .init(type: type, quality: quality)
     }
+    
+    var artifactBonuses: [Bonus] {
+        equippedArtifacts.compactMap { equippedArtifact($0)?.bonus }
+    }
 }

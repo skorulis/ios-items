@@ -32,5 +32,10 @@ struct Chance: Codable, Hashable {
         let newValue = value + (Double(percent) / 100)
         return Chance(newValue)
     }
+    
+    func multiplying(percent: Int) -> Chance {
+        let newValue = value * (1 + Double(percent) / 100)
+        return Chance(newValue)
+    }
 }
 

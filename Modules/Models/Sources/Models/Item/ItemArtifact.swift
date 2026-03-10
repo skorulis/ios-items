@@ -13,6 +13,8 @@ public extension BaseItem {
             return .luckyCoin
         case .lens:
             return .perfectLens
+        case .potionFlask:
+            return .essenceFlask
         default:
             return nil
         }
@@ -27,6 +29,7 @@ public extension Artifact {
         case .luckyCoin: return .copperFlorin
         case .perfectLens: return .lens
         case .sacrificalSkull: return .humanSkull
+        case .essenceFlask: return .potionFlask
         }
     }
 }

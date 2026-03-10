@@ -61,7 +61,9 @@ final class CalculationsService: ObservableObject {
     func artifactChance(quality: ItemQuality, researchLevel: Int) -> Chance {
         let base = 0.02 * quality.artifactChanceMultiplier
         let levelMultiplier = pow(2.0, Double(researchLevel))
-        return Chance(min(1.0, base * levelMultiplier))
+        var chance = Chance(min(1.0, base * levelMultiplier))
+        chance = chance.multiplying(percent: mainStore.warehouse.artifactBonuses.artifactDiscovery)
+        return chance
     }
 
     private func updateMaxArtifactSlots(portalUpgrades: PortalUpgrades) {

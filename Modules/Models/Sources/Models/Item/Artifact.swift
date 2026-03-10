@@ -8,6 +8,7 @@ public enum Artifact: Identifiable, Hashable, CaseIterable, Codable {
     case luckyCoin
     case perfectLens
     case sacrificalSkull
+    case essenceFlask
 
     public var id: Self { self }
 
@@ -27,6 +28,8 @@ public enum Artifact: Identifiable, Hashable, CaseIterable, Codable {
             return "A flawless lens that boosts research."
         case .sacrificalSkull:
             return "A grim relic that strengthens the effects of sacrifices."
+        case .essenceFlask:
+            return "A flask attuned to latent essences that attracts other artifacts"
         }
     }
 }
@@ -83,12 +86,27 @@ public extension Artifact {
         case .exceptional: return 150
         }
     }
+
+    /// Extra percentage points added to artifact discovery/upgrade roll (same units as `Chance.adding(percent:)`).
+    func essenceFlaskArtifactDiscoveryBoost(quality: ItemQuality) -> Int {
+        switch quality {
+        case .junk: return 25
+        case .common: return 50
+        case .good: return 75
+        case .rare: return 100
+        case .exceptional: return 150
+        }
+    }
 }
 
 // MARK: - Bonus message
 
 public extension Artifact {
     func bonusMessage(quality: ItemQuality) -> String {
+        if let bonus = ArtifactInstance(type: self, quality: quality).bonus {
+            return bonus.text
+        }
+        
         switch self {
         case .frictionlessGear:
             return "Reduces item creation time by \(frictionlessGearTimeReduction(quality: quality)) milliseconds."
@@ -96,10 +114,23 @@ public extension Artifact {
             return "Reduces automatic item creation time by \(eternalHourglassTimeReduction(quality: quality)) milliseconds"
         case .luckyCoin:
             return "Increase the chance of double items by \(luckyCoinMultipleItemChance(quality: quality))%"
-        case .perfectLens:
-            return Bonus.researchSpeed(perfectLensResearchBoost(quality: quality)).text
         case .sacrificalSkull:
             return "Increase the effect of sacrifices by \(sacrificalSkullSacrificeEffectMultiplier(quality: quality))%"
+        default:
+            fatalError("Should be handled by a bonus")
+        }
+    }
+}
+
+public extension ArtifactInstance {
+    var bonus: Bonus? {
+        switch self.type {
+        case .perfectLens:
+            return .researchSpeed(type.perfectLensResearchBoost(quality: quality))
+        case .essenceFlask:
+            return .artifactDiscovery(type.essenceFlaskArtifactDiscoveryBoost(quality: quality))
+        default:
+            return nil
         }
     }
 }
