@@ -61,10 +61,6 @@ extension SegmentedResearchBar: View {
                 : Image(systemName: "questionmark.diamond")
         case .lore:
             return Image(systemName: "book.pages")
-        case .artifact:
-            return unlocked
-                ? Image(systemName: "star.fill")
-                : Image(systemName: "star")
         case .infinity:
             return Image(systemName: "infinity.circle.fill")
         }
@@ -87,4 +83,3 @@ extension SegmentedResearchBar: View {
     .padding(16)
     
 }
-

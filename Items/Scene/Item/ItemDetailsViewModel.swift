@@ -53,7 +53,7 @@ extension ItemDetailsViewModel {
 
     var nextLevelArtifactChanceString: String? {
         guard let nextQuality = nextArtifactQuality else { return nil }
-        guard let researchLevel = model.details.researchLevel else { return nil }
+        let researchLevel = model.details.researchLevel ?? 0
         let chance = calculations.artifactChance(quality: nextQuality, researchLevel: researchLevel)
         let value = chance.percentageString(decimalPlaces: 1)
         if nextQuality == .junk {

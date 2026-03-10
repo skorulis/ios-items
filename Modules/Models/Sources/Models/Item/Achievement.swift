@@ -148,8 +148,6 @@ public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable, 
             return .upgradePurchased(.researchLab)
         case .essence1, .allEssences:
             return .upgradePurchased(.researchLab)
-        case .artifact1, .artifacts5:
-            return .upgradePurchased(.researchLab)
         default:
             return nil
         }

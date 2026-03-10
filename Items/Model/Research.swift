@@ -7,16 +7,13 @@ import SwiftUI
 // Research that has been done about an item
 struct Research: Codable {
     let essences: [Essence]
-    let artifact: Bool
     let lore: [String]
     
     public init(
         essences: Array<Essence> = [],
-        artifact: Bool,
         lore: [String] = []
     ) {
         self.essences = essences
-        self.artifact = artifact
         self.lore = lore
     }
     
@@ -30,22 +27,12 @@ struct Research: Codable {
         for e in essences {
             result.append(.essence(e))
         }
-        if artifact {
-            result.append(.artifact)
-        }
         for l in lore {
             result.append(.lore(l))
         }
         
         result.append(.infinity)
         return result
-    }
-    
-    func isArtifactUnlocked(level: Int) -> Bool {
-        guard artifact else { return false }
-        
-        // The level after unlocking essences is the artifact
-        return level > essences.count
     }
     
     func unlockedEssences(level: Int) -> [Essence] {
@@ -55,7 +42,6 @@ struct Research: Codable {
 
 enum ResearchSection: Identifiable {
     case essence(Essence)
-    case artifact
     case lore(String)
     case infinity
     
@@ -65,8 +51,6 @@ enum ResearchSection: Identifiable {
             return String(describing: essence.id)
         case let .lore(string):
             return string
-        case .artifact:
-            return "artifact"
         case .infinity:
             return "infinity"
         }

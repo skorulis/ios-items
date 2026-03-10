@@ -101,17 +101,7 @@ extension ItemDetailsView {
         var details: ItemDetails
         
         var unlockedArtifact: Artifact? {
-            guard let artifact = item.associatedArtifact else {
-                return nil
-            }
-            guard let level = details.researchLevel else {
-                return nil
-            }
-            if item.availableResearch.isArtifactUnlocked(level: level) {
-                return artifact
-            } else {
-                return nil
-            }
+            item.associatedArtifact
         }
     }
 }

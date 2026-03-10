@@ -79,7 +79,7 @@ final class ItemGeneratorService {
         let itemLevel = mainStore.lab.currentLevel(item: baseItem)
         
         guard let type = baseItem.associatedArtifact,
-              baseItem.availableResearch.isArtifactUnlocked(level: itemLevel),
+              mainStore.warehouse.hasDiscovered(baseItem),
               let targetQuality = mainStore.warehouse.nextArtifactQuality(artifact: type)
         else {
             return nil
