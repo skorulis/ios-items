@@ -13,6 +13,7 @@ final class ClientRequestHandler {
     private let recipeService: RecipeService
     private let warehouseService: WarehouseService
     private let upgradeService: UpgradeService
+    private let researchService: ResearchService
 
     @Resolvable<BaseResolver>
     init(
@@ -21,7 +22,8 @@ final class ClientRequestHandler {
         itemGeneratorService: ItemGeneratorService,
         recipeService: RecipeService,
         warehouseService: WarehouseService,
-        upgradeService: UpgradeService
+        upgradeService: UpgradeService,
+        researchService: ResearchService
     ) {
         self.mainStore = mainStore
         self.achivementService = achivementService
@@ -29,6 +31,7 @@ final class ClientRequestHandler {
         self.recipeService = recipeService
         self.warehouseService = warehouseService
         self.upgradeService = upgradeService
+        self.researchService = researchService
     }
 
     func handle(request: ItemsClientRequest) -> ItemsClientResponse {
@@ -103,11 +106,21 @@ final class ClientRequestHandler {
             }
             upgradeService.purchase(upgrade)
             return .ok
+        case let .buyResearch(item):
+            do {
+                try researchService.rushResearch(to: item, useBooks: false)
+                return .ok
+            } catch {
+                return .error(error.localizedDescription)
+            }
         }
     }
     
     private func getAvailableActions() -> [GameAction] {
         var result: [GameAction] = [.makeItem]
+        if achivementService.isComplete(requirement: .upgradePurchased(.researchLab)) {
+            result.append(.buyResearch)
+        }
         if mainStore.achievements.unlocked.contains(.items10) {
             result.append(.purchaseUpgrade)
         }

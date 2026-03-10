@@ -18,6 +18,7 @@ public struct ItemsClientRequest: Codable {
         // Actions
         case makeItem
         case purchaseUpgrade(PortalUpgrade)
+        case buyResearch(BaseItem)
         
         // Data
         case getItems
@@ -28,7 +29,7 @@ public struct ItemsClientRequest: Codable {
         
         public var isAction: Bool {
             switch self {
-            case .makeItem, .purchaseUpgrade:
+            case .makeItem, .purchaseUpgrade, .buyResearch:
                 return true
             default:
                 return false

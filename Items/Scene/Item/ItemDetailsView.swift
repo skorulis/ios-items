@@ -78,7 +78,7 @@ extension ItemDetailsView: View {
                 if level > index {
                     EssenceView(essence: item.essences[index])
                 } else {
-                    Image(systemName: "questionmark.circle.dashed")
+                    Image(systemName: "questionmark.diamond")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 16, height: 16)

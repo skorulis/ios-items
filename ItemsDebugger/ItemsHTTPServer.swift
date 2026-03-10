@@ -56,6 +56,18 @@ final class ItemsHTTPServer {
             let payload = try await self.getResponse(request: .purchaseUpgrade(upgrade))
             return try Self.makeResponse(payload: payload)
         }
+
+        app.post("research", "buy") { request async throws -> Response in
+            guard let id = try? request.query.get(String.self, at: "id") else {
+                throw Abort(.badRequest, reason: "Missing query parameter: id")
+            }
+            print("Buy research: \(id)")
+            guard let item = BaseItem(rawValue: id) else {
+                throw Abort(.badRequest, reason: "Unknown item id: \(id)")
+            }
+            let payload = try await self.getResponse(request: .buyResearch(item))
+            return try Self.makeResponse(payload: payload)
+        }
     }
     
     private func getResponse(request: ItemsClientRequest.Payload) async throws -> (ItemsClientResponse.Payload, CacheDiff) {
@@ -144,6 +156,8 @@ extension GameAction {
             return "/make"
         case .purchaseUpgrade:
             return "/upgrades/purchase{?id}"
+        case .buyResearch:
+            return "/research/buy{?id}"
         }
     }
 }

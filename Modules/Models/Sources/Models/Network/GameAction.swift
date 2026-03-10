@@ -6,6 +6,7 @@ import Foundation
 public enum GameAction: String, Codable, Sendable {
     case makeItem
     case purchaseUpgrade
+    case buyResearch
     
     public var description: String {
         switch self {
@@ -13,6 +14,8 @@ public enum GameAction: String, Codable, Sendable {
             return "Pull a new random item from the portal"
         case .purchaseUpgrade:
             return "Purchase an upgrade to the portal"
+        case .buyResearch:
+            return "Purchase a level of research by spending items"
         }
     }
 }

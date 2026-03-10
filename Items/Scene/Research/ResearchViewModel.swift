@@ -63,7 +63,7 @@ extension ResearchViewModel {
         guard let item = lab.currentResearch?.item else { return }
         let now = Date()
         self.now = now
-        researchService.rushResearch(to: item, useBooks: false, now: now)
+        try? researchService.rushResearch(to: item, useBooks: false, now: now)
     }
     
     func viewItemDetails() {
@@ -120,7 +120,7 @@ extension ResearchViewModel {
         guard let item = lab.currentResearch?.item else { return }
         let now = Date()
         self.now = now
-        researchService.rushResearch(to: item, useBooks: true, now: now)
+        try? researchService.rushResearch(to: item, useBooks: true, now: now)
     }
 
     var researchBoostPercent: Int {
