@@ -23,6 +23,10 @@ public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable {
     case essence1
     case allEssences
 
+    case research1
+    case research10
+    case research100
+
     public var id: Self { self }
 
     public var name: String {
@@ -40,6 +44,9 @@ public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable {
         case .upgrade5: return "Upgrade enthusiast"
         case .essence1: return "First essence"
         case .allEssences: return "Essence master"
+        case .research1: return "First research"
+        case .research10: return "Apprentice researcher"
+        case .research100: return "Master researcher"
         }
     }
 
@@ -71,6 +78,12 @@ public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable {
             return Image(systemName: "leaf")
         case .allEssences:
             return Image(systemName: "leaf.fill")
+        case .research1:
+            return Image(systemName: "lightbulb")
+        case .research10:
+            return Image(systemName: "lightbulb.min")
+        case .research100:
+            return Image(systemName: "lightbulb.max.fill")
         }
     }
 
@@ -102,6 +115,12 @@ public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable {
             return .essencesUnlocked(1)
         case .allEssences:
             return .essencesUnlocked(Int64(Essence.allCases.count))
+        case .research1:
+            return .researchRuns(1)
+        case .research10:
+            return .researchRuns(10)
+        case .research100:
+            return .researchRuns(100)
         }
     }
 
@@ -110,6 +129,12 @@ public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable {
         switch self {
         case .sacrificed1, .sacrificed1000:
             return .upgradePurchased(.sacrifices)
+        case .research1, .research10, .research100:
+            return .upgradePurchased(.researchLab)
+        case .essence1, .allEssences:
+            return .upgradePurchased(.researchLab)
+        case .artifact1, .artifacts5:
+            return .upgradePurchased(.researchLab)
         default:
             return nil
         }
@@ -117,9 +142,9 @@ public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable {
 
     public var quality: ItemQuality {
         switch self {
-        case .items1, .items10, .artifact1, .essence1, .sacrificed1, .upgrade1:
+        case .items1, .items10, .artifact1, .essence1, .sacrificed1, .upgrade1, .research1, .research10:
             return .junk
-        case .items100, .artifacts5, .common1, .allEssences, .sacrificed1000, .upgrade5:
+        case .items100, .artifacts5, .common1, .allEssences, .sacrificed1000, .upgrade5, .research100:
             return .common
         case .items1_000_000:
             return .exceptional
