@@ -10,6 +10,15 @@ struct Laboratory: Codable {
     func currentLevel(item: BaseItem) -> Int {
         items[item]?.level ?? 0
     }
+
+    /// Highest research level reached across all items.
+    var maxResearchLevel: Int {
+        items.values.map(\.level).max() ?? 0
+    }
+    
+    var totalLevels: Int {
+        items.values.map(\.level).reduce(0, +)
+    }
     
     mutating func set(level: Int, item: BaseItem) {
         items[item] = ItemState(level: level, accumulatedSeconds: 0)

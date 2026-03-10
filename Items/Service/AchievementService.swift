@@ -49,8 +49,10 @@ final class AchievementService {
             return mainStore.statistics.itemsCreated
         case .itemsSacrificed:
             return mainStore.statistics.itemsSacrificed
-        case .researchRuns:
-            return mainStore.statistics.researchRuns
+        case .totalResearch:
+            return Int64(mainStore.lab.totalLevels)
+        case .maxResearchLevel:
+            return Int64(mainStore.lab.maxResearchLevel)
         case .commonItemsCreated:
             return Int64(mainStore.warehouse.totalItemsCollected { $0.quality == .common })
         case .essencesUnlocked:
@@ -74,7 +76,8 @@ final class AchievementService {
         switch requirement {
         case let .itemsCreated(count),
              let .itemsSacrificed(count),
-             let .researchRuns(count),
+             let .totalResearch(count),
+             let .maxResearchLevel(count),
              let .commonItemsCreated(count),
              let .essencesUnlocked(count),
              let .artifactsUnlocked(count):

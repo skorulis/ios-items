@@ -5,7 +5,8 @@ import Foundation
 public enum UnlockRequirement: Codable {
     case itemsCreated(Int64)
     case itemsSacrificed(Int64)
-    case researchRuns(Int64)
+    case totalResearch(Int64)
+    case maxResearchLevel(Int64)
     case commonItemsCreated(Int64)
 
     // How many essences have been unlocked
@@ -37,8 +38,10 @@ public extension UnlockRequirement {
             return "Create \(count) items"
         case let .itemsSacrificed(count):
             return "Sacrifice \(count) item\(count == 1 ? "" : "s")"
-        case let .researchRuns(count):
-            return "Research \(count) times"
+        case let .totalResearch(count):
+            return "Complete \(count) levels of research"
+        case let .maxResearchLevel(level):
+            return "Reach research level \(level) on any item"
         case let .commonItemsCreated(count):
             return "Create \(count) common items"
         case let .essencesUnlocked(count):

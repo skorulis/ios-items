@@ -26,6 +26,8 @@ extension PortalUpgrade {
         switch self {
         case .researchLabLevel2:
             return [.upgradePurchased(.researchLab)]
+        case .artifactSlot:
+            return [.upgradePurchased(.researchLab)]
         case .artifactSlotLevel2:
             return [
                 .upgradePurchased(.artifactSlot),

@@ -63,6 +63,7 @@ public enum BaseItem: String, Hashable, Equatable, CaseIterable, Identifiable, C
 
     public var essences: [Essence] {
         switch self {
+            // Junk
         case .apple:
             return [.life]
         case .rock:
@@ -74,15 +75,14 @@ public enum BaseItem: String, Hashable, Equatable, CaseIterable, Identifiable, C
         case .copperFlorin:
             return [.wealth]
         case .hourglass:
-            return []
-        case .silverFlorin:
-            return [.wealth]
-        case .goldFlorin:
-            return [.wealth]
+            return [.knowledge]
         case .lens:
             return [.light, .technology]
         case .humanSkull:
-            return [.dark]
+            return [.dark, .life]
+            // Common
+        case .silverFlorin:
+            return [.wealth]
         case .quartzCrystal:
             return [.earth, .light]
         case .steelArrowhead:
@@ -93,6 +93,9 @@ public enum BaseItem: String, Hashable, Equatable, CaseIterable, Identifiable, C
             return [.earth, .wealth]
         case .merchantSigil:
             return [.wealth, .magic]
+            
+        case .goldFlorin:
+            return [.wealth]
         case .giantThorn:
             return [.life, .earth]
         case .portalShard:
