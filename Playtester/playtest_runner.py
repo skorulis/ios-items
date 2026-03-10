@@ -66,7 +66,15 @@ def run_episode(
 
     messages: list[dict[str, Any]] = [
         {"role": "system", "content": SYSTEM_PROMPT},
-        {"role": "user", "content": "Current game state:\n\n" + env.get_state_summary() + "\n\nYour goal: maximise the number of achievements reached. Check get_achievements, then take actions to unlock incomplete ones. Report when done."},
+        {
+            "role": "user",
+            "content": (
+                "Current game state:\n\n"
+                + env.get_state_summary()
+                + "\n\nYour goal: maximise the number of achievements reached. "
+                "Use get_* tools (especially get_achievements) whenever you need to inspect state."
+            ),
+        },
     ]
     step = 0
     while step < max_steps:
@@ -114,10 +122,15 @@ def run_episode(
                 "content": result,
             })
 
-        messages.append({
-            "role": "user",
-            "content": "Updated state:\n\n" + env.get_state_summary() + "\n\nContinue working toward more achievements, or say you're done and summarise how many you reached.",
-        })
+        messages.append(
+            {
+                "role": "user",
+                "content": (
+                    "Continue. Use get_* tools to inspect state when needed, and say you're done "
+                    "when you have finished maximising achievements."
+                ),
+            }
+        )
 
     if stop_event and stop_event.is_set():
         print("Stop requested; generating report from current transcript.", file=sys.stderr)
