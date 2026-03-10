@@ -92,7 +92,6 @@ extension CreationView: View {
             VStack {
                 topBar
                 Spacer()
-                autoToggleIfUnlocked
                 makeButtonRow
             }
             .padding()
@@ -205,48 +204,47 @@ extension CreationView: View {
         }
     }
     
-    @ViewBuilder
-    private var autoToggleIfUnlocked: some View {
-        if viewModel.model.automationUnlocked {
-            VStack(alignment: .leading, spacing: 6) {
-                Toggle(isOn: $viewModel.automateCreation) {
-                    HStack {
-                        Text("Auto")
-                        if viewModel.automateCreation, let timer = viewModel.autoTimerProgress {
-                            TimerProgressView(model: timer)
-                                .frame(width: 32, height: 32)
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
     private var makeButtonRow: some View {
         HStack(spacing: 12) {
-            Button(action: {
-                Task {
-                    await viewModel.make()
-                }
-            }) {
-                ZStack {
-                    if viewModel.model.isCreating {
-                        ProgressView()
-                    }
-                    Text(viewModel.model.firstItem ? "Unlock the portal" : "Create an item")
-                        .opacity(viewModel.model.isCreating ? 0 : 1)
-                }
-            }
-            .buttonStyle(CapsuleButtonStyle())
-            .disabled(viewModel.model.isCreating)
+            autoCreationButton
+            createButton
             
             Button(action: viewModel.showCurrentRecipeDetail) {
                 Image(systemName: "info.circle")
                     .font(.title2)
             }
             .buttonStyle(.plain)
-            .disabled(viewModel.model.isCreating)
         }
+    }
+
+    private var autoCreationButton: some View {
+        Button {
+            viewModel.automateCreation.toggle()
+        } label: {
+            Image(systemName: "gearshape.arrow.trianglehead.2.clockwise.rotate.90")
+                .font(.title2)
+                .foregroundStyle(viewModel.automateCreation ? Color.green : Color.primary)
+        }
+        .buttonStyle(.plain)
+        .opacity(viewModel.model.automationUnlocked ? 1 : 0)
+    }
+    
+    private var createButton: some View {
+        CreateButtonWithTimerBorder(
+            timer: viewModel.model.automationUnlocked && viewModel.automateCreation
+                ? viewModel.autoTimerProgress
+                : nil,
+            action: viewModel.make
+        ) {
+            ZStack {
+                if viewModel.model.isCreating {
+                    ProgressView()
+                }
+                Text(viewModel.model.firstItem ? "Unlock the portal" : "Create an item")
+                    .opacity(viewModel.model.isCreating ? 0 : 1)
+            }
+        }
+        .disabled(viewModel.model.isCreating)
     }
 }
 
