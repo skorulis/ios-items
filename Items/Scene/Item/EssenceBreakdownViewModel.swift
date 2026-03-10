@@ -7,7 +7,7 @@ import Models
 import SwiftUI
 
 @Observable final class EssenceBreakdownViewModel: CoordinatorViewModel {
-    var coordinator: Coordinator?
+    weak var coordinator: ASKCoordinator.Coordinator?
 
     /// nil = "All", non-nil = filter by that quality.
     var selectedQualityFilter: ItemQuality?

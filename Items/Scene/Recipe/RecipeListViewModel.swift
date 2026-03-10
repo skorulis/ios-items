@@ -10,7 +10,7 @@ import SwiftUI
 
 @Observable final class RecipeListViewModel: CoordinatorViewModel {
     
-    var coordinator: ASKCoordinator.Coordinator?
+    weak var coordinator: ASKCoordinator.Coordinator?
     
     private(set) var recipes: [Recipe]
     var warehouse: Warehouse

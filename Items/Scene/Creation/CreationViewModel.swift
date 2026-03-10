@@ -14,7 +14,7 @@ import SwiftUI
     private var makeTimer: Timer?
     
     var model = CreationView.Model()
-    var coordinator: ASKCoordinator.Coordinator?
+    weak var coordinator: ASKCoordinator.Coordinator?
     
     @ObservationIgnored var upgradeButtonFrame: CGRect = .zero
     @ObservationIgnored var researchButtonFrame: CGRect = .zero

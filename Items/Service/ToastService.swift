@@ -8,7 +8,7 @@ import KnitMacros
 final class ToastService {
     
     // The place where toasts will be shown
-    var coordinator: Coordinator?
+    weak var coordinator: ASKCoordinator.Coordinator?
 
     @Resolvable<BaseResolver>
     init() {}

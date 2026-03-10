@@ -7,7 +7,7 @@ import KnitMacros
 import SwiftUI
 
 @Observable final class EncyclopediaViewModel: CoordinatorViewModel {
-    var coordinator: ASKCoordinator.Coordinator?
+    weak var coordinator: ASKCoordinator.Coordinator?
     
     let entry: EncyclopediaEntry
     private let achievementService: AchievementService

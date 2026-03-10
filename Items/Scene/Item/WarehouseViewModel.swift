@@ -9,7 +9,7 @@ import SwiftUI
 
 @Observable final class WarehouseViewModel: CoordinatorViewModel {
 
-    var coordinator: Coordinator?
+    weak var coordinator: ASKCoordinator.Coordinator?
 
     private let mainStore: MainStore
     private let warehouseService: WarehouseService

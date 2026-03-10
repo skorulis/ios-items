@@ -9,7 +9,7 @@ import Models
 import SwiftUI
 
 @Observable final class PortalUpgradesViewModel: CoordinatorViewModel {
-    var coordinator: ASKCoordinator.Coordinator?
+    weak var coordinator: ASKCoordinator.Coordinator?
 
     enum Segment: String, CaseIterable {
         case purchase = "Purchase"

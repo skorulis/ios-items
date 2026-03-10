@@ -7,7 +7,7 @@ import Models
 import SwiftUI
 
 @Observable final class AchievementsViewModel: CoordinatorViewModel {
-    var coordinator: ASKCoordinator.Coordinator?
+    weak var coordinator: ASKCoordinator.Coordinator?
     
     private let mainStore: MainStore
     private let achievementService: AchievementService

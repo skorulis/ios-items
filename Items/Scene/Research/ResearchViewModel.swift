@@ -9,7 +9,7 @@ import Models
 import SwiftUI
 
 @Observable final class ResearchViewModel: CoordinatorViewModel {
-    var coordinator: ASKCoordinator.Coordinator?
+    weak var coordinator: ASKCoordinator.Coordinator?
     
     private(set) var warehouse: Warehouse
     private(set) var lab: Laboratory
