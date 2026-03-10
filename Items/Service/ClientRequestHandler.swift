@@ -66,13 +66,16 @@ final class ClientRequestHandler {
             return .artifacts(artifactsWithQuality)
         case .getUpgrades:
             let purchased = Array(mainStore.portalUpgrades.purchased)
-            let available = PortalUpgrade.allCases.filter { upgrade in
+            let unlocked = PortalUpgrade.allCases.filter { upgrade in
                 !mainStore.portalUpgrades.purchased.contains(upgrade)
+                    && upgradeService.isUnlocked(upgrade)
             }
+            let affordable = unlocked.filter { upgradeService.canPurchase($0) }
             return .upgrades(
                 UpgradesPayload(
                     purchased: purchased,
-                    available: available
+                    unlocked: unlocked.filter { !upgradeService.canPurchase($0) },
+                    affordable: affordable
                 )
             )
         case .getAchievements:

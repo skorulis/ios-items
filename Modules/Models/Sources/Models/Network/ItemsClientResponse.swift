@@ -42,10 +42,12 @@ public struct IncompleteAchievement: Codable {
 
 public struct UpgradesPayload: Codable {
     public let purchased: [PortalUpgrade]
-    public let available: [PortalUpgrade]
-    
-    public init(purchased: [PortalUpgrade], available: [PortalUpgrade]) {
+    public let unlocked: [PortalUpgrade]
+    public let affordable: [PortalUpgrade]
+
+    public init(purchased: [PortalUpgrade], unlocked: [PortalUpgrade], affordable: [PortalUpgrade]) {
         self.purchased = purchased
-        self.available = available
+        self.unlocked = unlocked
+        self.affordable = affordable
     }
 }

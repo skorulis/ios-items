@@ -102,7 +102,8 @@ final class ItemsHTTPServer {
         case let .upgrades(upgrades):
             return [
                 "purchased": upgrades.purchased.map { HTTPPortalUpgrade(upgrade: $0) },
-                "available": upgrades.available.map { HTTPPortalUpgrade(upgrade: $0) },
+                "unlocked": upgrades.unlocked.map { HTTPPortalUpgrade(upgrade: $0) },
+                "affordable": upgrades.affordable.map { HTTPPortalUpgrade(upgrade: $0) },
             ]
         case let .achievements(completed, incomplete):
             return [
