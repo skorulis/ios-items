@@ -3,7 +3,7 @@
 import Foundation
 import SwiftUI
 
-public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable {
+public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable, Sendable {
     case items1
     case items10
     case items100

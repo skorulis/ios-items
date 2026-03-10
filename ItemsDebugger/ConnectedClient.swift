@@ -19,10 +19,11 @@ final class ConnectedClient: @unchecked Sendable {
         }
         lock.unlock()
 
-        // When a client connects, automatically request the available actions/data.
+        // When a client connects, request actions and achievements so the cache has a baseline for diffing.
         if websocket != nil {
             Task {
                 _ = await self.send(request: .getActions)
+                _ = await self.send(request: .getAchievements)
             }
         }
     }
@@ -52,24 +53,42 @@ final class ConnectedClient: @unchecked Sendable {
             return nil
         }
         guard payload.isAction else {
-            return (result, CacheDiff(links: nil))
+            return (result, CacheDiff(links: nil, achievementsUnlocked: nil, achievementsNewlyVisible: nil))
         }
         let diff = await checkCacheDiff()
         return (result, diff)
     }
     
     private func checkCacheDiff() async -> CacheDiff {
-        let oldActions = cache.links
+        let oldLinks = cache.links
+        let oldUnlocked = cache.achievementsUnlocked
+        let oldVisibleIncomplete = cache.achievementsVisibleIncomplete
+
         _ = await _send(request: .getActions)
-        let newActions = cache.links
-        let new = newActions.filter { !oldActions.contains($0) }
-        
-        if new.count > 0 {
-            print("Found new actions: \(new)")
+        _ = await _send(request: .getAchievements)
+
+        let newLinks = cache.links
+        let newUnlocked = cache.achievementsUnlocked
+        let newVisibleIncomplete = cache.achievementsVisibleIncomplete
+
+        let addedLinks = newLinks.filter { !oldLinks.contains($0) }
+        let newlyUnlocked = newUnlocked.subtracting(oldUnlocked)
+        let newlyVisible = newVisibleIncomplete.subtracting(oldVisibleIncomplete)
+
+        if addedLinks.count > 0 {
+            print("Found new actions: \(addedLinks)")
         }
-        
+        if !newlyUnlocked.isEmpty {
+            print("Achievements unlocked: \(newlyUnlocked.map(\.rawValue))")
+        }
+        if !newlyVisible.isEmpty {
+            print("Achievements newly visible: \(newlyVisible.map(\.rawValue))")
+        }
+
         return CacheDiff(
-            links: new.count > 0 ? new : nil
+            links: addedLinks.isEmpty ? nil : addedLinks,
+            achievementsUnlocked: Array(newlyUnlocked).map { HTTPAchievement(achievement: $0) },
+            achievementsNewlyVisible: Array(newlyVisible).map { HTTPAchievement(achievement: $0) },
         )
     }
 
@@ -98,8 +117,14 @@ final class ConnectedClient: @unchecked Sendable {
 
     func handle(response: ItemsClientResponse) {
         lock.lock()
-        if case let .actions(actions, data) = response.payload {
+        switch response.payload {
+        case let .actions(actions, data):
             _cache.links = actions.map { Link(action: $0) } + data.map { Link(data: $0) }
+        case let .achievements(completed, incomplete):
+            _cache.achievementsUnlocked = Set(completed)
+            _cache.achievementsVisibleIncomplete = Set(incomplete.map(\.achievement))
+        default:
+            break
         }
         let continuation = pendingResponses.removeValue(forKey: response.id)
         lock.unlock()
@@ -121,8 +146,12 @@ final class ConnectedClient: @unchecked Sendable {
 
 struct ConnectedClientCache: Sendable {
     var links: [Link] = []
+    var achievementsUnlocked: Set<Achievement> = []
+    var achievementsVisibleIncomplete: Set<Achievement> = []
 }
 
-struct CacheDiff {
+struct CacheDiff: Codable {
     var links: [Link]?
+    var achievementsUnlocked: [HTTPAchievement]?
+    var achievementsNewlyVisible: [HTTPAchievement]?
 }

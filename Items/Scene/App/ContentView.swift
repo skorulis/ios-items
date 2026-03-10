@@ -27,10 +27,6 @@ extension ContentView {
         var showingAchievements: Bool = false
         var showingEncyclopedia: Bool = false
         var notifications: Notifications = Notifications()
-
-        var tabBarHidden: Bool {
-            !showingWarehouse && !showingAchievements && !showingEncyclopedia
-        }
     }
 }
 
@@ -41,8 +37,6 @@ extension ContentView: View {
     var body: some View {
         TabView(selection: $selectedTab) {
             creationTab
-                .toolbar(model.tabBarHidden ? .hidden : .visible, for: .tabBar)
-                .animation(.default, value: model.tabBarHidden)
             
             if viewModel.model.showingWarehouse {
                 warehouseTab
@@ -73,7 +67,7 @@ extension ContentView: View {
         CoordinatorView(coordinator: creationCoordinator)
             .withRenderers(resolver: resolver!)
             .tabItem {
-                Label("Creation", systemImage: "hammer")
+                Label("Portal", systemImage: "camera.aperture")
             }
             .tag(0)
     }

@@ -65,18 +65,17 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
     public var cost: [UpgradeCostItem] {
         switch self {
         case .portalAutomation: return [
-            .init(item: .gear, quantity: 2),
+            .init(item: .gear, quantity: 1),
             .init(item: .copperFlorin, quantity: 1),
         ]
         case .researchLab: return [
             .init(item: .potionFlask, quantity: 1),
-            .init(item: .lens, quantity: 1),
-            .init(item: .copperFlorin, quantity: 2),
+            .init(item: .copperFlorin, quantity: 1),
         ]
         case .researchLabLevel2: return [
             .init(item: .potionFlask, quantity: 2),
             .init(item: .lens, quantity: 2),
-            .init(item: .silverFlorin, quantity: 1),
+            .init(item: .silverFlorin, quantity: 2),
         ]
         case .sacrifices: return [
             .init(item: .humanSkull, quantity: 1),
@@ -141,6 +140,38 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
             return .booksForResearch(.exceptional)
         default:
             return nil
+        }
+    }
+}
+
+extension PortalUpgrade {
+
+    /// Requirements that must all be met before this upgrade becomes available.
+    public var requirements: [UnlockRequirement] {
+        switch self {
+        case .researchLabLevel2:
+            return [.upgradePurchased(.researchLab)]
+        case .artifactSlot:
+            return [.upgradePurchased(.researchLab)]
+        case .artifactSlotLevel2:
+            return [
+                .upgradePurchased(.artifactSlot),
+                .achievementUnlocked(.artifacts5),
+            ]
+        case .artifactSlotLevel3:
+            return [.upgradePurchased(.artifactSlotLevel2)]
+        case .knowledgeSiphon:
+            return [.upgradePurchased(.researchLab)]
+        case .knowledgeSiphonLevel2:
+            return [.upgradePurchased(.knowledgeSiphon)]
+        case .knowledgeSiphonLevel3:
+            return [.upgradePurchased(.knowledgeSiphonLevel2)]
+        case .knowledgeSiphonLevel4:
+            return [.upgradePurchased(.knowledgeSiphonLevel3)]
+        case .knowledgeSiphonLevel5:
+            return [.upgradePurchased(.knowledgeSiphonLevel4)]
+        default:
+            return []
         }
     }
 }

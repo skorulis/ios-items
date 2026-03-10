@@ -8,34 +8,37 @@ struct HTTPPortalUpgrade: Codable {
     let id: String
     let name: String
     let bonus: String
-    let itemCost: [String: Int]
+    let cost: [String: Int]
     
     init(upgrade: PortalUpgrade) {
         self.id = upgrade.rawValue
         self.name = upgrade.name
         self.bonus = upgrade.description
-        self.itemCost = Dictionary(grouping: upgrade.cost, by: { $0.item.rawValue})
-            .mapValues { $0[0].quantity }
+        self.cost = Dictionary(
+            grouping: upgrade.cost,
+            by: { $0.item.rawValue}
+        )
+        .mapValues { $0[0].quantity }
     }
 }
 
 struct HTTPMakeItem: Codable {
     let item: MakeItemResult
-    let _newLinks: [Link]?
-    
+    let dataChanges: CacheDiff
+
     init(item: MakeItemResult, diff: CacheDiff) {
         self.item = item
-        _newLinks = diff.links
+        self.dataChanges = diff
     }
 }
 
 struct OkResponse: Codable {
     let status: String
-    let _newLinks: [Link]?
-    
+    let dataChanges: CacheDiff
+
     init(status: String = "ok", diff: CacheDiff) {
         self.status = status
-        _newLinks = diff.links
+        self.dataChanges = diff
     }
 }
 
