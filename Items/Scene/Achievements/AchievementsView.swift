@@ -33,7 +33,10 @@ extension AchievementsView: View {
         let columns = [
             GridItem(.adaptive(minimum: 80)),
         ]
-        let grouped = Dictionary(grouping: Achievement.allCases, by: { $0.quality })
+        let visibleAchievements = Achievement.allCases.filter { achievement in
+            viewModel.isVisible(achievement: achievement)
+        }
+        let grouped = Dictionary(grouping: visibleAchievements, by: { $0.quality })
 
         return LazyVStack(alignment: .leading, spacing: 16) {
             ForEach(ItemQuality.allCases, id: \.self) { quality in

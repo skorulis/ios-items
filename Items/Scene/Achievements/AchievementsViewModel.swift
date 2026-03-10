@@ -10,12 +10,17 @@ import SwiftUI
     var coordinator: ASKCoordinator.Coordinator?
     
     private let mainStore: MainStore
+    private let achievementService: AchievementService
     
     var model = AchievementsView.Model()
     
     @Resolvable<BaseResolver>
-    init(mainStore: MainStore) {
+    init(
+        mainStore: MainStore,
+        achievementService: AchievementService
+    ) {
         self.mainStore = mainStore
+        self.achievementService = achievementService
     }
 }
 
@@ -25,6 +30,11 @@ extension AchievementsViewModel {
 
     func isComplete(achievement: Achievement) -> Bool {
         mainStore.achievements.unlocked.contains(achievement)
+    }
+    
+    // TODO: Make this data reactive
+    func isVisible(achievement: Achievement) -> Bool {
+        achievementService.isVisible(achievement: achievement)
     }
     
     func showDetails(achievement: Achievement) {
