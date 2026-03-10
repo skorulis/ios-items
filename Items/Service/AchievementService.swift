@@ -55,6 +55,8 @@ final class AchievementService {
             return Int64(mainStore.lab.maxResearchLevel)
         case .commonItemsCreated:
             return Int64(mainStore.warehouse.totalItemsCollected { $0.quality == .common })
+        case let .itemDiscovered(item):
+            return mainStore.warehouse.hasDiscovered(item) ? 1 : 0
         case .essencesUnlocked:
             return Int64(mainStore.concepts.essences.count)
         case let .essenceUnlocked(essence):
@@ -85,7 +87,11 @@ final class AchievementService {
 
         case let .upgradesPurchased(count):
             return count
-        case .essenceUnlocked, .artifactUnlocked, .upgradePurchased, .achievementUnlocked:
+        case .itemDiscovered,
+             .essenceUnlocked,
+             .artifactUnlocked,
+             .upgradePurchased,
+             .achievementUnlocked:
             return 1
         }
     }

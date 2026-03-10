@@ -19,6 +19,9 @@ public enum UnlockRequirement: Codable {
     case maxResearchLevel(Int64)
     case commonItemsCreated(Int64)
 
+    /// A specific base item has been discovered.
+    case itemDiscovered(BaseItem)
+
     // How many essences have been unlocked
     case essencesUnlocked(Int64)
 
@@ -54,6 +57,8 @@ public extension UnlockRequirement {
             return "Reach research level \(formatCount(level)) on any item"
         case let .commonItemsCreated(count):
             return "Create \(formatCount(count)) common items"
+        case let .itemDiscovered(item):
+            return "\(item.name) discovered"
         case let .essencesUnlocked(count):
             return "\(formatCount(count)) Essences discovered"
         case let .essenceUnlocked(essence):

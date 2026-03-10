@@ -152,7 +152,7 @@ extension PortalUpgrade {
         case .researchLabLevel2:
             return [.upgradePurchased(.researchLab)]
         case .artifactSlot:
-            return [.upgradePurchased(.researchLab)]
+            return [.achievementUnlocked(.artifact1)]
         case .artifactSlotLevel2:
             return [
                 .upgradePurchased(.artifactSlot),
@@ -161,7 +161,7 @@ extension PortalUpgrade {
         case .artifactSlotLevel3:
             return [.upgradePurchased(.artifactSlotLevel2)]
         case .knowledgeSiphon:
-            return [.upgradePurchased(.researchLab)]
+            return [.itemDiscovered(.book)]
         case .knowledgeSiphonLevel2:
             return [.upgradePurchased(.knowledgeSiphon)]
         case .knowledgeSiphonLevel3:
