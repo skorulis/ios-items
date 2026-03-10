@@ -16,7 +16,7 @@ import SwiftUI
 extension ItemDetailsView: View {
     
     var item: BaseItem { viewModel.model.item }
-    var level: Int { viewModel.model.lab.currentLevel(item: viewModel.model.item) }
+    var level: Int { viewModel.model.details.researchLevel ?? 0 }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
@@ -27,7 +27,7 @@ extension ItemDetailsView: View {
             }
             Text("Quality \(item.quality.name)")
             researchProgress
-            Text("Double chance: \(viewModel.doubleChanceString)")
+            Text("Double chance: \(viewModel.model.details.doubleChance)")
             artifactSection
             
             if let lore = combinedLore {
@@ -65,8 +65,11 @@ extension ItemDetailsView: View {
         }
     }
     
+    @ViewBuilder
     private var researchProgress: some View {
-        Text("Research level: \(level)")
+        if let researchLevel = viewModel.model.details.researchLevel {
+            Text("Research level: \(researchLevel)")
+        }
     }
     
     private var essences: some View {
@@ -96,12 +99,15 @@ extension ItemDetailsView {
         let item: BaseItem
         var lab: Laboratory
         var warehouse: Warehouse
+        var details: ItemDetails
         
         var unlockedArtifact: Artifact? {
             guard let artifact = item.associatedArtifact else {
                 return nil
             }
-            let level = lab.currentLevel(item: item)
+            guard let level = details.researchLevel else {
+                return nil
+            }
             if item.availableResearch.isArtifactUnlocked(level: level) {
                 return artifact
             } else {

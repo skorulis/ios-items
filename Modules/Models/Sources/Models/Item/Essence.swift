@@ -3,7 +3,7 @@
 import Foundation
 import SwiftUI
 
-public nonisolated enum Essence: Identifiable, Hashable, Codable, CaseIterable {
+public nonisolated enum Essence: String, Identifiable, Hashable, Codable, CaseIterable {
     case dark
     case earth
     case life

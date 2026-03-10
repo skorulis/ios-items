@@ -102,6 +102,7 @@ final class DebugConnectionService {
     private func send(response: ItemsClientResponse) {
         guard connectionState == .connected else { return }
         let encoder = JSONEncoder()
+        encoder.outputFormatting = .sortedKeys
         do {
             let data = try encoder.encode(response)
             guard let json = String(data: data, encoding: .utf8) else {

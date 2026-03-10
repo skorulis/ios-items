@@ -203,6 +203,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				FA4940AD2F60B599000A33E3 /* PBXTargetDependency */,
 				FA6D90BA2F3B34FC003DE626 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
@@ -382,6 +383,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		FA4940AD2F60B599000A33E3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = FA4940AC2F60B599000A33E3 /* Models */;
+		};
 		FA6D90BA2F3B34FC003DE626 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			productRef = FA6D90B92F3B34FC003DE626 /* KnitBuildPlugin */;
@@ -814,6 +819,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = FA1121102F5E9F0900F67CF9 /* XCRemoteSwiftPackageReference "vapor" */;
 			productName = Vapor;
+		};
+		FA4940AC2F60B599000A33E3 /* Models */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA111E552F5E608F00F67CF9 /* XCLocalSwiftPackageReference "Modules/Models" */;
+			productName = Models;
 		};
 		FA6D90A22F3B334E003DE626 /* ASKCoordinator */ = {
 			isa = XCSwiftPackageProductDependency;

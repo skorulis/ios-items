@@ -72,7 +72,9 @@ final class ItemsHTTPServer {
             throw Abort(.badRequest, reason: message)
         }
         let converted = convert(payload: payload, diff: cache)
-        let data = try JSONEncoder().encode(converted)
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .sortedKeys
+        let data = try encoder.encode(converted)
         var headers = HTTPHeaders()
         headers.contentType = .json
         return Response(status: .ok, headers: headers, body: .init(data: data))

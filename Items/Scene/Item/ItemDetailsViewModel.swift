@@ -22,10 +22,16 @@ import SwiftUI
         self.calculations = calculations
         self.warehouseService = warehouseService
         
-        model = .init(item: item, lab: mainStore.lab, warehouse: mainStore.warehouse)
+        model = .init(
+            item: item,
+            lab: mainStore.lab,
+            warehouse: mainStore.warehouse,
+            details: warehouseService.details(item: item),
+        )
         
         mainStore.$lab.sink { [unowned self] in
             self.model.lab = $0
+            self.model.details = warehouseService.details(item: item)
         }
         .store(in: &cancellables)
         
@@ -40,12 +46,6 @@ import SwiftUI
 
 extension ItemDetailsViewModel {
     
-    var doubleChanceString: String {
-        calculations
-            .doubleItemChance(item: model.item)
-            .percentageString()
-    }
-    
     private var nextArtifactQuality: ItemQuality? {
         guard let type = model.item.associatedArtifact else { return nil }
         return model.warehouse.nextArtifactQuality(artifact: type)
@@ -53,7 +53,7 @@ extension ItemDetailsViewModel {
 
     var nextLevelArtifactChanceString: String? {
         guard let nextQuality = nextArtifactQuality else { return nil }
-        let researchLevel = model.lab.currentLevel(item: model.item)
+        guard let researchLevel = model.details.researchLevel else { return nil }
         let chance = calculations.artifactChance(quality: nextQuality, researchLevel: researchLevel)
         let value = chance.percentageString(decimalPlaces: 1)
         if nextQuality == .junk {

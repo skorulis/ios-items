@@ -98,8 +98,10 @@ final class ConnectedClient: @unchecked Sendable {
             return nil
         }
         let request = ItemsClientRequest(payload: payload)
-
-        guard let data = try? JSONEncoder().encode(request) else {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .sortedKeys
+        
+        guard let data = try? encoder.encode(request) else {
             return nil
         }
         let string = String(data: data, encoding: .utf8) ?? ""

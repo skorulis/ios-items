@@ -40,13 +40,14 @@ final class ClientRequestHandler {
     func handle(request: ItemsClientRequest.Payload) -> ItemsClientResponse.Payload {
         switch request {
         case .getItems:
-            let itemsWithCount = BaseItem.allCases.reduce(into: [BaseItem: Int]()) { dict, item in
+            let itemsWithDetails = BaseItem.allCases.reduce(into: [BaseItem: ItemWithDetails]()) { dict, item in
                 let quantity = mainStore.warehouse.quantity(item)
-                if quantity > 0 {
-                    dict[item] = quantity
+                if mainStore.warehouse.hasDiscovered(item) {
+                    let details = warehouseService.details(item: item)
+                    dict[item] = ItemWithDetails(count: quantity, details: details)
                 }
             }
-            return .items(itemsWithCount)
+            return .items(itemsWithDetails)
 
         case .makeItem:
             let recipe = recipeService.nextAvailable()

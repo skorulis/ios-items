@@ -13,12 +13,22 @@ final class WarehouseService {
     private let mainStore: MainStore
     private let toastService: ToastService
     private let calculationService: CalculationsService
+    private let achievementService: AchievementService
+    private let researchService: ResearchService
 
     @Resolvable<BaseResolver>
-    init(mainStore: MainStore, toastService: ToastService, calculationService: CalculationsService) {
+    init(
+        mainStore: MainStore,
+        toastService: ToastService,
+        calculationService: CalculationsService,
+        achievementService: AchievementService,
+        researchService: ResearchService
+    ) {
         self.mainStore = mainStore
         self.toastService = toastService
         self.calculationService = calculationService
+        self.achievementService = achievementService
+        self.researchService = researchService
     }
 }
 
@@ -96,6 +106,29 @@ extension WarehouseService {
     /// Unequip an artifact in the warehouse.
     func unequip(_ artifact: Artifact) {
         mainStore.warehouse.unequip(artifact)
+    }
+    
+    func details(item: BaseItem) -> ItemDetails {
+        let doubleChance = calculationService
+            .doubleItemChance(item: item)
+            .percentageString()
+        
+        let researchLevel: Int?
+        let researchCost: Int?
+        if achievementService.isComplete(requirement: .upgradePurchased(.researchLab)) {
+            researchLevel = mainStore.lab.currentLevel(item: item)
+            researchCost = researchService.rushCost(for: item)
+        } else {
+            researchLevel = nil
+            researchCost = nil
+        }
+        
+        return ItemDetails(
+            item: item,
+            doubleChance: doubleChance,
+            researchLevel: researchLevel,
+            researchCost: researchCost,
+        )
     }
 }
 

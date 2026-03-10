@@ -16,7 +16,7 @@ public struct ItemsClientResponse: Codable {
     
     // The actual response type sent over the wire
     public enum Payload: Codable {
-        case items([BaseItem: Int])
+        case items([BaseItem: ItemWithDetails])
         case makeItemResult(MakeItemResult)
         case actions([GameAction], [GameData])
         case artifacts([Artifact: ItemQuality])
@@ -24,6 +24,16 @@ public struct ItemsClientResponse: Codable {
         case achievements(completed: [Achievement], incomplete: [IncompleteAchievement])
         case error(String)
         case ok
+    }
+}
+
+public struct ItemWithDetails: Codable {
+    public let count: Int
+    public let details: ItemDetails
+    
+    public init(count: Int, details: ItemDetails) {
+        self.count = count
+        self.details = details
     }
 }
 
