@@ -88,7 +88,7 @@ extension ResearchService {
         let cost = rushCost(for: item, now: now)
         let consumedItem: BaseItem = useBooks ? .book : item
         guard cost > 0, warehouse.quantity(consumedItem) >= cost else {
-            throw ItemsError(message: "Insufficient items")
+            throw ItemsError(message: "Insufficient item count")
         }
         
         let currentLevel = lab.currentLevel(item: item)

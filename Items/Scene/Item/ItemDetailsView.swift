@@ -16,7 +16,6 @@ import SwiftUI
 extension ItemDetailsView: View {
     
     var item: BaseItem { viewModel.model.item }
-    var level: Int { viewModel.model.details.researchLevel ?? 0 }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
@@ -74,9 +73,9 @@ extension ItemDetailsView: View {
     
     private var essences: some View {
         HStack {
-            ForEach(Array(0..<item.essences.count), id: \.self) { index in
-                if level > index {
-                    EssenceView(essence: item.essences[index])
+            ForEach(Array(viewModel.model.details.essences.enumerated()), id: \.offset) { _, essence in
+                if let essence {
+                    EssenceView(essence: essence)
                 } else {
                     Image(systemName: "questionmark.diamond")
                         .resizable()

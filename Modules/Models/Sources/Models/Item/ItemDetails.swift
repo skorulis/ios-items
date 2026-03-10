@@ -7,6 +7,9 @@ public struct ItemDetails: Codable {
     public let doubleChance: String
     public let researchLevel: Int?
     
+    /// Essences for the item. Undiscovered essences will be nil
+    public let essences: [Essence?]
+    
     // Number of items needed for the next level of research
     public let researchCost: Int?
     
@@ -15,10 +18,12 @@ public struct ItemDetails: Codable {
         doubleChance: String,
         researchLevel: Int?,
         researchCost: Int?,
+        essences: [Essence?]
     ) {
         self.item = item
         self.doubleChance = doubleChance
         self.researchLevel = researchLevel
         self.researchCost = researchCost
+        self.essences = essences
     }
 }

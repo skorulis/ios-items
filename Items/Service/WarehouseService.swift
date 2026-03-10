@@ -123,11 +123,17 @@ extension WarehouseService {
             researchCost = nil
         }
         
+        let essences: [Essence?] = item.essences.enumerated().map { index, essence in
+            guard let researchLevel else { return nil }
+            return researchLevel > index ? essence : nil
+        }
+        
         return ItemDetails(
             item: item,
             doubleChance: doubleChance,
             researchLevel: researchLevel,
             researchCost: researchCost,
+            essences: essences
         )
     }
 }
