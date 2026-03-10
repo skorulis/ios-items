@@ -63,17 +63,30 @@ final class ConnectedClient: @unchecked Sendable {
         let oldLinks = cache.links
         let oldUnlocked = cache.achievementsUnlocked
         let oldVisibleIncomplete = cache.achievementsVisibleIncomplete
+        let oldItems = cache.items
 
         _ = await _send(request: .getActions)
         _ = await _send(request: .getAchievements)
+        _ = await _send(request: .getItems)
 
         let newLinks = cache.links
         let newUnlocked = cache.achievementsUnlocked
         let newVisibleIncomplete = cache.achievementsVisibleIncomplete
+        let newItems = cache.items
 
         let addedLinks = newLinks.filter { !oldLinks.contains($0) }
         let newlyUnlocked = newUnlocked.subtracting(oldUnlocked)
         let newlyVisible = newVisibleIncomplete.subtracting(oldVisibleIncomplete)
+        let changedItems: [BaseItem: ItemWithDetails] = newItems.reduce(into: [:]) { partialResult, entry in
+            let (item, newValue) = entry
+            if let oldValue = oldItems[item] {
+                if oldValue.count != newValue.count || oldValue.details != newValue.details {
+                    partialResult[item] = newValue
+                }
+            } else {
+                partialResult[item] = newValue
+            }
+        }
 
         if addedLinks.count > 0 {
             print("Found new actions: \(addedLinks)")
@@ -84,11 +97,15 @@ final class ConnectedClient: @unchecked Sendable {
         if !newlyVisible.isEmpty {
             print("Achievements newly visible: \(newlyVisible.map(\.rawValue))")
         }
+        if !changedItems.isEmpty {
+            print("Items changed: \(changedItems.map { ($0.key.rawValue, $0.value.count) })")
+        }
 
         return CacheDiff(
             links: addedLinks.isEmpty ? nil : addedLinks,
             achievementsUnlocked: Array(newlyUnlocked).map { HTTPAchievement(achievement: $0) },
             achievementsNewlyVisible: Array(newlyVisible).map { HTTPAchievement(achievement: $0) },
+            items: changedItems.isEmpty ? nil : changedItems
         )
     }
 
@@ -120,6 +137,8 @@ final class ConnectedClient: @unchecked Sendable {
     func handle(response: ItemsClientResponse) {
         lock.lock()
         switch response.payload {
+        case let .items(items):
+            _cache.items = items
         case let .actions(actions, data):
             _cache.links = actions.map { Link(action: $0) } + data.map { Link(data: $0) }
         case let .achievements(completed, incomplete):
@@ -150,10 +169,12 @@ struct ConnectedClientCache: Sendable {
     var links: [Link] = []
     var achievementsUnlocked: Set<Achievement> = []
     var achievementsVisibleIncomplete: Set<Achievement> = []
+    var items: [BaseItem: ItemWithDetails] = [:]
 }
 
 struct CacheDiff: Codable {
     var links: [Link]?
     var achievementsUnlocked: [HTTPAchievement]?
     var achievementsNewlyVisible: [HTTPAchievement]?
+    var items: [BaseItem: ItemWithDetails]?
 }

@@ -2,7 +2,7 @@
 
 import Foundation
 
-public struct ItemDetails: Codable {
+public struct ItemDetails: Codable, Equatable {
     public let item: BaseItem
     public let doubleChance: String
     public let researchLevel: Int?
