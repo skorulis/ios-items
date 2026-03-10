@@ -8,25 +8,31 @@ import KnitMacros
 import Models
 
 final class AchievementService {
-    
+
     private let mainStore: MainStore
+    private let unlockRequirementService: UnlockRequirementService
     private let toastService: ToastService
     private var cancellables: Set<AnyCancellable> = []
-    
+
     @Resolvable<BaseResolver>
-    init(mainStore: MainStore, toastService: ToastService) {
+    init(
+        mainStore: MainStore,
+        unlockRequirementService: UnlockRequirementService,
+        toastService: ToastService
+    ) {
         self.mainStore = mainStore
+        self.unlockRequirementService = unlockRequirementService
         self.toastService = toastService
-        
+
         self.mainStore.objectWillChange.delayedChange().sink { [unowned self] _ in
             self.checkAchievements()
         }
         .store(in: &cancellables)
     }
-    
+
     private func checkAchievements() {
         let toCheck = Achievement.allCases.filter { !mainStore.achievements.unlocked.contains($0) }
-        let completed = toCheck.filter { isComplete(requirement: $0.requirement) }
+        let completed = toCheck.filter { unlockRequirementService.isComplete(requirement: $0.requirement) }
         guard completed.count > 0 else { return }
         let newAchievements = Set(completed)
         mainStore.achievements.add(achievements: newAchievements)
@@ -35,68 +41,11 @@ final class AchievementService {
             toastService.showToast("Achievement unlocked: \(achievement.name)")
         }
     }
-    
+
     func isVisible(achievement: Achievement) -> Bool {
         guard let requirement = achievement.visibilityRequirement else {
             return true
         }
-        return isComplete(requirement: requirement)
-    }
-    
-    func progressValue(requirement: UnlockRequirement) -> Int64 {
-        switch requirement {
-        case .itemsCreated:
-            return mainStore.statistics.itemsCreated
-        case .itemsSacrificed:
-            return mainStore.statistics.itemsSacrificed
-        case .totalResearch:
-            return Int64(mainStore.lab.totalLevels)
-        case .maxResearchLevel:
-            return Int64(mainStore.lab.maxResearchLevel)
-        case .commonItemsCreated:
-            return Int64(mainStore.warehouse.totalItemsCollected { $0.quality == .common })
-        case let .itemDiscovered(item):
-            return mainStore.warehouse.hasDiscovered(item) ? 1 : 0
-        case .essencesUnlocked:
-            return Int64(mainStore.concepts.essences.count)
-        case let .essenceUnlocked(essence):
-            return mainStore.concepts.essences.contains(essence) ? 1 : 0
-        case .artifactsUnlocked:
-            return Int64(Artifact.allCases.filter { mainStore.warehouse.quality($0) != nil }.count)
-        case let .artifactUnlocked(artifact):
-            return mainStore.warehouse.quality(artifact) != nil ? 1 : 0
-        case let .upgradePurchased(upgrade):
-            return mainStore.portalUpgrades.purchased.contains(upgrade) ? 1 : 0
-        case .upgradesPurchased:
-            return Int64(mainStore.portalUpgrades.purchased.count)
-        case let .achievementUnlocked(achievement):
-            return mainStore.achievements.unlocked.contains(achievement) ? 1 : 0
-        }
-    }
-    
-    func progressTotal(requirement: UnlockRequirement) -> Int64 {
-        switch requirement {
-        case let .itemsCreated(count),
-             let .itemsSacrificed(count),
-             let .totalResearch(count),
-             let .maxResearchLevel(count),
-             let .commonItemsCreated(count),
-             let .essencesUnlocked(count),
-             let .artifactsUnlocked(count):
-            return count
-
-        case let .upgradesPurchased(count):
-            return count
-        case .itemDiscovered,
-             .essenceUnlocked,
-             .artifactUnlocked,
-             .upgradePurchased,
-             .achievementUnlocked:
-            return 1
-        }
-    }
-    
-    func isComplete(requirement: UnlockRequirement) -> Bool {
-        return progressValue(requirement: requirement) >= progressTotal(requirement: requirement)
+        return unlockRequirementService.isComplete(requirement: requirement)
     }
 }

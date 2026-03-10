@@ -12,15 +12,15 @@ import SwiftUI
     
     var model: AchievementDetailsView.Model
     
-    private let achievementService: AchievementService
+    private let unlockRequirementService: UnlockRequirementService
     
     @Resolvable<BaseResolver>
-    init(@Argument achievement: Achievement, achievementService: AchievementService) {
+    init(@Argument achievement: Achievement, unlockRequirementService: UnlockRequirementService) {
         self.achievement = achievement
-        self.achievementService = achievementService
+        self.unlockRequirementService = unlockRequirementService
         self.model = .init(
-            value: achievementService.progressValue(requirement: achievement.requirement),
-            total: achievementService.progressTotal(requirement: achievement.requirement)
+            value: unlockRequirementService.progressValue(requirement: achievement.requirement),
+            total: unlockRequirementService.progressTotal(requirement: achievement.requirement)
         )
         
         // TODO: Add observation

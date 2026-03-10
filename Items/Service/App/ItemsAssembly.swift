@@ -42,6 +42,8 @@ final class ItemsAssembly: AutoInitModuleAssembly {
         
         container.register(WarehouseService.self) { WarehouseService.make(resolver: $0) }
         
+        container.register(UnlockRequirementService.self) { UnlockRequirementService.make(resolver: $0) }
+            .inObjectScope(.container)
         container.register(AchievementService.self) { AchievementService.make(resolver: $0) }
             .inObjectScope(.container)
         

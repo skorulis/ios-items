@@ -8,7 +8,8 @@ import Models
 final class ClientRequestHandler {
 
     private let mainStore: MainStore
-    private let achivementService: AchievementService
+    private let achievementService: AchievementService
+    private let unlockRequirementService: UnlockRequirementService
     private let itemGeneratorService: ItemGeneratorService
     private let recipeService: RecipeService
     private let warehouseService: WarehouseService
@@ -18,7 +19,8 @@ final class ClientRequestHandler {
     @Resolvable<BaseResolver>
     init(
         mainStore: MainStore,
-        achivementService: AchievementService,
+        achievementService: AchievementService,
+        unlockRequirementService: UnlockRequirementService,
         itemGeneratorService: ItemGeneratorService,
         recipeService: RecipeService,
         warehouseService: WarehouseService,
@@ -26,7 +28,8 @@ final class ClientRequestHandler {
         researchService: ResearchService
     ) {
         self.mainStore = mainStore
-        self.achivementService = achivementService
+        self.achievementService = achievementService
+        self.unlockRequirementService = unlockRequirementService
         self.itemGeneratorService = itemGeneratorService
         self.recipeService = recipeService
         self.warehouseService = warehouseService
@@ -85,12 +88,12 @@ final class ClientRequestHandler {
         case .getAchievements:
             let unlocked = mainStore.achievements.unlocked
             let incompleteAchievements = Achievement.allCases
-                .filter { !unlocked.contains($0) && achivementService.isVisible(achievement: $0) }
+                .filter { !unlocked.contains($0) && achievementService.isVisible(achievement: $0) }
                 .map { achievement in
                     IncompleteAchievement(
                         achievement: achievement,
-                        currentProgress: achivementService.progressValue(requirement: achievement.requirement),
-                        total: achivementService.progressTotal(requirement: achievement.requirement)
+                        currentProgress: unlockRequirementService.progressValue(requirement: achievement.requirement),
+                        total: unlockRequirementService.progressTotal(requirement: achievement.requirement)
                     )
                 }
             return .achievements(completed: Array(unlocked), incomplete: incompleteAchievements)
@@ -118,7 +121,7 @@ final class ClientRequestHandler {
     
     private func getAvailableActions() -> [GameAction] {
         var result: [GameAction] = [.makeItem]
-        if achivementService.isComplete(requirement: .upgradePurchased(.researchLab)) {
+        if unlockRequirementService.isComplete(requirement: .upgradePurchased(.researchLab)) {
             result.append(.buyResearch)
         }
         if mainStore.achievements.unlocked.contains(.items10) {

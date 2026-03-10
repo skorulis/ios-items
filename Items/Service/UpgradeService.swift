@@ -10,15 +10,15 @@ import KnitMacros
 final class UpgradeService: ObservableObject {
 
     private let mainStore: MainStore
-    private let achievementService: AchievementService
+    private let unlockRequirementService: UnlockRequirementService
     private var cancellables: Set<AnyCancellable> = []
 
     @Published var purchasableUpgrades: [PortalUpgrade] = []
 
     @Resolvable<BaseResolver>
-    init(mainStore: MainStore, achievementService: AchievementService) {
+    init(mainStore: MainStore, unlockRequirementService: UnlockRequirementService) {
         self.mainStore = mainStore
-        self.achievementService = achievementService
+        self.unlockRequirementService = unlockRequirementService
 
         mainStore.$portalUpgrades
             .combineLatest(mainStore.$achievements)
@@ -70,7 +70,7 @@ extension UpgradeService {
     /// Whether the given upgrade's unlock requirements have all been satisfied.
     func isUnlocked(_ upgrade: PortalUpgrade) -> Bool {
         guard !upgrade.requirements.isEmpty else { return true }
-        return upgrade.requirements.allSatisfy { achievementService.isComplete(requirement: $0) }
+        return upgrade.requirements.allSatisfy { unlockRequirementService.isComplete(requirement: $0) }
     }
 
 }

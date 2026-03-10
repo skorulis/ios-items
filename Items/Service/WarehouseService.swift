@@ -13,7 +13,7 @@ final class WarehouseService {
     private let mainStore: MainStore
     private let toastService: ToastService
     private let calculationService: CalculationsService
-    private let achievementService: AchievementService
+    private let unlockRequirementService: UnlockRequirementService
     private let researchService: ResearchService
 
     @Resolvable<BaseResolver>
@@ -21,13 +21,13 @@ final class WarehouseService {
         mainStore: MainStore,
         toastService: ToastService,
         calculationService: CalculationsService,
-        achievementService: AchievementService,
+        unlockRequirementService: UnlockRequirementService,
         researchService: ResearchService
     ) {
         self.mainStore = mainStore
         self.toastService = toastService
         self.calculationService = calculationService
-        self.achievementService = achievementService
+        self.unlockRequirementService = unlockRequirementService
         self.researchService = researchService
     }
 }
@@ -115,7 +115,7 @@ extension WarehouseService {
         
         let researchLevel: Int?
         let researchCost: Int?
-        if achievementService.isComplete(requirement: .upgradePurchased(.researchLab)) {
+        if unlockRequirementService.isComplete(requirement: .upgradePurchased(.researchLab)) {
             researchLevel = mainStore.lab.currentLevel(item: item)
             researchCost = researchService.rushCost(for: item)
         } else {
