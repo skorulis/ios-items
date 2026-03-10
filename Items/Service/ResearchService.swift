@@ -43,7 +43,7 @@ extension ResearchService {
     }
     
     /// Apply elapsed time to current research, level up when thresholds are met, persist remainder.
-    func updateResearchProgress(now: Date = Date()) {
+    func updateResearchProgress(now: Date = Date(), forceSave: Bool = false) {
         var lab = mainStore.lab
         guard let current = lab.currentResearch else { return }
         let item = current.item
@@ -55,7 +55,7 @@ extension ResearchService {
         var level = lab.currentLevel(item: item)
         
         var totalRequired = calculations.researchDurationSeconds(for: item, level: level)
-        var saveRequired: Bool = false
+        var saveRequired: Bool = forceSave
         while totalRequired > 0 && elapsed >= totalRequired {
             elapsed -= totalRequired
             level += 1

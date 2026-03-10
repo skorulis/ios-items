@@ -77,6 +77,7 @@ final class CalculationsService: ObservableObject {
             result += lens.type.perfectLensResearchBoost(quality: lens.quality)
         }
         result += mainStore.portalUpgrades.bonuses.researchSpeed
+        result += mainStore.achievements.bonuses.researchSpeed
         
         return result
     }

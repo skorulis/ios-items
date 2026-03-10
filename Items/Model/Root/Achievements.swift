@@ -12,4 +12,8 @@ struct Achievements: Codable, Equatable {
             unlocked = unlocked.union(missing)
         }
     }
+    
+    var bonuses: [Bonus] {
+        return unlocked.compactMap { $0.bonus}
+    }
 }

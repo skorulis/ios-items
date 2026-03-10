@@ -1,6 +1,7 @@
 // Created by Cursor on 3/3/2026.
 
 @testable import Items
+import Models
 import Knit
 import SnapshotTesting
 import SwiftUI

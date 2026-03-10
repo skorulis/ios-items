@@ -45,7 +45,7 @@ struct ResearchServiceTests {
         
         // Half the required time (60s of 120s) should not level up.
         let halfway = start.addingTimeInterval(60)
-        researchService.updateResearchProgress(now: halfway)
+        researchService.updateResearchProgress(now: halfway, forceSave: true)
         
         let lab = mainStore.lab
         #expect(lab.currentLevel(item: item) == 0)
@@ -96,7 +96,6 @@ struct ResearchServiceTests {
     func rushCost_fullDuration_returnsItemsPerMinute() {
         let assembly = makeAssembly()
         let researchService = assembly.resolver.researchService()
-        let mainStore = assembly.resolver.mainStore()
         let item: BaseItem = .apple
         let start = Date(timeIntervalSince1970: 5_000)
         
@@ -111,7 +110,6 @@ struct ResearchServiceTests {
     func rushCost_afterPartialProgress_reducesCost() {
         let assembly = makeAssembly()
         let researchService = assembly.resolver.researchService()
-        let mainStore = assembly.resolver.mainStore()
         let item: BaseItem = .apple
         let start = Date(timeIntervalSince1970: 6_000)
         
@@ -127,7 +125,6 @@ struct ResearchServiceTests {
     func rushCost_partialMinuteRemaining_roundsUp() {
         let assembly = makeAssembly()
         let researchService = assembly.resolver.researchService()
-        let mainStore = assembly.resolver.mainStore()
         let item: BaseItem = .apple
         let start = Date(timeIntervalSince1970: 7_000)
         
@@ -143,7 +140,6 @@ struct ResearchServiceTests {
     func rushCost_whenNoRemaining_returnsZero() {
         let assembly = makeAssembly()
         let researchService = assembly.resolver.researchService()
-        let mainStore = assembly.resolver.mainStore()
         let item: BaseItem = .apple
         let start = Date(timeIntervalSince1970: 8_000)
         
@@ -159,13 +155,12 @@ struct ResearchServiceTests {
     func rushCost_noCurrentResearchForItem_usesStoredProgress() {
         let assembly = makeAssembly()
         let researchService = assembly.resolver.researchService()
-        let mainStore = assembly.resolver.mainStore()
         let item: BaseItem = .apple
         let start = Date(timeIntervalSince1970: 9_000)
         
         researchService.startResearch(to: item, now: start)
         let afterMinute = start.addingTimeInterval(60)
-        researchService.updateResearchProgress(now: afterMinute)
+        researchService.updateResearchProgress(now: afterMinute, forceSave: true)
         
         // Switch to another item so apple is not current; progress is stored (60s at level 0).
         researchService.startResearch(to: .rock, now: afterMinute)
@@ -178,7 +173,7 @@ struct ResearchServiceTests {
     // MARK: - Rush research
     
     @Test
-    func rushResearch_consumesItemsAndLevelsUp() {
+    func rushResearch_consumesItemsAndLevelsUp() throws {
         let assembly = makeAssembly()
         let researchService = assembly.resolver.researchService()
         let mainStore = assembly.resolver.mainStore()
@@ -188,7 +183,7 @@ struct ResearchServiceTests {
         mainStore.warehouse.add(item: item, count: 5)
         researchService.startResearch(to: item, now: start)
         
-        researchService.rushResearch(to: item, useBooks: false, now: start)
+        try researchService.rushResearch(to: item, useBooks: false, now: start)
         
         #expect(mainStore.lab.currentLevel(item: item) == 1)
         #expect(mainStore.lab.accumulatedSeconds(for: item) == 0)
@@ -196,7 +191,7 @@ struct ResearchServiceTests {
     }
     
     @Test
-    func rushResearch_resetsProgressToZero() {
+    func rushResearch_resetsProgressToZero() throws {
         let assembly = makeAssembly()
         let researchService = assembly.resolver.researchService()
         let mainStore = assembly.resolver.mainStore()
@@ -208,14 +203,14 @@ struct ResearchServiceTests {
         let halfway = start.addingTimeInterval(60)
         researchService.updateResearchProgress(now: halfway)
         
-        researchService.rushResearch(to: item, useBooks: false, now: halfway)
+        try researchService.rushResearch(to: item, useBooks: false, now: halfway)
         
         #expect(mainStore.lab.currentLevel(item: item) == 1)
         expectApproximate(mainStore.lab.accumulatedSeconds(for: item), 0)
     }
     
     @Test
-    func rushResearch_whenInsufficientItems_doesNothing() {
+    func rushResearch_whenInsufficientItems_doesNothing() throws {
         let assembly = makeAssembly()
         let researchService = assembly.resolver.researchService()
         let mainStore = assembly.resolver.mainStore()
@@ -225,14 +220,16 @@ struct ResearchServiceTests {
         mainStore.warehouse.add(item: item, count: 1) // need 2 to rush level 0
         researchService.startResearch(to: item, now: start)
         
-        researchService.rushResearch(to: item, useBooks: false, now: start)
+        #expect(throws: ItemsError.self) {
+            try researchService.rushResearch(to: item, useBooks: false, now: start)
+        }
         
         #expect(mainStore.lab.currentLevel(item: item) == 0)
         #expect(mainStore.warehouse.quantity(item) == 1)
     }
     
     @Test
-    func rushResearch_appliesUnlocks() {
+    func rushResearch_appliesUnlocks() throws {
         let assembly = makeAssembly()
         let researchService = assembly.resolver.researchService()
         let mainStore = assembly.resolver.mainStore()
@@ -242,7 +239,7 @@ struct ResearchServiceTests {
         mainStore.warehouse.add(item: item, count: 5)
         researchService.startResearch(to: item, now: start)
         
-        researchService.rushResearch(to: item, useBooks: false, now: start)
+        try researchService.rushResearch(to: item, useBooks: false, now: start)
         
         let expectedEssences = item.availableResearch.unlockedEssences(level: 1)
         for essence in expectedEssences {
@@ -251,7 +248,7 @@ struct ResearchServiceTests {
     }
     
     @Test
-    func rushResearch_chargesReducedCostAfterPartialProgress() {
+    func rushResearch_chargesReducedCostAfterPartialProgress() throws {
         let assembly = makeAssembly()
         let researchService = assembly.resolver.researchService()
         let mainStore = assembly.resolver.mainStore()
@@ -263,7 +260,7 @@ struct ResearchServiceTests {
         let afterMinute = start.addingTimeInterval(60)
         researchService.updateResearchProgress(now: afterMinute)
         
-        researchService.rushResearch(to: item, useBooks: false, now: afterMinute)
+        try researchService.rushResearch(to: item, useBooks: false, now: afterMinute)
         
         // Cost should be 1 (60s remaining), so 3 - 1 = 2 left
         #expect(mainStore.lab.currentLevel(item: item) == 1)
