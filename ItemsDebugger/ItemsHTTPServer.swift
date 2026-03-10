@@ -116,7 +116,13 @@ final class ItemsHTTPServer {
         case let .achievements(completed, incomplete):
             return [
                 "completed": completed.map { HTTPAchievement(achievement: $0) },
-                "incomplete": incomplete.map { HTTPAchievement(achievement: $0) },
+                "incomplete": incomplete.map {
+                    HTTPAchievement(
+                        achievement: $0.achievement,
+                        currentProgress: $0.currentProgress,
+                        total: $0.total,
+                    )
+                },
             ]
         case .ok:
             return ["status": "ok"]

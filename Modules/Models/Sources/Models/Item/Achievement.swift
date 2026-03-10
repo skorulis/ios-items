@@ -148,7 +148,7 @@ public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable {
         case .items100:
             return "Unlocks sacrifices"
         case .artifact1:
-            return "Unlocks artifact slots"
+            return "Unlocks artifact slot upgrade"
         case .artifacts5:
             return "Unlock second artifact slot"
         case .essence1:

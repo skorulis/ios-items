@@ -21,9 +21,22 @@ public struct ItemsClientResponse: Codable {
         case actions([GameAction], [GameData])
         case artifacts([Artifact: ItemQuality])
         case upgrades(UpgradesPayload)
-        case achievements(completed: [Achievement], incomplete: [Achievement])
+        case achievements(completed: [Achievement], incomplete: [IncompleteAchievement])
         case error(String)
         case ok
+    }
+}
+
+/// An achievement that is not yet completed, with current progress toward its requirement.
+public struct IncompleteAchievement: Codable {
+    public let achievement: Achievement
+    public let currentProgress: Int64
+    public let total: Int64
+
+    public init(achievement: Achievement, currentProgress: Int64, total: Int64) {
+        self.achievement = achievement
+        self.currentProgress = currentProgress
+        self.total = total
     }
 }
 

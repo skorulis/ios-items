@@ -23,10 +23,16 @@ public struct HTTPAchievement: Codable {
     public let id: String
     public let requirementText: String
     public let bonusText: String?
+    public let progress: String?
 
-    public init(achievement: Achievement) {
+    public init(achievement: Achievement, currentProgress: Int64? = nil, total: Int64? = nil) {
         self.id = achievement.rawValue
         self.requirementText = achievement.requirement.description
         self.bonusText = achievement.bonusMessage
+        if let currentProgress, let total {
+            self.progress = "\(currentProgress)/\(total)"
+        } else {
+            self.progress = nil
+        }
     }
 }

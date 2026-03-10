@@ -77,10 +77,16 @@ final class ClientRequestHandler {
             )
         case .getAchievements:
             let unlocked = mainStore.achievements.unlocked
-            let incomplete = Achievement.allCases.filter {
-                !unlocked.contains($0) && achivementService.isVisible(achievement: $0)
-            }
-            return .achievements(completed: Array(unlocked), incomplete: incomplete)
+            let incompleteAchievements = Achievement.allCases
+                .filter { !unlocked.contains($0) && achivementService.isVisible(achievement: $0) }
+                .map { achievement in
+                    IncompleteAchievement(
+                        achievement: achievement,
+                        currentProgress: achivementService.progressValue(requirement: achievement.requirement),
+                        total: achivementService.progressTotal(requirement: achievement.requirement)
+                    )
+                }
+            return .achievements(completed: Array(unlocked), incomplete: incompleteAchievements)
         case let .purchaseUpgrade(upgrade):
             if mainStore.portalUpgrades.purchased.contains(upgrade) {
                 return .error("Upgrade already purchased")
