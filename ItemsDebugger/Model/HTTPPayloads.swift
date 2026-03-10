@@ -19,6 +19,26 @@ struct HTTPPortalUpgrade: Codable {
     }
 }
 
+struct HTTPMakeItem: Codable {
+    let item: MakeItemResult
+    let _newLinks: [Link]?
+    
+    init(item: MakeItemResult, diff: CacheDiff) {
+        self.item = item
+        _newLinks = diff.links
+    }
+}
+
+struct OkResponse: Codable {
+    let status: String
+    let _newLinks: [Link]?
+    
+    init(status: String = "ok", diff: CacheDiff) {
+        self.status = status
+        _newLinks = diff.links
+    }
+}
+
 public struct HTTPAchievement: Codable {
     public let id: String
     public let requirementText: String

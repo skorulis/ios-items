@@ -2,7 +2,7 @@
 
 import Foundation
 
-let connectedClients = ConnectedClients()
+let connectedClients = ConnectedClient()
 let port = WebSocketServer.defaultPort
 
 // Run the WebSocket server on a background thread (it blocks forever).

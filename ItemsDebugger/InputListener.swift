@@ -6,9 +6,9 @@ import Models
 
 final class InputListener {
 
-    private let connectedClients: ConnectedClients
+    private let connectedClients: ConnectedClient
 
-    init(connectedClients: ConnectedClients) {
+    init(connectedClients: ConnectedClient) {
         self.connectedClients = connectedClients
     }
 

@@ -3,7 +3,7 @@
 import Foundation
 
 // GET actions to access app data
-public enum GameData: Codable {
+public enum GameData: Codable, Sendable {
     case items
     case artifacts
     case upgrades

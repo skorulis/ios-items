@@ -6,9 +6,9 @@ import Vapor
 
 final class ItemsHTTPServer {
     
-    let clients: ConnectedClients
+    let clients: ConnectedClient
     
-    init(clients: ConnectedClients) {
+    init(clients: ConnectedClient) {
         self.clients = clients
     }
     
@@ -58,25 +58,27 @@ final class ItemsHTTPServer {
         }
     }
     
-    private func getResponse(request: ItemsClientRequest.Payload) async throws -> ItemsClientResponse.Payload {
+    private func getResponse(request: ItemsClientRequest.Payload) async throws -> (ItemsClientResponse.Payload, CacheDiff) {
         guard let payload = await clients.send(request: request) else {
             throw Abort(.serviceUnavailable, reason: "No client connected or no response received")
         }
         return payload
     }
     
-    static func makeResponse(payload: ItemsClientResponse.Payload) throws -> Response {
+    static func makeResponse(payload: (ItemsClientResponse.Payload, CacheDiff)) throws -> Response {
+        let cache = payload.1
+        let payload = payload.0
         if case let .error(message) = payload {
             throw Abort(.badRequest, reason: message)
         }
-        let converted = convert(payload: payload)
+        let converted = convert(payload: payload, diff: cache)
         let data = try JSONEncoder().encode(converted)
         var headers = HTTPHeaders()
         headers.contentType = .json
         return Response(status: .ok, headers: headers, body: .init(data: data))
     }
     
-    static func convert(payload: ItemsClientResponse.Payload) -> Codable {
+    static func convert(payload: ItemsClientResponse.Payload, diff: CacheDiff) -> Codable {
         switch payload {
         case let .items(items):
             return Dictionary(uniqueKeysWithValues: items.map { (key, value) in
@@ -84,22 +86,10 @@ final class ItemsHTTPServer {
                 return (String(describing: key), value)
             })
         case let .makeItemResult(makeItemResult):
-            return makeItemResult
+            return HTTPMakeItem(item: makeItemResult, diff: diff)
         case let .actions(actions, data):
-            let actionLinks = actions.map { action in
-                return Link(
-                    href: action.href,
-                    description: action.description,
-                    action: "POST",
-                )
-            }
-            let dataLinks = data.map { data in
-                return Link(
-                    href: data.href,
-                    description: data.description,
-                    action: "GET",
-                )
-            }
+            let actionLinks = actions.map { Link(action: $0) }
+            let dataLinks = data.map { Link(data: $0) }
             
             return HATEOAS(_links: dataLinks + actionLinks)
         case let .artifacts(artifacts):
@@ -126,7 +116,7 @@ final class ItemsHTTPServer {
                 },
             ]
         case .ok:
-            return ["status": "ok"]
+            return OkResponse(status: "ok", diff: diff)
         case .error:
             fatalError("error payload should be handled in response(payload:)")
         }

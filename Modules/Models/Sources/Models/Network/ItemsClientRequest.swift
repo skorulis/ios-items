@@ -15,12 +15,24 @@ public struct ItemsClientRequest: Codable {
     
     // The actual request type sent over the wire
     public enum Payload: Codable {
+        // Actions
+        case makeItem
+        case purchaseUpgrade(PortalUpgrade)
+        
+        // Data
         case getItems
         case getActions
-        case makeItem
         case getArtifacts
         case getUpgrades
         case getAchievements
-        case purchaseUpgrade(PortalUpgrade)
+        
+        public var isAction: Bool {
+            switch self {
+            case .makeItem, .purchaseUpgrade:
+                return true
+            default:
+                return false
+            }
+        }
     }
 }

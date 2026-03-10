@@ -23,8 +23,8 @@ from tools import build_tools_from_links, dispatch_tool_call
 
 SYSTEM_PROMPT = """You are a playtester for the game "Items" (a crafting/inventory game). Your goal is to **maximise the number of achievements reached**.
 
-- Use /actions to get the currently available endpoints. Check this periodically to find newly unlocked actions
-- Use the get_* tools to inspect current state (items, artifacts, upgrades).
+- Use the get_actions tool to refresh the list of available endpoints (backed by GET /actions).
+- Use the get_* tools to inspect current state (items, artifacts, upgrades, achievements).
 - Use the post_* tools to perform actions (e.g. craft an item, purchase an upgrade).
 - Do not spam the same request repeatedly; explore systematically.
 - **Check achievements first**: Use get_achievements to see which achievements are completed and which are incomplete. Incomplete achievements list their requirement (what you need to do to unlock them).

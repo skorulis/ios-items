@@ -41,8 +41,26 @@ def link_to_openai_tool(link: Link) -> dict[str, Any]:
 
 
 def build_tools_from_links(links: list[Link]) -> list[dict[str, Any]]:
-    """Build the list of OpenAI tool definitions from the discovered links."""
-    return [link_to_openai_tool(link) for link in links]
+    """Build the list of OpenAI tool definitions from the discovered links.
+
+    In addition to tools for each link, we always expose a synthetic `get_actions`
+    tool that refreshes the list of available endpoints from GET /actions.
+    """
+    tools = [link_to_openai_tool(link) for link in links]
+    tools.append(
+        {
+            "type": "function",
+            "function": {
+                "name": "get_actions",
+                "description": (
+                    "Refresh the list of available game actions and data endpoints "
+                    "from GET /actions. Returns their tool names, hrefs, methods, "
+                    "and descriptions."
+                ),
+            },
+        }
+    )
+    return tools
 
 
 def dispatch_tool_call(env: ItemsEnv, tool_name: str, arguments: dict[str, Any] | None) -> str:
@@ -51,6 +69,22 @@ def dispatch_tool_call(env: ItemsEnv, tool_name: str, arguments: dict[str, Any] 
     Returns a string result (JSON or error message) for the LLM.
     """
     arguments = arguments or {}
+
+    # Synthetic utility tool: get_actions
+    if tool_name == "get_actions":
+        env.fetch_actions()
+        links = env._links
+        payload = [
+            {
+                "tool_name": link.tool_name,
+                "href": link.href,
+                "method": link.action,
+                "description": link.description,
+            }
+            for link in links
+        ]
+        return json.dumps(payload, default=str)
+
     links = env._links
     if not links:
         env.fetch_actions()
