@@ -56,6 +56,8 @@ final class ItemGeneratorService {
             for essence in item.essences {
                 chance *= info.essenceBoosts[essence, default: 1]
             }
+            // Higher BaseItem.rarity => larger weight => more likely to be rolled.
+            chance *= item.rarity
             return chance
         }
 

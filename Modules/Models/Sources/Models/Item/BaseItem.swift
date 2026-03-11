@@ -61,6 +61,17 @@ public enum BaseItem: String, Hashable, Equatable, CaseIterable, Identifiable, C
         }
     }
 
+    /// Numeric rarity tier for item generation or display; higher means rarer.
+    /// Default is 1; override per case when an item should be treated as more (or less) rare.
+    public var rarity: Double {
+        switch self {
+        case .copperFlorin:
+            return 2.0
+        default:
+            return 1.0
+        }
+    }
+
     public var essences: [Essence] {
         switch self {
             // Junk
