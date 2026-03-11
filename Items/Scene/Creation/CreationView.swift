@@ -51,6 +51,10 @@ import SwiftUI
         var artifactSlots: [ArtifactInstance?] {
             warehouse.equippedSlotsContents(upToSlotCount: maxArtifacts)
         }
+
+        /// Latest sacrifice config + consumption plan for `SacrificesButton` (and overlays).
+        var sacrificeConfig: SacrificeConfig = SacrificeConfig()
+        var sacrificePlan: SacrificePlan = SacrificePlan(slotsByIndex: [:])
     }
 
 }
@@ -77,12 +81,12 @@ extension CreationView: View {
                     )
                     : nil,
                 artifactButton: artifactSlotView,
+                sacrificesButton: sacrificesButton,
             )
             maybeCreationAnimation
             sacrificeAvatarsOverlay
             itemContainer
             VStack {
-                topBar
                 Spacer()
                 makeButtonRow
             }
@@ -108,23 +112,15 @@ extension CreationView: View {
             .frame(maxWidth: 280, maxHeight: 280)
     }
     
-    private var topBar: some View {
-        HStack {
-            Spacer()
-            if viewModel.model.sacrificesUnlocked {
-                sacficesButton
-            }
+    private var sacrificesButton: SacrificesButton? {
+        guard viewModel.model.sacrificesUnlocked else {
+            return nil
         }
-    }
-
-    private var sacficesButton: some View {
-        Button(action: viewModel.showRecipes) {
-            HStack {
-                Text("Sacrifices")
-            }
-        }
-        .buttonStyle(CapsuleButtonStyle())
-        .readFrame(frame: $sacrificesButtonFrame)
+        return SacrificesButton(
+            config: viewModel.model.sacrificeConfig,
+            plan: viewModel.model.sacrificePlan,
+            action: viewModel.showRecipes,
+        )
     }
     
     @ViewBuilder

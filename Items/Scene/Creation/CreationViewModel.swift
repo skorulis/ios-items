@@ -61,6 +61,7 @@ import SwiftUI
 
         mainStore.$warehouse.sink { [unowned self] in
             self.model.warehouse = $0
+            self.syncSacrificePlan()
         }
         .store(in: &cancellables)
         
@@ -93,6 +94,19 @@ import SwiftUI
 
         self.model.showingResearch = mainStore.portalUpgrades.purchased.contains(.researchLab)
         self.model.researchBadgeCount = mainStore.notifications.newResearchLevels
+
+        mainStore.$recipes.sink { [unowned self] _ in
+            self.syncSacrificePlan()
+        }
+        .store(in: &cancellables)
+
+        syncSacrificePlan()
+    }
+
+    private func syncSacrificePlan() {
+        // TODO: Pull this information out of item generation service
+        model.sacrificeConfig = mainStore.recipes.sacrificeConfig
+        model.sacrificePlan = itemGeneratorService.sacrificeConsumptionPlan()
     }
     
     deinit {

@@ -13,6 +13,7 @@ struct PortalView: View {
     let upgradesButton: Button?
     let researchButton: Button?
     let artifactButton: ArtifactSlotView?
+    let sacrificesButton: SacrificesButton?
 
     var body: some View {
         ZStack {
@@ -28,37 +29,48 @@ struct PortalView: View {
             .scaledToFit()
             .frame(maxWidth: 280, maxHeight: 280)
     }
+    
+    private var topButtons: some View {
+        HStack {
+            if let upgradesButton {
+                PortalCornerButton(
+                    icon: Image(systemName: "arrow.up.circle.fill"),
+                    action: upgradesButton.action,
+                    badge: upgradesButton.badge,
+                    frameBinding: upgradesButton.frameBinding,
+                )
+            }
+            Spacer(minLength: 0)
+            if let sacrificesButton {
+                sacrificesButton
+            }
+        }
+    }
+    
+    private var bottomButtons: some View {
+        HStack {
+            if let artifactButton {
+                artifactButton
+            }
+            Spacer(minLength: 0)
+            if let researchButton {
+                PortalCornerButton(
+                    icon: Image(systemName: "flask.fill"),
+                    action: researchButton.action,
+                    badge: researchButton.badge,
+                    frameBinding: researchButton.frameBinding,
+                )
+            }
+        }
+    }
 
     @ViewBuilder
     private var cornerButtons: some View {
         if upgradesButton != nil || researchButton != nil {
             VStack {
-                HStack {
-                    if let upgradesButton {
-                        PortalCornerButton(
-                            icon: Image(systemName: "arrow.up.circle.fill"),
-                            action: upgradesButton.action,
-                            badge: upgradesButton.badge,
-                            frameBinding: upgradesButton.frameBinding,
-                        )
-                    }
-                    Spacer(minLength: 0)
-                }
+                topButtons
                 Spacer(minLength: 0)
-                HStack {
-                    if let artifactButton {
-                        artifactButton
-                    }
-                    Spacer(minLength: 0)
-                    if let researchButton {
-                        PortalCornerButton(
-                            icon: Image(systemName: "flask.fill"),
-                            action: researchButton.action,
-                            badge: researchButton.badge,
-                            frameBinding: researchButton.frameBinding,
-                        )
-                    }
-                }
+                bottomButtons
             }
             .padding()
         }
@@ -119,8 +131,13 @@ struct PortalCornerButton: View {
         artifactButton: ArtifactSlotView(
             slots: [.init(type: .eternalHourglass, quality: .junk), nil],
             size: .small,
+        ),
+        sacrificesButton: SacrificesButton(
+            config: .init(slots: [:]),
+            plan: .init(itemsInOrder: [.apple]),
+            action: {},
         )
     )
     .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .background(Color.black.opacity(0.3))
+    .background(Color.white)
 }

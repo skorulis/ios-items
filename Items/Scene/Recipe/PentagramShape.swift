@@ -8,14 +8,15 @@ import SwiftUI
 
 enum PentagramLayout {
 
-    /// Inset from min dimension before radius (matches SacrificeView padding intent).
+    /// Default inset from min dimension before radius (matches SacrificeView padding intent).
     static let inset: CGFloat = 24
 
     static func center(in rect: CGRect) -> CGPoint {
         CGPoint(x: rect.midX, y: rect.midY)
     }
 
-    static func radius(in rect: CGRect) -> CGFloat {
+    /// Half of (min side − 2×inset); `inset` defaults to 24 for full-screen pentagram; use a small inset (e.g. 4) for compact buttons.
+    static func radius(in rect: CGRect, inset: CGFloat = PentagramLayout.inset) -> CGFloat {
         let size = min(rect.width, rect.height) - inset * 2
         return max(0, size / 2)
     }
@@ -34,9 +35,12 @@ enum PentagramLayout {
 
 /// Circle through the five pentagram vertices (same center/radius as star).
 struct PentagramCircumcircleShape: Shape {
+    /// Inset from rect edges before computing radius; smaller = larger pentagram in same rect.
+    var layoutInset: CGFloat = PentagramLayout.inset
+
     func path(in rect: CGRect) -> Path {
         let center = PentagramLayout.center(in: rect)
-        let radius = PentagramLayout.radius(in: rect)
+        let radius = PentagramLayout.radius(in: rect, inset: layoutInset)
         var path = Path()
         path.addEllipse(in: CGRect(
             x: center.x - radius,
@@ -52,9 +56,11 @@ struct PentagramCircumcircleShape: Shape {
 
 /// Pentagram stroke: connect every second vertex (0-2-4-1-3-0) with slight outward curves.
 struct PentagramShape: Shape {
+    var layoutInset: CGFloat = PentagramLayout.inset
+
     func path(in rect: CGRect) -> Path {
         let center = PentagramLayout.center(in: rect)
-        let radius = PentagramLayout.radius(in: rect)
+        let radius = PentagramLayout.radius(in: rect, inset: layoutInset)
         let points = (0..<SacrificeConfig.slotCount).map {
             PentagramLayout.vertexPoint(index: $0, center: center, radius: radius)
         }
