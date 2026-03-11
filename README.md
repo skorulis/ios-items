@@ -13,13 +13,26 @@ A game about finding items from another dimension.
 
 ## Example screens
 
+### Creation / portal
 
-| Area | Test source | Reference images |
-|------|-------------|------------------|
-| Warehouse | [WarehouseViewSnapshotTests.swift](ItemsSnapshotTests/Scene/WarehouseViewSnapshotTests.swift) | [__Snapshots__/WarehouseViewSnapshotTests](ItemsSnapshotTests/Scene/__Snapshots__/WarehouseViewSnapshotTests/) |
-| Research | [ResearchViewSnapshotTests.swift](ItemsSnapshotTests/Scene/ResearchViewSnapshotTests.swift) | [__Snapshots__/ResearchViewSnapshotTests](ItemsSnapshotTests/Scene/__Snapshots__/ResearchViewSnapshotTests/) |
-| Creation | [CreationViewSnapshotTests.swift](ItemsSnapshotTests/Scene/CreationViewSnapshotTests.swift) | [__Snapshots__/CreationViewSnapshotTests](ItemsSnapshotTests/Scene/__Snapshots__/CreationViewSnapshotTests/) |
-| Portal upgrades | [PortalUpgradesViewSnapshotTests.swift](ItemsSnapshotTests/Scene/PortalUpgradesViewSnapshotTests.swift) | [__Snapshots__/PortalUpgradesViewSnapshotTests](ItemsSnapshotTests/Scene/__Snapshots__/PortalUpgradesViewSnapshotTests/) |
-| Artifact detail | [ArtifactDetailViewSnapshotTests.swift](ItemsSnapshotTests/Scene/ArtifactDetailViewSnapshotTests.swift) | [__Snapshots__/ArtifactDetailViewSnapshotTests](ItemsSnapshotTests/Scene/__Snapshots__/ArtifactDetailViewSnapshotTests/) |
-| Recipe detail | [RecipeDetailViewSnapshotTests.swift](ItemsSnapshotTests/Scene/RecipeDetailViewSnapshotTests.swift) | [__Snapshots__/RecipeDetailViewSnapshotTests](ItemsSnapshotTests/Scene/__Snapshots__/RecipeDetailViewSnapshotTests/) |
+![Creation view](ItemsSnapshotTests/Scene/__Snapshots__/CreationViewSnapshotTests/creationView_default.1.png)
 
+### Warehouse
+
+![Warehouse with items](ItemsSnapshotTests/Scene/__Snapshots__/WarehouseViewSnapshotTests/warehouse_with_items.1.png)
+
+### Research
+
+![Research in progress](ItemsSnapshotTests/Scene/__Snapshots__/ResearchViewSnapshotTests/research_in_progress_low_level.1.png)
+
+### Portal upgrades
+
+![Portal upgrades](ItemsSnapshotTests/Scene/__Snapshots__/PortalUpgradesViewSnapshotTests/portalUpgrades_purchase_segment_some_affordable.1.png)
+
+### Artifact detail
+
+![Artifact detail](ItemsSnapshotTests/Scene/__Snapshots__/ArtifactDetailViewSnapshotTests/artifactDetail_with_description.1.png)
+
+### Recipe detail
+
+![Recipe detail](ItemsSnapshotTests/Scene/__Snapshots__/RecipeDetailViewSnapshotTests/recipeDetail_complex_recipe.1.png)

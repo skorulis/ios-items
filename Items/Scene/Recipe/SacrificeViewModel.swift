@@ -39,6 +39,9 @@ import SwiftUI
             self.syncModel()
         }
         .store(in: &cancellables)
+
+        // Match store immediately; sinks only run on subsequent changes.
+        syncModel()
     }
 
     private func syncModel() {
