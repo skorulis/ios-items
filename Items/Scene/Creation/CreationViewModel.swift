@@ -18,6 +18,7 @@ import SwiftUI
     
     @ObservationIgnored var upgradeButtonFrame: CGRect = .zero
     @ObservationIgnored var researchButtonFrame: CGRect = .zero
+    @ObservationIgnored var sacrificesButtonFrame: CGRect = .zero
     
     var automateCreation: Bool = false {
         didSet {
@@ -156,7 +157,8 @@ extension CreationViewModel {
     }
     
     func showRecipes() {
-        coordinator?.push(MainPath.sacrifices)
+        let path = CircularAnimationPath(sourceRect: sacrificesButtonFrame, mainPath: .sacrifices)
+        coordinator?.custom(overlay: .circularReveal, path)
     }
 
     func showCurrentRecipeDetail() {

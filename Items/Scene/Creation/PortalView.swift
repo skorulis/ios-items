@@ -14,6 +14,7 @@ struct PortalView: View {
     let researchButton: Button?
     let artifactButton: ArtifactSlotView?
     let sacrificesButton: SacrificesButton.Model?
+    @Binding var sacrificesFrame: CGRect
 
     var body: some View {
         ZStack {
@@ -43,6 +44,7 @@ struct PortalView: View {
             Spacer(minLength: 0)
             if let sacrificesButton {
                 SacrificesButton(model: sacrificesButton)
+                    .readFrame(frame: $sacrificesFrame)
             }
         }
     }
@@ -134,7 +136,8 @@ struct PortalCornerButton: View {
             config: .init(slots: [:]),
             plan: .init(itemsInOrder: [.apple]),
             action: {},
-        )
+        ),
+        sacrificesFrame: .constant(.zero),
     )
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .background(Color.white)

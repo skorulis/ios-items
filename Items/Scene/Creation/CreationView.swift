@@ -9,7 +9,6 @@ import SwiftUI
 
 @MainActor struct CreationView {
     @State var viewModel: CreationViewModel
-    @State private var sacrificesButtonFrame: CGRect = .zero
 
     struct CreationInProgress {
         let id: UUID
@@ -82,6 +81,7 @@ extension CreationView: View {
                     : nil,
                 artifactButton: artifactSlotView,
                 sacrificesButton: sacrificesButton,
+                sacrificesFrame: $viewModel.sacrificesButtonFrame,
             )
             maybeCreationAnimation
             sacrificeAvatarsOverlay
@@ -139,8 +139,8 @@ extension CreationView: View {
         GeometryReader { geo in
             if let creation = viewModel.model.creationInProgress, !creation.sacrificedItems.isEmpty {
                 let startPosition = CGPoint(
-                    x: sacrificesButtonFrame.maxX - 20,
-                    y: sacrificesButtonFrame.midY,
+                    x: viewModel.sacrificesButtonFrame.maxX - 20,
+                    y: viewModel.sacrificesButtonFrame.midY,
                 )
                 let endPosition = CGPoint(x: geo.size.width / 2, y: geo.size.height / 2)
                 SacrificeAnimationView(

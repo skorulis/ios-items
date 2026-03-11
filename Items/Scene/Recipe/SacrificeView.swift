@@ -10,6 +10,7 @@ import SwiftUI
 
 @MainActor struct SacrificeView {
     @State var viewModel: SacrificeViewModel
+    @Environment(\.dismissCircularReveal) private var dismissCircularReveal
 
     /// Snapshot of everything needed to render the screen (updated by the view model).
     struct Model {
@@ -45,7 +46,13 @@ extension SacrificeView: View {
     private var titleBar: some View {
         TitleBar(
             title: "Sacrifices",
-            backAction: { viewModel.coordinator?.pop() },
+            backAction: {
+                if let dismissCircularReveal {
+                    dismissCircularReveal()
+                } else {
+                    viewModel.coordinator?.pop()
+                }
+            },
             trailing: {
                 Toggle("", isOn: Binding(
                     get: { viewModel.model.sacrificesEnabled },
