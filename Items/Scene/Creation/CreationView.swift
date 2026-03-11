@@ -39,6 +39,20 @@ import SwiftUI
         
         var recipesAvailable: Bool { achievements.unlocked.contains(.items10) }
         var upgradesAvailable: Bool { achievements.unlocked.contains(.items10) }
+
+        /// Items created count; used for upgrades-corner progress toward `.items10` when the button is locked.
+        var itemsCreatedCount: Int64 = 0
+
+        /// Progress 0...1 toward unlocking `.items10` (Baby steps / upgrades button).
+        var items10UnlockProgress: CGFloat {
+            let requirement = Achievement.items10.requirement
+            switch requirement {
+            case let .itemsCreated(n) where n > 0:
+                return CGFloat(min(itemsCreatedCount, n)) / CGFloat(n)
+            default:
+                return 0
+            }
+        }
         var firstItem: Bool { !achievements.unlocked.contains(.items1) }
         var automationUnlocked: Bool = false
         var sacrificesUnlocked: Bool = false
@@ -65,13 +79,7 @@ extension CreationView: View {
     var body: some View {
         ZStack {
             PortalView(
-                upgradesButton: viewModel.model.upgradesAvailable
-                    ? .init(
-                        action: viewModel.showPortalUpgrades,
-                        badge: viewModel.model.upgradesBadgeCount,
-                        frameBinding: $viewModel.upgradeButtonFrame,
-                    )
-                    : nil,
+                upgradesButton: upgradesButton,
                 researchButton: viewModel.model.showingResearch
                     ? .init(
                         action: viewModel.showResearch,
@@ -94,6 +102,21 @@ extension CreationView: View {
             
         }
         .coordinateSpace(name: "creation")
+    }
+    
+    private var upgradesButton: PortalView.ButtonOrProgress? {
+        if viewModel.model.items10UnlockProgress == 0 {
+            return nil
+        }
+        return viewModel.model.upgradesAvailable
+            ? .button(
+                .init(
+                    action: viewModel.showPortalUpgrades,
+                    badge: viewModel.model.upgradesBadgeCount,
+                    frameBinding: $viewModel.upgradeButtonFrame,
+                )
+            )
+            : .progress(viewModel.model.items10UnlockProgress)
     }
     
     private var artifactSlotView: ArtifactSlotView? {

@@ -10,7 +10,7 @@ import SwiftUI
 /// Encapsulates the dimensional portal background and corner action buttons.
 struct PortalView: View {
 
-    let upgradesButton: Button?
+    let upgradesButton: ButtonOrProgress?
     let researchButton: Button?
     let artifactButton: ArtifactSlotView?
     let sacrificesButton: SacrificesButton.Model?
@@ -34,12 +34,17 @@ struct PortalView: View {
     private var topButtons: some View {
         HStack {
             if let upgradesButton {
-                PortalCornerButton(
-                    icon: Image(systemName: "arrow.up.circle.fill"),
-                    action: upgradesButton.action,
-                    badge: upgradesButton.badge,
-                    frameBinding: upgradesButton.frameBinding,
-                )
+                switch upgradesButton {
+                case let .button(button):
+                    PortalCornerButton(
+                        icon: Image(systemName: "arrow.up.circle.fill"),
+                        action: button.action,
+                        badge: button.badge,
+                        frameBinding: button.frameBinding,
+                    )
+                case let .progress(amount):
+                    PortalUpgradesProgressRing(amount: amount)
+                }
             }
             Spacer(minLength: 0)
             if let sacrificesButton {
@@ -83,6 +88,11 @@ extension PortalView {
         let badge: Int
         let frameBinding: Binding<CGRect>
     }
+    
+    enum ButtonOrProgress {
+        case button(Button)
+        case progress(CGFloat)
+    }
 }
 
 // MARK: - Portal corner button
@@ -124,9 +134,21 @@ struct PortalCornerButton: View {
 
 // MARK: - Previews
 
+#Preview("Portal view upgrades progress ring") {
+    PortalView(
+        upgradesButton: .progress(0.65),
+        researchButton: nil,
+        artifactButton: nil,
+        sacrificesButton: nil,
+        sacrificesFrame: .constant(.zero),
+    )
+    .frame(maxWidth: .infinity, maxHeight: .infinity)
+    .background(Color.white)
+}
+
 #Preview("Portal view with upgrades") {
     PortalView(
-        upgradesButton: .init(action: {}, badge: 0, frameBinding: .constant(.zero)),
+        upgradesButton: .button(.init(action: {}, badge: 0, frameBinding: .constant(.zero))),
         researchButton: nil,
         artifactButton: ArtifactSlotView(
             slots: [.init(type: .eternalHourglass, quality: .junk), nil],

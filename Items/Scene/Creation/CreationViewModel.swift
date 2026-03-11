@@ -80,6 +80,11 @@ import SwiftUI
         }
         .store(in: &cancellables)
 
+        mainStore.$statistics.sink { [unowned self] in
+            self.model.itemsCreatedCount = $0.itemsCreated
+        }
+        .store(in: &cancellables)
+
         mainStore.$portalUpgrades.sink { [unowned self] in
             self.model.automationUnlocked = $0.purchased.contains(.portalAutomation)
             self.model.sacrificesUnlocked = $0.purchased.contains(.sacrifices)
