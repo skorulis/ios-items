@@ -44,5 +44,8 @@ extension EncyclopediaViewModel {
     func showChild(entry: EncyclopediaEntry) {
         coordinator?.push(MainPath.encyclopediaEntry(entry))
     }
-    
+
+    func showStatistics() {
+        coordinator?.push(MainPath.gameStatistics)
+    }
 }

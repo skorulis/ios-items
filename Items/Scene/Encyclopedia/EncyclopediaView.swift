@@ -58,6 +58,17 @@ extension EncyclopediaView: View {
         TitleBar(
             title: viewModel.entry.title,
             backAction: viewModel.backAction,
+            trailing: {
+                Button(action: { viewModel.showStatistics() }) {
+                    Image(systemName: "chart.bar")
+                        .font(.body.weight(.medium))
+                        .frame(width: 44, height: 44)
+                        .foregroundStyle(Color.black)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("Statistics")
+            }
         )
     }
 }
