@@ -47,8 +47,8 @@ import SwiftUI
         }
         .store(in: &cancellables)
 
-        mainStore.$achievements.sink { [unowned self] _ in
-            self.model.showArtifactsTab = mainStore.achievements.unlocked.contains(.artifact1)
+        mainStore.$achievements.sink { [unowned self]  in
+            self.model.showArtifactsTab = $0.unlocked.contains(.artifact1)
         }
         .store(in: &cancellables)
         

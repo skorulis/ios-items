@@ -13,7 +13,7 @@ struct PortalView: View {
     let upgradesButton: Button?
     let researchButton: Button?
     let artifactButton: ArtifactSlotView?
-    let sacrificesButton: SacrificesButton?
+    let sacrificesButton: SacrificesButton.Model?
 
     var body: some View {
         ZStack {
@@ -42,7 +42,7 @@ struct PortalView: View {
             }
             Spacer(minLength: 0)
             if let sacrificesButton {
-                sacrificesButton
+                SacrificesButton(model: sacrificesButton)
             }
         }
     }
@@ -66,14 +66,12 @@ struct PortalView: View {
 
     @ViewBuilder
     private var cornerButtons: some View {
-        if upgradesButton != nil || researchButton != nil {
-            VStack {
-                topButtons
-                Spacer(minLength: 0)
-                bottomButtons
-            }
-            .padding()
+        VStack {
+            topButtons
+            Spacer(minLength: 0)
+            bottomButtons
         }
+        .padding()
     }
 }
 
@@ -132,7 +130,7 @@ struct PortalCornerButton: View {
             slots: [.init(type: .eternalHourglass, quality: .junk), nil],
             size: .small,
         ),
-        sacrificesButton: SacrificesButton(
+        sacrificesButton: SacrificesButton.Model(
             config: .init(slots: [:]),
             plan: .init(itemsInOrder: [.apple]),
             action: {},

@@ -99,8 +99,8 @@ import SwiftUI
         self.model.showingResearch = mainStore.portalUpgrades.purchased.contains(.researchLab)
         self.model.researchBadgeCount = mainStore.notifications.newResearchLevels
 
-        mainStore.$recipes.sink { [unowned self] _ in
-            self.model.sacrificeConfig = self.mainStore.recipes.sacrificeConfig
+        mainStore.$recipes.sink { [unowned self] in
+            self.model.sacrificeConfig = $0.sacrificeConfig
         }
         .store(in: &cancellables)
 

@@ -4,26 +4,42 @@ import Foundation
 import Models
 import SwiftUI
 
+// MARK: - Memory footprint
+
 /// Compact pentagram button matching `PortalCornerButton` size (44×44).
 /// Stroke reflects how much of `config` is satisfied by `plan`: green (full), yellow (partial), grey (none / empty).
-struct SacrificesButton: View {
+struct SacrificesButton {
 
     /// Matches `PortalCornerButton` frame.
     static let size: CGFloat = 44
 
-    /// Inset so the star fits inside the circle without clipping (1px stroke).
-    private static let pentagramInset: CGFloat = 0
+    private let model: Model
+    
+    init(model: Model) {
+        self.model = model
+    }
+}
 
-    let config: SacrificeConfig
-    let plan: SacrificePlan
-    let action: () -> Void
+// MARK: - Inner Types
 
+extension SacrificesButton {
+    struct Model {
+        let config: SacrificeConfig
+        let plan: SacrificePlan
+        let action: () -> Void
+    }
+}
+
+// MARK: - Rendering
+
+extension SacrificesButton: View {
+    
     var body: some View {
-        Button(action: action) {
+        Button(action: model.action) {
             ZStack {
-                PentagramCircumcircleShape(layoutInset: Self.pentagramInset)
+                PentagramCircumcircleShape(layoutInset: 0)
                     .stroke(strokeColor, lineWidth: 2)
-                PentagramShape(layoutInset: Self.pentagramInset)
+                PentagramShape(layoutInset: 0)
                     .stroke(strokeColor, lineWidth: 2)
             }
             .frame(width: Self.size, height: Self.size)
@@ -33,14 +49,9 @@ struct SacrificesButton: View {
     }
 
     private var strokeColor: Color {
-        Self.strokeColor(config: config, plan: plan)
-    }
-
-    /// Green = every configured slot satisfied by plan; yellow = some but not all; grey = none configured or none satisfiable.
-    static func strokeColor(config: SacrificeConfig, plan: SacrificePlan) -> Color {
         var configuredSlots: [(Int, BaseItem)] = []
         for index in 0..<SacrificeConfig.slotCount {
-            if let item = config.item(at: index) {
+            if let item = model.config.item(at: index) {
                 configuredSlots.append((index, item))
             }
         }
@@ -49,7 +60,7 @@ struct SacrificesButton: View {
         }
         var satisfiedCount = 0
         for (index, configuredItem) in configuredSlots {
-            if plan.item(at: index) == configuredItem {
+            if model.plan.item(at: index) == configuredItem {
                 satisfiedCount += 1
             }
         }
@@ -68,19 +79,25 @@ struct SacrificesButton: View {
 #Preview("SacrificesButton states") {
     HStack(spacing: 16) {
         SacrificesButton(
-            config: SacrificeConfig(slots: [:]),
-            plan: SacrificePlan(slotsByIndex: [:]),
-            action: {}
+            model: .init(
+                config: SacrificeConfig(slots: [:]),
+                plan: SacrificePlan(slotsByIndex: [:]),
+                action: {},
+            )
         )
         SacrificesButton(
-            config: SacrificeConfig(slots: [0: .apple, 1: .rock]),
-            plan: SacrificePlan(slotsByIndex: [0: .apple, 1: nil]),
-            action: {}
+            model: .init(
+                config: SacrificeConfig(slots: [0: .apple, 1: .rock]),
+                plan: SacrificePlan(slotsByIndex: [0: .apple, 1: nil]),
+                action: {},
+            )
         )
         SacrificesButton(
-            config: SacrificeConfig(slots: [0: .apple]),
-            plan: SacrificePlan(slotsByIndex: [0: .apple]),
-            action: {}
+            model: .init(
+                config: SacrificeConfig(slots: [0: .apple]),
+                plan: SacrificePlan(slotsByIndex: [0: .apple]),
+                action: {},
+            )
         )
     }
     .padding()

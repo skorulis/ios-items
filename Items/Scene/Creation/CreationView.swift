@@ -112,11 +112,11 @@ extension CreationView: View {
             .frame(maxWidth: 280, maxHeight: 280)
     }
     
-    private var sacrificesButton: SacrificesButton? {
+    private var sacrificesButton: SacrificesButton.Model? {
         guard viewModel.model.sacrificesUnlocked else {
             return nil
         }
-        return SacrificesButton(
+        return SacrificesButton.Model(
             config: viewModel.model.sacrificeConfig,
             plan: viewModel.model.sacrificePlan,
             action: viewModel.showRecipes,
