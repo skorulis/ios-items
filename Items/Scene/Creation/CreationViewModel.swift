@@ -147,7 +147,7 @@ extension CreationViewModel {
     }
     
     func showRecipes() {
-        coordinator?.push(MainPath.recipeList)
+        coordinator?.push(MainPath.sacrifices)
     }
 
     func showCurrentRecipeDetail() {

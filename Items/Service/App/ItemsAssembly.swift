@@ -74,6 +74,7 @@ final class ItemsAssembly: AutoInitModuleAssembly {
         container.register(WarehouseViewModel.self) { WarehouseViewModel.make(resolver: $0) }
         container.register(DebugViewModel.self) { DebugViewModel.make(resolver: $0) }
         container.register(RecipeListViewModel.self) { RecipeListViewModel.make(resolver: $0) }
+        container.register(SacrificeViewModel.self) { SacrificeViewModel.make(resolver: $0) }
         container.register(ResearchViewModel.self) { ResearchViewModel.make(resolver: $0) }
         container.register(AchievementsViewModel.self) { AchievementsViewModel.make(resolver: $0) }
         container.register(PortalUpgradesViewModel.self) { PortalUpgradesViewModel.make(resolver: $0) }

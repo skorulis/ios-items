@@ -5,4 +5,7 @@ import Foundation
 struct Recipes: Codable, Equatable {
     var list: [Recipe] = []
     var sacrificesEnabled: Bool = true
+    
+    // A single config with 5 slots
+    var sacrificeConfig: SacrificeConfig = SacrificeConfig()
 }

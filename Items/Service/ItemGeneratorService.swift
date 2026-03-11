@@ -43,6 +43,32 @@ final class ItemGeneratorService {
         return item
     }
     
+    /// Resolves which item (if any) would be consumed from each sacrifice slot, in slot order.
+    /// Same item in multiple slots consumes one warehouse unit per slot; if stock runs out,
+    /// later slots get `nil` even if the slot is configured.
+    /// - Returns: Slot index → item to consume, or `nil` when the slot is empty or inventory is insufficient.
+    func sacrificeConsumptionPlan(config: SacrificeConfig) -> [Int: BaseItem?] {
+        var available: [BaseItem: Int] = [:]
+        for item in BaseItem.allCases {
+            available[item] = mainStore.warehouse.quantity(item)
+        }
+        var result: [Int: BaseItem?] = [:]
+        for index in 0..<SacrificeConfig.slotCount {
+            guard let item = config.item(at: index) else {
+                result[index] = nil
+                continue
+            }
+            let qty = available[item, default: 0]
+            if qty > 0 {
+                result[index] = item
+                available[item] = qty - 1
+            } else {
+                result[index] = nil
+            }
+        }
+        return result
+    }
+
     func make(recipe: Recipe) -> MakeItemResult {
         let info = recipeInfo(recipe: recipe)
         let quality = info.randomQuality()

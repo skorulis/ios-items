@@ -14,6 +14,7 @@ enum MainPath: CoordinatorPath {
     case creation
     case warehouse
     case recipeList
+    case sacrifices
     case research
     case achievements
     case portalUpgrades
@@ -54,6 +55,8 @@ struct MainPathRenderer: CoordinatorPathRenderer {
             WarehouseView(viewModel: coordinator.apply(resolver.warehouseViewModel()))
         case .recipeList:
             RecipeListView(viewModel: coordinator.apply(resolver.recipeListViewModel()))
+        case .sacrifices:
+            SacrificeView(viewModel: coordinator.apply(resolver.sacrificeViewModel()))
         case .research:
             ResearchView(viewModel: coordinator.apply(resolver.researchViewModel()))
         case .achievements:
