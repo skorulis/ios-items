@@ -39,7 +39,7 @@ final class CurrentRecipeDetailViewModel: RecipeDetailViewModel {
     }
     
     private func makeModel() -> RecipeDetailView.Model {
-        let plan = itemGeneratorService.sacrificeConsumptionPlan()
+        let plan = recipeService.sacrificeConsumptionPlan()
         let info = itemGeneratorService.recipeInfo(plan: plan)
         let qualityChances = Self.normalizedQualityChances(from: info.quality)
         let essenceBonuses = Self.sortedEssenceBonuses(from: info.essenceBoosts)

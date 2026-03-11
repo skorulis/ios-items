@@ -7,7 +7,7 @@ import Models
 import Testing
 
 @MainActor
-struct ItemGeneratorServiceTests {
+struct RecipeServiceTests {
 
     private func setSacrificeConfig(_ assembly: ScopedModuleAssembler<BaseResolver>, config: SacrificeConfig) {
         let mainStore = assembly.resolver.mainStore()
@@ -21,7 +21,7 @@ struct ItemGeneratorServiceTests {
     @Test
     func sacrificeConsumptionPlan_emptyConfig_allSlotsNil() {
         let assembly = ItemsAssembly.testing()
-        let service = assembly.resolver.itemGeneratorService()
+        let service = assembly.resolver.recipeService()
         setSacrificeConfig(assembly, config: SacrificeConfig(slots: [:]))
 
         let plan = service.sacrificeConsumptionPlan()
@@ -34,7 +34,7 @@ struct ItemGeneratorServiceTests {
     @Test
     func sacrificeConsumptionPlan_singleSlot_withStock_returnsItem() {
         let assembly = ItemsAssembly.testing()
-        let service = assembly.resolver.itemGeneratorService()
+        let service = assembly.resolver.recipeService()
         let warehouseService = assembly.resolver.warehouseService()
         warehouseService.add(item: .apple, count: 1)
         setSacrificeConfig(assembly, config: SacrificeConfig(slots: [0: .apple]))
@@ -50,7 +50,7 @@ struct ItemGeneratorServiceTests {
     @Test
     func sacrificeConsumptionPlan_singleSlot_withoutStock_returnsNil() {
         let assembly = ItemsAssembly.testing()
-        let service = assembly.resolver.itemGeneratorService()
+        let service = assembly.resolver.recipeService()
         setSacrificeConfig(assembly, config: SacrificeConfig(slots: [0: .apple]))
 
         let plan = service.sacrificeConsumptionPlan()
@@ -61,7 +61,7 @@ struct ItemGeneratorServiceTests {
     @Test
     func sacrificeConsumptionPlan_sameItemMultipleSlots_insufficientStock_laterSlotsNil() {
         let assembly = ItemsAssembly.testing()
-        let service = assembly.resolver.itemGeneratorService()
+        let service = assembly.resolver.recipeService()
         let warehouseService = assembly.resolver.warehouseService()
         warehouseService.add(item: .apple, count: 2)
         setSacrificeConfig(assembly, config: SacrificeConfig(slots: [
@@ -80,7 +80,7 @@ struct ItemGeneratorServiceTests {
     @Test
     func sacrificeConsumptionPlan_sameItemMultipleSlots_sufficientStock_allFilled() {
         let assembly = ItemsAssembly.testing()
-        let service = assembly.resolver.itemGeneratorService()
+        let service = assembly.resolver.recipeService()
         let warehouseService = assembly.resolver.warehouseService()
         warehouseService.add(item: .gear, count: 3)
         setSacrificeConfig(assembly, config: SacrificeConfig(slots: [
@@ -99,7 +99,7 @@ struct ItemGeneratorServiceTests {
     @Test
     func sacrificeConsumptionPlan_mixedItems_respectsPerItemQuantities() {
         let assembly = ItemsAssembly.testing()
-        let service = assembly.resolver.itemGeneratorService()
+        let service = assembly.resolver.recipeService()
         let warehouseService = assembly.resolver.warehouseService()
         warehouseService.add(item: .apple, count: 1)
         warehouseService.add(item: .rock, count: 1)
@@ -119,7 +119,7 @@ struct ItemGeneratorServiceTests {
     @Test
     func sacrificeConsumptionPlan_isNonMutating_warehouseUnchanged() {
         let assembly = ItemsAssembly.testing()
-        let service = assembly.resolver.itemGeneratorService()
+        let service = assembly.resolver.recipeService()
         let mainStore = assembly.resolver.mainStore()
         let warehouseService = assembly.resolver.warehouseService()
         warehouseService.add(item: .copperFlorin, count: 5)

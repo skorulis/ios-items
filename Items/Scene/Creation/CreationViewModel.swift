@@ -61,7 +61,11 @@ import SwiftUI
 
         mainStore.$warehouse.sink { [unowned self] in
             self.model.warehouse = $0
-            self.syncSacrificePlan()
+        }
+        .store(in: &cancellables)
+
+        recipeService.$sacrificePlan.sink { [unowned self] plan in
+            self.model.sacrificePlan = plan
         }
         .store(in: &cancellables)
         
@@ -96,19 +100,14 @@ import SwiftUI
         self.model.researchBadgeCount = mainStore.notifications.newResearchLevels
 
         mainStore.$recipes.sink { [unowned self] _ in
-            self.syncSacrificePlan()
+            self.model.sacrificeConfig = self.mainStore.recipes.sacrificeConfig
         }
         .store(in: &cancellables)
 
-        syncSacrificePlan()
+        model.sacrificeConfig = mainStore.recipes.sacrificeConfig
+        model.sacrificePlan = recipeService.sacrificePlan
     }
 
-    private func syncSacrificePlan() {
-        // TODO: Pull this information out of item generation service
-        model.sacrificeConfig = mainStore.recipes.sacrificeConfig
-        model.sacrificePlan = itemGeneratorService.sacrificeConsumptionPlan()
-    }
-    
     deinit {
         stopMakeTimer()
     }
@@ -142,7 +141,7 @@ extension CreationViewModel {
     
     func make() async {
         if model.creationInProgress != nil { return }
-        let plan = itemGeneratorService.sacrificeConsumptionPlan()
+        let plan = recipeService.sacrificePlan
         let consumed = plan.consumedItems
         let duration = TimeInterval(calculations.itemCreationMilliseconds) / 1000
         self.model.creationInProgress = CreationView.CreationInProgress(id: UUID(), duration: duration, sacrificedItems: consumed)

@@ -45,34 +45,6 @@ final class ItemGeneratorService {
         return item
     }
 
-    /// Resolves which item (if any) would be consumed from each sacrifice slot, in slot order.
-    /// Uses `mainStore.recipes.sacrificeConfig` and current warehouse quantities.
-    func sacrificeConsumptionPlan() -> SacrificePlan {
-        if !mainStore.recipes.sacrificesEnabled {
-            return .init(itemsInOrder: [])
-        }
-        let config = mainStore.recipes.sacrificeConfig
-        var available: [BaseItem: Int] = [:]
-        for item in BaseItem.allCases {
-            available[item] = mainStore.warehouse.quantity(item)
-        }
-        var result: [Int: BaseItem?] = [:]
-        for index in 0..<SacrificeConfig.slotCount {
-            guard let item = config.item(at: index) else {
-                result[index] = nil
-                continue
-            }
-            let qty = available[item, default: 0]
-            if qty > 0 {
-                result[index] = item
-                available[item] = qty - 1
-            } else {
-                result[index] = nil
-            }
-        }
-        return SacrificePlan(slotsByIndex: result)
-    }
-
     func make(plan: SacrificePlan) -> MakeItemResult {
         let info = recipeInfo(plan: plan)
         let quality = info.randomQuality()

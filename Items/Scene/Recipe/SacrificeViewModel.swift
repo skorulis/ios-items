@@ -19,13 +19,13 @@ import SwiftUI
     var editingSlot: SacrificeSlotEdit?
 
     private let mainStore: MainStore
-    private let itemGeneratorService: ItemGeneratorService
+    private let recipeService: RecipeService
     private var cancellables: Set<AnyCancellable> = []
 
     @Resolvable<BaseResolver>
-    init(mainStore: MainStore, itemGeneratorService: ItemGeneratorService) {
+    init(mainStore: MainStore, recipeService: RecipeService) {
         self.mainStore = mainStore
-        self.itemGeneratorService = itemGeneratorService
+        self.recipeService = recipeService
         self.model = .init(sacrificesEnabled: mainStore.recipes.sacrificesEnabled, warehouse: mainStore.warehouse)
 
         mainStore.$warehouse.delayedChange().sink { [unowned self] in
@@ -42,7 +42,7 @@ import SwiftUI
     }
 
     private func syncModel() {
-        model.consumptionPlan = itemGeneratorService.sacrificeConsumptionPlan()
+        model.consumptionPlan = recipeService.sacrificeConsumptionPlan()
         model.slotItems = mainStore.recipes.sacrificeConfig.slots
         
     }
