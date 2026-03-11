@@ -27,18 +27,35 @@ private struct CircularRevealMaskModifier: ViewModifier, Animatable {
         set { progress = newValue }
     }
 
+    /// Line width of the boundary ring at the mask edge.
+    private static let ringLineWidth: CGFloat = 2
+
     func body(content: Content) -> some View {
         GeometryReader { proxy in
             let size = proxy.size
             let maxRadius = hypot(size.width, size.height)
             let radius = maxRadius * progress
 
-            content
-                .mask(
+            ZStack {
+                content
+                    .mask(
+                        Circle()
+                            .frame(width: radius * 2, height: radius * 2)
+                            .position(x: center.x, y: center.y)
+                    )
+
+                // Ring on the mask edge: separates revealed (inside) from hidden (outside).
+                if radius > 0 {
                     Circle()
+                        .stroke(
+                            Color.primary.opacity(0.4),
+                            lineWidth: Self.ringLineWidth
+                        )
                         .frame(width: radius * 2, height: radius * 2)
                         .position(x: center.x, y: center.y)
-                )
+                        .allowsHitTesting(false)
+                }
+            }
         }
     }
 }
