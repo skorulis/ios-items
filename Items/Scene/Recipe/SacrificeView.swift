@@ -16,7 +16,7 @@ import SwiftUI
         var sacrificesEnabled: Bool
         var warehouse: Warehouse
         var slotItems: [Int: BaseItem] = [:]
-        var consumptionPlan: [Int: BaseItem?] = [:]
+        var consumptionPlan: SacrificePlan = SacrificePlan(slotsByIndex: [:])
     }
 }
 
@@ -86,7 +86,7 @@ extension SacrificeView: View {
     private func slotView(index: Int) -> some View {
         let model = viewModel.model
         let item = model.slotItems[index]
-        let isReady = model.consumptionPlan[index] != nil
+        let isReady = model.consumptionPlan.isSatisfied(at: index)
         let borderColor: Color = {
             return isReady ? .green : .gray
         }()

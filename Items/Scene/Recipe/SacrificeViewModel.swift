@@ -42,7 +42,7 @@ import SwiftUI
     }
 
     private func syncModel() {
-        model.consumptionPlan = itemGeneratorService.sacrificeConsumptionPlan(config: mainStore.recipes.sacrificeConfig)
+        model.consumptionPlan = itemGeneratorService.sacrificeConsumptionPlan()
         model.slotItems = mainStore.recipes.sacrificeConfig.slots
         
     }

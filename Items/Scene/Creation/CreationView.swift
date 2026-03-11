@@ -37,7 +37,6 @@ import SwiftUI
 
         var warehouse: Warehouse = Warehouse()
         var achievements: Achievements = Achievements()
-        var recipes: [Recipe] = []
         
         var recipesAvailable: Bool { achievements.unlocked.contains(.items10) }
         var upgradesAvailable: Bool { achievements.unlocked.contains(.items10) }
@@ -51,13 +50,6 @@ import SwiftUI
         var maxArtifacts: Int = 0
         var artifactSlots: [ArtifactInstance?] {
             warehouse.equippedSlotsContents(upToSlotCount: maxArtifacts)
-        }
-
-        var currentSacrifice: Recipe? {
-            return recipes.first { recipe in
-                recipe.items.count > 0 &&
-                recipe.items.allSatisfy { warehouse.quantity($0) > 0 }
-            }
         }
     }
 
@@ -129,19 +121,6 @@ extension CreationView: View {
         Button(action: viewModel.showRecipes) {
             HStack {
                 Text("Sacrifices")
-                if let recipe = viewModel.model.currentSacrifice {
-                    AvatarStack(
-                        avatars: recipe.items.map { item in
-                            AvatarView(
-                                text: item.name,
-                                image: item.image,
-                                border: item.quality.color,
-                                size: .small,
-                            )
-                        },
-                        size: .small
-                    )
-                }
             }
         }
         .buttonStyle(CapsuleButtonStyle())

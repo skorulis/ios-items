@@ -73,7 +73,6 @@ final class ItemsAssembly: AutoInitModuleAssembly {
         container.register(CreationViewModel.self) { CreationViewModel.make(resolver: $0) }
         container.register(WarehouseViewModel.self) { WarehouseViewModel.make(resolver: $0) }
         container.register(DebugViewModel.self) { DebugViewModel.make(resolver: $0) }
-        container.register(RecipeListViewModel.self) { RecipeListViewModel.make(resolver: $0) }
         container.register(SacrificeViewModel.self) { SacrificeViewModel.make(resolver: $0) }
         container.register(ResearchViewModel.self) { ResearchViewModel.make(resolver: $0) }
         container.register(AchievementsViewModel.self) { AchievementsViewModel.make(resolver: $0) }
@@ -90,10 +89,6 @@ final class ItemsAssembly: AutoInitModuleAssembly {
         
         container.register(AchievementDetailsViewModel.self) { (resolver: BaseResolver, achievement: Achievement) in
             AchievementDetailsViewModel.make(resolver: resolver, achievement: achievement)
-        }
-
-        container.register(RecipeDetailViewModel.self) { (resolver: BaseResolver, recipe: Recipe) in
-            RealRecipeDetailViewModel.make(resolver: resolver, recipe: recipe)
         }
 
         container.register(CurrentRecipeDetailViewModel.self) { CurrentRecipeDetailViewModel.make(resolver: $0) }

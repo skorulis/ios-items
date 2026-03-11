@@ -8,31 +8,33 @@ import Models
 /// Class that creates new items
 /// Functions in this class are non mutating and only return the result
 final class ItemGeneratorService {
-    
+
     private let mainStore: MainStore
     private let calculations: CalculationsService
     private let warehouseService: WarehouseService
-    
+
     @Resolvable<BaseResolver>
     init(mainStore: MainStore, calculations: CalculationsService, warehouseService: WarehouseService) {
         self.mainStore = mainStore
         self.calculations = calculations
         self.warehouseService = warehouseService
     }
-    
-    func recipeInfo(recipe: Recipe) -> RecipeInfo {
+
+    /// Quality/essence weights derived from the items that would be consumed for this plan.
+    func recipeInfo(plan: SacrificePlan) -> RecipeInfo {
+        let items = plan.consumedItems
         return RecipeInfo(
-            quality: qualityBonuses(recipe: recipe),
-            essenceBoosts: essenceBonuses(recipe: recipe)
+            quality: qualityBonuses(plan: plan),
+            essenceBoosts: essenceBonuses(items: items)
         )
     }
-    
-    func makeAndStore(recipe: Recipe) -> MakeItemResult {
-        let item = make(recipe: recipe)
+
+    func makeAndStore(plan: SacrificePlan) -> MakeItemResult {
+        let item = make(plan: plan)
         switch item {
         case let .base(baseItem, count):
             warehouseService.add(item: baseItem, count: count)
-            
+
             mainStore.statistics.itemsCreated += Int64(count)
             if count > 1 {
                 mainStore.statistics.doubleItemCreations += 1
@@ -42,12 +44,11 @@ final class ItemGeneratorService {
         }
         return item
     }
-    
+
     /// Resolves which item (if any) would be consumed from each sacrifice slot, in slot order.
-    /// Same item in multiple slots consumes one warehouse unit per slot; if stock runs out,
-    /// later slots get `nil` even if the slot is configured.
-    /// - Returns: Slot index → item to consume, or `nil` when the slot is empty or inventory is insufficient.
-    func sacrificeConsumptionPlan(config: SacrificeConfig) -> [Int: BaseItem?] {
+    /// Uses `mainStore.recipes.sacrificeConfig` and current warehouse quantities.
+    func sacrificeConsumptionPlan() -> SacrificePlan {
+        let config = mainStore.recipes.sacrificeConfig
         var available: [BaseItem: Int] = [:]
         for item in BaseItem.allCases {
             available[item] = mainStore.warehouse.quantity(item)
@@ -66,15 +67,15 @@ final class ItemGeneratorService {
                 result[index] = nil
             }
         }
-        return result
+        return SacrificePlan(slotsByIndex: result)
     }
 
-    func make(recipe: Recipe) -> MakeItemResult {
-        let info = recipeInfo(recipe: recipe)
+    func make(plan: SacrificePlan) -> MakeItemResult {
+        let info = recipeInfo(plan: plan)
         let quality = info.randomQuality()
-        
-        let options = BaseItem.allCases.filter { $0.quality == quality}
-        
+
+        let options = BaseItem.allCases.filter { $0.quality == quality }
+
         let randomArray = RandomArray(items: options) { item in
             var chance: Double = 1
             for essence in item.essences {
@@ -82,53 +83,50 @@ final class ItemGeneratorService {
             }
             return chance
         }
-        
+
         guard let baseItem = randomArray.random else {
             fatalError("Could not find an appropriate item. \(quality.name)")
         }
-        
+
         if let artifact = maybeConvertToArtifact(baseItem: baseItem) {
             return .artifact(artifact)
         }
-        
-        // Check if another item gets created based on double item chance
+
         if calculations.doubleItemChance(item: baseItem).check() {
             return .base(baseItem, 2)
         }
-        
+
         return .base(baseItem, 1)
     }
-    
+
     // MARK: - Private Functions
-    
+
     private func maybeConvertToArtifact(baseItem: BaseItem) -> ArtifactInstance? {
         let itemLevel = mainStore.lab.currentLevel(item: baseItem)
-        
+
         guard let type = baseItem.associatedArtifact,
               mainStore.warehouse.hasDiscovered(baseItem),
               let targetQuality = mainStore.warehouse.nextArtifactQuality(artifact: type)
         else {
             return nil
         }
-        
+
         let chance = calculations.artifactChance(quality: targetQuality, researchLevel: itemLevel)
         guard chance.check() else {
             return nil
         }
-        
+
         return ArtifactInstance(type: type, quality: targetQuality)
     }
-    
-    private func essenceBonuses(recipe: Recipe) -> [Essence: Double] {
-        return recipe.items.reduce([:]) { partialResult, item in
-            var mutableResult = partialResult
+
+    private func essenceBonuses(items: [BaseItem]) -> [Essence: Double] {
+        items.reduce(into: [:]) { partialResult, item in
             for essence in item.essences {
-                mutableResult[essence, default: 1] += 1
+                partialResult[essence, default: 1] += 1
             }
-            return mutableResult
         }
     }
-    
+
     private var activeBonuses: [Bonus] {
         let fromAchievements = Achievement.allCases
             .filter { mainStore.achievements.unlocked.contains($0) }
@@ -136,7 +134,7 @@ final class ItemGeneratorService {
         return fromAchievements + mainStore.portalUpgrades.bonuses
     }
 
-    private func qualityBonuses(recipe: Recipe) -> [ItemQuality: Double] {
+    private func qualityBonuses(plan: SacrificePlan) -> [ItemQuality: Double] {
         let qualityBoosts = activeBonuses.qualityBoosts
         return Dictionary(
             uniqueKeysWithValues: ItemQuality.allCases.map { quality in
@@ -145,13 +143,13 @@ final class ItemGeneratorService {
                 case .junk:
                     weight = 1
                 case .common:
-                    weight = 0.5 * Double(recipe.count(quality: .junk))
+                    weight = 0.5 * Double(plan.count(quality: .junk))
                 case .good:
-                    weight = 0.5 * Double(recipe.count(quality: .common))
+                    weight = 0.5 * Double(plan.count(quality: .common))
                 case .rare:
-                    weight = 0.5 * Double(recipe.count(quality: .good))
+                    weight = 0.5 * Double(plan.count(quality: .good))
                 case .exceptional:
-                    weight = 0.5 * Double(recipe.count(quality: .rare))
+                    weight = 0.5 * Double(plan.count(quality: .rare))
                 }
                 let boostPercent = Double(qualityBoosts[quality] ?? 0)
                 let boostedWeight = weight + (boostPercent / 100)
@@ -163,12 +161,12 @@ final class ItemGeneratorService {
 
 // MARK: - Inner Types
 
-extension ItemGeneratorService{
-    
+extension ItemGeneratorService {
+
     struct RecipeInfo {
         let quality: [ItemQuality: Double]
         let essenceBoosts: [Essence: Double]
-        
+
         fileprivate func randomQuality() -> ItemQuality {
             let randomArray = RandomArray(items: ItemQuality.allCases) {
                 quality[$0] ?? 0
@@ -177,4 +175,3 @@ extension ItemGeneratorService{
         }
     }
 }
-

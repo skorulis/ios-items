@@ -220,57 +220,6 @@ import SnapshotTesting
         }
     }
 
-    func test_RecipeListView_0_Preview() {        
-        let prefireSnapshot = PrefireSnapshot(
-            {
-                let assembler = ItemsAssembly.testing()
-            RecipeListView(viewModel: assembler.resolver.recipeListViewModel())
-            },
-            name: "RecipeListView_0",
-            isScreen: true,
-            device: deviceConfig
-        )
-
-        if let failure = assertSnapshots(for: prefireSnapshot) {
-            XCTFail(failure)
-        }
-    }
-
-    func test_RecipeCell_0_Preview() {        
-        let prefireSnapshot = PrefireSnapshot(
-            {
-                VStack {
-                    // Empty Recipe
-                    RecipeCell(
-                        recipe: .init(items: []),
-                        warehouse: .init(),
-                        addPressed: {},
-                    )
-                    .padding(8)
-                    RecipeCell(
-                        recipe: .init(items: [.apple]),
-                        warehouse: .init(),
-                        addPressed: {}
-                    )
-                    .padding(8)
-                    RecipeCell(
-                        recipe: .init(items: [.gear, .copperFlorin]),
-                        warehouse: .init(),
-                        addPressed: {}
-                    )
-                    .padding(8)
-                }
-            },
-            name: "RecipeCell_0",
-            isScreen: true,
-            device: deviceConfig
-        )
-
-        if let failure = assertSnapshots(for: prefireSnapshot) {
-            XCTFail(failure)
-        }
-    }
-
     func test_ParticleCanvasView_0_Preview() {        
         struct PreviewWrapperParticleCanvasView_0: SwiftUI.View {
             @State var animationID = UUID()

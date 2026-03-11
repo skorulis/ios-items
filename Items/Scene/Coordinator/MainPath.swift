@@ -13,7 +13,6 @@ enum MainPath: CoordinatorPath {
     
     case creation
     case warehouse
-    case recipeList
     case sacrifices
     case research
     case achievements
@@ -25,7 +24,6 @@ enum MainPath: CoordinatorPath {
     case artifactDetails(ArtifactInstance)
     case artifactPicker(slot: Int)
     case achievementDetails(Achievement)
-    case recipeDetail(Recipe)
     case currentRecipeDetail
 
     // Present a block of text
@@ -53,8 +51,6 @@ struct MainPathRenderer: CoordinatorPathRenderer {
             CreationView(viewModel: coordinator.apply(resolver.creationViewModel()))
         case .warehouse:
             WarehouseView(viewModel: coordinator.apply(resolver.warehouseViewModel()))
-        case .recipeList:
-            RecipeListView(viewModel: coordinator.apply(resolver.recipeListViewModel()))
         case .sacrifices:
             SacrificeView(viewModel: coordinator.apply(resolver.sacrificeViewModel()))
         case .research:
@@ -77,8 +73,6 @@ struct MainPathRenderer: CoordinatorPathRenderer {
             ArtifactPickerView(viewModel: resolver.artifactPickerViewModel(slot: slot))
         case let .achievementDetails(achievement):
             AchievementDetailsView(viewModel: resolver.achievementDetailsViewModel(achievement: achievement))
-        case let .recipeDetail(recipe):
-            RecipeDetailView(viewModel: resolver.recipeDetailViewModel(recipe: recipe))
         case .currentRecipeDetail:
             RecipeDetailView(viewModel: resolver.currentRecipeDetailViewModel())
         case let .dialog(text):

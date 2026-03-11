@@ -13,7 +13,11 @@ final class CurrentRecipeDetailViewModel: RecipeDetailViewModel {
     private let recipeService: RecipeService
     private let itemGeneratorService: ItemGeneratorService
     
-    var model: RecipeDetailView.Model = .init(recipe: .empty, qualityChances: [], essenceBonuses: [])
+    var model: RecipeDetailView.Model = .init(
+        plan: .init(itemsInOrder: []),
+        qualityChances: [],
+        essenceBonuses: []
+    )
     
     private var cancellables: Set<AnyCancellable> = []
     
@@ -35,12 +39,12 @@ final class CurrentRecipeDetailViewModel: RecipeDetailViewModel {
     }
     
     private func makeModel() -> RecipeDetailView.Model {
-        let recipe = recipeService.nextAvailable()
-        let info = itemGeneratorService.recipeInfo(recipe: recipe)
+        let plan = itemGeneratorService.sacrificeConsumptionPlan()
+        let info = itemGeneratorService.recipeInfo(plan: plan)
         let qualityChances = Self.normalizedQualityChances(from: info.quality)
         let essenceBonuses = Self.sortedEssenceBonuses(from: info.essenceBoosts)
         return RecipeDetailView.Model(
-            recipe: recipe,
+            plan: plan,
             qualityChances: qualityChances,
             essenceBonuses: essenceBonuses
         )

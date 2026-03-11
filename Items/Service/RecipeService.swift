@@ -19,18 +19,12 @@ final class RecipeService {
             mainStore.warehouse.remove(item: item, quantity: 1)
         }
     }
-    
-    // Find the next recipe which can be used
-    func nextAvailable() -> Recipe {
-        guard mainStore.recipes.sacrificesEnabled else {
-            return .init(items: [])
+
+    /// Removes one warehouse unit per entry in the plan’s `consumedItems` order.
+    func consumePlan(_ plan: SacrificePlan) {
+        for item in plan.consumedItems {
+            mainStore.warehouse.remove(item: item, quantity: 1)
         }
-        for recipe in mainStore.recipes.list {
-            let possible = recipe.items.allSatisfy { mainStore.warehouse.quantity($0) > 0 }
-            if possible { return recipe }
-        }
-        
-        // Use a default recipe
-        return .init(items: [])
     }
+    
 }

@@ -14,8 +14,13 @@ struct RecipeDetailViewSnapshotTests {
     
     @Test
     func recipeDetail_simple_recipe() {
-        let recipe = Recipe(items: [.apple])
-        let viewModel = assembler.resolver.recipeDetailViewModel(recipe: recipe)
+        let mainStore = assembler.resolver.mainStore()
+        mainStore.recipes.sacrificeConfig = .init(
+            slots: [0: .apple],
+        )
+        mainStore.warehouse.add(item: .apple)
+        
+        let viewModel = assembler.resolver.currentRecipeDetailViewModel()
         let view = RecipeDetailView(viewModel: viewModel)
         
         assertSnapshot(of: view, as: .image(on: .iPhoneSe))
@@ -23,8 +28,18 @@ struct RecipeDetailViewSnapshotTests {
     
     @Test
     func recipeDetail_complex_recipe() {
-        let recipe = Recipe(items: [.apple, .gear, .copperFlorin, .silverFlorin])
-        let viewModel = assembler.resolver.recipeDetailViewModel(recipe: recipe)
+        let mainStore = assembler.resolver.mainStore()
+        
+        mainStore.recipes.sacrificeConfig = .init(
+            slots: [0: .apple, 1: .gear, 2: .copperFlorin, 3: .silverFlorin],
+        )
+        
+        mainStore.warehouse.add(item: .apple)
+        mainStore.warehouse.add(item: .gear)
+        mainStore.warehouse.add(item: .copperFlorin)
+        mainStore.warehouse.add(item: .silverFlorin)
+        
+        let viewModel = assembler.resolver.currentRecipeDetailViewModel()
         let view = RecipeDetailView(viewModel: viewModel)
         
         assertSnapshot(of: view, as: .image(on: .iPhoneSe))

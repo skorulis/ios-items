@@ -12,7 +12,7 @@ struct RecipeDetailView {
     @State var viewModel: RecipeDetailViewModel
     
     struct Model {
-        let recipe: Recipe
+        let plan: SacrificePlan
         let qualityChances: [(ItemQuality, Double)]
         let essenceBonuses: [(Essence, Double)]
     }
@@ -35,7 +35,7 @@ extension RecipeDetailView: View {
         VStack(alignment: .leading, spacing: 4) {
             Text("Creation")
                 .font(.title2.weight(.semibold))
-            if !viewModel.model.recipe.items.isEmpty {
+            if !viewModel.model.plan.consumedItems.isEmpty {
                 Text(recipeDescription)
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
@@ -44,7 +44,7 @@ extension RecipeDetailView: View {
     }
     
     private var recipeDescription: String {
-        let names = viewModel.model.recipe.items.map(\.name)
+        let names = viewModel.model.plan.consumedItems.map(\.name)
         return names.joined(separator: " + ")
     }
     
@@ -97,24 +97,3 @@ extension RecipeDetailView: View {
         return String(format: "x%.1f", value)
     }
 }
-
-// MARK: - Previews
-
-#Preview("Simple Recipe") {
-    let assembler = ItemsAssembly.testing()
-    
-    let simpleRecipe = Recipe(items: [.apple])
-    let viewModel = assembler.resolver.recipeDetailViewModel(recipe: simpleRecipe)
-    
-    RecipeDetailView(viewModel: viewModel)
-}
-
-#Preview("Complex Recipe") {
-    let assembler = ItemsAssembly.testing()
-    
-    let complexRecipe = Recipe(items: [.apple, .gear, .copperFlorin, .silverFlorin])
-    let viewModel = assembler.resolver.recipeDetailViewModel(recipe: complexRecipe)
-    
-    RecipeDetailView(viewModel: viewModel)
-}
-

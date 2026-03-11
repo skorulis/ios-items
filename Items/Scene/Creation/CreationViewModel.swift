@@ -69,11 +69,6 @@ import SwiftUI
         }
         .store(in: &cancellables)
 
-        mainStore.$recipes.sink { [unowned self] in
-            self.model.recipes = $0.list
-        }
-        .store(in: &cancellables)
-
         mainStore.$achievements.sink { [unowned self] in
             self.model.achievements = $0
         }
@@ -133,17 +128,18 @@ extension CreationViewModel {
     
     func make() async {
         if model.creationInProgress != nil { return }
-        let recipe = recipeService.nextAvailable()
+        let plan = itemGeneratorService.sacrificeConsumptionPlan()
+        let consumed = plan.consumedItems
         let duration = TimeInterval(calculations.itemCreationMilliseconds) / 1000
-        self.model.creationInProgress = CreationView.CreationInProgress(id: UUID(), duration: duration, sacrificedItems: recipe.items)
+        self.model.creationInProgress = CreationView.CreationInProgress(id: UUID(), duration: duration, sacrificedItems: consumed)
         self.model.createdItem = nil
-        recipeService.consumeRecipe(recipe)
-        mainStore.statistics.itemsSacrificed += Int64(recipe.items.count)
+        recipeService.consumePlan(plan)
+        mainStore.statistics.itemsSacrificed += Int64(consumed.count)
 
         try? await Task.sleep(for: .milliseconds(calculations.itemCreationMilliseconds))
         self.model.creationInProgress = nil
-        
-        self.model.createdItem = itemGeneratorService.makeAndStore(recipe: recipe)
+
+        self.model.createdItem = itemGeneratorService.makeAndStore(plan: plan)
     }
     
     func showRecipes() {

@@ -37,32 +37,3 @@ extension RecipeDetailViewModel {
             }
     }
 }
-
-@Observable
-@MainActor
-final class RealRecipeDetailViewModel: RecipeDetailViewModel {
-    
-    private let itemGeneratorService: ItemGeneratorService
-    
-    private(set) var model: RecipeDetailView.Model
-    
-    @Resolvable<BaseResolver>
-    init(
-        itemGeneratorService: ItemGeneratorService,
-        @Argument recipe: Recipe
-    ) {
-        self.itemGeneratorService = itemGeneratorService
-        
-        let info = itemGeneratorService.recipeInfo(recipe: recipe)
-        
-        let qualityChances = Self.normalizedQualityChances(from: info.quality)
-        let essenceBonuses = Self.sortedEssenceBonuses(from: info.essenceBoosts)
-        
-        self.model = RecipeDetailView.Model(
-            recipe: recipe,
-            qualityChances: qualityChances,
-            essenceBonuses: essenceBonuses
-        )
-    }
-}
-
