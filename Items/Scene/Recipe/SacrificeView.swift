@@ -53,6 +53,7 @@ extension SacrificeView: View {
                     viewModel.coordinator?.pop()
                 }
             },
+            leadingStyle: .close,
             trailing: {
                 Toggle("", isOn: Binding(
                     get: { viewModel.model.sacrificesEnabled },

@@ -102,6 +102,7 @@ extension ResearchView: View {
         TitleBar(
             title: "Research",
             backAction: { dismissCircularReveal?() },
+            leadingStyle: .close,
             trailing: { helpButton }
         )
     }

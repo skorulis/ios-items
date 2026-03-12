@@ -32,7 +32,8 @@ extension PortalUpgradesView: View {
                 } else {
                     viewModel.pop()
                 }
-            }
+            },
+            leadingStyle: .close
         )
     }
 
