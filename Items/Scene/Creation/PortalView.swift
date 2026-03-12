@@ -14,10 +14,42 @@ struct PortalView: View {
     let researchButton: Button?
     let artifactButton: ArtifactSlotView?
     let sacrificesButton: SacrificesButton.Model?
+    
     @Binding var sacrificesFrame: CGRect
+    @Binding var artifactFrame: CGRect
+
+    /// Frames for each visible corner control; overlay draws a wire from each center to the portal.
+    private var wireSourceFrames: [CGRect] {
+        var frames: [CGRect] = []
+        if let upgradesButton {
+            switch upgradesButton {
+            case let .button(button):
+                frames.append(button.frameBinding.wrappedValue)
+            case .progress:
+                break
+            }
+        }
+        if sacrificesButton != nil {
+            frames.append(sacrificesFrame)
+        }
+        if artifactButton != nil {
+            frames.append(artifactFrame)
+        }
+        if let researchButton {
+            frames.append(researchButton.frameBinding.wrappedValue)
+        }
+        return frames
+    }
+
+    private var hasActiveWireFrames: Bool {
+        wireSourceFrames.contains { $0.width > 0 && $0.height > 0 }
+    }
 
     var body: some View {
         ZStack {
+            if hasActiveWireFrames {
+                PortalCircuitWiresOverlay(sourceFrames: wireSourceFrames)
+            }
             dimensionalPortalBackground
             cornerButtons
         }
@@ -58,6 +90,7 @@ struct PortalView: View {
         HStack {
             if let artifactButton {
                 artifactButton
+                    .readFrame(frame: $artifactFrame)
             }
             Spacer(minLength: 0)
             if let researchButton {
@@ -141,6 +174,7 @@ struct PortalCornerButton: View {
         artifactButton: nil,
         sacrificesButton: nil,
         sacrificesFrame: .constant(.zero),
+        artifactFrame: .constant(.zero),
     )
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .background(Color.white)
@@ -160,6 +194,7 @@ struct PortalCornerButton: View {
             action: {},
         ),
         sacrificesFrame: .constant(.zero),
+        artifactFrame: .constant(.zero),
     )
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .background(Color.white)

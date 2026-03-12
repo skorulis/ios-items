@@ -90,6 +90,7 @@ extension CreationView: View {
                 artifactButton: artifactSlotView,
                 sacrificesButton: sacrificesButton,
                 sacrificesFrame: $viewModel.sacrificesButtonFrame,
+                artifactFrame: $viewModel.artifactButtonFrame,
             )
             maybeCreationAnimation
             sacrificeAvatarsOverlay

@@ -43,7 +43,8 @@ extension SacrificesButton: View {
                     .stroke(strokeColor, lineWidth: 2)
             }
             .frame(width: Self.size, height: Self.size)
-            .contentShape(Rectangle())
+            .background(Circle().fill(Color.white))
+            .contentShape(Circle())
         }
         .buttonStyle(.plain)
     }

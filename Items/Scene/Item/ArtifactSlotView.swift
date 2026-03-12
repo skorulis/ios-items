@@ -64,7 +64,6 @@ extension ArtifactSlotView: View {
     var body: some View {
         GeometryReader { geo in
             let avatarSize = size.avatarSize
-            let diameter = avatarSize.diameter
             let radius = ringRadius
             let center = CGPoint(x: geo.size.width / 2, y: geo.size.height / 2)
 
@@ -86,6 +85,7 @@ extension ArtifactSlotView: View {
                 }
             }
             .frame(width: geo.size.width, height: geo.size.height)
+            .background(Circle().fill(Color.white))
         }
         .aspectRatio(1, contentMode: .fit)
         .frame(width: ringRadius * 2, height: ringRadius * 2)

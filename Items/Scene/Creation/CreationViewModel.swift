@@ -19,6 +19,7 @@ import SwiftUI
     @ObservationIgnored var upgradeButtonFrame: CGRect = .zero
     @ObservationIgnored var researchButtonFrame: CGRect = .zero
     @ObservationIgnored var sacrificesButtonFrame: CGRect = .zero
+    @ObservationIgnored var artifactButtonFrame: CGRect = .zero
     
     var automateCreation: Bool = false {
         didSet {
