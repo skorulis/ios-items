@@ -34,6 +34,7 @@ extension SacrificeView: View {
         }
         .sheet(item: $viewModel.editingSlot) { slot in
             ItemPicker(
+                title: "Choose item to sacrifice",
                 predicate: { item in
                     viewModel.model.warehouse.hasDiscovered(item)
                 },

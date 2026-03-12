@@ -24,6 +24,7 @@ extension ResearchView: View {
         )
         .sheet(isPresented: $viewModel.showingPicker) {
             ItemPicker(
+                title: "Choose item to research",
                 predicate: { viewModel.warehouse.quantity($0) > 0 },
                 onSelect: {
                     viewModel.selectAndBeginResearch(item: $0)
@@ -41,6 +42,7 @@ extension ResearchView: View {
             Button("Select Item") {
                 viewModel.showingPicker = true
             }
+            .buttonStyle(CapsuleButtonStyle())
             itemView
             Spacer()
         }
