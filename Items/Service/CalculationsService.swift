@@ -51,10 +51,12 @@ final class CalculationsService: ObservableObject {
     
     func doubleItemChance(item: BaseItem) -> Chance {
         let level = Double(mainStore.lab.currentLevel(item: item))
-        var chance = Chance(level * 0.05)
+        var chance = Chance((1 + level) * 0.05)
         if let coin = mainStore.warehouse.equippedArtifact(.luckyCoin) {
             chance = chance.adding(percent: coin.type.luckyCoinMultipleItemChance(quality: coin.quality))
         }
+        chance = chance.adding(percent: mainStore.portalUpgrades.bonuses.multipleItemChance)
+        chance = chance.adding(percent: mainStore.achievements.bonuses.multipleItemChance)
         return chance
     }
     

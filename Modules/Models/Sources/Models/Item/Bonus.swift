@@ -10,6 +10,8 @@ public enum Bonus {
     case qualityBoost(Int, ItemQuality)
     case booksForResearch(ItemQuality)
     case artifactDiscovery(Int)
+    /// Extra percent chance to create two items from one sacrifice (stacks additively with lab level and lucky coin).
+    case multipleItemChance(Int)
 
     public var text: String {
         switch self {
@@ -25,6 +27,8 @@ public enum Bonus {
             return "Use books to research \(quality.name) items"
         case let .artifactDiscovery(percent):
             return "Boost artifact discovery chance by \(percent)%"
+        case let .multipleItemChance(percent):
+            return "Boost multiple item chance by \(percent)%"
         }
     }
 
@@ -73,6 +77,12 @@ public enum Bonus {
         if case let .artifactDiscovery(int) = self { return int }
         return 0
     }
+
+    /// Percent added to double-item roll chance. Nil-equivalent is 0 for other bonus types.
+    public var multipleItemChancePercent: Int {
+        if case let .multipleItemChance(int) = self { return int }
+        return 0
+    }
 }
 
 public extension Array where Element == Bonus {
@@ -86,6 +96,11 @@ public extension Array where Element == Bonus {
     
     var artifactDiscovery: Int {
         return self.map { $0.artifactDiscoveryPercent }.reduce(0, +)
+    }
+
+    /// Total percent added to multiple-item (double drop) chance from bonuses.
+    var multipleItemChance: Int {
+        return self.map { $0.multipleItemChancePercent }.reduce(0, +)
     }
 
     /// Sum of quality boost percent per quality (e.g. [.common: 1] means +1% chance for common).

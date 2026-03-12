@@ -9,9 +9,9 @@ struct Chance: Codable, Hashable {
     let value: Double
     
     /// Creates a chance from a fractional value between 0 and 1.
-    /// Values outside this range are clamped.
+    /// Values above 1 can be treated in different ways
     init(_ fraction: Double) {
-        self.value = max(0, min(1, fraction))
+        self.value = min(1, fraction)
     }
     
     /// The underlying fractional value, guaranteed to be between 0 and 1.

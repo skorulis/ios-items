@@ -4,31 +4,35 @@ import Foundation
 import SwiftUI
 
 public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable, Sendable {
+    case artifact1
+    case artifacts5
+
+    case common1
+    
+    case doubleItems10
+    case doubleItems100
+    case doubleItems1000
+    
     case items1
     case items10
     case items100
     case items1_000_000
 
-    case sacrificed1
-    case sacrificed1000
-
-    case common1
-
-    case artifact1
-    case artifacts5
-
-    case upgrade1
-    case upgrade5
-
     case essence1
     case allEssences
-
+    
     case research1
     case research10
     case research100
 
     case researchLevel5
     case researchLevel10
+    
+    case sacrificed1
+    case sacrificed1000
+    
+    case upgrade1
+    case upgrade5
 
     public var id: Self { self }
 
@@ -52,6 +56,9 @@ public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable, 
         case .research100: return "Master researcher"
         case .researchLevel5: return "Focused scholar"
         case .researchLevel10: return "Pioneer of knowledge"
+        case .doubleItems10: return "Lucky streak"
+        case .doubleItems100: return "Double or nothing"
+        case .doubleItems1000: return "Jackpot harvest"
         }
     }
 
@@ -93,6 +100,12 @@ public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable, 
             return Image(systemName: "graduationcap")
         case .researchLevel10:
             return Image(systemName: "graduationcap.fill")
+        case .doubleItems10:
+            return Image(systemName: "square.stack.3d.up")
+        case .doubleItems100:
+            return Image(systemName: "square.stack.3d.up.fill")
+        case .doubleItems1000:
+            return Image(systemName: "sparkles.square.filled.on.square")
         }
     }
 
@@ -134,6 +147,12 @@ public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable, 
             return .maxResearchLevel(5)
         case .researchLevel10:
             return .maxResearchLevel(10)
+        case .doubleItems10:
+            return .doubleItemCreations(10)
+        case .doubleItems100:
+            return .doubleItemCreations(100)
+        case .doubleItems1000:
+            return .doubleItemCreations(1000)
         }
     }
 
@@ -155,11 +174,11 @@ public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable, 
 
     public var quality: ItemQuality {
         switch self {
-        case .items1, .items10, .artifact1, .essence1, .sacrificed1, .upgrade1, .research1, .research10, .researchLevel5:
+        case .items1, .items10, .artifact1, .essence1, .sacrificed1, .upgrade1, .research1, .research10, .researchLevel5, .doubleItems10:
             return .junk
-        case .items100, .artifacts5, .common1, .allEssences, .sacrificed1000, .upgrade5, .research100, .researchLevel10:
+        case .items100, .artifacts5, .common1, .allEssences, .sacrificed1000, .upgrade5, .research100, .researchLevel10, .doubleItems100:
             return .common
-        case .items1_000_000:
+        case .items1_000_000, .doubleItems1000:
             return .exceptional
         }
     }
@@ -172,6 +191,8 @@ public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable, 
             return .qualityBoost(1, .common)
         case .researchLevel5:
             return .researchSpeed(5)
+        case .doubleItems10, .doubleItems100, .doubleItems1000:
+            return .multipleItemChance(5)
         default:
             return nil
         }

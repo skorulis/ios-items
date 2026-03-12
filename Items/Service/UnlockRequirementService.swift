@@ -22,6 +22,8 @@ final class UnlockRequirementService {
             return mainStore.statistics.itemsCreated
         case .itemsSacrificed:
             return mainStore.statistics.itemsSacrificed
+        case .doubleItemCreations:
+            return mainStore.statistics.doubleItemCreations
         case .totalResearch:
             return Int64(mainStore.lab.totalLevels)
         case .maxResearchLevel:
@@ -51,6 +53,7 @@ final class UnlockRequirementService {
         switch requirement {
         case let .itemsCreated(count),
              let .itemsSacrificed(count),
+             let .doubleItemCreations(count),
              let .totalResearch(count),
              let .maxResearchLevel(count),
              let .commonItemsCreated(count),
