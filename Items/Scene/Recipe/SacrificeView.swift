@@ -18,6 +18,8 @@ import SwiftUI
         var warehouse: Warehouse
         var slotItems: [Int: BaseItem] = [:]
         var consumptionPlan: SacrificePlan = SacrificePlan(slotsByIndex: [:])
+        /// Slots with index < this value are interactive; others show as locked until portal upgrades add sacrifice slots.
+        var unlockedSlotCount: Int = SacrificeConfig.slotCount
     }
 }
 
@@ -93,55 +95,67 @@ extension SacrificeView: View {
     @ViewBuilder
     private func slotView(index: Int) -> some View {
         let model = viewModel.model
-        let item = model.slotItems[index]
-        let isReady = model.consumptionPlan.isSatisfied(at: index)
-        let borderColor: Color = {
-            return isReady ? .green : .gray
-        }()
-
         let diameter = Self.slotDiameter
-        let innerPadding: CGFloat = 6
 
-        if let item {
-            ZStack(alignment: .topTrailing) {
-                // Item clipped to circle; same outer size as empty slot
-                ZStack {
-                    Circle()
-                        .fill(Color(.white))
-                    ItemView(item: item)
-                        .frame(width: diameter - innerPadding * 2, height: diameter - innerPadding * 2)
-                        .clipShape(Circle())
-                }
-                .frame(width: diameter, height: diameter)
-                .overlay {
-                    Circle()
-                        .stroke(borderColor, lineWidth: Self.slotStrokeWidth)
-                }
-
-                Button(action: { viewModel.clearSlot(index: index) }) {
-                    Image(systemName: "minus.circle.fill")
-                        .font(.caption.weight(.bold))
-                        .foregroundStyle(.red)
-                }
-                .buttonStyle(.borderless)
-                .offset(x: 4, y: -4)
+        if index >= model.unlockedSlotCount {
+            // Locked until corresponding sacrifice-slot upgrades are purchased.
+            ZStack {
+                Circle()
+                    .fill(Color(.systemGray6))
+                Image(systemName: "lock.fill")
+                    .font(.title2.weight(.semibold))
+                    .foregroundStyle(.secondary)
             }
             .frame(width: diameter, height: diameter)
+            .overlay {
+                Circle()
+                    .stroke(Color.gray.opacity(0.6), lineWidth: Self.slotStrokeWidth)
+            }
         } else {
-            Button(action: { viewModel.openPicker(forSlot: index) }) {
-                ZStack {
-                    Image(systemName: "plus")
-                        .font(.title2.weight(.semibold))
-                        .foregroundStyle(.gray)
+            let isReady = model.consumptionPlan.isSatisfied(at: index)
+            let borderColor: Color = isReady ? .green : .gray
+            let innerPadding: CGFloat = 6
+
+            if let item = model.slotItems[index] {
+                ZStack(alignment: .topTrailing) {
+                    ZStack {
+                        Circle()
+                            .fill(Color(.white))
+                        ItemView(item: item)
+                            .frame(width: diameter - innerPadding * 2, height: diameter - innerPadding * 2)
+                            .clipShape(Circle())
+                    }
+                    .frame(width: diameter, height: diameter)
+                    .overlay {
+                        Circle()
+                            .stroke(borderColor, lineWidth: Self.slotStrokeWidth)
+                    }
+
+                    Button(action: { viewModel.clearSlot(index: index) }) {
+                        Image(systemName: "minus.circle.fill")
+                            .font(.caption.weight(.bold))
+                            .foregroundStyle(.red)
+                    }
+                    .buttonStyle(.borderless)
+                    .offset(x: 4, y: -4)
                 }
                 .frame(width: diameter, height: diameter)
-                .overlay {
-                    Circle()
-                        .stroke(borderColor, lineWidth: Self.slotStrokeWidth)
+            } else {
+                Button(action: { viewModel.openPicker(forSlot: index) }) {
+                    ZStack {
+                        Image(systemName: "plus")
+                            .font(.title2.weight(.semibold))
+                            .foregroundStyle(.gray)
+                    }
+                    .frame(width: diameter, height: diameter)
+                    .overlay {
+                        Circle()
+                            .stroke(borderColor, lineWidth: Self.slotStrokeWidth)
+                    }
                 }
+                .buttonStyle(.plain)
+                .background(Circle().fill(Color(.white)))
             }
-            .buttonStyle(.plain)
-            .background(Circle().fill(Color(.white)))
         }
     }
 }

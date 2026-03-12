@@ -5,6 +5,8 @@ import Foundation
 public enum Bonus {
     case researchSpeed(Int)
     case artifactSlots(Int)
+    /// Extra sacrifice slots (not yet consumed by gameplay; reserved for future use).
+    case sacrificeSlot(Int)
     case qualityBoost(Int, ItemQuality)
     case booksForResearch(ItemQuality)
     case artifactDiscovery(Int)
@@ -15,6 +17,8 @@ public enum Bonus {
             return "Boost research speed by \(int)%"
         case let .artifactSlots(int):
             return "Add \(int) artifact slot"
+        case let .sacrificeSlot(int):
+            return "Add \(int) sacrifice slot\(int == 1 ? "" : "s")"
         case let .qualityBoost(amount, quality):
             return "Boost the chance to find \(quality.name) items by \(amount)%"
         case let .booksForResearch(quality):
@@ -36,6 +40,15 @@ public enum Bonus {
     public var artifactSlotBoost: Int {
         switch self {
         case .artifactSlots(let int):
+            return int
+        default:
+            return 0
+        }
+    }
+
+    public var sacrificeSlotBoost: Int {
+        switch self {
+        case .sacrificeSlot(let int):
             return int
         default:
             return 0

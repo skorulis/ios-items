@@ -20,6 +20,10 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
     case researchLab
     case researchLabLevel2
     case sacrifices
+    case sacrificesLevel2
+    case sacrificesLevel3
+    case sacrificesLevel4
+    case sacrificesLevel5
     case artifactSlot
     case artifactSlotLevel2
     case artifactSlotLevel3
@@ -37,6 +41,10 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
         case .researchLab: return "Research Lab"
         case .researchLabLevel2: return "Research Lab II"
         case .sacrifices: return "Sacrifices"
+        case .sacrificesLevel2: return "Sacrifices II"
+        case .sacrificesLevel3: return "Sacrifices III"
+        case .sacrificesLevel4: return "Sacrifices IV"
+        case .sacrificesLevel5: return "Sacrifices V"
         case .artifactSlot: return "Artifact Slot"
         case .artifactSlotLevel2: return "Artifact Slot II"
         case .artifactSlotLevel3: return "Artifact Slot III"
@@ -80,6 +88,22 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
         case .sacrifices: return [
             .init(item: .humanSkull, quantity: 1),
             .init(item: .copperFlorin, quantity: 3),
+        ]
+        case .sacrificesLevel2: return [
+            .init(item: .humanSkull, quantity: 1),
+            .init(item: .copperFlorin, quantity: 5),
+        ]
+        case .sacrificesLevel3: return [
+            .init(item: .humanSkull, quantity: 2),
+            .init(item: .silverFlorin, quantity: 2),
+        ]
+        case .sacrificesLevel4: return [
+            .init(item: .humanSkull, quantity: 3),
+            .init(item: .silverFlorin, quantity: 4),
+        ]
+        case .sacrificesLevel5: return [
+            .init(item: .humanSkull, quantity: 4),
+            .init(item: .goldFlorin, quantity: 2),
         ]
         case .artifactSlot: return [
             .init(item: .lens, quantity: 1),
@@ -138,6 +162,8 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
             return .booksForResearch(.rare)
         case .knowledgeSiphonLevel5:
             return .booksForResearch(.exceptional)
+        case .sacrifices, .sacrificesLevel2, .sacrificesLevel3, .sacrificesLevel4, .sacrificesLevel5:
+            return .sacrificeSlot(1)
         default:
             return nil
         }
@@ -170,6 +196,14 @@ extension PortalUpgrade {
             return [.upgradePurchased(.knowledgeSiphonLevel3)]
         case .knowledgeSiphonLevel5:
             return [.upgradePurchased(.knowledgeSiphonLevel4)]
+        case .sacrificesLevel2:
+            return [.upgradePurchased(.sacrifices)]
+        case .sacrificesLevel3:
+            return [.upgradePurchased(.sacrificesLevel2)]
+        case .sacrificesLevel4:
+            return [.upgradePurchased(.sacrificesLevel3)]
+        case .sacrificesLevel5:
+            return [.upgradePurchased(.sacrificesLevel4)]
         default:
             return []
         }

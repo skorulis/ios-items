@@ -40,6 +40,11 @@ import SwiftUI
         }
         .store(in: &cancellables)
 
+        mainStore.$portalUpgrades.delayedChange().sink { [unowned self] _ in
+            self.syncModel()
+        }
+        .store(in: &cancellables)
+
         // Match store immediately; sinks only run on subsequent changes.
         syncModel()
     }
@@ -47,7 +52,9 @@ import SwiftUI
     private func syncModel() {
         model.consumptionPlan = recipeService.sacrificeConsumptionPlan()
         model.slotItems = mainStore.recipes.sacrificeConfig.slots
-        
+        model.unlockedSlotCount = mainStore.portalUpgrades.bonuses
+            .map(\.sacrificeSlotBoost)
+            .reduce(0, +)
     }
 }
 
@@ -61,11 +68,12 @@ extension SacrificeViewModel {
     }
 
     func openPicker(forSlot index: Int) {
-        guard index >= 0, index < SacrificeConfig.slotCount else { return }
+        guard index >= 0, index < model.unlockedSlotCount else { return }
         editingSlot = SacrificeSlotEdit(index: index)
     }
 
     func clearSlot(index: Int) {
+        guard index < model.unlockedSlotCount else { return }
         var config = mainStore.recipes.sacrificeConfig
         config.setSlot(index: index, item: nil)
         mainStore.recipes.sacrificeConfig = config
@@ -73,6 +81,7 @@ extension SacrificeViewModel {
     }
 
     func assignItem(at index: Int, item: BaseItem) {
+        guard index < model.unlockedSlotCount else { return }
         var config = mainStore.recipes.sacrificeConfig
         config.setSlot(index: index, item: item)
         mainStore.recipes.sacrificeConfig = config
