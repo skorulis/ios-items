@@ -6,7 +6,7 @@ import SnapshotTesting
 import SwiftUI
 import Testing
 
-@MainActor
+@MainActor @Suite(.snapshots(record: .failed))
 struct CreationViewSnapshotTests {
     
     let assembler = ItemsAssembly.testing()
