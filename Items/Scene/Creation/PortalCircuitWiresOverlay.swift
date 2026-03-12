@@ -24,44 +24,55 @@ struct PortalCircuitWiresOverlay: View {
     /// Pattern: short segment with round caps reads as a circle; gap separates dots.
     private var dotDashPattern: [CGFloat] { [lineWidth, dotGap] }
 
-    @State private var dashPhase: CGFloat = 0
+    /// One full phase cycle every 2s (matches previous animation duration). Time-based so
+    /// recreating the view never stacks multiple `repeatForever` animations on `dashPhase`.
+    private let phaseCycleDuration: TimeInterval = 2
 
     private var activeFrames: [CGRect] {
         sourceFrames.filter { $0.width > 0 && $0.height > 0 }
     }
 
     var body: some View {
-        GeometryReader { geo in
-            let portalCenter = CGPoint(x: geo.size.width / 2, y: geo.size.height / 2)
+        // Drive dash phase from wall-clock time so conditional show/hide never stacks
+        // competing repeatForever animations on the same @State.
+        TimelineView(.animation(minimumInterval: 1 / 60, paused: false)) { context in
+            let dashPhase = phase(at: context.date)
 
-            ZStack {
-                // Soft glow under traces
-                circuitPath(portalCenter: portalCenter, in: geo)
-                    .stroke(
-                        Color.accentColor.opacity(0.35),
-                        style: StrokeStyle(lineWidth: glowWidth, lineCap: .round, lineJoin: .round)
-                    )
-                // Circle dots along the wire — dash length == lineWidth + round caps => discs
-                circuitPath(portalCenter: portalCenter, in: geo)
-                    .stroke(
-                        Color.accentColor.opacity(0.92),
-                        style: StrokeStyle(
-                            lineWidth: lineWidth,
-                            lineCap: .round,
-                            lineJoin: .round,
-                            dash: dotDashPattern,
-                            dashPhase: dashPhase
+            GeometryReader { geo in
+                let portalCenter = CGPoint(x: geo.size.width / 2, y: geo.size.height / 2)
+
+                ZStack {
+                    // Soft glow under traces
+                    circuitPath(portalCenter: portalCenter, in: geo)
+                        .stroke(
+                            Color.accentColor.opacity(0.35),
+                            style: StrokeStyle(lineWidth: glowWidth, lineCap: .round, lineJoin: .round)
                         )
-                    )
+                    // Circle dots along the wire — dash length == lineWidth + round caps => discs
+                    circuitPath(portalCenter: portalCenter, in: geo)
+                        .stroke(
+                            Color.accentColor.opacity(0.92),
+                            style: StrokeStyle(
+                                lineWidth: lineWidth,
+                                lineCap: .round,
+                                lineJoin: .round,
+                                dash: dotDashPattern,
+                                dashPhase: dashPhase
+                            )
+                        )
+                }
             }
         }
         .allowsHitTesting(false)
-        .onAppear {
-            dashPhase = dashPeriod
-            withAnimation(.linear(duration: 2.0).repeatForever(autoreverses: false)) {
-                dashPhase = 0
-            }
-        }
+    }
+
+    /// Same motion as before: phase sweeps from `dashPeriod` down to `0` every `phaseCycleDuration`, repeating.
+    private func phase(at date: Date) -> CGFloat {
+        let t = date.timeIntervalSinceReferenceDate
+        let cycle = phaseCycleDuration
+        let u = t.truncatingRemainder(dividingBy: cycle) / cycle // 0..1
+        // Previously: animated from dashPeriod → 0 linearly each cycle.
+        return dashPeriod * (1 - CGFloat(u))
     }
 
     private func convert(_ globalRect: CGRect, in geo: GeometryProxy) -> CGRect {
