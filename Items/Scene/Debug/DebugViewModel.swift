@@ -28,6 +28,48 @@ extension DebugViewModel {
     func resetUpgrades() {
         mainStore.portalUpgrades = PortalUpgrades()
     }
+
+    // MARK: - MainStore resets (debug)
+
+    func resetWarehouse() {
+        mainStore.warehouse = Warehouse()
+    }
+
+    func resetStatistics() {
+        mainStore.statistics = Statistics()
+    }
+
+    func resetRecipes() {
+        mainStore.recipes = Recipes()
+    }
+
+    func resetLab() {
+        mainStore.lab = Laboratory()
+    }
+
+    func resetAchievements() {
+        mainStore.achievements = Achievements()
+    }
+
+    func resetConcepts() {
+        mainStore.concepts = Concepts()
+    }
+
+    func resetNotifications() {
+        mainStore.notifications = Notifications()
+    }
+
+    /// Resets every persisted slice of `MainStore` to its initial empty state.
+    func resetAllMainStore() {
+        resetWarehouse()
+        resetStatistics()
+        resetRecipes()
+        resetLab()
+        resetAchievements()
+        resetUpgrades()
+        resetConcepts()
+        resetNotifications()
+    }
     
     func addItems() {
         for item in BaseItem.allCases {

@@ -32,16 +32,6 @@ extension DebugView: View {
         VStack(alignment: .leading, spacing: 16) {
             debuggerSection
 
-            Button("Reset portal upgrades") {
-                viewModel.resetUpgrades()
-            }
-            .buttonStyle(CapsuleButtonStyle())
-            
-            Button("Reset warehouse") {
-                viewModel.mainStore.warehouse = .init()
-            }
-            .buttonStyle(CapsuleButtonStyle())
-            
             Button("Add all items") {
                 viewModel.addItems()
             }
@@ -58,6 +48,8 @@ extension DebugView: View {
             .buttonStyle(CapsuleButtonStyle())
 
             Spacer()
+
+            mainStoreResetSection
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 8)
@@ -65,6 +57,45 @@ extension DebugView: View {
 
     private var debuggerSection: some View {
         DebuggerConnectionSection(service: viewModel.debugConnectionService)
+    }
+
+    /// Compact MainStore reset controls at the bottom.
+    private var mainStoreResetSection: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("MainStore Reset")
+                .font(.headline)
+
+            LazyVGrid(
+                columns: [
+                    GridItem(.adaptive(minimum: 72, maximum: 120), spacing: 6)
+                ],
+                spacing: 6
+            ) {
+                resetChip("Warehouse") { viewModel.resetWarehouse() }
+                resetChip("Stats") { viewModel.resetStatistics() }
+                resetChip("Sacrifices") { viewModel.resetRecipes() }
+                resetChip("Lab") { viewModel.resetLab() }
+                resetChip("Ach") { viewModel.resetAchievements() }
+                resetChip("Portal") { viewModel.resetUpgrades() }
+                resetChip("Cncpt") { viewModel.resetConcepts() }
+                resetChip("Notifications") { viewModel.resetNotifications() }
+            }
+
+            Button("All") {
+                viewModel.resetAllMainStore()
+            }
+            .buttonStyle(CapsuleButtonStyle())
+            .frame(maxWidth: .infinity)
+        }
+        .padding(.top, 8)
+    }
+
+    private func resetChip(_ title: String, action: @escaping () -> Void) -> some View {
+        Button(title, action: action)
+            .buttonStyle(.bordered)
+            .controlSize(.small)
+            .lineLimit(1)
+            .minimumScaleFactor(0.8)
     }
 }
 
