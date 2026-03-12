@@ -33,7 +33,7 @@ final class CalculationsService: ObservableObject {
     
     func researchDurationSeconds(for item: BaseItem, level: Int) -> TimeInterval {
         let baseDuration: TimeInterval = 120
-        return baseDuration * pow(2.0, Double(level))
+        return baseDuration * pow(1.5, Double(level))
     }
     
     var autoCreationMilliseconds: Double {

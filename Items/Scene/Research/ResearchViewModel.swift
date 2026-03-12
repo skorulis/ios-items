@@ -166,4 +166,9 @@ extension ResearchViewModel {
         updateResearchProgress()
         mainStore.notifications.clearNewResearchLevel()
     }
+    
+    func onDisappear() {
+        stopTimer()
+        mainStore.notifications.clearNewResearchLevel()
+    }
 }

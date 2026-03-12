@@ -33,7 +33,7 @@ extension ResearchView: View {
             )
         }
         .onAppear { viewModel.onAppear() }
-        .onDisappear { viewModel.stopTimer() }
+        .onDisappear { viewModel.onDisappear() }
     }
     
     private var content: some View {
