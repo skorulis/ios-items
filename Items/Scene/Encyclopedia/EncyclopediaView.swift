@@ -48,9 +48,16 @@ extension EncyclopediaView: View {
         }
     }
     
+    @ViewBuilder
     private func cell(entry: EncyclopediaEntry) -> some View {
-        ChevronRow(title: entry.title) {
-            viewModel.showChild(entry: entry)
+        if let icon = entry.icon {
+            ChevronRow(title: entry.title, leading: { icon }) {
+                viewModel.showChild(entry: entry)
+            }
+        } else {
+            ChevronRow(title: entry.title) {
+                viewModel.showChild(entry: entry)
+            }
         }
     }
     

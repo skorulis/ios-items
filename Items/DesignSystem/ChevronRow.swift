@@ -2,27 +2,29 @@
 
 import SwiftUI
 
-public struct ChevronRow<Accessory: View>: View {
+/// Tappable row with optional leading content and a fixed trailing chevron.
+public struct ChevronRow<Leading: View>: View {
     private let title: String
     private let subtitle: String?
-    private let accessory: Accessory
+    private let leading: Leading
     private let action: () -> Void
 
     public init(
         title: String,
         subtitle: String? = nil,
-        @ViewBuilder accessory: () -> Accessory = { EmptyView() },
+        @ViewBuilder leading: () -> Leading,
         action: @escaping () -> Void
     ) {
         self.title = title
         self.subtitle = subtitle
-        self.accessory = accessory()
+        self.leading = leading()
         self.action = action
     }
 
     public var body: some View {
         Button(action: action) {
             HStack(spacing: 12) {
+                leading
                 VStack(alignment: .leading, spacing: 2) {
                     Text(title)
                         .foregroundStyle(.primary)
@@ -37,7 +39,6 @@ public struct ChevronRow<Accessory: View>: View {
                     }
                 }
                 Spacer(minLength: 8)
-                accessory
                 Image(systemName: "chevron.forward")
                     .font(.body.weight(.semibold))
                     .foregroundStyle(.tertiary)
@@ -47,7 +48,7 @@ public struct ChevronRow<Accessory: View>: View {
         }
         .buttonStyle(PressableRowStyle())
     }
-    
+
     private struct PressableRowStyle: ButtonStyle {
         var pressedBackground: Color = Color.secondary.opacity(0.12)
         var normalBackground: Color = .clear
@@ -63,8 +64,9 @@ public struct ChevronRow<Accessory: View>: View {
     }
 }
 
-// MARK: - Convenience initializers without accessory
-public extension ChevronRow where Accessory == EmptyView {
+// MARK: - No leading
+
+public extension ChevronRow where Leading == EmptyView {
     init(
         title: String,
         subtitle: String? = nil,
@@ -73,13 +75,14 @@ public extension ChevronRow where Accessory == EmptyView {
         self.init(
             title: title,
             subtitle: subtitle,
-            accessory: { EmptyView() },
+            leading: { EmptyView() },
             action: action
         )
     }
 }
 
 // MARK: - Preview
+
 struct ChevronRow_Previews: PreviewProvider {
     static var previews: some View {
         Group {
@@ -91,18 +94,14 @@ struct ChevronRow_Previews: PreviewProvider {
             .previewDisplayName("ChevronRow - Title only")
 
             List {
-                ChevronRow(title: "Wi‑Fi", subtitle: "Home Network") {
+                ChevronRow(title: "With icon", leading: {
                     Image(systemName: "wifi")
                         .foregroundStyle(.blue)
-                } action: {}
-
-                ChevronRow(title: "Notifications") {
-                    Toggle(isOn: .constant(true)) { EmptyView() }
-                        .labelsHidden()
-                } action: {}
+                        .frame(width: 28, height: 28)
+                }) {}
             }
             .listStyle(.insetGrouped)
-            .previewDisplayName("ChevronRow - With accessory")
+            .previewDisplayName("ChevronRow - With leading")
         }
     }
 }
