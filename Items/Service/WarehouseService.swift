@@ -4,6 +4,7 @@ import Foundation
 import Knit
 import KnitMacros
 import Models
+import SwiftUI
 
 /// Service responsible for all mutations to `MainStore.warehouse`.
 /// This ensures that changes always go through `MainStore` so persistence
@@ -41,7 +42,10 @@ extension WarehouseService {
         let wasNewDiscovery = !mainStore.warehouse.hasDiscovered(item)
         mainStore.warehouse.add(item: item, count: count)
         if wasNewDiscovery {
-            toastService.showToast("Discovered \(item.name)")
+            toastService.showToast(
+                "Discovered \(item.name)",
+                icon: AnyView(ItemView(item: item, size: .small)),
+            )
             mainStore.notifications.recordNewItemDiscovery(item)
         }
     }
@@ -56,10 +60,11 @@ extension WarehouseService {
         let wasNewDiscovery = mainStore.warehouse.isNewDiscovery(artifact: artifact)
         mainStore.warehouse.add(artifact: artifact)
         if wasNewDiscovery {
+            let icon: AnyView = AnyView(ArtifactView(artifact: artifact, size: .small))
             if artifact.quality == .junk {
-                toastService.showToast("Discovered \(artifact.type.name)")
+                toastService.showToast("Discovered \(artifact.type.name)", icon: icon)
             } else {
-                toastService.showToast("Upgraded \(artifact.type.name)")
+                toastService.showToast("Upgraded \(artifact.type.name)", icon: icon)
             }
             mainStore.notifications.recordNewArtifactDiscovery(artifact.type)
         }

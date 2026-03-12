@@ -4,6 +4,7 @@ import ASKCoordinator
 import Foundation
 import Knit
 import KnitMacros
+import SwiftUI
 
 final class ToastService {
     
@@ -12,15 +13,12 @@ final class ToastService {
 
     @Resolvable<BaseResolver>
     init() {}
-
-    func showToast(_ message: String) {
+    
+    func showToast(_ message: String, icon: AnyView? = nil) {
         print("Toast: \(message)")
         guard let coordinator else {
             return
         }
-        
-        // TODO: Implement stacked toasts
-        
-        coordinator.custom(overlay: .toast, MainPath.toast(message))
+        coordinator.custom(overlay: .toast, MainPath.toast(icon, message))
     }
 }

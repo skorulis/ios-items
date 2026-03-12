@@ -40,20 +40,25 @@ extension Toast: View {
 
 struct DefaultToastContent: View {
     
+    let icon: AnyView?
     let text: String
     
     var body: some View {
-        HStack {
+        HStack(spacing: 8) {
+            if let icon {
+                icon
+            }
             Text(text)
+            Spacer()
         }
     }
 }
 
 extension Toast where Content == DefaultToastContent {
     
-    init(text: String) {
+    init(icon: AnyView? = nil, text: String) {
         self.init {
-            DefaultToastContent(text: text)
+            DefaultToastContent(icon: icon, text: text)
         }
     }
 }
@@ -63,6 +68,10 @@ extension Toast where Content == DefaultToastContent {
 #Preview {
     VStack {
         Toast(text: "Test123")
+        Toast(
+            icon: AnyView(AvatarView(text: "AB", image: nil, border: .black, size: .small)),
+            text: "Test123"
+        )
     }
     .frame(maxHeight: .infinity)
     .background(Color.black)

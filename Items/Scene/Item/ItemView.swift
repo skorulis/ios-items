@@ -9,12 +9,19 @@ import SwiftUI
 @MainActor struct ItemView {
     let item: BaseItem
     let quantity: Int?
-    var showNewBadge: Bool = false
+    let showNewBadge: Bool
+    let size: AvatarView.Size
     
-    init(item: BaseItem, quantity: Int? = nil, showNewBadge: Bool = false) {
+    init(
+        item: BaseItem,
+        quantity: Int? = nil,
+        showNewBadge: Bool = false,
+        size: AvatarView.Size = .medium
+    ) {
         self.item = item
         self.quantity = quantity
         self.showNewBadge = showNewBadge
+        self.size = size
     }
 }
 
@@ -29,6 +36,7 @@ extension ItemView: View {
             border: item.quality.color,
             badge: badgeText,
             showNewBadge: showNewBadge,
+            size: size,
         )
     }
     

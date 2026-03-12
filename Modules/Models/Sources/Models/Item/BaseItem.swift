@@ -151,7 +151,8 @@ public enum BaseItem: String, Hashable, Equatable, CaseIterable, Identifiable, C
             ]
         case .copperFlorin:
             return [
-                "The base currency in the realm of Relicara"
+                "The base unit of currency in the realm of Relicara",
+                "Coins are the primary item used to purchase portal upgrades",
             ]
         case .gear:
             return [
