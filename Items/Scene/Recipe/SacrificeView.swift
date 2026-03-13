@@ -30,6 +30,7 @@ extension SacrificeView: View {
     var body: some View {
         VStack {
             titleBar
+            sacrificesToggleRow
             pentagramContent
         }
         .sheet(item: $viewModel.editingSlot) { slot in
@@ -56,15 +57,23 @@ extension SacrificeView: View {
                     viewModel.coordinator?.pop()
                 }
             },
-            leadingStyle: .close,
-            trailing: {
-                Toggle("", isOn: Binding(
-                    get: { viewModel.model.sacrificesEnabled },
-                    set: { viewModel.setSacrificesEnabled($0) }
-                ))
-                .labelsHidden()
-            }
+            leadingStyle: .close
         )
+    }
+
+    private var sacrificesToggleRow: some View {
+        HStack {
+            Text("Sacrifices enabled")
+                .font(.subheadline.weight(.medium))
+            Spacer()
+            Toggle("", isOn: Binding(
+                get: { viewModel.model.sacrificesEnabled },
+                set: { viewModel.setSacrificesEnabled($0) }
+            ))
+            .labelsHidden()
+        }
+        .padding(.horizontal)
+        .padding(.vertical, 8)
     }
 
     private var pentagramContent: some View {
@@ -73,11 +82,12 @@ extension SacrificeView: View {
             let center = PentagramLayout.center(in: rect)
             let radius = PentagramLayout.radius(in: rect)
 
+            let pentagramColor: Color = viewModel.model.sacrificesEnabled ? .red : .gray
             ZStack {
                 PentagramCircumcircleShape()
-                    .stroke(Color.red, lineWidth: 8)
+                    .stroke(pentagramColor, lineWidth: 8)
                 PentagramShape()
-                    .stroke(Color.red, lineWidth: 8)
+                    .stroke(pentagramColor, lineWidth: 8)
 
                 ForEach(0..<SacrificeConfig.slotCount, id: \.self) { index in
                     slotView(index: index)
