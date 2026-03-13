@@ -91,7 +91,8 @@ struct WarehouseView: View {
 
         return LazyVStack(alignment: .leading, spacing: 16) {
             ForEach(ItemQuality.allCases, id: \.self) { quality in
-                if let itemsInQuality = grouped[quality], !itemsInQuality.isEmpty {
+                if let itemsInQuality = grouped[quality], !itemsInQuality.isEmpty,
+                   itemsInQuality.contains(where: { viewModel.warehouse.hasDiscovered($0) }) {
                     VStack(alignment: .leading, spacing: 8) {
                         Text(quality.name)
                             .font(.headline)
