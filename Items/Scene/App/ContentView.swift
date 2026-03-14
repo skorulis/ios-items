@@ -55,10 +55,12 @@ extension ContentView: View {
 #endif
             
         }
-        .onAppear { viewModel.resumeResearchProgressIfNeeded() }
+        .onAppear { viewModel.onAppear() }
         .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .active {
-                viewModel.resumeResearchProgressIfNeeded()
+                viewModel.onAppear()
+            } else if newPhase == .background {
+                viewModel.recordBackgrounded()
             }
         }
     }

@@ -49,6 +49,8 @@ final class ItemsAssembly: AutoInitModuleAssembly {
         
         container.register(RecipeService.self) { RecipeService.make(resolver: $0) }
             .inObjectScope(.container)
+        container.register(OfflineCreationService.self) { OfflineCreationService.make(resolver: $0) }
+            .inObjectScope(.container)
         container.register(ToastService.self) { ToastService.make(resolver: $0) }
             .inObjectScope(.container)
         container.register(ResearchService.self) { ResearchService.make(resolver: $0) }

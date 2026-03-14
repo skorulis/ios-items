@@ -14,13 +14,23 @@ import SwiftUI
     private let mainStore: MainStore
     private let achievementService: AchievementService
     private let researchService: ResearchService
+    private let offlineCreationService: OfflineCreationService
+    private let toastService: ToastService
     private var cancellables: Set<AnyCancellable> = []
     
     @Resolvable<BaseResolver>
-    init(mainStore: MainStore, achievementService: AchievementService, researchService: ResearchService) {
+    init(
+        mainStore: MainStore,
+        achievementService: AchievementService,
+        researchService: ResearchService,
+        offlineCreationService: OfflineCreationService,
+        toastService: ToastService
+    ) {
         self.mainStore = mainStore
         self.achievementService = achievementService
         self.researchService = researchService
+        self.offlineCreationService = offlineCreationService
+        self.toastService = toastService
         
         mainStore.$achievements.sink { achievements in
             self.model.showingAchievements = achievements.unlocked.count > 0
@@ -41,9 +51,20 @@ import SwiftUI
 
 extension ContentViewModel {
     
-    /// Apply any research progress that accrued while the app was backgrounded or closed.
-    func resumeResearchProgressIfNeeded() {
+    /// Apply any research progress and offline creations that accrued while the app was backgrounded or closed.
+    func onAppear() {
         researchService.startProgressCheckTimer()
         researchService.resumeResearchProgressIfNeeded()
+        if let summary = offlineCreationService.processOfflineCreationsIfNeeded() {
+            toastService.showToast(summary.toastMessage)
+        }
+    }
+
+    /// Record that the app entered background so offline creation can be applied on return.
+    func recordBackgrounded() {
+        mainStore.offlineState = OfflineState(
+            lastBackgroundedAt: Date(),
+            automationEnabled: mainStore.offlineState.automationEnabled
+        )
     }
 }

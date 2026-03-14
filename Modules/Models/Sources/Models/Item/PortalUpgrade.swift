@@ -237,7 +237,7 @@ extension PortalUpgrade {
         case .sacrificesLevel5:
             return [.upgradePurchased(.sacrificesLevel4)]
         case .offlineProgress:
-            return [.achievementUnlocked(.items10)]
+            return [.achievementUnlocked(.items10), .upgradePurchased(.portalAutomation)]
         case .offlineProgressLevel2:
             return [.upgradePurchased(.offlineProgress)]
         case .offlineProgressLevel3:

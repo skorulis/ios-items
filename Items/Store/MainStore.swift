@@ -54,8 +54,15 @@ final class MainStore: ObservableObject {
         }
     }
 
+    @Published var offlineState: OfflineState {
+        didSet {
+            try? self.store.set(codable: offlineState, forKey: Self.offlineStateKey)
+        }
+    }
+
     private let store: PKeyValueStore
     private static let achievementsKey = "MainStore.achievements"
+    private static let offlineStateKey = "MainStore.offlineState"
     private static let portalUpgradesKey = "MainStore.portalUpgrades"
     private static let conceptsKey = "MainStore.concepts"
     private static let labKey = "MainStore.lab"
@@ -76,5 +83,6 @@ final class MainStore: ObservableObject {
         self.recipes = (try? store.codable(forKey: Self.recipesKey)) ?? Recipes()
         self.concepts = (try? store.codable(forKey: Self.conceptsKey)) ?? Concepts()
         self.notifications = (try? store.codable(forKey: Self.notificationsKey)) ?? Notifications()
+        self.offlineState = (try? store.codable(forKey: Self.offlineStateKey)) ?? OfflineState()
     }
 }

@@ -23,6 +23,10 @@ import SwiftUI
     
     var automateCreation: Bool = false {
         didSet {
+            mainStore.offlineState = OfflineState(
+                lastBackgroundedAt: mainStore.offlineState.lastBackgroundedAt,
+                automationEnabled: automateCreation
+            )
             if automateCreation {
                 startMakeTimer()
             } else {
@@ -60,6 +64,7 @@ import SwiftUI
         
         self.model.automationUnlocked = mainStore.portalUpgrades.purchased.contains(.portalAutomation)
         self.model.sacrificesUnlocked = mainStore.portalUpgrades.purchased.contains(.sacrifices)
+        self.automateCreation = mainStore.offlineState.automationEnabled
 
         mainStore.$warehouse.sink { [unowned self] in
             self.model.warehouse = $0
@@ -160,6 +165,7 @@ extension CreationViewModel {
         self.model.creationInProgress = nil
 
         self.model.createdItem = itemGeneratorService.makeAndStore(plan: plan)
+        mainStore.offlineState.updateBackgroundedTime()
     }
     
     func showRecipes() {
