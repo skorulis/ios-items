@@ -9,15 +9,18 @@ import SwiftUI
 @MainActor struct ItemPicker {
     let title: String
     let predicate: (BaseItem) -> Bool
+    let quantity: (BaseItem) -> Int?
     let onSelect: (BaseItem) -> Void
 
     init(
         title: String = "Choose item",
         predicate: @escaping (BaseItem) -> Bool = { _ in true },
+        quantity: @escaping (BaseItem) -> Int? = { _ in nil },
         onSelect: @escaping (BaseItem) -> Void
     ) {
         self.title = title
         self.predicate = predicate
+        self.quantity = quantity
         self.onSelect = onSelect
     }
 }
@@ -52,7 +55,7 @@ extension ItemPicker: View {
         return LazyVGrid(columns: columns, spacing: 16) {
             ForEach(visibleItems) { item in
                 Button(action: { onSelect(item) }) {
-                    ItemGridCell(item: item, quantity: nil)
+                    ItemGridCell(item: item, quantity: quantity(item))
                 }
                 .buttonStyle(.plain)
             }

@@ -73,6 +73,7 @@ extension AvatarView: View {
             
             Circle()
                 .stroke(border, lineWidth: 2)
+                .padding(1)
             
             content
             

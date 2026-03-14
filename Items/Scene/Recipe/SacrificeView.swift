@@ -39,6 +39,7 @@ extension SacrificeView: View {
                 predicate: { item in
                     viewModel.model.warehouse.hasDiscovered(item)
                 },
+                quantity: { viewModel.model.warehouse.quantity($0) },
                 onSelect: { item in
                     viewModel.assignItem(at: slot.index, item: item)
                 }

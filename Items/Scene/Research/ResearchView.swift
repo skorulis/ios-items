@@ -25,7 +25,8 @@ extension ResearchView: View {
         .sheet(isPresented: $viewModel.showingPicker) {
             ItemPicker(
                 title: "Choose item to research",
-                predicate: { viewModel.warehouse.quantity($0) > 0 },
+                predicate: { viewModel.warehouse.hasDiscovered($0) },
+                quantity: { viewModel.warehouse.quantity($0) },
                 onSelect: {
                     viewModel.selectAndBeginResearch(item: $0)
                     viewModel.showingPicker = false
