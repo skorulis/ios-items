@@ -16,6 +16,7 @@ extension PortalUpgrade {
             return Image(systemName: "flame.fill")
         case .artifactSlot, .artifactSlotLevel2, .artifactSlotLevel3: return Image(systemName: "square.stack.3d.up.fill")
         case .knowledgeSiphon, .knowledgeSiphonLevel2, .knowledgeSiphonLevel3, .knowledgeSiphonLevel4, .knowledgeSiphonLevel5: return Image(systemName: "book.fill")
+        case .offlineProgress, .offlineProgressLevel2, .offlineProgressLevel3, .offlineProgressLevel4, .offlineProgressLevel5: return Image(systemName: "arrow.up.circle.badge.clock")
         }
     }
 }

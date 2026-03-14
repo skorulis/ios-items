@@ -32,6 +32,11 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
     case knowledgeSiphonLevel3
     case knowledgeSiphonLevel4
     case knowledgeSiphonLevel5
+    case offlineProgress
+    case offlineProgressLevel2
+    case offlineProgressLevel3
+    case offlineProgressLevel4
+    case offlineProgressLevel5
 
     public var id: Self { self }
 
@@ -53,6 +58,11 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
         case .knowledgeSiphonLevel3: return "Knowledge Siphon III"
         case .knowledgeSiphonLevel4: return "Knowledge Siphon IV"
         case .knowledgeSiphonLevel5: return "Knowledge Siphon V"
+        case .offlineProgress: return "Offline Progress"
+        case .offlineProgressLevel2: return "Offline Progress II"
+        case .offlineProgressLevel3: return "Offline Progress III"
+        case .offlineProgressLevel4: return "Offline Progress IV"
+        case .offlineProgressLevel5: return "Offline Progress V"
         }
     }
 
@@ -142,6 +152,26 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
             .init(item: .lens, quantity: 5),
             .init(item: .goldFlorin, quantity: 3),
         ]
+        case .offlineProgress: return [
+            .init(item: .gear, quantity: 2),
+            .init(item: .copperFlorin, quantity: 5),
+        ]
+        case .offlineProgressLevel2: return [
+            .init(item: .gear, quantity: 4),
+            .init(item: .silverFlorin, quantity: 2),
+        ]
+        case .offlineProgressLevel3: return [
+            .init(item: .gear, quantity: 6),
+            .init(item: .silverFlorin, quantity: 4),
+        ]
+        case .offlineProgressLevel4: return [
+            .init(item: .gear, quantity: 8),
+            .init(item: .goldFlorin, quantity: 2),
+        ]
+        case .offlineProgressLevel5: return [
+            .init(item: .gear, quantity: 10),
+            .init(item: .goldFlorin, quantity: 4),
+        ]
         }
     }
 
@@ -164,6 +194,8 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
             return .booksForResearch(.exceptional)
         case .sacrifices, .sacrificesLevel2, .sacrificesLevel3, .sacrificesLevel4, .sacrificesLevel5:
             return .sacrificeSlot(1)
+        case .offlineProgress, .offlineProgressLevel2, .offlineProgressLevel3, .offlineProgressLevel4, .offlineProgressLevel5:
+            return .offlineTimeMinutes(60)
         default:
             return nil
         }
@@ -204,6 +236,16 @@ extension PortalUpgrade {
             return [.upgradePurchased(.sacrificesLevel3)]
         case .sacrificesLevel5:
             return [.upgradePurchased(.sacrificesLevel4)]
+        case .offlineProgress:
+            return [.achievementUnlocked(.items10)]
+        case .offlineProgressLevel2:
+            return [.upgradePurchased(.offlineProgress)]
+        case .offlineProgressLevel3:
+            return [.upgradePurchased(.offlineProgressLevel2)]
+        case .offlineProgressLevel4:
+            return [.upgradePurchased(.offlineProgressLevel3)]
+        case .offlineProgressLevel5:
+            return [.upgradePurchased(.offlineProgressLevel4)]
         default:
             return []
         }

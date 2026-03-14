@@ -12,6 +12,8 @@ public enum Bonus {
     case artifactDiscovery(Int)
     /// Extra percent chance to create two items from one sacrifice (stacks additively with lab level and lucky coin).
     case multipleItemChance(Int)
+    /// Maximum claimable offline progress time in minutes (stacks across upgrades).
+    case offlineTimeMinutes(Int)
 
     public var text: String {
         switch self {
@@ -29,6 +31,8 @@ public enum Bonus {
             return "Boost artifact discovery chance by \(percent)%"
         case let .multipleItemChance(percent):
             return "Boost multiple item chance by \(percent)%"
+        case let .offlineTimeMinutes(minutes):
+            return "Add \(minutes) minutes of claimable offline progress"
         }
     }
 
@@ -83,6 +87,12 @@ public enum Bonus {
         if case let .multipleItemChance(int) = self { return int }
         return 0
     }
+
+    /// Minutes of offline progress that can be claimed. Stacks across upgrades.
+    public var offlineTimeMinutes: Int {
+        if case let .offlineTimeMinutes(int) = self { return int }
+        return 0
+    }
 }
 
 public extension Array where Element == Bonus {
@@ -101,6 +111,11 @@ public extension Array where Element == Bonus {
     /// Total percent added to multiple-item (double drop) chance from bonuses.
     var multipleItemChance: Int {
         return self.map { $0.multipleItemChancePercent }.reduce(0, +)
+    }
+
+    /// Total claimable offline progress time in minutes (sum of all offline time bonuses).
+    var offlineTimeMinutes: Int {
+        return self.map { $0.offlineTimeMinutes }.reduce(0, +)
     }
 
     /// Sum of quality boost percent per quality (e.g. [.common: 1] means +1% chance for common).
