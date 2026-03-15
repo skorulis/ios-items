@@ -29,8 +29,8 @@ final class ItemGeneratorService {
         )
     }
 
-    func makeAndStore(plan: SacrificePlan) -> MakeItemResult {
-        let item = make(plan: plan)
+    func makeAndStore(plan: SacrificePlan, allowArtifacts: Bool = true) -> MakeItemResult {
+        let item = make(plan: plan, allowArtifacts: allowArtifacts)
         switch item {
         case let .base(baseItem, count):
             warehouseService.add(item: baseItem, count: count)
@@ -45,7 +45,7 @@ final class ItemGeneratorService {
         return item
     }
 
-    func make(plan: SacrificePlan) -> MakeItemResult {
+    func make(plan: SacrificePlan, allowArtifacts: Bool = true) -> MakeItemResult {
         let info = recipeInfo(plan: plan)
         let quality = info.randomQuality()
 
@@ -65,7 +65,7 @@ final class ItemGeneratorService {
             fatalError("Could not find an appropriate item. \(quality.name)")
         }
 
-        if let artifact = maybeConvertToArtifact(baseItem: baseItem) {
+        if allowArtifacts, let artifact = maybeConvertToArtifact(baseItem: baseItem) {
             return .artifact(artifact)
         }
 

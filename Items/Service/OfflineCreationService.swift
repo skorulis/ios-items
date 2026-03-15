@@ -60,7 +60,7 @@ final class OfflineCreationService {
             let plan = recipeService.sacrificeConsumptionPlan()
             recipeService.consumePlan(plan)
             mainStore.statistics.itemsSacrificed += Int64(plan.consumedItems.count)
-            _ = itemGeneratorService.makeAndStore(plan: plan)
+            _ = itemGeneratorService.makeAndStore(plan: plan, allowArtifacts: false)
         }
 
         let itemsCreated = mainStore.statistics.itemsCreated - itemsCreatedBefore
