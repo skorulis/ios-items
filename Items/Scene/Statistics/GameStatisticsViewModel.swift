@@ -29,7 +29,7 @@ final class GameStatisticsViewModel: ObservableObject, CoordinatorViewModel {
     var statRows: [(name: String, value: String)] {
         [
             ("Items created", formatCount(statistics.itemsCreated)),
-            ("Double creations", formatCount(statistics.doubleItemCreations)),
+            ("Multiple item creations", formatCount(statistics.multipleItemCreations)),
             ("Items sacrificed", formatCount(statistics.itemsSacrificed)),
         ]
     }

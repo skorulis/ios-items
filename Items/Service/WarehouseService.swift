@@ -114,9 +114,8 @@ extension WarehouseService {
     }
     
     func details(item: BaseItem) -> ItemDetails {
-        let doubleChance = calculationService
-            .doubleItemChance(item: item)
-            .percentageString()
+        let fraction = calculationService.multipleItemChanceFraction(item: item)
+        let multipleItemChance = String(format: "%.1f%%", fraction * 100)
         
         let researchLevel: Int?
         let researchCost: Int?
@@ -135,7 +134,7 @@ extension WarehouseService {
         
         return ItemDetails(
             item: item,
-            doubleChance: doubleChance,
+            doubleChance: multipleItemChance,
             researchLevel: researchLevel,
             researchCost: researchCost,
             essences: essences

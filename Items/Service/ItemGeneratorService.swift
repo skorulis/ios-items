@@ -37,7 +37,7 @@ final class ItemGeneratorService {
 
             mainStore.statistics.itemsCreated += Int64(count)
             if count > 1 {
-                mainStore.statistics.doubleItemCreations += 1
+                mainStore.statistics.multipleItemCreations += 1
             }
         case let .artifact(artifact):
             warehouseService.add(artifact: artifact)
@@ -69,11 +69,13 @@ final class ItemGeneratorService {
             return .artifact(artifact)
         }
 
-        if calculations.doubleItemChance(item: baseItem).check() {
-            return .base(baseItem, 2)
-        }
+        let multiChance = calculations.multipleItemChanceFraction(item: baseItem)
+        let guaranteedExtra = Int(multiChance)
+        let remainder = multiChance - Double(guaranteedExtra)
+        let extraFromRoll = remainder > 0 && Chance(remainder).check()
+        let count = 1 + guaranteedExtra + (extraFromRoll ? 1 : 0)
 
-        return .base(baseItem, 1)
+        return .base(baseItem, count)
     }
 
     // MARK: - Private Functions

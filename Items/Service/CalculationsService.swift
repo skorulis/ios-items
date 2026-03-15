@@ -49,15 +49,17 @@ final class CalculationsService: ObservableObject {
         return max(value, 100)
     }
     
-    func doubleItemChance(item: BaseItem) -> Chance {
+    /// Raw multiple-item chance as a fraction (e.g. 1.5 = 150% = 1 guaranteed extra + 50% for another).
+    /// Use this for determining how many items to create; can exceed 1.
+    func multipleItemChanceFraction(item: BaseItem) -> Double {
         let level = Double(mainStore.lab.currentLevel(item: item))
-        var chance = Chance((1 + level) * 0.05)
+        var fraction = (1 + level) * 0.05
         if let coin = mainStore.warehouse.equippedArtifact(.luckyCoin) {
-            chance = chance.adding(percent: coin.type.luckyCoinMultipleItemChance(quality: coin.quality))
+            fraction += Double(coin.type.luckyCoinMultipleItemChance(quality: coin.quality)) / 100
         }
-        chance = chance.adding(percent: mainStore.portalUpgrades.bonuses.multipleItemChance)
-        chance = chance.adding(percent: mainStore.achievements.bonuses.multipleItemChance)
-        return chance
+        fraction += Double(mainStore.portalUpgrades.bonuses.multipleItemChance) / 100
+        fraction += Double(mainStore.achievements.bonuses.multipleItemChance) / 100
+        return max(0, fraction)
     }
     
     func artifactChance(quality: ItemQuality, researchLevel: Int) -> Chance {

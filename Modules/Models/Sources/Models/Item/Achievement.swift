@@ -148,11 +148,11 @@ public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable, 
         case .researchLevel10:
             return .maxResearchLevel(10)
         case .doubleItems10:
-            return .doubleItemCreations(10)
+            return .multipleItemCreations(10)
         case .doubleItems100:
-            return .doubleItemCreations(100)
+            return .multipleItemCreations(100)
         case .doubleItems1000:
-            return .doubleItemCreations(1000)
+            return .multipleItemCreations(1000)
         }
     }
 

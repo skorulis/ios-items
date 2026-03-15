@@ -26,7 +26,7 @@ extension ItemDetailsView: View {
             }
             Text("Quality \(item.quality.name)")
             researchProgress
-            Text("Double chance: \(viewModel.model.details.doubleChance)")
+            Text("Multiple item chance: \(viewModel.model.details.doubleChance)")
             artifactSection
             
             if let lore = combinedLore {

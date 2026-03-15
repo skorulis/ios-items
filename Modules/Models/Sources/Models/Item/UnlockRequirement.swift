@@ -15,8 +15,8 @@ private func formatCount(_ value: Int64) -> String {
 public enum UnlockRequirement: Codable {
     case itemsCreated(Int64)
     case itemsSacrificed(Int64)
-    /// Times a sacrifice yielded two items at once (double creation).
-    case doubleItemCreations(Int64)
+    /// Times a sacrifice yielded multiple items at once.
+    case multipleItemCreations(Int64)
     case totalResearch(Int64)
     case maxResearchLevel(Int64)
     case commonItemsCreated(Int64)
@@ -53,7 +53,7 @@ public extension UnlockRequirement {
             return "Create \(formatCount(count)) items"
         case let .itemsSacrificed(count):
             return "Sacrifice \(formatCount(count)) item\(count == 1 ? "" : "s")"
-        case let .doubleItemCreations(count):
+        case let .multipleItemCreations(count):
             return "Create multiple items at once \(formatCount(count)) time\(count == 1 ? "" : "s")"
         case let .totalResearch(count):
             return "Complete \(formatCount(count)) levels of research"

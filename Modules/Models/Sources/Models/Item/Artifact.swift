@@ -23,7 +23,7 @@ public enum Artifact: Identifiable, Hashable, CaseIterable, Codable {
         case .eternalHourglass:
             return "A timeless hourglass that accelerates automatic item creation."
         case .luckyCoin:
-            return "A coin blessed with fortune, increasing the chance of double item rewards."
+            return "A coin blessed with fortune, increasing the chance of multiple item rewards."
         case .perfectLens:
             return "A flawless lens that boosts research."
         case .sacrificalSkull:
@@ -113,7 +113,7 @@ public extension Artifact {
         case .eternalHourglass:
             return "Reduces automatic item creation time by \(eternalHourglassTimeReduction(quality: quality)) milliseconds"
         case .luckyCoin:
-            return "Increase the chance of double items by \(luckyCoinMultipleItemChance(quality: quality))%"
+            return "Increase the chance of multiple items by \(luckyCoinMultipleItemChance(quality: quality))%"
         case .sacrificalSkull:
             return "Increase the effect of sacrifices by \(sacrificalSkullSacrificeEffectMultiplier(quality: quality))%"
         default:
