@@ -126,7 +126,7 @@ extension EncyclopediaEntry {
     static var essences: Self {
         .init(
             title: "Essence",
-            body: "All items contain essences that can be used to craft new items.",
+            body: "All items contain essences that can be used to craft new items. Essences are discovered by researching items.",
             condition: .essencesUnlocked(1),
             childItems: Essence.allCases.map { Self.essenceEntry($0) },
             icon: {

@@ -189,7 +189,7 @@ public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable, 
             return .qualityBoost(1, .common)
         case .common1:
             return .qualityBoost(1, .common)
-        case .researchLevel5:
+        case .researchLevel5, .research10:
             return .researchSpeed(5)
         case .doubleItems10, .doubleItems100, .doubleItems1000:
             return .multipleItemChance(5)
