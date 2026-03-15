@@ -10,18 +10,20 @@ extension CustomOverlay.Name {
 
 struct ToastPathWrapper<Content: View>: View {
     @State var isVisible: Bool = false
+    let toastService: ToastService?
+    let id: String
     let content: () -> Content
-    
+
     @Environment(\.dismissCustomOverlay) private var onDismiss
-    
+
     var body: some View {
         ZStack {
             if isVisible {
                 VStack {
-                    Button(action: onDismiss) {
+                    Button(action: dismissToast) {
                         Toast(content: content)
                     }
-                    
+
                     Spacer()
                 }
                 .transition(.opacity)
@@ -31,7 +33,7 @@ struct ToastPathWrapper<Content: View>: View {
                     } catch {
                         print("Task cancelled")
                     }
-                    onDismiss()
+                    dismissToast()
                 }
             }
         }
@@ -40,16 +42,18 @@ struct ToastPathWrapper<Content: View>: View {
             isVisible = true
         }
     }
-    
-    private func maybeDismiss() {
+
+    private func dismissToast() {
         onDismiss()
+        toastService?.toastDidDismiss(id: id)
     }
-    
 }
 
 #Preview {
     ToastPathWrapper(
         isVisible: true,
+        toastService: nil,
+        id: "",
         content: { Text("Toast") },
     )
 }

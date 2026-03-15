@@ -14,8 +14,14 @@ extension CoordinatorView {
         .with(overlay: .circularReveal) { view, path in
             AnyView(CircularRevealPathWrapper(path: path) { view })
         }
-        .with(overlay: .toast) { view, _ in
-            AnyView(ToastPathWrapper { view })
+        .with(overlay: .toast) { view, path in
+            AnyView(
+                ToastPathWrapper(
+                    toastService: resolver.toastService(),
+                    id: path.id,
+                    content:  { view }
+                )
+            )
         }
     }
 }

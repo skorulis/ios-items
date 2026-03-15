@@ -31,10 +31,15 @@ enum MainPath: CoordinatorPath {
     case dialog(String)
     
     // Toast at the bottom of the screen
-    case toast(AnyView?, String)
+    case toast(AnyView?, String, UUID)
     
     public var id: String {
-        String(describing: self)
+        switch self {
+        case let .toast(_, _, toastID):
+            return toastID.uuidString
+        default:
+            return String(describing: self)
+        }
     }
 }
 
@@ -81,7 +86,7 @@ struct MainPathRenderer: CoordinatorPathRenderer {
         case let .dialog(text):
             Text(text)
                 .padding(16)
-        case let .toast(icon, text):
+        case let .toast(icon, text, _):
             DefaultToastContent(icon: icon, text: text)
         }
     }
