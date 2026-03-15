@@ -81,6 +81,9 @@ extension SacrificeViewModel {
         editingSlot = nil
     }
 
+    func showCurrentRecipeDetail() {
+        coordinator?.custom(overlay: .card, MainPath.currentRecipeDetail)
+    }
 }
 
 // MARK: - Sheet item

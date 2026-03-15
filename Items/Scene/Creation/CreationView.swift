@@ -208,11 +208,13 @@ extension CreationView: View {
             autoCreationButton
             createButton
             
-            Button(action: viewModel.showCurrentRecipeDetail) {
-                Image(systemName: "info.circle")
-                    .font(.title2)
+            if !viewModel.model.firstItem {
+                Button(action: viewModel.showCurrentRecipeDetail) {
+                    Image(systemName: "info.circle")
+                        .font(.title2)
+                }
+                .buttonStyle(.plain)
             }
-            .buttonStyle(.plain)
         }
     }
 

@@ -105,6 +105,13 @@ extension SacrificeView: View {
                     slotView(index: index)
                         .position(PentagramLayout.vertexPoint(index: index, center: center, radius: radius))
                 }
+
+                Button(action: viewModel.showCurrentRecipeDetail) {
+                    Image(systemName: "info.circle")
+                        .font(.title2)
+                }
+                .buttonStyle(.plain)
+                .position(center)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
