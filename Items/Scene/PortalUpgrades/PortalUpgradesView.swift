@@ -61,6 +61,7 @@ extension PortalUpgradesView: View {
             ForEach(viewModel.availableToPurchase, id: \.self) { upgrade in
                 PortalUpgradeCell(
                     upgrade: upgrade,
+                    itemQuantity: { viewModel.warehouse.quantity($0) },
                     canPurchase: viewModel.canPurchase(upgrade),
                     onPurchase: { viewModel.purchase(upgrade) }
                 )

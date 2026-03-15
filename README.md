@@ -1,4 +1,4 @@
-# Relicara
+# Vesprium
 
 A game about finding items from another dimension.
 

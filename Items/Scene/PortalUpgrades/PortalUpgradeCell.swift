@@ -8,6 +8,7 @@ import SwiftUI
 
 @MainActor struct PortalUpgradeCell {
     let upgrade: PortalUpgrade
+    let itemQuantity: (BaseItem) -> Int
     let canPurchase: Bool
     let onPurchase: () -> Void
 }
@@ -40,18 +41,28 @@ extension PortalUpgradeCell: View {
     private var cost: some View {
         HStack(spacing: 8) {
             ForEach(Array(upgrade.cost.enumerated()), id: \.offset) { _, costItem in
-                AvatarView(
-                    text: costItem.item.name,
-                    image: costItem.item.image,
-                    border: costItem.item.quality.color,
-                    badge: costItem.quantity > 1 ? "\(costItem.quantity)" : nil,
-                    size: .small
-                )
+                HStack(spacing: 4) {
+                    AvatarView(
+                        text: costItem.item.name,
+                        image: costItem.item.image,
+                        border: costItem.item.quality.color,
+                        badge: nil,
+                        size: .small
+                    )
+                    Text(quantityString(costItem: costItem))
+                        .font(.caption)
+                        .foregroundStyle(itemQuantity(costItem.item) >= costItem.quantity ? Color.green : Color.red)
+                }
             }
             Spacer()
             Button("Purchase", action: onPurchase)
                 .buttonStyle(CapsuleButtonStyle())
                 .disabled(!canPurchase)
         }
+    }
+    
+    private func quantityString(costItem: UpgradeCostItem) -> String {
+        let currentQuantity = min(itemQuantity(costItem.item), costItem.quantity)
+        return "\(currentQuantity)/\(costItem.quantity)"
     }
 }
