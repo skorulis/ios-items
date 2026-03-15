@@ -1,0 +1,16 @@
+---
+description: How to build the Items app from the command line and Xcode
+alwaysApply: false
+---
+
+# Building the Items App
+
+Use these instructions when building the project from the command line or when guiding someone to build the app.
+
+## Command line (xcodebuild)
+
+From the project root (`Items/`):
+
+```bash
+xcodebuild -scheme Items -configuration Debug build
+```

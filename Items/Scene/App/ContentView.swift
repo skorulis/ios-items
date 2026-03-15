@@ -35,6 +35,18 @@ extension ContentView {
 extension ContentView: View {
     
     var body: some View {
+        tabs
+        .onAppear { viewModel.onAppear() }
+        .onChange(of: scenePhase) { _, newPhase in
+            if newPhase == .active {
+                viewModel.onAppear()
+            } else if newPhase == .background {
+                viewModel.recordBackgrounded()
+            }
+        }
+    }
+    
+    private var tabs: some View {
         TabView(selection: $selectedTab) {
             creationTab
             
@@ -54,14 +66,6 @@ extension ContentView: View {
             debugTab
 #endif
             
-        }
-        .onAppear { viewModel.onAppear() }
-        .onChange(of: scenePhase) { _, newPhase in
-            if newPhase == .active {
-                viewModel.onAppear()
-            } else if newPhase == .background {
-                viewModel.recordBackgrounded()
-            }
         }
     }
     
