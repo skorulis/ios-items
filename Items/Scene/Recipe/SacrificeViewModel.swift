@@ -84,6 +84,10 @@ extension SacrificeViewModel {
     func showCurrentRecipeDetail() {
         coordinator?.custom(overlay: .card, MainPath.currentRecipeDetail)
     }
+
+    func showHelp() {
+        coordinator?.custom(overlay: .card, MainPath.dialog(HelpStrings.sacrifices))
+    }
 }
 
 // MARK: - Sheet item

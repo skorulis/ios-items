@@ -82,7 +82,6 @@ extension EncyclopediaEntry {
             childItems: [
                 Self.portal,
                 Self.warehouse,
-                Self.research,
                 Self.essences,
                 Self.artifacts,
             ]
@@ -97,7 +96,7 @@ extension EncyclopediaEntry {
             
             Who knows what wonders this place contains, perhaps by studying the items you can slowly piece together what this dimension is.
             """,
-            childItems: [Self.portalUpgrades, Self.sacrifices],
+            childItems: [Self.research, Self.portalUpgrades, Self.sacrifices],
             iconImage: Image(systemName: "camera.aperture"),
         )
     }
@@ -105,9 +104,10 @@ extension EncyclopediaEntry {
     static var sacrifices: Self {
         .init(
             title: "Sacrifices",
-            body: HelpStrings.recipeList,
+            body: HelpStrings.sacrifices,
             condition: .upgradePurchased(.sacrifices),
-            childItems: []
+            childItems: [],
+            iconImage: Image(systemName: "pentagon"),
         )
     }
 

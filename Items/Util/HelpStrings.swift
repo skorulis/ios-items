@@ -10,13 +10,14 @@ enum HelpStrings {
     New discoveries are marked until you view them. Items here can be used in sacrifices and other activities.
     """
 
-    static let recipeList = """
-    Nothing from this dimension can go into the portal, but you can send the discovered items back. This changes the frequency of the portal which causes different items to be returned.
+    /// Help text for the Sacrifices feature (in-app help button and Encyclopedia).
+    static let sacrifices = """
+    Nothing from this dimension can go into the portal, but you can send discovered items back. This changes the frequency of the portal so different items are returned.
     
-    The Sacrifices screen lets you define rules for what items will be sacrificed on the next item generation.
-    Each time an item is generated it will pick the first sacrifice option which has ingredients in your warehouse and consume them.
-    Sacrificing low quality items helps to create specific higher quality ones.
+    Place items on the pentagram slots and turn "Sacrifices enabled" on. When you create an item, it will consume any available items set in the pentagram. Unlock more slots in the pentagram by upgrading the sacrifices feature.
     """
+
+    static let recipeList = sacrifices
 
     static let research = """
     Research unlocks knowledge about items over time. Select an item from your warehouse to start researching it; progress begins immediately and is shown in the bar.

@@ -66,7 +66,16 @@ extension SacrificeView: View {
                     viewModel.coordinator?.pop()
                 }
             },
-            leadingStyle: .close
+            leadingStyle: .close,
+            trailing: {
+                Button(action: viewModel.showHelp) {
+                    Image(systemName: "questionmark.app")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 24, height: 24)
+                        .foregroundStyle(Color.black)
+                }
+            }
         )
     }
 
