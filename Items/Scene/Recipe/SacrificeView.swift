@@ -20,6 +20,14 @@ import SwiftUI
         var consumptionPlan: SacrificePlan = SacrificePlan(slotsByIndex: [:])
         /// Slots with index < this value are interactive; others show as locked until portal upgrades add sacrifice slots.
         var unlockedSlotCount: Int = SacrificeConfig.slotCount
+        
+        var sacrificeEssences: [Essence] {
+            consumptionPlan.consumedItems.flatMap(\.essences)
+        }
+        
+        var centralColors: [Color] {
+            sacrificeEssences.map { $0.color }
+        }
     }
 }
 
@@ -84,11 +92,14 @@ extension SacrificeView: View {
             let radius = PentagramLayout.radius(in: rect)
 
             let pentagramColor: Color = viewModel.model.sacrificesEnabled ? .red : .gray
+            let innerRadius = radius * 1.15
             ZStack {
+                innerCircle(radius: innerRadius, center: center)
                 PentagramCircumcircleShape()
                     .stroke(pentagramColor, lineWidth: 8)
                 PentagramShape()
                     .stroke(pentagramColor, lineWidth: 8)
+                
 
                 ForEach(0..<SacrificeConfig.slotCount, id: \.self) { index in
                     slotView(index: index)
@@ -98,6 +109,16 @@ extension SacrificeView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .padding()
+    }
+    
+    @ViewBuilder
+    private func innerCircle(radius: CGFloat, center: CGPoint) -> some View {
+        if viewModel.model.sacrificesEnabled, viewModel.model.centralColors.count > 0 {
+            SoftGradientAnimation(colors: viewModel.model.centralColors)
+                .clipShape(PentagramCentreShape(layoutInset: 0))
+                .frame(width: radius * 2, height: radius * 2)
+                .position(center)
+        }
     }
 
     /// Diameter for every slot circle (empty button and ItemView container match).

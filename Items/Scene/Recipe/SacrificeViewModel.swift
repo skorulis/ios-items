@@ -28,33 +28,28 @@ import SwiftUI
         self.recipeService = recipeService
         self.model = .init(sacrificesEnabled: mainStore.recipes.sacrificesEnabled, warehouse: mainStore.warehouse)
 
-        mainStore.$warehouse.delayedChange().sink { [unowned self] in
+        mainStore.$warehouse.sink { [unowned self] in
             self.model.warehouse = $0
-            self.syncModel()
         }
         .store(in: &cancellables)
 
-        mainStore.$recipes.delayedChange().sink { [unowned self] in
+        mainStore.$recipes.sink { [unowned self] in
             self.model.sacrificesEnabled = $0.sacrificesEnabled
-            self.syncModel()
+            self.model.slotItems = $0.sacrificeConfig.slots
         }
         .store(in: &cancellables)
 
-        mainStore.$portalUpgrades.delayedChange().sink { [unowned self] _ in
-            self.syncModel()
+        mainStore.$portalUpgrades.sink { [unowned self] in
+            model.unlockedSlotCount = $0.bonuses
+                .map(\.sacrificeSlotBoost)
+                .reduce(0, +)
         }
         .store(in: &cancellables)
-
-        // Match store immediately; sinks only run on subsequent changes.
-        syncModel()
-    }
-
-    private func syncModel() {
-        model.consumptionPlan = recipeService.sacrificeConsumptionPlan()
-        model.slotItems = mainStore.recipes.sacrificeConfig.slots
-        model.unlockedSlotCount = mainStore.portalUpgrades.bonuses
-            .map(\.sacrificeSlotBoost)
-            .reduce(0, +)
+        
+        recipeService.$sacrificePlan.sink { [unowned self] in
+            model.consumptionPlan = $0
+        }
+        .store(in: &cancellables)
     }
 }
 
@@ -64,7 +59,6 @@ extension SacrificeViewModel {
 
     func setSacrificesEnabled(_ enabled: Bool) {
         mainStore.recipes.sacrificesEnabled = enabled
-        syncModel()
     }
 
     func openPicker(forSlot index: Int) {
@@ -77,7 +71,6 @@ extension SacrificeViewModel {
         var config = mainStore.recipes.sacrificeConfig
         config.setSlot(index: index, item: nil)
         mainStore.recipes.sacrificeConfig = config
-        syncModel()
     }
 
     func assignItem(at index: Int, item: BaseItem) {
@@ -86,8 +79,8 @@ extension SacrificeViewModel {
         config.setSlot(index: index, item: item)
         mainStore.recipes.sacrificeConfig = config
         editingSlot = nil
-        syncModel()
     }
+
 }
 
 // MARK: - Sheet item

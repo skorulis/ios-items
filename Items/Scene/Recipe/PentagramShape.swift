@@ -31,6 +31,58 @@ enum PentagramLayout {
     }
 }
 
+// MARK: - Centre pentagon
+
+/// Central pentagon formed by the five intersection points of the star edges (where two lines cross).
+struct PentagramCentreShape: Shape {
+    var layoutInset: CGFloat = PentagramLayout.inset
+
+    func path(in rect: CGRect) -> Path {
+        let center = PentagramLayout.center(in: rect)
+        let radius = PentagramLayout.radius(in: rect, inset: layoutInset)
+        let outer = (0..<SacrificeConfig.slotCount).map {
+            PentagramLayout.vertexPoint(index: $0, center: center, radius: radius)
+        }
+        // Star edges: 0-2, 2-4, 4-1, 1-3, 3-0
+        let edges: [(Int, Int)] = [(0, 2), (2, 4), (4, 1), (1, 3), (3, 0)]
+        // Each edge intersects the edge two steps ahead (with wrap): 0∩2, 1∩3, 2∩4, 3∩0, 4∩1
+        var intersections: [CGPoint] = []
+        for i in 0..<5 {
+            let (a, b) = edges[i]
+            let (c, d) = edges[(i + 2) % 5]
+            if let p = lineIntersection(outer[a], outer[b], outer[c], outer[d]) {
+                intersections.append(p)
+            }
+        }
+        // Order by angle from center so we draw the pentagon (not the star)
+        let angleFromCenter = { (p: CGPoint) in atan2(p.y - center.y, p.x - center.x) }
+        intersections.sort { angleFromCenter($0) < angleFromCenter($1) }
+
+        var path = Path()
+        guard let first = intersections.first else { return path }
+        path.move(to: first)
+        for p in intersections.dropFirst() {
+            path.addLine(to: p)
+        }
+        path.closeSubpath()
+        return path
+    }
+
+    /// Intersection of line A-B with line C-D, or nil if parallel.
+    private func lineIntersection(_ a: CGPoint, _ b: CGPoint, _ c: CGPoint, _ d: CGPoint) -> CGPoint? {
+        let abx = b.x - a.x
+        let aby = b.y - a.y
+        let cdx = d.x - c.x
+        let cdy = d.y - c.y
+        let denom = abx * cdy - aby * cdx
+        guard abs(denom) > 1e-10 else { return nil }
+        let acx = c.x - a.x
+        let acy = c.y - a.y
+        let t = (acx * cdy - acy * cdx) / denom
+        return CGPoint(x: a.x + t * abx, y: a.y + t * aby)
+    }
+}
+
 // MARK: - Circumcircle
 
 /// Circle through the five pentagram vertices (same center/radius as star).
