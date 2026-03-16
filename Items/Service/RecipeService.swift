@@ -16,17 +16,23 @@ final class RecipeService: ObservableObject {
     @Resolvable<BaseResolver>
     init(mainStore: MainStore) {
         self.mainStore = mainStore
-        self.sacrificePlan = Self.computeSacrificePlan(recipes: mainStore.recipes, warehouse: mainStore.warehouse)
+        self.sacrificePlan = Self.computeSacrificePlan(recipes: mainStore.recipes, warehouse: mainStore.warehouse, lab: mainStore.lab)
 
         mainStore.$warehouse
             .sink { [unowned self] in
-                self.sacrificePlan = Self.computeSacrificePlan(recipes: self.mainStore.recipes, warehouse: $0)
+                self.sacrificePlan = Self.computeSacrificePlan(recipes: self.mainStore.recipes, warehouse: $0, lab: self.mainStore.lab)
             }
             .store(in: &cancellables)
 
         mainStore.$recipes
             .sink { [unowned self] in
-                self.sacrificePlan = Self.computeSacrificePlan(recipes: $0, warehouse: self.mainStore.warehouse)
+                self.sacrificePlan = Self.computeSacrificePlan(recipes: $0, warehouse: self.mainStore.warehouse, lab: self.mainStore.lab)
+            }
+            .store(in: &cancellables)
+
+        mainStore.$lab
+            .sink { [unowned self] in
+                self.sacrificePlan = Self.computeSacrificePlan(recipes: self.mainStore.recipes, warehouse: self.mainStore.warehouse, lab: $0)
             }
             .store(in: &cancellables)
     }
@@ -34,7 +40,7 @@ final class RecipeService: ObservableObject {
     /// Resolves which item (if any) would be consumed from each sacrifice slot, in slot order.
     /// Uses `mainStore.recipes.sacrificeConfig` and current warehouse quantities.
     func sacrificeConsumptionPlan() -> SacrificePlan {
-        Self.computeSacrificePlan(recipes: mainStore.recipes, warehouse: mainStore.warehouse)
+        Self.computeSacrificePlan(recipes: mainStore.recipes, warehouse: mainStore.warehouse, lab: mainStore.lab)
     }
 
     /// Removes one warehouse unit per entry in the plan’s `consumedItems` order.
@@ -44,9 +50,9 @@ final class RecipeService: ObservableObject {
         }
     }
 
-    private static func computeSacrificePlan(recipes: Recipes, warehouse: Warehouse) -> SacrificePlan {
+    private static func computeSacrificePlan(recipes: Recipes, warehouse: Warehouse, lab: Laboratory) -> SacrificePlan {
         if !recipes.sacrificesEnabled {
-            return .init(itemsInOrder: [])
+            return .init(itemsInOrder: [], essences: [])
         }
         let config = recipes.sacrificeConfig
         var available: [BaseItem: Int] = [:]
@@ -67,6 +73,10 @@ final class RecipeService: ObservableObject {
                 result[index] = nil
             }
         }
-        return SacrificePlan(slotsByIndex: result)
+        let consumedItems = result.keys.sorted().compactMap { result[$0] ?? nil }
+        let essences = consumedItems.flatMap { item in
+            item.availableResearch.unlockedEssences(level: lab.currentLevel(item: item))
+        }
+        return SacrificePlan(slotsByIndex: result, essences: essences)
     }
 }

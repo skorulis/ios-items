@@ -21,12 +21,8 @@ import SwiftUI
         /// Slots with index < this value are interactive; others show as locked until portal upgrades add sacrifice slots.
         var unlockedSlotCount: Int = SacrificeConfig.slotCount
         
-        var sacrificeEssences: [Essence] {
-            consumptionPlan.consumedItems.flatMap(\.essences)
-        }
-        
         var centralColors: [Color] {
-            sacrificeEssences.map { $0.color }
+            consumptionPlan.essences.map { $0.color }
         }
     }
 }

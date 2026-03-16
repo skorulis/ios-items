@@ -19,6 +19,7 @@ struct RecipeDetailViewSnapshotTests {
             slots: [0: .apple],
         )
         mainStore.warehouse.add(item: .apple)
+        mainStore.lab.set(level: 5, item: .apple)
         
         let viewModel = assembler.resolver.currentRecipeDetailViewModel()
         let view = RecipeDetailView(viewModel: viewModel)
@@ -38,6 +39,11 @@ struct RecipeDetailViewSnapshotTests {
         mainStore.warehouse.add(item: .gear)
         mainStore.warehouse.add(item: .copperFlorin)
         mainStore.warehouse.add(item: .silverFlorin)
+        
+        mainStore.lab.set(level: 5, item: .apple)
+        mainStore.lab.set(level: 5, item: .gear)
+        mainStore.lab.set(level: 5, item: .copperFlorin)
+        mainStore.lab.set(level: 5, item: .silverFlorin)
         
         let viewModel = assembler.resolver.currentRecipeDetailViewModel()
         let view = RecipeDetailView(viewModel: viewModel)

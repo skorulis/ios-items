@@ -10,17 +10,22 @@ struct SacrificePlan: Equatable {
     /// Slot index → item that would be consumed, or `nil` if the slot is empty or insufficient stock.
     private let slotsByIndex: [Int: BaseItem?]
 
-    init(slotsByIndex: [Int: BaseItem?]) {
+    /// Essences that will be included in the sacrifice from consumed items, counting only essences unlocked by research.
+    let essences: [Essence]
+
+    init(slotsByIndex: [Int: BaseItem?], essences: [Essence] = []) {
         self.slotsByIndex = slotsByIndex
+        self.essences = essences
     }
 
     /// Builds a plan from an ordered list (e.g. legacy recipe items). Indices are 0, 1, 2, …
-    init(itemsInOrder items: [BaseItem]) {
+    init(itemsInOrder items: [BaseItem], essences: [Essence] = []) {
         var d: [Int: BaseItem?] = [:]
         for (i, item) in items.enumerated() {
             d[i] = item
         }
         self.slotsByIndex = d
+        self.essences = essences
     }
 
     /// Items that would be consumed, in ascending slot index order (skips unsatisfied / empty slots).

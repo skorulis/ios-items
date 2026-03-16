@@ -21,11 +21,11 @@ final class ItemGeneratorService {
     }
 
     /// Quality/essence weights derived from the items that would be consumed for this plan.
+    /// Essence boosts use only the plan’s essences (those unlocked by research).
     func recipeInfo(plan: SacrificePlan) -> RecipeInfo {
-        let items = plan.consumedItems
         return RecipeInfo(
             quality: qualityBonuses(plan: plan),
-            essenceBoosts: essenceBonuses(items: items)
+            essenceBoosts: essenceBonuses(essences: plan.essences)
         )
     }
 
@@ -98,11 +98,9 @@ final class ItemGeneratorService {
         return ArtifactInstance(type: type, quality: targetQuality)
     }
 
-    private func essenceBonuses(items: [BaseItem]) -> [Essence: Double] {
-        items.reduce(into: [:]) { partialResult, item in
-            for essence in item.essences {
-                partialResult[essence, default: 1] += 1
-            }
+    private func essenceBonuses(essences: [Essence]) -> [Essence: Double] {
+        essences.reduce(into: [:]) { partialResult, essence in
+            partialResult[essence, default: 1] += 1
         }
     }
 
