@@ -173,19 +173,12 @@ extension EncyclopediaEntry {
     static func essenceEntry(_ essence: Essence) -> Self {
         return .init(
             title: essence.name,
-            body: essence.encyclopediaText,
+            body: essence.description,
             condition: .essenceUnlocked(essence),
             childItems: [],
             icon: {
                 EssenceView(essence: essence)
             }
         )
-    }
-}
-
-private extension Essence {
-    var encyclopediaText: String {
-        // TODO
-        name
     }
 }

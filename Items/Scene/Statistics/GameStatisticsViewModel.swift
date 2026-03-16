@@ -73,9 +73,9 @@ final class GameStatisticsViewModel: ObservableObject, CoordinatorViewModel {
         achievements.unlocked.count
     }
 
-    private func formatCount(_ n: Int64) -> String {
+    private func formatCount(_ num: Int64) -> String {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
-        return formatter.string(from: NSNumber(value: n)) ?? "\(n)"
+        return formatter.string(from: NSNumber(value: num)) ?? "\(num)"
     }
 }

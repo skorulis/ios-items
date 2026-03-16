@@ -8,6 +8,7 @@ import SwiftUI
 
 @MainActor struct EssenceView {
     let essence: Essence
+    static let size: CGFloat = 20
 }
 
 // MARK: - Rendering
@@ -18,13 +19,13 @@ extension EssenceView: View {
         ZStack {
             Rectangle()
                 .fill(essence.color)
-                .frame(width: 16, height: 16)
+                .frame(width: Self.size, height: Self.size)
                 .rotationEffect(.degrees(45))
             essence.icon
-                .font(.system(size: 8))
+                .font(.system(size: 10))
                 .foregroundStyle(essence == .light ? .black : .white)
         }
-        .frame(width: 20, height: 20)
+        .frame(width: Self.size, height: Self.size)
     }
 }
 

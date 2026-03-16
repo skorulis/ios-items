@@ -95,7 +95,7 @@ extension ItemDetailsView: View {
                     Image(systemName: "questionmark.diamond")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(width: 16, height: 16)
+                        .frame(width: EssenceView.size, height: EssenceView.size)
                 }
             }
         }
