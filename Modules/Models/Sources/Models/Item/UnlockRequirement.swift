@@ -15,7 +15,6 @@ private func formatCount(_ value: Int64) -> String {
 public enum UnlockRequirement: Codable {
     case itemsCreated(Int64)
     case itemsSacrificed(Int64)
-    /// Times a sacrifice yielded multiple items at once.
     case multipleItemCreations(Int64)
     case totalResearch(Int64)
     case maxResearchLevel(Int64)

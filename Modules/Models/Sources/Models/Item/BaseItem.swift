@@ -25,6 +25,7 @@ public enum BaseItem: String, Hashable, Equatable, CaseIterable, Identifiable, C
     case giantThorn
     case embuedChalk
     case metalBloom
+    case mapFragment
 
     // Good
     case goldFlorin
@@ -52,7 +53,7 @@ public enum BaseItem: String, Hashable, Equatable, CaseIterable, Identifiable, C
         switch self {
         case .apple, .rock, .hourglass, .copperFlorin, .gear, .potionFlask, .lens, .humanSkull, .waxSeal:
             return .junk
-        case .quartzCrystal, .silverFlorin, .steelArrowhead, .book, .merchantSigil, .giantThorn, .embuedChalk, .whetstone, .metalBloom:
+        case .quartzCrystal, .silverFlorin, .steelArrowhead, .book, .merchantSigil, .giantThorn, .embuedChalk, .whetstone, .metalBloom, .mapFragment:
             return .common
         case .goldFlorin, .jadeFigurine, .portalShard, .soulEmber, .anchorStone, .memorySeed, .nullLantern:
             return .good
@@ -117,6 +118,8 @@ public enum BaseItem: String, Hashable, Equatable, CaseIterable, Identifiable, C
             return [.knowledge, .magic]
         case .metalBloom:
             return [.life, .technology]
+        case .mapFragment:
+            return [.knowledge, .earth]
         case .soulEmber:
             return [.dark, .magic]
         case .anchorStone:
@@ -234,6 +237,11 @@ public enum BaseItem: String, Hashable, Equatable, CaseIterable, Identifiable, C
                 "A flower with fine metal lines running through its petals and stem. Part bloom, part vein of ore.",
                 "It's hard to say whether the metal grows naturally or if the plant has been deliberately altered.",
                 "The petals don't wilt no matter how long since it has been picked",
+            ]
+        case .mapFragment:
+            return [
+                "A torn piece of parchment or vellum showing part of a landscape or route.",
+                "Several fragments from the same map could be pieced together to reveal a path or location.",
             ]
         case .soulEmber:
             return [

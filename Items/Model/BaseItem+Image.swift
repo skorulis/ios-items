@@ -47,6 +47,8 @@ extension BaseItem {
             return Asset.BaseItem.embuedChalk.swiftUIImage
         case .metalBloom:
             return nil
+        case .mapFragment:
+            return Asset.BaseItem.mapFragment.swiftUIImage
         case .soulEmber:
             return nil
         case .anchorStone:

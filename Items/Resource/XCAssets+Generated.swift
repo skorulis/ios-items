@@ -40,6 +40,7 @@ internal enum Asset {
     internal static let humanSkull = ImageAsset(name: "humanSkull")
     internal static let jadeFiguring = ImageAsset(name: "jadeFiguring")
     internal static let lens = ImageAsset(name: "lens")
+    internal static let mapFragment = ImageAsset(name: "mapFragment")
     internal static let merchantSigil = ImageAsset(name: "merchantSigil")
     internal static let portalShard = ImageAsset(name: "portalShard")
     internal static let quartzCrystal = ImageAsset(name: "quartzCrystal")
