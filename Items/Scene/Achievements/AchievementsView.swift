@@ -64,14 +64,17 @@ extension AchievementsView: View {
     private func cell(achievement: Achievement) -> some View {
         let complete = viewModel.isComplete(achievement: achievement)
         let isNew = viewModel.model.newAchievementsToShow.contains(achievement)
-        Button(action: { viewModel.showDetails(achievement: achievement)}) {
-            AvatarView(
-                text: achievement.name,
-                image: achievement.image,
-                border: achievement.quality.color,
-                showNewBadge: isNew
-            )
-        }
+        Button(
+            action: { viewModel.showDetails(achievement: achievement)},
+            label: {
+                AvatarView(
+                    text: achievement.name,
+                    image: achievement.image,
+                    border: achievement.quality.color,
+                    showNewBadge: isNew
+                )
+            }
+        )
         .grayscale(complete ? 0 : 1)
     }
 

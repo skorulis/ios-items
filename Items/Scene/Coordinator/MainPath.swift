@@ -31,6 +31,9 @@ enum MainPath: CoordinatorPath {
     // Present a block of text
     case dialog(String)
 
+    // Present a dialog with full DefaultDialogContent model (title + body)
+    case fullDialog(DefaultDialogContent.Model)
+
     // Toast at the bottom of the screen
     case toast(AnyView?, String, UUID)
 
@@ -87,8 +90,9 @@ struct MainPathRenderer: CoordinatorPathRenderer {
         case .currentRecipeDetail:
             RecipeDetailView(viewModel: resolver.currentRecipeDetailViewModel())
         case let .dialog(text):
-            Text(text)
-                .padding(16)
+            DefaultDialogContent(model: .init(bodyText: text))
+        case let .fullDialog(model):
+            DefaultDialogContent(model: model)
         case let .toast(icon, text, _):
             DefaultToastContent(icon: icon, text: text)
         }

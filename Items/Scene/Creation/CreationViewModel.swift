@@ -62,9 +62,6 @@ import SwiftUI
         self.upgradeService = upgradeService
         self.warehouseService = warehouseService
 
-        self.model.automationUnlocked = mainStore.portalUpgrades.purchased.contains(.portalAutomation)
-        self.model.sacrificesUnlocked = mainStore.portalUpgrades.purchased.contains(.sacrifices)
-        self.model.mapLocationsUnlocked = mainStore.portalUpgrades.purchased.contains(.mapLocations)
         self.automateCreation = mainStore.offlineState.automationEnabled
 
         mainStore.$warehouse.sink { [unowned self] in

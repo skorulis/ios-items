@@ -68,9 +68,9 @@ struct PortalCircuitWiresOverlay: View {
 
     /// Same motion as before: phase sweeps from `dashPeriod` down to `0` every `phaseCycleDuration`, repeating.
     private func phase(at date: Date) -> CGFloat {
-        let t = date.timeIntervalSinceReferenceDate
+        let time = date.timeIntervalSinceReferenceDate
         let cycle = phaseCycleDuration
-        let u = t.truncatingRemainder(dividingBy: cycle) / cycle // 0..1
+        let u = time.truncatingRemainder(dividingBy: cycle) / cycle // 0..1
         // Previously: animated from dashPeriod → 0 linearly each cycle.
         return dashPeriod * (1 - CGFloat(u))
     }
