@@ -21,6 +21,15 @@ struct ItemsApp: App {
 
     var body: some Scene {
         WindowGroup {
+            content
+        }
+    }
+
+    @ViewBuilder
+    private var content: some View {
+        if ProcessInfo.isRunningTests {
+            Color.white
+        } else {
             CoordinatorView(coordinator: mainCoordinator, useNavigationStack: false)
                 .withRenderers(resolver: assembler.resolver)
                 .onAppear {
@@ -28,4 +37,6 @@ struct ItemsApp: App {
                 }
         }
     }
+
+    
 }

@@ -28,4 +28,3 @@ struct ItemDetailsViewSnapshotTests {
         assertSnapshot(of: view, as: .image(on: .iPhoneSe))
     }
 }
-

@@ -1,5 +1,6 @@
 // Created by Alexander Skorulis on 12/3/2026.
 
+import Foundation
 import SwiftUI
 
 // MARK: - Portal upgrades progress ring
@@ -32,7 +33,7 @@ struct PortalUpgradesProgressRing: View {
     private let size: CGFloat = 44
     private let lineWidth: CGFloat = 4
 
-    @State private var ringOpacity: Double = 0
+    @State private var ringOpacity: Double = ProcessInfo.isRunningTests ? 1 : 0
 
     private var clampedAmount: CGFloat {
         min(1, max(0, amount))

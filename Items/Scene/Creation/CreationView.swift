@@ -45,13 +45,7 @@ import SwiftUI
 
         /// Progress 0...1 toward unlocking `.items10` (Baby steps / upgrades button).
         var items10UnlockProgress: CGFloat {
-            let requirement = Achievement.items10.requirement
-            switch requirement {
-            case let .itemsCreated(num) where num > 0:
-                return CGFloat(min(itemsCreatedCount, num)) / CGFloat(num)
-            default:
-                return 0
-            }
+            return CGFloat(itemsCreatedCount) / 10
         }
         var firstItem: Bool { !achievements.unlocked.contains(.items1) }
         var automationUnlocked: Bool = false
@@ -124,7 +118,10 @@ extension CreationView: View {
                     frameBinding: $viewModel.upgradeButtonFrame,
                 )
             )
-            : .progress(viewModel.model.items10UnlockProgress)
+            : .progress(
+                viewModel.model.items10UnlockProgress,
+                action: viewModel.showUpgradesProgressHelp
+            )
     }
 
     private var artifactSlotView: ArtifactSlotView? {
@@ -210,12 +207,15 @@ extension CreationView: View {
     private func createdItem(item: MakeItemResult) -> some View {
         switch item {
         case let .base(baseItem, count):
-            Button(action: { viewModel.showDetails(item: baseItem) }) {
-                ItemView(
-                    item: baseItem,
-                    quantity: count > 1 ? count : nil,
-                )
-            }
+            Button(
+                action: { viewModel.showDetails(item: baseItem) },
+                label: {
+                    ItemView(
+                        item: baseItem,
+                        quantity: count > 1 ? count : nil,
+                    )
+                }
+            )
         case let .artifact(instance):
             ArtifactView(artifact: instance)
         }

@@ -65,23 +65,31 @@ struct PortalView: View {
     private var topButtons: some View {
         HStack {
             if let upgradesButton {
-                switch upgradesButton {
-                case let .button(button):
-                    PortalCornerButton(
-                        icon: Image(systemName: "arrow.up.circle.fill"),
-                        action: button.action,
-                        badge: button.badge,
-                        frameBinding: button.frameBinding,
-                    )
-                case let .progress(amount):
-                    PortalUpgradesProgressRing(amount: amount)
-                }
+                buttonOrProgress(upgradesButton)
             }
             Spacer(minLength: 0)
             if let sacrificesButton {
                 SacrificesButton(model: sacrificesButton)
                     .readFrame(frame: $sacrificesFrame)
             }
+        }
+    }
+
+    @ViewBuilder
+    private func buttonOrProgress(_ model: ButtonOrProgress) -> some View {
+        switch model {
+        case let .button(button):
+            PortalCornerButton(
+                icon: Image(systemName: "arrow.up.circle.fill"),
+                action: button.action,
+                badge: button.badge,
+                frameBinding: button.frameBinding,
+            )
+        case let .progress(amount, action):
+            SwiftUI.Button(action: action) {
+                PortalUpgradesProgressRing(amount: amount)
+            }
+            .buttonStyle(.plain)
         }
     }
 
@@ -127,7 +135,7 @@ extension PortalView {
 
     enum ButtonOrProgress {
         case button(Button)
-        case progress(CGFloat)
+        case progress(CGFloat, action: () -> Void)
     }
 }
 
@@ -172,7 +180,7 @@ struct PortalCornerButton: View {
 
 #Preview("Portal view upgrades progress ring") {
     PortalView(
-        upgradesButton: .progress(0.65),
+        upgradesButton: .progress(0.65, action: {}),
         researchButton: nil,
         mapLocationsButton: nil,
         sacrificesButton: nil,

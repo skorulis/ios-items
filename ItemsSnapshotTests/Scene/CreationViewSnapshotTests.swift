@@ -2,6 +2,7 @@
 
 @testable import Items
 import Knit
+import Models
 import SnapshotTesting
 import SwiftUI
 import Testing
@@ -13,6 +14,17 @@ struct CreationViewSnapshotTests {
 
     @Test
     func creationView_default() {
+        let viewModel = assembler.resolver.creationViewModel()
+        let view = CreationView(viewModel: viewModel)
+
+        assertSnapshot(of: view, as: .image(on: .iPhoneSe))
+    }
+
+    @Test
+    func creationView_withUpgradesProgressTowardsUnlock() {
+        assembler.resolver.warehouseService().add(item: .apple)
+        assembler.resolver.mainStore().statistics.itemsCreated = 2
+        assembler.resolver.mainStore().achievements.unlocked.insert(.items1)
         let viewModel = assembler.resolver.creationViewModel()
         let view = CreationView(viewModel: viewModel)
 

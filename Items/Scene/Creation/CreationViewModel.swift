@@ -158,7 +158,11 @@ extension CreationViewModel {
         let plan = recipeService.sacrificePlan
         let consumed = plan.consumedItems
         let duration = TimeInterval(calculations.itemCreationMilliseconds) / 1000
-        self.model.creationInProgress = CreationView.CreationInProgress(id: UUID(), duration: duration, sacrificedItems: consumed)
+        self.model.creationInProgress = CreationView.CreationInProgress(
+            id: UUID(),
+            duration: duration,
+            sacrificedItems: consumed,
+        )
         self.model.createdItem = nil
         recipeService.consumePlan(plan)
         mainStore.statistics.itemsSacrificed += Int64(consumed.count)
@@ -196,6 +200,11 @@ extension CreationViewModel {
     func showMapLocations() {
         let path = CircularAnimationPath(sourceRect: mapLocationButtonFrame, mainPath: .mapLocations)
         coordinator?.custom(overlay: .circularReveal, path)
+    }
+
+    func showUpgradesProgressHelp() {
+        let text = "Summon 10 items to unlock upgrades"
+        coordinator?.custom(overlay: .card, MainPath.dialog(text))
     }
 
     func artifactSlotPressed(index: Int) {
