@@ -129,8 +129,13 @@ struct PortalView: View {
 extension PortalView {
     struct Button {
         let action: () -> Void
-        let badge: Int
+        let badge: BadgeContent?
         let frameBinding: Binding<CGRect>
+    }
+
+    enum BadgeContent {
+        case count(Int)
+        case icon(Image)
     }
 
     enum ButtonOrProgress {
@@ -145,7 +150,7 @@ extension PortalView {
 struct PortalCornerButton: View {
     let icon: Image
     let action: () -> Void
-    var badge: Int?
+    var badge: PortalView.BadgeContent?
     let frameBinding: Binding<CGRect>
 
     private let size: CGFloat = 44
@@ -161,11 +166,8 @@ struct PortalCornerButton: View {
                             .font(.system(size: 20, weight: .semibold))
                             .foregroundStyle(.white)
                     }
-                if let badge, badge > 0 {
-                    Text("\(badge)")
-                        .font(.caption2.bold())
-                        .foregroundStyle(.white)
-                        .frame(minWidth: 18, minHeight: 18)
+                if let badge {
+                    badgeContent(badge: badge)
                         .background(Circle().fill(Color.red))
                         .offset(x: 4, y: -4)
                 }
@@ -173,6 +175,27 @@ struct PortalCornerButton: View {
         }
         .buttonStyle(.plain)
         .readFrame(frame: frameBinding)
+    }
+
+    @ViewBuilder
+    private func badgeContent(badge: PortalView.BadgeContent) -> some View {
+        switch badge {
+        case let .count(value) where value > 0:
+            Text("\(value)")
+                .font(.caption2.bold())
+                .foregroundStyle(.white)
+                .frame(minWidth: 18, minHeight: 18)
+        case let .icon(image):
+            image
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .padding(4)
+                .font(.caption2.bold())
+                .frame(width: 18, height: 18)
+                .foregroundStyle(.white)
+        default:
+            EmptyView()
+        }
     }
 }
 
@@ -192,9 +215,9 @@ struct PortalCornerButton: View {
 
 #Preview("Portal view with upgrades") {
     PortalView(
-        upgradesButton: .button(.init(action: {}, badge: 0, frameBinding: .constant(.zero))),
+        upgradesButton: .button(.init(action: {}, badge: nil, frameBinding: .constant(.zero))),
         researchButton: nil,
-        mapLocationsButton: .init(action: {}, badge: 0, frameBinding: .constant(.zero)),
+        mapLocationsButton: .init(action: {}, badge: nil, frameBinding: .constant(.zero)),
         sacrificesButton: SacrificesButton.Model(
             config: .init(slots: [:]),
             plan: .init(itemsInOrder: [.apple]),

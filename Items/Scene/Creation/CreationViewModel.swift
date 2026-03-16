@@ -100,6 +100,11 @@ import SwiftUI
         }
         .store(in: &cancellables)
 
+        mainStore.$lab.sink { [unowned self] in
+            self.model.researchUnderway = $0.currentResearch != nil
+        }
+        .store(in: &cancellables)
+
         mainStore.$notifications.sink { [unowned self] in
             self.model.researchBadgeCount = $0.newResearchLevels
         }
@@ -111,6 +116,7 @@ import SwiftUI
         .store(in: &cancellables)
 
         self.model.showingResearch = mainStore.portalUpgrades.purchased.contains(.researchLab)
+        self.model.researchUnderway = mainStore.lab.currentResearch != nil
         self.model.researchBadgeCount = mainStore.notifications.newResearchLevels
 
         mainStore.$recipes.sink { [unowned self] in

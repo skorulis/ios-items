@@ -38,5 +38,4 @@ struct ItemsApp: App {
         }
     }
 
-    
 }

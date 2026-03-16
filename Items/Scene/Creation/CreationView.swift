@@ -53,6 +53,7 @@ import SwiftUI
         var showingResearch: Bool = false
         var mapLocationsUnlocked: Bool = false
         var researchBadgeCount: Int = 0
+        var researchUnderway: Bool = false
         var upgradesBadgeCount: Int = 0
 
         var maxArtifacts: Int = 0
@@ -78,14 +79,16 @@ extension CreationView: View {
                 researchButton: viewModel.model.showingResearch
                     ? .init(
                         action: viewModel.showResearch,
-                        badge: viewModel.model.researchBadgeCount,
+                        badge: viewModel.model.researchUnderway
+                            ? .count(viewModel.model.researchBadgeCount)
+                            : .icon(Image(systemName: "exclamationmark")),
                         frameBinding: $viewModel.researchButtonFrame,
                     )
                     : nil,
                 mapLocationsButton: viewModel.model.mapLocationsUnlocked
                     ? .init(
                         action: viewModel.showMapLocations,
-                        badge: 0,
+                        badge: nil,
                         frameBinding: $viewModel.mapLocationButtonFrame
                     )
                     : nil,
@@ -114,7 +117,7 @@ extension CreationView: View {
             ? .button(
                 .init(
                     action: viewModel.showPortalUpgrades,
-                    badge: viewModel.model.upgradesBadgeCount,
+                    badge: .count(viewModel.model.upgradesBadgeCount),
                     frameBinding: $viewModel.upgradeButtonFrame,
                 )
             )
