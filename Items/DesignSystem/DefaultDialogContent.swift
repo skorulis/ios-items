@@ -28,7 +28,7 @@ struct DefaultDialogContent: View {
         VStack(alignment: .leading, spacing: 12) {
             if let title = model.title {
                 Text(title)
-                    .font(.headline)
+                    .font(.title)
             }
             Text(model.bodyText)
                 .multilineTextAlignment(.leading)

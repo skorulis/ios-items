@@ -68,6 +68,6 @@ extension PortalUpgradesViewModel {
     }
 
     func showUpgradeInfo(_ upgrade: PortalUpgrade) {
-        coordinator?.custom(overlay: .card, MainPath.dialog(upgrade.detailedExplanation))
+        coordinator?.custom(overlay: .card, MainPath.fullDialog(upgrade.detailedExplanation))
     }
 }

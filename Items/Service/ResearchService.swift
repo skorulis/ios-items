@@ -107,8 +107,8 @@ extension ResearchService {
         mainStore.notifications.recordNewResearchLevel()
         toastService.showToast("Researched \(item.name) to level \(newLevel)")
         let essences = item.availableResearch.unlockedEssences(level: newLevel)
-        for e in essences {
-            mainStore.concepts.essences.insert(e)
+        for ess in essences {
+            mainStore.concepts.essences.insert(ess)
         }
     }
 

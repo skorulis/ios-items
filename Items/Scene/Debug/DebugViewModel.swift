@@ -13,7 +13,12 @@ import Models
     let debugConnectionService: DebugConnectionService
 
     @Resolvable<BaseResolver>
-    init(mainStore: MainStore, warehouseService: WarehouseService, toastService: ToastService, debugConnectionService: DebugConnectionService) {
+    init(
+        mainStore: MainStore,
+        warehouseService: WarehouseService,
+        toastService: ToastService,
+        debugConnectionService: DebugConnectionService,
+    ) {
         self.mainStore = mainStore
         self.warehouseService = warehouseService
         self.toastService = toastService

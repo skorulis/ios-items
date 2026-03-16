@@ -11,13 +11,13 @@ struct RandomArray<ItemType> {
         var total: Double = 0
         var temp: [Wrapper] = []
         for item in items {
-            let s = score(item)
-            if s <= 0 {
+            let itemScore = score(item)
+            if itemScore <= 0 {
                 continue
             }
-            let range = total..<(s + total)
+            let range = total..<(itemScore + total)
             temp.append(.init(item: item, range: range))
-            total += s
+            total += itemScore
         }
 
         self.store = temp

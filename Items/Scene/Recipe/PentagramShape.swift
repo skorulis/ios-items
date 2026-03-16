@@ -6,6 +6,7 @@ import SwiftUI
 
 // MARK: - Layout (shared by star, ring, and slot positions)
 
+// swiftlint:disable identifier_name
 enum PentagramLayout {
 
     /// Default inset from min dimension before radius (matches SacrificeView padding intent).
@@ -153,3 +154,4 @@ struct PentagramShape: Shape {
         return path
     }
 }
+// swiftlint:enable identifier_name

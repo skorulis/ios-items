@@ -60,10 +60,8 @@ extension SacrificesButton: View {
             return .gray
         }
         var satisfiedCount = 0
-        for (index, configuredItem) in configuredSlots {
-            if model.plan.item(at: index) == configuredItem {
-                satisfiedCount += 1
-            }
+        for (index, configuredItem) in configuredSlots where model.plan.item(at: index) == configuredItem {
+            satisfiedCount += 1
         }
         if satisfiedCount == configuredSlots.count {
             return .green

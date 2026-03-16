@@ -12,6 +12,8 @@ import SwiftUI
     @State var viewModel: SacrificeViewModel
     @Environment(\.dismissCircularReveal) private var dismissCircularReveal
 
+    private let innerPadding: CGFloat = 6
+
     /// Snapshot of everything needed to render the screen (updated by the view model).
     struct Model {
         var sacrificesEnabled: Bool
@@ -161,49 +163,59 @@ extension SacrificeView: View {
         } else {
             let isReady = model.consumptionPlan.isSatisfied(at: index)
             let borderColor: Color = isReady ? .green : .gray
-            let innerPadding: CGFloat = 6
 
             if let item = model.slotItems[index] {
-                ZStack(alignment: .topTrailing) {
-                    ZStack {
-                        Circle()
-                            .fill(Color(.white))
-                        ItemView(item: item)
-                            .frame(width: diameter - innerPadding * 2, height: diameter - innerPadding * 2)
-                            .clipShape(Circle())
-                    }
-                    .frame(width: diameter, height: diameter)
-                    .overlay {
-                        Circle()
-                            .stroke(borderColor, lineWidth: Self.slotStrokeWidth)
-                    }
-
-                    Button(action: { viewModel.clearSlot(index: index) }) {
-                        Image(systemName: "minus.circle.fill")
-                            .font(.caption.weight(.bold))
-                            .foregroundStyle(.red)
-                    }
-                    .buttonStyle(.borderless)
-                    .offset(x: 4, y: -4)
-                }
-                .frame(width: diameter, height: diameter)
+                filledSlot(item: item, index: index, borderColor: borderColor)
             } else {
-                Button(action: { viewModel.openPicker(forSlot: index) }) {
-                    ZStack {
-                        Image(systemName: "plus")
-                            .font(.title2.weight(.semibold))
-                            .foregroundStyle(.gray)
+                Button(
+                    action: { viewModel.openPicker(forSlot: index) },
+                    label: {
+                        ZStack {
+                            Image(systemName: "plus")
+                                .font(.title2.weight(.semibold))
+                                .foregroundStyle(.gray)
+                        }
+                        .frame(width: diameter, height: diameter)
+                        .overlay {
+                            Circle()
+                                .stroke(borderColor, lineWidth: Self.slotStrokeWidth)
+                        }
                     }
-                    .frame(width: diameter, height: diameter)
-                    .overlay {
-                        Circle()
-                            .stroke(borderColor, lineWidth: Self.slotStrokeWidth)
-                    }
-                }
+                )
                 .buttonStyle(.plain)
                 .background(Circle().fill(Color(.white)))
             }
         }
+    }
+
+    private func filledSlot(item: BaseItem, index: Int, borderColor: Color) -> some View {
+        let diameter = Self.slotDiameter
+        return ZStack(alignment: .topTrailing) {
+            ZStack {
+                Circle()
+                    .fill(Color(.white))
+                ItemView(item: item)
+                    .frame(width: diameter - innerPadding * 2, height: diameter - innerPadding * 2)
+                    .clipShape(Circle())
+            }
+            .frame(width: diameter, height: diameter)
+            .overlay {
+                Circle()
+                    .stroke(borderColor, lineWidth: Self.slotStrokeWidth)
+            }
+
+            Button(
+                action: { viewModel.clearSlot(index: index) },
+                label: {
+                    Image(systemName: "minus.circle.fill")
+                        .font(.caption.weight(.bold))
+                        .foregroundStyle(.red)
+                }
+            )
+            .buttonStyle(.borderless)
+            .offset(x: 4, y: -4)
+        }
+        .frame(width: diameter, height: diameter)
     }
 }
 
