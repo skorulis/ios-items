@@ -15,10 +15,16 @@ import SwiftUI
 extension EssenceView: View {
 
     var body: some View {
-        Rectangle()
-            .fill(essence.color)
-            .frame(width: 16, height: 16)
-            .rotationEffect(.degrees(45))
+        ZStack {
+            Rectangle()
+                .fill(essence.color)
+                .frame(width: 16, height: 16)
+                .rotationEffect(.degrees(45))
+            essence.icon
+                .font(.system(size: 8))
+                .foregroundStyle(essence == .light ? .black : .white)
+        }
+        .frame(width: 20, height: 20)
     }
 }
 
@@ -26,8 +32,9 @@ extension EssenceView: View {
 
 #Preview {
     HStack {
-        EssenceView(essence: .dark)
-        EssenceView(essence: .light)
+        ForEach(Essence.allCases) { essence in
+            EssenceView(essence: essence)
+        }
     }
 
 }

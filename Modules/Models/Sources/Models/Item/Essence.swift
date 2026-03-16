@@ -30,4 +30,17 @@ public extension Essence {
         case .knowledge: return .cyan
         }
     }
+
+    public var icon: Image {
+        switch self {
+        case .dark: return Image(systemName: "moon.fill")
+        case .earth: return Image(systemName: "mountain.2.fill")
+        case .life: return Image(systemName: "heart.fill")
+        case .light: return Image(systemName: "sun.max.fill")
+        case .magic: return Image(systemName: "sparkles")
+        case .technology: return Image(systemName: "cpu")
+        case .wealth: return Image(systemName: "banknote.fill")
+        case .knowledge: return Image(systemName: "book.fill")
+        }
+    }
 }
