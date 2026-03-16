@@ -30,6 +30,12 @@ final class UnlockRequirementService {
             return Int64(mainStore.lab.maxResearchLevel)
         case .commonItemsCreated:
             return Int64(mainStore.warehouse.totalItemsCollected { $0.quality == .common })
+        case .locationSpecificItemsDiscovered:
+            return Int64(
+                BaseItem.locationSpecificItems.filter { item in
+                    mainStore.warehouse.hasDiscovered(item)
+                }.count
+            )
         case let .itemDiscovered(item):
             return mainStore.warehouse.hasDiscovered(item) ? 1 : 0
         case .essencesUnlocked:
@@ -58,7 +64,8 @@ final class UnlockRequirementService {
              let .maxResearchLevel(count),
              let .commonItemsCreated(count),
              let .essencesUnlocked(count),
-             let .artifactsUnlocked(count):
+             let .artifactsUnlocked(count),
+             let .locationSpecificItemsDiscovered(count):
             return count
 
         case let .upgradesPurchased(count):

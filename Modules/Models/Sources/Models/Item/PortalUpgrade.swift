@@ -4,17 +4,6 @@
 
 import Foundation
 
-/// A single line in an upgrade's cost: item type and required quantity.
-public struct UpgradeCostItem: Codable, Hashable {
-    public let item: BaseItem
-    public let quantity: Int
-
-    public init(item: BaseItem, quantity: Int) {
-        self.item = item
-        self.quantity = quantity
-    }
-}
-
 public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable {
     case portalAutomation
     case researchLab
@@ -37,6 +26,7 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
     case offlineProgressLevel3
     case offlineProgressLevel4
     case offlineProgressLevel5
+    case mapLocations
 
     public var id: Self { self }
 
@@ -63,6 +53,7 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
         case .offlineProgressLevel3: return "Offline Progress III"
         case .offlineProgressLevel4: return "Offline Progress IV"
         case .offlineProgressLevel5: return "Offline Progress V"
+        case .mapLocations: return "Locations"
         }
     }
 
@@ -74,6 +65,7 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
         case .artifactSlot: return "Unlocks one equipped artifact slot."
         case .artifactSlotLevel2: return "Unlocks a second equipped artifact slot."
         case .artifactSlotLevel3: return "Unlocks a third equipped artifact slot."
+        case .mapLocations: return "Unlocks pointing the portal at specific locations"
         default:
             return self.bonus?.text ?? "TODO: Set manual description or add bonus"
         }
@@ -172,6 +164,10 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
             .init(item: .gear, quantity: 10),
             .init(item: .goldFlorin, quantity: 4),
         ]
+        case .mapLocations: return [
+            .init(item: .mapFragment, quantity: 5),
+            .init(item: .silverFlorin, quantity: 10),
+        ]
         }
     }
 
@@ -246,6 +242,8 @@ extension PortalUpgrade {
             return [.upgradePurchased(.offlineProgressLevel3)]
         case .offlineProgressLevel5:
             return [.upgradePurchased(.offlineProgressLevel4)]
+        case .mapLocations:
+            return [.itemDiscovered(.mapFragment)]
         default:
             return []
         }

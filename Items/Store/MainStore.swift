@@ -60,6 +60,12 @@ final class MainStore: ObservableObject {
         }
     }
 
+    @Published var mapLocations: MapLocations {
+        didSet {
+            try? self.store.set(codable: mapLocations, forKey: Self.mapLocationsKey)
+        }
+    }
+
     private let store: PKeyValueStore
     private static let achievementsKey = "MainStore.achievements"
     private static let offlineStateKey = "MainStore.offlineState"
@@ -70,6 +76,7 @@ final class MainStore: ObservableObject {
     private static let recipesKey = "MainStore.recipes"
     private static let statisticsKey = "MainStore.statistics"
     private static let warehouseKey = "MainStore.warehouse"
+    private static let mapLocationsKey = "MainStore.mapLocations"
     
     @Resolvable<BaseResolver>
     init(store: PKeyValueStore) {
@@ -84,5 +91,6 @@ final class MainStore: ObservableObject {
         self.concepts = (try? store.codable(forKey: Self.conceptsKey)) ?? Concepts()
         self.notifications = (try? store.codable(forKey: Self.notificationsKey)) ?? Notifications()
         self.offlineState = (try? store.codable(forKey: Self.offlineStateKey)) ?? OfflineState()
+        self.mapLocations = (try? store.codable(forKey: Self.mapLocationsKey)) ?? MapLocations()
     }
 }

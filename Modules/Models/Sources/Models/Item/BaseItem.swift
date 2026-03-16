@@ -143,6 +143,21 @@ public enum BaseItem: String, Hashable, Equatable, CaseIterable, Identifiable, C
         }
     }
 
+    /// Whether this item should only appear in specific locations on the world map.
+    /// When `true`, item generation outside `LocationDetails.uniqueItems` should not include this item.
+    public var locationSpecific: Bool {
+        switch self {
+        case .merchantSigil:
+            return true
+        default:
+            return false
+        }
+    }
+    
+    public static var locationSpecificItems: [BaseItem] {
+        allCases.filter { $0.locationSpecific }
+    }
+
     public var lore: [String] {
         switch self {
         case .apple:
