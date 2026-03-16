@@ -19,7 +19,7 @@ import SwiftUI
     @ObservationIgnored var upgradeButtonFrame: CGRect = .zero
     @ObservationIgnored var researchButtonFrame: CGRect = .zero
     @ObservationIgnored var sacrificesButtonFrame: CGRect = .zero
-    @ObservationIgnored var artifactButtonFrame: CGRect = .zero
+    @ObservationIgnored var mapLocationButtonFrame: CGRect = .zero
     
     var automateCreation: Bool = false {
         didSet {
@@ -64,6 +64,7 @@ import SwiftUI
         
         self.model.automationUnlocked = mainStore.portalUpgrades.purchased.contains(.portalAutomation)
         self.model.sacrificesUnlocked = mainStore.portalUpgrades.purchased.contains(.sacrifices)
+        self.model.mapLocationsUnlocked = mainStore.portalUpgrades.purchased.contains(.mapLocations)
         self.automateCreation = mainStore.offlineState.automationEnabled
 
         mainStore.$warehouse.sink { [unowned self] in
@@ -95,6 +96,7 @@ import SwiftUI
             self.model.automationUnlocked = $0.purchased.contains(.portalAutomation)
             self.model.sacrificesUnlocked = $0.purchased.contains(.sacrifices)
             self.model.showingResearch = $0.purchased.contains(.researchLab)
+            self.model.mapLocationsUnlocked = $0.purchased.contains(.mapLocations)
         }
         .store(in: &cancellables)
 
@@ -188,6 +190,11 @@ extension CreationViewModel {
 
     func showResearch() {
         let path = CircularAnimationPath(sourceRect: researchButtonFrame, mainPath: .research)
+        coordinator?.custom(overlay: .circularReveal, path)
+    }
+
+    func showMapLocations() {
+        let path = CircularAnimationPath(sourceRect: mapLocationButtonFrame, mainPath: .mapLocations)
         coordinator?.custom(overlay: .circularReveal, path)
     }
 

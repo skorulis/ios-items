@@ -11,6 +11,7 @@ import SwiftUI
 
 @MainActor struct MapLocationView {
     @State var viewModel: MapLocationViewModel
+    @Environment(\.dismissCircularReveal) private var dismissCircularReveal
 }
 
 // MARK: - Rendering
@@ -27,14 +28,22 @@ extension MapLocationView: View {
     private var titleBar: some View {
         TitleBar(
             title: "Locations",
-            backAction: { viewModel.pop() },
-            leadingStyle: .back
+            backAction: {
+                if let dismissCircularReveal {
+                    dismissCircularReveal()
+                } else {
+                    viewModel.pop()
+                }
+            },
+            leadingStyle: .close
         )
     }
 
     private var content: some View {
-        ForEach(viewModel.allLocations, id: \.self) { location in
-            row(for: location)
+        VStack(spacing: 4) {
+            ForEach(viewModel.allLocations, id: \.self) { location in
+                row(for: location)
+            }
         }
     }
 

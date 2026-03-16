@@ -57,6 +57,7 @@ import SwiftUI
         var automationUnlocked: Bool = false
         var sacrificesUnlocked: Bool = false
         var showingResearch: Bool = false
+        var mapLocationsUnlocked: Bool = false
         var researchBadgeCount: Int = 0
         var upgradesBadgeCount: Int = 0
         
@@ -87,11 +88,17 @@ extension CreationView: View {
                         frameBinding: $viewModel.researchButtonFrame,
                     )
                     : nil,
-                artifactButton: artifactSlotView,
+                mapLocationsButton: viewModel.model.mapLocationsUnlocked
+                    ? .init(
+                        action: viewModel.showMapLocations,
+                        badge: 0,
+                        frameBinding: $viewModel.mapLocationButtonFrame
+                    )
+                    : nil,
                 sacrificesButton: sacrificesButton,
                 sacrificesFrame: $viewModel.sacrificesButtonFrame,
-                artifactFrame: $viewModel.artifactButtonFrame,
             )
+            artifactSlotsOverlay
             maybeCreationAnimation
             sacrificeAvatarsOverlay
             itemContainer
@@ -127,6 +134,17 @@ extension CreationView: View {
             size: .small,
             onSlotPressed: { viewModel.artifactSlotPressed(index: $0) }
         )
+    }
+
+    @ViewBuilder
+    private var artifactSlotsOverlay: some View {
+        if let artifactSlotView {
+            VStack {
+                artifactSlotView
+                Spacer(minLength: 0)
+            }
+            .padding(.top, 48)
+        }
     }
     
     private var dimensionalPortalBackground: some View {

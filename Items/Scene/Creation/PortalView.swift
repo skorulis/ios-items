@@ -12,11 +12,10 @@ struct PortalView: View {
 
     let upgradesButton: ButtonOrProgress?
     let researchButton: Button?
-    let artifactButton: ArtifactSlotView?
+    let mapLocationsButton: Button?
     let sacrificesButton: SacrificesButton.Model?
-    
+
     @Binding var sacrificesFrame: CGRect
-    @Binding var artifactFrame: CGRect
 
     /// Frames for each visible corner control; overlay draws a wire from each center to the portal.
     private var wireSourceFrames: [CGRect] {
@@ -32,8 +31,8 @@ struct PortalView: View {
         if sacrificesButton != nil {
             frames.append(sacrificesFrame)
         }
-        if artifactButton != nil {
-            frames.append(artifactFrame)
+        if let mapLocationsButton {
+            frames.append(mapLocationsButton.frameBinding.wrappedValue)
         }
         if let researchButton {
             frames.append(researchButton.frameBinding.wrappedValue)
@@ -88,9 +87,13 @@ struct PortalView: View {
     
     private var bottomButtons: some View {
         HStack {
-            if let artifactButton {
-                artifactButton
-                    .readFrame(frame: $artifactFrame)
+            if let mapLocationsButton {
+                PortalCornerButton(
+                    icon: Image(systemName: "map.fill"),
+                    action: mapLocationsButton.action,
+                    badge: mapLocationsButton.badge,
+                    frameBinding: mapLocationsButton.frameBinding
+                )
             }
             Spacer(minLength: 0)
             if let researchButton {
@@ -171,10 +174,9 @@ struct PortalCornerButton: View {
     PortalView(
         upgradesButton: .progress(0.65),
         researchButton: nil,
-        artifactButton: nil,
+        mapLocationsButton: nil,
         sacrificesButton: nil,
         sacrificesFrame: .constant(.zero),
-        artifactFrame: .constant(.zero),
     )
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .background(Color.white)
@@ -184,17 +186,13 @@ struct PortalCornerButton: View {
     PortalView(
         upgradesButton: .button(.init(action: {}, badge: 0, frameBinding: .constant(.zero))),
         researchButton: nil,
-        artifactButton: ArtifactSlotView(
-            slots: [.init(type: .eternalHourglass, quality: .junk), nil],
-            size: .small,
-        ),
+        mapLocationsButton: .init(action: {}, badge: 0, frameBinding: .constant(.zero)),
         sacrificesButton: SacrificesButton.Model(
             config: .init(slots: [:]),
             plan: .init(itemsInOrder: [.apple]),
             action: {},
         ),
         sacrificesFrame: .constant(.zero),
-        artifactFrame: .constant(.zero),
     )
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .background(Color.white)
