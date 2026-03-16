@@ -4,6 +4,8 @@ import SwiftUI
 
 /// Tappable row with optional leading content and a fixed trailing chevron.
 public struct ChevronRow<Leading: View>: View {
+    @Environment(\.isEnabled) private var isEnabled
+
     private let title: String
     private let subtitle: String?
     private let leading: Leading
@@ -27,13 +29,13 @@ public struct ChevronRow<Leading: View>: View {
                 leading
                 VStack(alignment: .leading, spacing: 2) {
                     Text(title)
-                        .foregroundStyle(.primary)
+                        .foregroundStyle(isEnabled ? .primary : .secondary)
                         .lineLimit(1)
                         .truncationMode(.tail)
                     if let subtitle {
                         Text(subtitle)
                             .font(.subheadline)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(isEnabled ? .secondary : .tertiary)
                             .lineLimit(1)
                             .truncationMode(.tail)
                     }
@@ -41,11 +43,13 @@ public struct ChevronRow<Leading: View>: View {
                 Spacer(minLength: 8)
                 Image(systemName: "chevron.forward")
                     .font(.body.weight(.semibold))
-                    .foregroundStyle(.tertiary)
+                    .foregroundStyle(isEnabled ? .primary : .secondary)
             }
             .padding(.vertical, 8)
             .contentShape(Rectangle())
         }
+        .opacity(isEnabled ? 1 : 0.5)
+        .disabled(!isEnabled)
         .buttonStyle(PressableRowStyle())
     }
 
@@ -94,11 +98,15 @@ struct ChevronRow_Previews: PreviewProvider {
             .previewDisplayName("ChevronRow - Title only")
 
             List {
-                ChevronRow(title: "With icon", leading: {
-                    Image(systemName: "wifi")
-                        .foregroundStyle(.blue)
-                        .frame(width: 28, height: 28)
-                }) {}
+                ChevronRow(
+                    title: "With icon",
+                    leading: {
+                        Image(systemName: "wifi")
+                            .foregroundStyle(.blue)
+                            .frame(width: 28, height: 28)
+                    },
+                    action: {}
+                )
             }
             .listStyle(.insetGrouped)
             .previewDisplayName("ChevronRow - With leading")

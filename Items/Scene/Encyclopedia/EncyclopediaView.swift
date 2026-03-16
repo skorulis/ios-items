@@ -41,11 +41,16 @@ extension EncyclopediaView: View {
     }
 
     private var lockedCell: some View {
-        HStack {
-            Text("<Locked>")
-                .foregroundStyle(Color.gray)
-            Spacer()
-        }
+        ChevronRow(
+            title: "<Locked>",
+            leading: {
+                Image(systemName: "lock.fill")
+                    .foregroundStyle(.secondary)
+                    .frame(width: 24, height: 24)
+            },
+            action: {}
+        )
+        .environment(\.isEnabled, false)
     }
 
     @ViewBuilder

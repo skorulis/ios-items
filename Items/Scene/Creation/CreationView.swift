@@ -47,8 +47,8 @@ import SwiftUI
         var items10UnlockProgress: CGFloat {
             let requirement = Achievement.items10.requirement
             switch requirement {
-            case let .itemsCreated(n) where n > 0:
-                return CGFloat(min(itemsCreatedCount, n)) / CGFloat(n)
+            case let .itemsCreated(num) where num > 0:
+                return CGFloat(min(itemsCreatedCount, num)) / CGFloat(num)
             default:
                 return 0
             }
@@ -261,7 +261,7 @@ extension CreationView: View {
                 if viewModel.model.isCreating {
                     ProgressView()
                 }
-                Text(viewModel.model.firstItem ? "Unlock the portal" : "Create an item")
+                Text(viewModel.model.firstItem ? "Unlock the portal" : "Summon item")
                     .opacity(viewModel.model.isCreating ? 0 : 1)
             }
         }
