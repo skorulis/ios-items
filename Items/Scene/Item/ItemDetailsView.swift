@@ -24,12 +24,18 @@ extension ItemDetailsView: View {
                 titleBar
                 Spacer()
             }
-            Text("Quality \(item.quality.name)")
+            HStack(spacing: 4) {
+                Text("Quality:")
+                Text(item.quality.name)
+                    .bold()
+                    .foregroundStyle(item.quality.color)
+            }
             researchProgress
             Text("Multiple item chance: \(viewModel.model.details.doubleChance)")
             artifactSection
 
             if let lore = combinedLore {
+                Divider()
                 Text(lore)
             }
         }
