@@ -49,7 +49,19 @@ final class ItemGeneratorService {
         let info = recipeInfo(plan: plan)
         let quality = info.randomQuality()
 
-        let options = BaseItem.allCases.filter { $0.quality == quality }
+        let options = BaseItem.allCases.filter { item in
+            guard item.quality == quality else { return false }
+
+            // If the item is location-specific, only allow it when the current map location
+            // explicitly lists it as one of its unique items.
+            if item.locationSpecific {
+                let currentLocation = mainStore.mapLocations.selected
+                let allowedItems = currentLocation.details.uniqueItems
+                return allowedItems.contains(item)
+            }
+
+            return true
+        }
 
         let randomArray = RandomArray(items: options) { item in
             var chance: Double = 1
