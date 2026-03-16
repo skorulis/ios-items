@@ -11,6 +11,7 @@ import SwiftUI
     let itemQuantity: (BaseItem) -> Int
     let canPurchase: Bool
     let onPurchase: () -> Void
+    let onInfo: () -> Void
 }
 
 // MARK: - Rendering
@@ -27,6 +28,11 @@ extension PortalUpgradeCell: View {
                 }
                 Text(upgrade.name)
                     .font(.headline)
+                Spacer()
+                Button(action: onInfo) {
+                    Image(systemName: "info.circle")
+                }
+                .buttonStyle(.borderless)
             }
             Text(upgrade.description)
                 .font(.caption)

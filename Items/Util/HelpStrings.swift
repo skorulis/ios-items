@@ -21,11 +21,11 @@ enum HelpStrings {
     static let recipeList = sacrifices
 
     static let research = """
-    Research unlocks knowledge about items over time. Select an item from your warehouse to start researching it; progress begins immediately and is shown in the bar.
+    Research unlocks knowledge about items over time. Select an item from your warehouse to start researching it.
 
-    Each research level takes twice as long as the previous one, starting at 2 minutes for the first level. Progress continues in real time even when the app is closed or in the background.
+    Each research level takes exponentially longer, starting at 2 minutes for the first level.
 
-    Only one item can be researched at a time. Switching to another item pauses the current one; selecting it again resumes from where you left off. Higher research levels unlock essences and improve item discovery and artifact chances.
+    Only one item can be researched at a time, but resuming research will continue from where it left off. Higher research levels unlock essences and improve item discovery and artifact chances.
     """
 
     static let artifacts = """

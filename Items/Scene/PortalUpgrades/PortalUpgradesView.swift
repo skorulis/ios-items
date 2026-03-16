@@ -67,7 +67,8 @@ extension PortalUpgradesView: View {
                         withAnimation(.easeOut(duration: 0.3)) {
                             viewModel.purchase(upgrade)
                         }
-                    }
+                    },
+                    onInfo: { viewModel.showUpgradeInfo(upgrade) }
                 )
             }
         }
@@ -96,6 +97,11 @@ extension PortalUpgradesView: View {
                 }
                 Text(upgrade.name)
                     .font(.headline)
+                Spacer()
+                Button(action: { viewModel.showUpgradeInfo(upgrade) }) {
+                    Image(systemName: "info.circle")
+                }
+                .buttonStyle(.borderless)
             }
             Text(upgrade.description)
                 .font(.caption)
