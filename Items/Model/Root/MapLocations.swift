@@ -12,8 +12,21 @@ struct MapLocations: Codable {
 
     var selected: MapLocation = .vesprium
 
+    /// Number of times items have been pulled from each location.
+    var itemPullCount: [MapLocation: Int] = [:]
+
     /// Whether a given location is unlocked.
     func isUnlocked(_ location: MapLocation) -> Bool {
         unlocked.contains(location)
+    }
+
+    /// Number of times items have been pulled from the given location.
+    func pullCount(for location: MapLocation) -> Int {
+        itemPullCount[location, default: 0]
+    }
+
+    /// Increment the pull count for the given location.
+    mutating func incrementPullCount() {
+        itemPullCount[selected, default: 0] += 1
     }
 }

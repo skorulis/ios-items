@@ -42,6 +42,7 @@ final class ItemGeneratorService {
         case let .artifact(artifact):
             warehouseService.add(artifact: artifact)
         }
+        mainStore.mapLocations.incrementPullCount()
         return item
     }
 
