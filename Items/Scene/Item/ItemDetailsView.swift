@@ -18,25 +18,34 @@ extension ItemDetailsView: View {
     var item: BaseItem { viewModel.model.item }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            HStack(spacing: 4) {
-                ItemView(item: item)
-                titleBar
-                Spacer()
-            }
-            HStack(spacing: 4) {
-                Text("Quality:")
-                Text(item.quality.name)
-                    .bold()
-                    .foregroundStyle(item.quality.color)
-            }
-            researchProgress
-            Text("Multiple item chance: \(viewModel.model.details.doubleChance)")
-            artifactSection
+        VStack {
+            VStack(alignment: .leading, spacing: 4) {
+                HStack(spacing: 4) {
+                    ItemView(item: item)
+                    titleBar
+                    Spacer()
+                }
+                HStack(spacing: 4) {
+                    Text("Quality:")
+                    Text(item.quality.name)
+                        .bold()
+                        .foregroundStyle(item.quality.color)
+                }
+                researchProgress
+                Text("Multiple item chance: \(viewModel.model.details.doubleChance)")
+                artifactSection
 
-            if let lore = combinedLore {
-                Divider()
-                Text(lore)
+                if let lore = combinedLore {
+                    Divider()
+                    Text(lore)
+                }
+            }
+
+            if viewModel.canResearch {
+                Button(viewModel.isResearchingThisItem ? "Stop Research" : "Research") {
+                    viewModel.toggleResearch()
+                }
+                .buttonStyle(CapsuleButtonStyle())
             }
         }
         .padding(16)

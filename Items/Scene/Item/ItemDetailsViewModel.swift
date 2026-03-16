@@ -14,13 +14,21 @@ import SwiftUI
     private let mainStore: MainStore
     private let calculations: CalculationsService
     private let warehouseService: WarehouseService
+    private let researchService: ResearchService
     private var cancellables: Set<AnyCancellable> = []
 
     @Resolvable<BaseResolver>
-    init(@Argument item: BaseItem, mainStore: MainStore, calculations: CalculationsService, warehouseService: WarehouseService) {
+    init(
+        @Argument item: BaseItem,
+        mainStore: MainStore,
+        calculations: CalculationsService,
+        warehouseService: WarehouseService,
+        researchService: ResearchService
+    ) {
         self.mainStore = mainStore
         self.calculations = calculations
         self.warehouseService = warehouseService
+        self.researchService = researchService
 
         model = .init(
             item: item,
@@ -65,5 +73,25 @@ extension ItemDetailsViewModel {
 
     func markItemViewed() {
         warehouseService.markItemViewed(model.item)
+    }
+
+    /// True when this item has research information available.
+    var canResearch: Bool {
+        model.details.researchCost != nil
+    }
+
+    /// True when this item is currently being researched.
+    var isResearchingThisItem: Bool {
+        model.lab.currentResearch?.item == model.item
+    }
+
+    func toggleResearch() {
+        if isResearchingThisItem {
+            var lab = mainStore.lab
+            lab.setCurrentResearch(item: nil, startDate: nil)
+            mainStore.lab = lab
+        } else {
+            researchService.startResearch(to: model.item, now: Date())
+        }
     }
 }
