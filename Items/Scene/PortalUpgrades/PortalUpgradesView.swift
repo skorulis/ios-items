@@ -63,7 +63,11 @@ extension PortalUpgradesView: View {
                     upgrade: upgrade,
                     itemQuantity: { viewModel.warehouse.quantity($0) },
                     canPurchase: viewModel.canPurchase(upgrade),
-                    onPurchase: { viewModel.purchase(upgrade) }
+                    onPurchase: {
+                        withAnimation(.easeOut(duration: 0.3)) {
+                            viewModel.purchase(upgrade)
+                        }
+                    }
                 )
             }
         }
