@@ -76,7 +76,10 @@ extension ResearchView: View {
         VStack(alignment: .leading, spacing: 12) {
             SegmentedResearchBar(
                 research: item.availableResearch,
-                level: viewModel.currentLevel
+                level: viewModel.currentLevel,
+                onTapLevel: { index in
+                    viewModel.showResearchLevelExplanation(item: item, index: index)
+                }
             )
             ResearchBarView(
                 totalSeconds: viewModel.totalSeconds,

@@ -75,6 +75,13 @@ extension ResearchViewModel {
         coordinator?.custom(overlay: .card, MainPath.dialog(HelpStrings.research))
     }
 
+    func showResearchLevelExplanation(item: BaseItem, index: Int) {
+        let sections = item.availableResearch.sections
+        guard sections.indices.contains(index) else { return }
+        let text = sections[index].descriptionText
+        coordinator?.custom(overlay: .card, MainPath.dialog(text))
+    }
+
     var currentLevel: Int {
         guard let selectedItem = lab.currentResearch?.item else { return 0 }
         return lab.currentLevel(item: selectedItem)

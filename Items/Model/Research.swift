@@ -74,4 +74,15 @@ enum ResearchSection: Identifiable {
         }
     }
 
+    var descriptionText: String {
+        switch self {
+        case let .essence(essence):
+            return "Reveals the item's \(essence.name) essence and how it influences crafting and other interactions."
+        case .lore:
+            return "Uncovers a piece of lore about this item, explaining its history and place in the world."
+        case .infinity:
+            return "Unlocks ongoing research that provides long-term insights and potential future bonuses for this item."
+        }
+    }
+
 }

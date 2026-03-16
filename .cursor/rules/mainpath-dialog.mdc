@@ -1,0 +1,33 @@
+---
+description: Use MainPath.dialog for text dialogs; present via coordinator, not SwiftUI alert
+alwaysApply: true
+---
+
+# Text dialogs: use MainPath.dialog
+
+When presenting a **text-only dialog** (help, explanation, or info) in this app:
+
+- **Use** the coordinator and `MainPath.dialog(String)`.
+- **Do not** use SwiftUI `.alert` or `.sheet` for simple explanation/help text.
+
+## How to present
+
+1. **From a ViewModel** that has `coordinator` (e.g. a `CoordinatorViewModel`):
+   - Call: `coordinator?.custom(overlay: .card, MainPath.dialog(yourText))`
+
+2. **From a View** that does not have the coordinator:
+   - Add a method on the screen’s ViewModel that takes the dialog text and calls the coordinator (as above), then call that method from the view (e.g. in a button or closure).
+
+## Example
+
+```swift
+// In ViewModel
+func showExplanation(_ text: String) {
+    coordinator?.custom(overlay: .card, MainPath.dialog(text))
+}
+
+// In View – e.g. pass text from a tapped segment
+viewModel.showExplanation(sections[index].descriptionText)
+```
+
+`MainPath.dialog(String)` is rendered by `MainPathRenderer` as a card overlay with the given text; the user dismisses it via the overlay’s close/dismiss control.

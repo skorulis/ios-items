@@ -9,6 +9,7 @@ import SwiftUI
 @MainActor struct SegmentedResearchBar {
     let research: Research
     let level: Int
+    let onTapLevel: (Int) -> Void
 }
 
 // MARK: - Rendering
@@ -24,16 +25,19 @@ extension SegmentedResearchBar: View {
     }
 
     private func bar(index: Int, section: ResearchSection) -> some View {
-        ZStack {
-            Capsule()
-                .fill(fillColor(index: index, section: section))
+        Button(action: { onTapLevel(index) }) {
+            ZStack {
+                Capsule()
+                    .fill(fillColor(index: index, section: section))
 
-            icon(index: index, section: section)
-                .resizable()
-                .foregroundStyle(iconColor(index: index, section: section))
-                .frame(width: 16, height: 16)
+                icon(index: index, section: section)
+                    .resizable()
+                    .foregroundStyle(iconColor(index: index, section: section))
+                    .frame(width: 16, height: 16)
+            }
+            .frame(height: 24)
         }
-        .frame(height: 24)
+        .buttonStyle(.plain)
     }
 
     private func fillColor(index: Int, section: ResearchSection) -> Color {
@@ -73,11 +77,15 @@ extension SegmentedResearchBar: View {
 #Preview {
     VStack {
         SegmentedResearchBar(
-            research: BaseItem.apple.availableResearch, level: 0
+            research: BaseItem.apple.availableResearch,
+            level: 0,
+            onTapLevel: { _ in }
         )
 
         SegmentedResearchBar(
-            research: BaseItem.apple.availableResearch, level: 2
+            research: BaseItem.apple.availableResearch,
+            level: 2,
+            onTapLevel: { _ in }
         )
     }
     .padding(16)
