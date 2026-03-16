@@ -48,8 +48,8 @@ struct MainPathRenderer: CoordinatorPathRenderer {
 
     let resolver: BaseResolver
 
-    @ViewBuilder
-    func render(path: MainPath, in coordinator: Coordinator) -> some View {
+    // swiftlint:disable:next cyclomatic_complexity
+    @ViewBuilder func render(path: MainPath, in coordinator: Coordinator) -> some View {
         switch path {
         case .content:
             ContentView(viewModel: resolver.contentViewModel())

@@ -87,10 +87,14 @@ public extension TitleBar where TrailingIcon == EmptyView {
                 .frame(width: 44, height: 44)
         }
 
-        TitleBar(title: "Test", backAction: {}) {
-            Image(systemName: "square.and.arrow.down")
-                .frame(width: 44, height: 44)
-        }
+        TitleBar(
+            title: "Test",
+            backAction: {},
+            trailing: {
+                Image(systemName: "square.and.arrow.down")
+                    .frame(width: 44, height: 44)
+            }
+        )
         Spacer()
     }
 

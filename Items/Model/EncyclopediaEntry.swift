@@ -74,6 +74,7 @@ extension EncyclopediaEntry {
 
 // MARK: - Root child items
 
+// swiftlint:disable line_length
 extension EncyclopediaEntry {
     static var root: Self {
         .init(
@@ -164,6 +165,7 @@ extension EncyclopediaEntry {
         )
     }
 }
+// swiftlint:enable line_length
 
 // MARK: - Essences
 

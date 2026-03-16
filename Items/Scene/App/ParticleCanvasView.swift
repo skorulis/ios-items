@@ -66,9 +66,9 @@ struct ParticleCanvasView: View {
         let ringRadius = min(canvasSize.width, canvasSize.height) / 2
         let startAngle: CGFloat = startingParticleAlphas[index]
         let startOffset: CGFloat = startingParticleOffsets[index]
-        let t = normalizedTime(from: timeInterval)
+        let time = normalizedTime(from: timeInterval)
 
-        if t <= startOffset {
+        if time <= startOffset {
             let radiusAtTime = ringRadius
             let angle = startAngle
             let x = cx + cos(angle) * radiusAtTime
@@ -76,7 +76,7 @@ struct ParticleCanvasView: View {
             return (CGPoint(x: x, y: y), 0)
         }
         let remaining = max(0.01, 1 - startOffset)
-        let localT = min(1, (t - startOffset) / remaining)
+        let localT = min(1, (time - startOffset) / remaining)
         let radiusAtTime = (1 - localT) * ringRadius
         let angle = startAngle + spiralTurns * localT * .pi * 2
         let x = cx + cos(angle) * radiusAtTime

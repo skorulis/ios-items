@@ -43,6 +43,7 @@ final class ClientRequestHandler {
     }
 
     @MainActor
+    // swiftlint:disable:next cyclomatic_complexity function_body_length
     func handle(request: ItemsClientRequest.Payload) -> ItemsClientResponse.Payload {
         switch request {
         case .getItems:

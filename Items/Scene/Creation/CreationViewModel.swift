@@ -115,17 +115,10 @@ import SwiftUI
         }
         .store(in: &cancellables)
 
-        self.model.showingResearch = mainStore.portalUpgrades.purchased.contains(.researchLab)
-        self.model.researchUnderway = mainStore.lab.currentResearch != nil
-        self.model.researchBadgeCount = mainStore.notifications.newResearchLevels
-
         mainStore.$recipes.sink { [unowned self] in
             self.model.sacrificeConfig = $0.sacrificeConfig
         }
         .store(in: &cancellables)
-
-        model.sacrificeConfig = mainStore.recipes.sacrificeConfig
-        model.sacrificePlan = recipeService.sacrificePlan
     }
 
     deinit {
