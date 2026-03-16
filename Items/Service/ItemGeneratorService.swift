@@ -25,7 +25,7 @@ final class ItemGeneratorService {
     func recipeInfo(plan: SacrificePlan) -> RecipeInfo {
         return RecipeInfo(
             quality: qualityBonuses(plan: plan),
-            essenceBoosts: essenceBonuses(essences: plan.essences)
+            essenceBoosts: plan.essenceMultipliers,
         )
     }
 
@@ -108,12 +108,6 @@ final class ItemGeneratorService {
         }
 
         return ArtifactInstance(type: type, quality: targetQuality)
-    }
-
-    private func essenceBonuses(essences: [Essence]) -> [Essence: Double] {
-        essences.reduce(into: [:]) { partialResult, essence in
-            partialResult[essence, default: 1] += 1
-        }
     }
 
     private var activeBonuses: [Bonus] {

@@ -70,17 +70,37 @@ extension RecipeDetailView: View {
     @ViewBuilder
     private var essenceSection: some View {
         if !viewModel.model.essenceBonuses.isEmpty {
+            let nonZeroBonuses = viewModel.model.essenceBonuses.filter { $0.1 > 0 }
+            let zeroBonuses = viewModel.model.essenceBonuses.filter { $0.1 <= 0 }
+
             VStack(alignment: .leading, spacing: 8) {
                 Text("Essence bonuses")
                     .font(.headline)
                 
-                ForEach(viewModel.model.essenceBonuses, id: \.0) { essence, boost in
+                ForEach(nonZeroBonuses, id: \.0) { essence, boost in
                     HStack {
-                        Text(essence.name)
-                            .frame(maxWidth: .infinity, alignment: .leading)
+                        HStack(spacing: 8) {
+                            EssenceView(essence: essence)
+                            Text(essence.name)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
                         Text(formatMultiplier(boost))
                             .font(.body.monospacedDigit())
                             .frame(alignment: .trailing)
+                    }
+                }
+
+                if !zeroBonuses.isEmpty {
+                    HStack(spacing: 8) {
+                        ForEach(zeroBonuses, id: \.0) { essence, _ in
+                            ZStack {
+                                EssenceView(essence: essence)
+                                Rectangle()
+                                    .fill(Color.black.opacity(0.7))
+                                    .frame(width: 2, height: 22)
+                                    .rotationEffect(.degrees(45))
+                            }
+                        }
                     }
                 }
             }
