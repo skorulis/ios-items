@@ -10,7 +10,7 @@ struct Research: Codable {
     let lore: [String]
     
     public init(
-        essences: Array<Essence> = [],
+        essences: [Essence] = [],
         lore: [String] = []
     ) {
         self.essences = essences
@@ -24,11 +24,11 @@ struct Research: Codable {
     
     var sections: [ResearchSection] {
         var result = [ResearchSection]()
-        for e in essences {
-            result.append(.essence(e))
+        for ess in essences {
+            result.append(.essence(ess))
         }
-        for l in lore {
-            result.append(.lore(l))
+        for lore in self.lore {
+            result.append(.lore(lore))
         }
         
         result.append(.infinity)
