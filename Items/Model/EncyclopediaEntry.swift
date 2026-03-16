@@ -150,6 +150,7 @@ extension EncyclopediaEntry {
         .init(
             title: "Research",
             body: HelpStrings.research,
+            condition: .upgradePurchased(.researchLab),
             iconImage: Image(systemName: "flask"),
         )
     }
