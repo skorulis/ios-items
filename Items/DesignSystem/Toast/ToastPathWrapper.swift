@@ -23,6 +23,7 @@ struct ToastPathWrapper<Content: View>: View {
                     Button(action: dismissToast) {
                         Toast(content: content)
                     }
+                    .padding(.horizontal, 32)
 
                     Spacer()
                 }

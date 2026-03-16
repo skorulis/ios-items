@@ -89,7 +89,7 @@ extension DebugViewModel {
     }
 
     func showTestToast() {
-        toastService.showToast("Debug toast • \(UUID().uuidString)")
+        toastService.showToast("Debug toast\n\(UUID().uuidString)")
     }
 }
 

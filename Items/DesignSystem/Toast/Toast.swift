@@ -24,7 +24,6 @@ extension Toast: View {
             .padding(12)
             .frame(maxWidth: .infinity)
             .background(background)
-            .padding(.horizontal, 24)
     }
     
     private var background: some View {
@@ -49,6 +48,7 @@ struct DefaultToastContent: View {
                 icon
             }
             Text(text)
+                .multilineTextAlignment(.leading)
             Spacer()
         }
     }
