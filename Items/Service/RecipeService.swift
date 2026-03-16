@@ -16,23 +16,43 @@ final class RecipeService: ObservableObject {
     @Resolvable<BaseResolver>
     init(mainStore: MainStore) {
         self.mainStore = mainStore
-        self.sacrificePlan = Self.computeSacrificePlan(recipes: mainStore.recipes, warehouse: mainStore.warehouse, lab: mainStore.lab)
+        self.sacrificePlan = Self.computeSacrificePlan(
+            recipes: mainStore.recipes,
+            warehouse: mainStore.warehouse,
+            lab: mainStore.lab,
+            location: mainStore.mapLocations.selected
+        )
 
         mainStore.$warehouse
             .sink { [unowned self] in
-                self.sacrificePlan = Self.computeSacrificePlan(recipes: self.mainStore.recipes, warehouse: $0, lab: self.mainStore.lab)
+                self.sacrificePlan = Self.computeSacrificePlan(
+                    recipes: self.mainStore.recipes,
+                    warehouse: $0,
+                    lab: self.mainStore.lab,
+                    location: self.mainStore.mapLocations.selected
+                )
             }
             .store(in: &cancellables)
 
         mainStore.$recipes
             .sink { [unowned self] in
-                self.sacrificePlan = Self.computeSacrificePlan(recipes: $0, warehouse: self.mainStore.warehouse, lab: self.mainStore.lab)
+                self.sacrificePlan = Self.computeSacrificePlan(
+                    recipes: $0,
+                    warehouse: self.mainStore.warehouse,
+                    lab: self.mainStore.lab,
+                    location: self.mainStore.mapLocations.selected
+                )
             }
             .store(in: &cancellables)
 
         mainStore.$lab
             .sink { [unowned self] in
-                self.sacrificePlan = Self.computeSacrificePlan(recipes: self.mainStore.recipes, warehouse: self.mainStore.warehouse, lab: $0)
+                self.sacrificePlan = Self.computeSacrificePlan(
+                    recipes: self.mainStore.recipes,
+                    warehouse: self.mainStore.warehouse,
+                    lab: $0,
+                    location: self.mainStore.mapLocations.selected
+                )
             }
             .store(in: &cancellables)
     }
@@ -40,7 +60,12 @@ final class RecipeService: ObservableObject {
     /// Resolves which item (if any) would be consumed from each sacrifice slot, in slot order.
     /// Uses `mainStore.recipes.sacrificeConfig` and current warehouse quantities.
     func sacrificeConsumptionPlan() -> SacrificePlan {
-        Self.computeSacrificePlan(recipes: mainStore.recipes, warehouse: mainStore.warehouse, lab: mainStore.lab)
+        Self.computeSacrificePlan(
+            recipes: mainStore.recipes,
+            warehouse: mainStore.warehouse,
+            lab: mainStore.lab,
+            location: mainStore.mapLocations.selected
+        )
     }
 
     /// Removes one warehouse unit per entry in the plan’s `consumedItems` order.
@@ -50,7 +75,12 @@ final class RecipeService: ObservableObject {
         }
     }
 
-    private static func computeSacrificePlan(recipes: Recipes, warehouse: Warehouse, lab: Laboratory) -> SacrificePlan {
+    private static func computeSacrificePlan(
+        recipes: Recipes,
+        warehouse: Warehouse,
+        lab: Laboratory,
+        location: MapLocation
+    ) -> SacrificePlan {
         if !recipes.sacrificesEnabled {
             return .init(itemsInOrder: [], essences: [])
         }
@@ -74,9 +104,27 @@ final class RecipeService: ObservableObject {
             }
         }
         let consumedItems = result.keys.sorted().compactMap { result[$0] ?? nil }
+
         let essences = consumedItems.flatMap { item in
             item.availableResearch.unlockedEssences(level: lab.currentLevel(item: item))
         }
-        return SacrificePlan(slotsByIndex: result, essences: essences)
+        
+        var essenceMultipliers: [Essence: Double] = [:]
+        for essence in essences {
+            let value = essenceMultipliers[essence] ?? 1.0
+            essenceMultipliers[essence] = value + 1
+        }
+
+        let multipliers = location.details.essenceMultipliers
+        for (key, value) in location.details.essenceMultipliers {
+            let oldValue = essenceMultipliers[key] ?? 1.0
+            essenceMultipliers[key] = oldValue * value
+        }
+
+        return SacrificePlan(
+            slotsByIndex: result,
+            essences: essences,
+            essenceMultipliers: essenceMultipliers,
+        )
     }
 }

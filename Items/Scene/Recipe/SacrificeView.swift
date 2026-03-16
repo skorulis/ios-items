@@ -17,7 +17,10 @@ import SwiftUI
         var sacrificesEnabled: Bool
         var warehouse: Warehouse
         var slotItems: [Int: BaseItem] = [:]
-        var consumptionPlan: SacrificePlan = SacrificePlan(slotsByIndex: [:])
+        var consumptionPlan: SacrificePlan = SacrificePlan(
+            slotsByIndex: [:],
+            essenceMultipliers: [:],
+        )
         /// Slots with index < this value are interactive; others show as locked until portal upgrades add sacrifice slots.
         var unlockedSlotCount: Int = SacrificeConfig.slotCount
         

@@ -82,21 +82,21 @@ extension SacrificesButton: View {
         SacrificesButton(
             model: .init(
                 config: SacrificeConfig(slots: [:]),
-                plan: SacrificePlan(slotsByIndex: [:]),
+                plan: SacrificePlan(slotsByIndex: [:], essenceMultipliers: [:]),
                 action: {},
             )
         )
         SacrificesButton(
             model: .init(
                 config: SacrificeConfig(slots: [0: .apple, 1: .rock]),
-                plan: SacrificePlan(slotsByIndex: [0: .apple, 1: nil]),
+                plan: SacrificePlan(slotsByIndex: [0: .apple, 1: nil], essenceMultipliers: [:]),
                 action: {},
             )
         )
         SacrificesButton(
             model: .init(
                 config: SacrificeConfig(slots: [0: .apple]),
-                plan: SacrificePlan(slotsByIndex: [0: .apple]),
+                plan: SacrificePlan(slotsByIndex: [0: .apple], essenceMultipliers: [:]),
                 action: {},
             )
         )
