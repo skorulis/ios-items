@@ -207,14 +207,7 @@ extension CreationView: View {
         HStack(spacing: 12) {
             autoCreationButton
             createButton
-            
-            if !viewModel.model.firstItem {
-                Button(action: viewModel.showCurrentRecipeDetail) {
-                    Image(systemName: "info.circle")
-                        .font(.title2)
-                }
-                .buttonStyle(.plain)
-            }
+            planButton
         }
     }
 
@@ -228,6 +221,15 @@ extension CreationView: View {
         }
         .buttonStyle(.plain)
         .opacity(viewModel.model.automationUnlocked ? 1 : 0)
+    }
+    
+    private var planButton: some View {
+        Button(action: viewModel.showCurrentRecipeDetail) {
+            Image(systemName: "info.circle")
+                .font(.title2)
+        }
+        .buttonStyle(.plain)
+        .opacity(viewModel.model.firstItem ? 0 : 1)
     }
     
     private var createButton: some View {

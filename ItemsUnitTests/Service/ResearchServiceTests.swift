@@ -78,9 +78,9 @@ struct ResearchServiceTests {
         #expect(lab.currentLevel(item: item) == 1)
         expectApproximate(lab.accumulatedSeconds(for: item), 80)
         
-        // Progress should now be toward level 2, which takes 240 seconds.
+        // Progress should now be toward level 2, which takes 180 seconds.
         let progress = researchService.progressFor(item: item, now: t2)
-        #expect(progress.total == 240)
+        #expect(progress.total == 180)
         expectApproximate(progress.completed, 80)
         
         // Essences unlocked up to the new level should be present in concepts.
