@@ -78,8 +78,18 @@ extension ResearchViewModel {
     func showResearchLevelExplanation(item: BaseItem, index: Int) {
         let sections = item.availableResearch.sections
         guard sections.indices.contains(index) else { return }
-        let text = sections[index].descriptionText
-        coordinator?.custom(overlay: .card, MainPath.dialog(text))
+        let level = lab.currentLevel(item: item)
+        let text: String
+        let title: String
+        if index >= level {
+            text = sections[index].lockedDescriptionText
+            title = sections[index].lockedTitle
+        } else {
+            text = sections[index].descriptionText
+            title = sections[index].title
+        }
+        let dialogModel = DefaultDialogContent.Model(bodyText: text, title: title)
+        coordinator?.custom(overlay: .card, MainPath.fullDialog(dialogModel))
     }
 
     var currentLevel: Int {

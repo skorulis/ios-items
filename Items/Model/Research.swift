@@ -77,11 +77,42 @@ enum ResearchSection: Identifiable {
     var descriptionText: String {
         switch self {
         case let .essence(essence):
-            return "Reveals the item's \(essence.name) essence and how it influences crafting and other interactions."
+            return essence.description
         case .lore:
             return "Uncovers a piece of lore about this item, explaining its history and place in the world."
         case .infinity:
-            return "Unlocks ongoing research that provides long-term insights and potential future bonuses for this item."
+            return lockedDescriptionText
+        }
+    }
+
+    var lockedDescriptionText: String {
+        switch self {
+        case .essence:
+            return "Unlock information about the essence for this item"
+        case .lore:
+            return "Uncovers a piece of lore about this item."
+        case .infinity:
+            return "Continue researching this item to increase bonuses"
+        }
+    }
+
+    var title: String {
+        switch self {
+        case let .essence(essence):
+            return essence.name
+        case .lore, .infinity:
+            return lockedTitle
+        }
+    }
+
+    var lockedTitle: String {
+        switch self {
+        case .essence:
+            return "Essence"
+        case .lore:
+            return "Lore"
+        case .infinity:
+            return "Infinity"
         }
     }
 

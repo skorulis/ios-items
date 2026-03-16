@@ -31,11 +31,11 @@ struct SacrificePlan: Equatable {
         essences: [Essence] = [],
         essenceMultipliers: [Essence: Double] = [:],
     ) {
-        var d: [Int: BaseItem?] = [:]
+        var slots: [Int: BaseItem?] = [:]
         for (i, item) in items.enumerated() {
-            d[i] = item
+            slots[i] = item
         }
-        self.slotsByIndex = d
+        self.slotsByIndex = slots
         self.essences = essences
         self.essenceMultipliers = essenceMultipliers
     }
