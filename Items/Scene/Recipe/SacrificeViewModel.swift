@@ -1,4 +1,4 @@
-//Created by Alexander Skorulis on 11/3/2026.
+// Created by Alexander Skorulis on 11/3/2026.
 
 import ASKCore
 import ASKCoordinator
@@ -45,7 +45,7 @@ import SwiftUI
                 .reduce(0, +)
         }
         .store(in: &cancellables)
-        
+
         recipeService.$sacrificePlan.sink { [unowned self] in
             model.consumptionPlan = $0
         }

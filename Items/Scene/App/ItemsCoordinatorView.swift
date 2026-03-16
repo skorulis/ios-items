@@ -1,4 +1,4 @@
-//Created by Alexander Skorulis on 17/2/2026.
+// Created by Alexander Skorulis on 17/2/2026.
 
 import ASKCoordinator
 import Knit
@@ -19,7 +19,7 @@ extension CoordinatorView {
                 ToastPathWrapper(
                     toastService: resolver.toastService(),
                     id: path.id,
-                    content:  { view }
+                    content: { view }
                 )
             )
         }

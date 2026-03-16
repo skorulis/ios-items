@@ -1,4 +1,4 @@
-//Created by Alexander Skorulis on 20/2/2026.
+// Created by Alexander Skorulis on 20/2/2026.
 
 import Foundation
 import SwiftUI
@@ -9,7 +9,7 @@ import SwiftUI
     let value: Int64
     let total: Int64
     @State private var size: CGSize = .zero
-    
+
     init(value: Int64, total: Int64) {
         self.value = min(value, total)
         self.total = total
@@ -19,7 +19,7 @@ import SwiftUI
 // MARK: - Rendering
 
 extension GoalProgressBar: View {
-    
+
     var body: some View {
         ZStack(alignment: .center) {
             bar
@@ -28,22 +28,22 @@ extension GoalProgressBar: View {
         }
         .readSize(size: $size)
     }
-    
+
     private var stringValue: String {
         return "\(value)/\(total)"
     }
-    
+
     private var bar: some View {
         ZStack(alignment: .leading) {
             Capsule()
                 .fill(AccentColors.slate)
-                
+
             overlay
-            
+
         }
         .frame(height: 20)
     }
-    
+
     private var overlay: some View {
         HStack(spacing: 0) {
             Rectangle()
@@ -53,7 +53,7 @@ extension GoalProgressBar: View {
         }
         .clipShape(Capsule())
     }
-    
+
     private var progressFraction: CGFloat {
         return min(CGFloat(value) / CGFloat(total), 1)
     }
@@ -70,6 +70,5 @@ extension GoalProgressBar: View {
         GoalProgressBar(value: 10, total: 1000)
     }
     .padding(16)
-    
-}
 
+}

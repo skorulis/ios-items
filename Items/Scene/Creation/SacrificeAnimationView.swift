@@ -1,4 +1,4 @@
-//Created by Alexander Skorulis on 11/2/2026.
+// Created by Alexander Skorulis on 11/2/2026.
 
 import Models
 import SwiftUI
@@ -90,7 +90,7 @@ extension SacrificeAnimationView: View {
             }
         }
     }
-    
+
     private var avatars: some View {
         ZStack {
             ForEach(items.indices, id: \.self) { index in

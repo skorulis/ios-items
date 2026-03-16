@@ -4,6 +4,7 @@
 # Paths to exclude from linting
 excluded:
   - Items/Resource/XCAssets+Generated.swift  # SwiftGen generated
+  - PreviewTests.generated.swift             # generated previews
 
 # Optional: paths to include (default is all Swift files)
 # included:
@@ -18,3 +19,13 @@ line_length:
   error: 200
   ignores_urls: true
   ignores_comments: true
+
+# Identifier naming tweaks
+identifier_name:
+  min_length: 2
+  excluded:
+    - i
+    - j
+    - k
+    - x
+    - y

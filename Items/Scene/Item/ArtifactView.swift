@@ -9,7 +9,7 @@ import SwiftUI
 @MainActor struct ArtifactView {
     let artifact: ArtifactInstance
     let size: AvatarView.Size
-    
+
     init(artifact: ArtifactInstance, size: AvatarView.Size = .medium) {
         self.artifact = artifact
         self.size = size
@@ -36,7 +36,7 @@ extension ArtifactView: View {
         ArtifactView(
             artifact: .init(type: .frictionlessGear, quality: .junk)
         )
-        
+
         ArtifactView(
             artifact: .init(type: .frictionlessGear, quality: .exceptional)
         )

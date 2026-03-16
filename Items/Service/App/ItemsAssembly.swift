@@ -9,17 +9,17 @@ import SwiftUI
 final class ItemsAssembly: AutoInitModuleAssembly {
     static var dependencies: [any Knit.ModuleAssembly.Type] = []
     typealias TargetResolver = BaseResolver
-    
+
     private let purpose: IOCPurpose
-    
+
     init() {
         self.purpose = .testing
     }
-    
+
     init(purpose: IOCPurpose ) {
         self.purpose = purpose
     }
-    
+
     @MainActor func assemble(container: Container<TargetResolver>) {
         ASKCoreAssembly(purpose: purpose).assemble(container: container)
         if purpose == .normal {
@@ -29,24 +29,24 @@ final class ItemsAssembly: AutoInitModuleAssembly {
             }
             .inObjectScope(.container)
         }
-        
+
         registerServices(container: container)
         registerStores(container: container)
         registerViewModels(container: container)
     }
-    
+
     @MainActor
     private func registerServices(container: Container<TargetResolver>) {
         container.register(ItemGeneratorService.self) { ItemGeneratorService.make(resolver: $0) }
             .inObjectScope(.container)
-        
+
         container.register(WarehouseService.self) { WarehouseService.make(resolver: $0) }
-        
+
         container.register(UnlockRequirementService.self) { UnlockRequirementService.make(resolver: $0) }
             .inObjectScope(.container)
         container.register(AchievementService.self) { AchievementService.make(resolver: $0) }
             .inObjectScope(.container)
-        
+
         container.register(RecipeService.self) { RecipeService.make(resolver: $0) }
             .inObjectScope(.container)
         container.register(OfflineCreationService.self) { OfflineCreationService.make(resolver: $0) }
@@ -60,16 +60,16 @@ final class ItemsAssembly: AutoInitModuleAssembly {
             .inObjectScope(.container)
         container.register(DebugConnectionService.self) { DebugConnectionService.make(resolver: $0) }
             .inObjectScope(.container)
-        
+
         container.register(ClientRequestHandler.self) { ClientRequestHandler.make(resolver: $0) }
     }
-    
+
     @MainActor
     private func registerStores(container: Container<TargetResolver>) {
         container.register(MainStore.self) { MainStore.make(resolver: $0) }
             .inObjectScope(.container)
     }
-    
+
     @MainActor
     private func registerViewModels(container: Container<TargetResolver>) {
         container.register(ContentViewModel.self) { ContentViewModel.make(resolver: $0) }
@@ -83,15 +83,15 @@ final class ItemsAssembly: AutoInitModuleAssembly {
         container.register(EssenceBreakdownViewModel.self) { EssenceBreakdownViewModel.make(resolver: $0) }
         container.register(GameStatisticsViewModel.self) { GameStatisticsViewModel.make(resolver: $0) }
         container.register(MapLocationViewModel.self) { MapLocationViewModel.make(resolver: $0) }
-        
+
         container.register(EncyclopediaViewModel.self) { (resolver: BaseResolver, entry: EncyclopediaEntry) in
             EncyclopediaViewModel.make(resolver: resolver, entry: entry)
         }
-        
+
         container.register(ItemDetailsViewModel.self) { (resolver: BaseResolver, item: BaseItem) in
             ItemDetailsViewModel.make(resolver: resolver, item: item)
         }
-        
+
         container.register(AchievementDetailsViewModel.self) { (resolver: BaseResolver, achievement: Achievement) in
             AchievementDetailsViewModel.make(resolver: resolver, achievement: achievement)
         }
@@ -108,7 +108,7 @@ final class ItemsAssembly: AutoInitModuleAssembly {
 
         container.register(MainPathRenderer.self) { MainPathRenderer(resolver: $0) }
     }
-    
+
 }
 
 extension ItemsAssembly {

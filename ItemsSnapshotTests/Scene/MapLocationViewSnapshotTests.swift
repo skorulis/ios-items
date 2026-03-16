@@ -40,4 +40,3 @@ struct MapLocationViewSnapshotTests {
         assertSnapshot(of: view, as: .image(on: .iPhoneSe))
     }
 }
-

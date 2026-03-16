@@ -1,4 +1,4 @@
-//Created by Alexander Skorulis on 5/3/2026.
+// Created by Alexander Skorulis on 5/3/2026.
 
 import Foundation
 import Models
@@ -31,7 +31,7 @@ extension PortalUpgradeCell: View {
             Text(upgrade.description)
                 .font(.caption)
                 .foregroundStyle(.secondary)
-            
+
             HStack(spacing: 8) {
                 UpgradeCostRow(cost: upgrade.cost, itemQuantity: itemQuantity)
                 Spacer()

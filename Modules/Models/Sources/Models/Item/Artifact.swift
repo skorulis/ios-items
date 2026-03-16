@@ -106,7 +106,7 @@ public extension Artifact {
         if let bonus = ArtifactInstance(type: self, quality: quality).bonus {
             return bonus.text
         }
-        
+
         switch self {
         case .frictionlessGear:
             return "Reduces item creation time by \(frictionlessGearTimeReduction(quality: quality)) milliseconds."

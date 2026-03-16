@@ -1,4 +1,4 @@
-//Created by Cursor on 3/3/2026.
+// Created by Cursor on 3/3/2026.
 
 import Foundation
 import SwiftUI
@@ -8,13 +8,13 @@ import SwiftUI
 @MainActor struct ResearchBarView: View {
     let totalSeconds: TimeInterval
     let completedSeconds: TimeInterval
-    
+
     private var clampedProgress: Double {
         guard totalSeconds > 0 else { return 0 }
         let raw = completedSeconds / totalSeconds
         return min(max(raw, 0), 1)
     }
-    
+
     private var remainingSeconds: TimeInterval {
         max(totalSeconds - completedSeconds, 0)
     }
@@ -34,18 +34,18 @@ extension ResearchBarView {
         }
         .frame(height: 20)
     }
-    
+
     private func bar(geometry: GeometryProxy) -> some View {
         ZStack(alignment: .leading) {
             Capsule()
                 .fill(AccentColors.slate)
-                
+
             overlay(geometry: geometry)
-            
+
         }
         .frame(height: 20)
     }
-    
+
     private func overlay(geometry: GeometryProxy) -> some View {
         HStack(spacing: 0) {
             Rectangle()
@@ -55,19 +55,19 @@ extension ResearchBarView {
         }
         .clipShape(Capsule())
     }
-    
+
     private func formattedRemainingTime(_ timeInterval: TimeInterval) -> String {
         let totalSeconds = max(Int(ceil(timeInterval)), 0)
-        
+
         if totalSeconds < 60 {
             return "\(totalSeconds)s"
         }
-        
+
         let seconds = totalSeconds % 60
         let minutes = (totalSeconds / 60) % 60
         let hours = (totalSeconds / 3600) % 24
         let days = totalSeconds / 86400
-        
+
         if totalSeconds < 3600 {
             // Under 1 hour: MM:SS
             return String(format: "%dm %02ds", minutes, seconds)
@@ -93,4 +93,3 @@ extension ResearchBarView {
     }
     .padding()
 }
-

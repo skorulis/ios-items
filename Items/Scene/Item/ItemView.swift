@@ -1,4 +1,4 @@
-//Created by Alexander Skorulis on 11/2/2026.
+// Created by Alexander Skorulis on 11/2/2026.
 
 import Foundation
 import Models
@@ -11,7 +11,7 @@ import SwiftUI
     let quantity: Int?
     let showNewBadge: Bool
     let size: AvatarView.Size
-    
+
     init(
         item: BaseItem,
         quantity: Int? = nil,
@@ -28,7 +28,7 @@ import SwiftUI
 // MARK: - Rendering
 
 extension ItemView: View {
-    
+
     var body: some View {
         AvatarView(
             text: item.name,
@@ -39,7 +39,7 @@ extension ItemView: View {
             size: size,
         )
     }
-    
+
     private var badgeText: String? {
         return quantity.map(String.init)
     }
@@ -54,4 +54,3 @@ extension ItemView: View {
         ItemView(item: .goldFlorin)
     }
 }
-

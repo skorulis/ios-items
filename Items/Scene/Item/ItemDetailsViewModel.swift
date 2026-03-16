@@ -1,4 +1,4 @@
-//Created by Alexander Skorulis on 16/2/2026.
+// Created by Alexander Skorulis on 16/2/2026.
 
 import Combine
 import Foundation
@@ -8,33 +8,33 @@ import Models
 import SwiftUI
 
 @Observable final class ItemDetailsViewModel {
-    
+
     var model: ItemDetailsView.Model
-    
+
     private let mainStore: MainStore
     private let calculations: CalculationsService
     private let warehouseService: WarehouseService
     private var cancellables: Set<AnyCancellable> = []
-    
+
     @Resolvable<BaseResolver>
     init(@Argument item: BaseItem, mainStore: MainStore, calculations: CalculationsService, warehouseService: WarehouseService) {
         self.mainStore = mainStore
         self.calculations = calculations
         self.warehouseService = warehouseService
-        
+
         model = .init(
             item: item,
             lab: mainStore.lab,
             warehouse: mainStore.warehouse,
             details: warehouseService.details(item: item),
         )
-        
+
         mainStore.$lab.sink { [unowned self] in
             self.model.lab = $0
             self.model.details = warehouseService.details(item: item)
         }
         .store(in: &cancellables)
-        
+
         mainStore.$warehouse.sink { [unowned self] in
             self.model.warehouse = $0
         }
@@ -45,7 +45,7 @@ import SwiftUI
 // MARK: - Logic
 
 extension ItemDetailsViewModel {
-    
+
     private var nextArtifactQuality: ItemQuality? {
         guard let type = model.item.associatedArtifact else { return nil }
         return model.warehouse.nextArtifactQuality(artifact: type)
@@ -62,7 +62,7 @@ extension ItemDetailsViewModel {
             return "Upgrade chance: \(value)"
         }
     }
-    
+
     func markItemViewed() {
         warehouseService.markItemViewed(model.item)
     }

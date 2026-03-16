@@ -7,7 +7,7 @@ public enum GameAction: String, Codable, Sendable {
     case makeItem
     case purchaseUpgrade
     case buyResearch
-    
+
     public var description: String {
         switch self {
         case .makeItem:

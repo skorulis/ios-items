@@ -1,4 +1,4 @@
-//Created by Alexander Skorulis on 16/2/2026.
+// Created by Alexander Skorulis on 16/2/2026.
 
 import Models
 import SwiftUI
@@ -6,20 +6,20 @@ import SwiftUI
 // MARK: - Memory footprint
 
 @MainActor struct AvatarView {
-    
+
     enum Size: Identifiable, CaseIterable {
         case small, medium, large
         var id: Self { self }
     }
-    
+
     private let size: Size
     private let text: String
     private let image: Image?
     private let border: Color
-    
+
     private let badge: String?
     private let showNewBadge: Bool
-    
+
     init(
         text: String,
         image: Image?,
@@ -50,7 +50,7 @@ import SwiftUI
 // MARK: - Rendering
 
 extension AvatarView: View {
-    
+
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
             mainCircle
@@ -65,22 +65,22 @@ extension AvatarView: View {
             }
         }
     }
-    
+
     private var mainCircle: some View {
         ZStack {
             Circle()
                 .fill(ColorHash.gradient(for: text))
-            
+
             Circle()
                 .stroke(border, lineWidth: 2)
                 .padding(1)
-            
+
             content
-            
+
         }
         .frame(width: size.diameter, height: size.diameter)
     }
-    
+
     @ViewBuilder
     private var content: some View {
         if let image {
@@ -96,7 +96,7 @@ extension AvatarView: View {
                 .foregroundStyle(Color.white)
         }
     }
-    
+
     @ViewBuilder
     private var maybeBadge: some View {
         if let badge {
@@ -123,7 +123,7 @@ extension AvatarView.Size {
             return 80
         }
     }
-    
+
     var imageSize: CGFloat {
         switch self {
         case .small:
@@ -134,7 +134,7 @@ extension AvatarView.Size {
             return 60
         }
     }
-    
+
     var font: Font {
         switch self {
         case .small:
@@ -161,7 +161,7 @@ extension AvatarView.Size {
                 )
             }
         }
-        
+
         HStack {
             ForEach(AvatarView.Size.allCases) { size in
                 AvatarView(
@@ -172,7 +172,7 @@ extension AvatarView.Size {
                 )
             }
         }
-        
+
         AvatarView(
             text: "New",
             image: nil,
@@ -181,7 +181,5 @@ extension AvatarView.Size {
             size: .medium,
         )
     }
-    
-    
-}
 
+}

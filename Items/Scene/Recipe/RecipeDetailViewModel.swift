@@ -17,7 +17,7 @@ extension RecipeDetailViewModel {
         guard total > 0 else {
             return []
         }
-        
+
         return ItemQuality.allCases
             .compactMap { quality -> (ItemQuality, Double)? in
                 let weight = weights[quality, default: 0]
@@ -26,7 +26,7 @@ extension RecipeDetailViewModel {
                 return (quality, percentage)
             }
     }
-    
+
     static func sortedEssenceBonuses(
         from boosts: [Essence: Double]
     ) -> [(Essence, Double)] {

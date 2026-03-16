@@ -24,7 +24,7 @@ func assertSnapshot<V: View>(
         )
         return
     }
-    
+
     guard model == "iPhone18,3" else {
         Issue.record(
             "Snapshots must run on iPhone 17",
@@ -46,4 +46,3 @@ func assertSnapshot<V: View>(
         column: column,
     )
 }
-

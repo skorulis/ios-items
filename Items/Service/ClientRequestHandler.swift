@@ -1,4 +1,4 @@
-//Created by Alexander Skorulis on 9/3/2026.
+// Created by Alexander Skorulis on 9/3/2026.
 
 import Knit
 import KnitMacros
@@ -41,7 +41,7 @@ final class ClientRequestHandler {
         let result = handle(request: request.payload)
         return ItemsClientResponse(id: request.id, payload: result)
     }
-    
+
     @MainActor
     func handle(request: ItemsClientRequest.Payload) -> ItemsClientResponse.Payload {
         switch request {
@@ -119,7 +119,7 @@ final class ClientRequestHandler {
             }
         }
     }
-    
+
     private func getAvailableActions() -> [GameAction] {
         var result: [GameAction] = [.makeItem]
         if unlockRequirementService.isComplete(requirement: .upgradePurchased(.researchLab)) {
@@ -130,7 +130,7 @@ final class ClientRequestHandler {
         }
         return result
     }
-    
+
     private func getAvailableData() -> [GameData] {
         var result: [GameData] = [.items, .achievements]
         if mainStore.achievements.unlocked.contains(.artifact1) {

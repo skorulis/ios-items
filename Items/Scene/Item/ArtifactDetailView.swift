@@ -1,4 +1,4 @@
-//Created by Alexander Skorulis on 15/2/2026.
+// Created by Alexander Skorulis on 15/2/2026.
 
 import Foundation
 import Models
@@ -66,4 +66,3 @@ extension ArtifactDetailView: View {
         viewModel: assembler.resolver.artifactDetailViewModel(artifact: .init(type: .frictionlessGear, quality: .good))
     )
 }
-

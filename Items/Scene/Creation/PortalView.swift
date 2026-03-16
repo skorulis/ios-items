@@ -1,4 +1,4 @@
-//Created by Alexander Skorulis on 5/3/2026.
+// Created by Alexander Skorulis on 5/3/2026.
 
 import Foundation
 import Models
@@ -61,7 +61,7 @@ struct PortalView: View {
             .scaledToFit()
             .frame(maxWidth: 280, maxHeight: 280)
     }
-    
+
     private var topButtons: some View {
         HStack {
             if let upgradesButton {
@@ -84,7 +84,7 @@ struct PortalView: View {
             }
         }
     }
-    
+
     private var bottomButtons: some View {
         HStack {
             if let mapLocationsButton {
@@ -124,7 +124,7 @@ extension PortalView {
         let badge: Int
         let frameBinding: Binding<CGRect>
     }
-    
+
     enum ButtonOrProgress {
         case button(Button)
         case progress(CGFloat)
@@ -137,7 +137,7 @@ extension PortalView {
 struct PortalCornerButton: View {
     let icon: Image
     let action: () -> Void
-    var badge: Int? = nil
+    var badge: Int?
     let frameBinding: Binding<CGRect>
 
     private let size: CGFloat = 44

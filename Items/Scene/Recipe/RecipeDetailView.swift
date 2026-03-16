@@ -10,7 +10,7 @@ import SwiftUI
 @MainActor
 struct RecipeDetailView {
     @State var viewModel: RecipeDetailViewModel
-    
+
     struct Model {
         let plan: SacrificePlan
         let qualityChances: [(ItemQuality, Double)]
@@ -21,7 +21,7 @@ struct RecipeDetailView {
 // MARK: - Rendering
 
 extension RecipeDetailView: View {
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             header
@@ -30,7 +30,7 @@ extension RecipeDetailView: View {
         }
         .padding()
     }
-    
+
     private var header: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text("Creation")
@@ -42,17 +42,17 @@ extension RecipeDetailView: View {
             }
         }
     }
-    
+
     private var recipeDescription: String {
         let names = viewModel.model.plan.consumedItems.map(\.name)
         return names.joined(separator: " + ")
     }
-    
+
     private var qualitySection: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Quality chances")
                 .font(.headline)
-            
+
             ForEach(viewModel.model.qualityChances, id: \.0) { quality, chance in
                 HStack {
                     Text(quality.name)
@@ -66,7 +66,7 @@ extension RecipeDetailView: View {
             }
         }
     }
-    
+
     @ViewBuilder
     private var essenceSection: some View {
         if !viewModel.model.essenceBonuses.isEmpty {
@@ -76,7 +76,7 @@ extension RecipeDetailView: View {
             VStack(alignment: .leading, spacing: 8) {
                 Text("Essence bonuses")
                     .font(.headline)
-                
+
                 ForEach(nonZeroBonuses, id: \.0) { essence, boost in
                     HStack {
                         HStack(spacing: 8) {
@@ -106,12 +106,12 @@ extension RecipeDetailView: View {
             }
         }
     }
-    
+
     private func formatPercentage(_ value: Double) -> String {
         let percentage = value * 100
         return String(format: "%.0f%%", percentage)
     }
-    
+
     private func formatMultiplier(_ value: Double) -> String {
         // Essence boosts are multiplicative factors starting at 1.
         return String(format: "x%.1f", value)

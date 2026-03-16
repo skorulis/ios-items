@@ -31,7 +31,7 @@ enum WebSocketServer {
             clients.setConnection(ws)
             print("Client connected")
 
-            ws.onText { ws, text in
+            ws.onText { _, text in
                 let data = Data(text.utf8)
                 guard let response = parseClientResponse(data) else {
                     print("WebSocketServer decode error for: \(text)")
@@ -69,7 +69,7 @@ enum WebSocketServer {
                 }
             }
 
-            ws.onBinary { ws, buffer in
+            ws.onBinary { _, _ in
                 print("Binary")
                 // ws.send(buffer, opcode: .binary)
             }

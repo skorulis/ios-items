@@ -1,4 +1,4 @@
-//Created by Alexander Skorulis on 16/2/2026.
+// Created by Alexander Skorulis on 16/2/2026.
 
 import Foundation
 import Knit
@@ -18,7 +18,7 @@ import SwiftUI
 // MARK: - Rendering
 
 extension AchievementsView: View {
-    
+
     var body: some View {
         PageLayout(
             titleBar: { titleBar},
@@ -28,10 +28,10 @@ extension AchievementsView: View {
             viewModel.onAppear()
         }
     }
-    
+
     private var content: some View {
         let columns = [
-            GridItem(.adaptive(minimum: 80)),
+            GridItem(.adaptive(minimum: 80))
         ]
         let visibleAchievements = Achievement.allCases.filter { achievement in
             viewModel.isVisible(achievement: achievement)
@@ -59,7 +59,7 @@ extension AchievementsView: View {
         }
         .padding(.vertical, 16)
     }
-    
+
     @ViewBuilder
     private func cell(achievement: Achievement) -> some View {
         let complete = viewModel.isComplete(achievement: achievement)
@@ -74,7 +74,7 @@ extension AchievementsView: View {
         }
         .grayscale(complete ? 0 : 1)
     }
-    
+
     private var titleBar: some View {
         TitleBar(
             title: "Achievements",
@@ -88,4 +88,3 @@ extension AchievementsView: View {
     let assembler = ItemsAssembly.testing()
     AchievementsView(viewModel: assembler.resolver.achievementsViewModel())
 }
-

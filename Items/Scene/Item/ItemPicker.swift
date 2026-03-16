@@ -1,4 +1,4 @@
-//Created by Alexander Skorulis on 12/2/2026.
+// Created by Alexander Skorulis on 12/2/2026.
 
 import Foundation
 import Models
@@ -50,7 +50,7 @@ extension ItemPicker: View {
 
     private var items: some View {
         let columns = [
-            GridItem(.adaptive(minimum: 80), spacing: 12),
+            GridItem(.adaptive(minimum: 80), spacing: 12)
         ]
         return LazyVGrid(columns: columns, spacing: 16) {
             ForEach(visibleItems) { item in
@@ -61,7 +61,7 @@ extension ItemPicker: View {
             }
         }
     }
-    
+
     private var visibleItems: [BaseItem] {
         BaseItem.allCases.filter(predicate)
     }
@@ -72,4 +72,3 @@ extension ItemPicker: View {
 #Preview {
     ItemPicker(onSelect: { _ in })
 }
-

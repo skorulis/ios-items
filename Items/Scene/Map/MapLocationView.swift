@@ -124,4 +124,3 @@ extension MapLocationView: View {
     let assembler = ItemsAssembly.testing()
     MapLocationView(viewModel: assembler.resolver.mapLocationViewModel())
 }
-

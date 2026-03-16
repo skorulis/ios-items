@@ -1,4 +1,4 @@
-//Created by Alexander Skorulis on 10/2/2026.
+// Created by Alexander Skorulis on 10/2/2026.
 
 import ASKCore
 import Combine
@@ -6,19 +6,20 @@ import Foundation
 import Knit
 import KnitMacros
 
+// swiftlint:disable force_try
 final class MainStore: ObservableObject {
     @Published var warehouse: Warehouse {
         didSet {
             try! self.store.set(codable: warehouse, forKey: Self.warehouseKey)
         }
     }
-    
+
     @Published var statistics: Statistics {
         didSet {
             try! self.store.set(codable: statistics, forKey: Self.statisticsKey)
         }
     }
-    
+
     @Published var recipes: Recipes {
         didSet {
             try! self.store.set(codable: recipes, forKey: Self.recipesKey)
@@ -29,7 +30,7 @@ final class MainStore: ObservableObject {
             try! self.store.set(codable: lab, forKey: Self.labKey)
         }
     }
-    
+
     @Published var achievements: Achievements {
         didSet {
             try! self.store.set(codable: achievements, forKey: Self.achievementsKey)
@@ -41,7 +42,7 @@ final class MainStore: ObservableObject {
             try! self.store.set(codable: portalUpgrades, forKey: Self.portalUpgradesKey)
         }
     }
-    
+
     @Published var concepts: Concepts {
         didSet {
             try! self.store.set(codable: concepts, forKey: Self.conceptsKey)
@@ -77,7 +78,7 @@ final class MainStore: ObservableObject {
     private static let statisticsKey = "MainStore.statistics"
     private static let warehouseKey = "MainStore.warehouse"
     private static let mapLocationsKey = "MainStore.mapLocations"
-    
+
     @Resolvable<BaseResolver>
     init(store: PKeyValueStore) {
         self.store = store
@@ -94,3 +95,4 @@ final class MainStore: ObservableObject {
         self.mapLocations = (try? store.codable(forKey: Self.mapLocationsKey)) ?? MapLocations()
     }
 }
+// swiftlint:enable force_try

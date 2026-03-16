@@ -9,8 +9,8 @@ public enum ColorHash {
     /// - Parameter string: The input used to choose a color.
     /// - Returns: A color selected deterministically from the palette.
     public static func color(for string: String) -> Color {
-        let h = fnv1a64(string)
-        let index = Int(h % UInt64(palette.count))
+        let hash = fnv1a64(string)
+        let index = Int(hash % UInt64(palette.count))
         return palette[index]
     }
 
@@ -29,7 +29,7 @@ public enum ColorHash {
         }
         return hash
     }
-    
+
     static func gradient(for text: String) -> some ShapeStyle {
         // Use the same stable hash as ColorHash to keep assignments consistent.
         // Derive an index from FNV-1a directly for palette selection
@@ -42,11 +42,10 @@ public enum ColorHash {
         let stops: [Gradient.Stop] = [
             .init(color: c1.opacity(0.95), location: 0.0),
             .init(color: c2.opacity(0.90), location: 0.55),
-            .init(color: c3.opacity(0.95), location: 1.0),
+            .init(color: c3.opacity(0.95), location: 1.0)
         ]
         // Angular gradients look nice within circles; fall back to linear if preferred.
         return LinearGradient(
             gradient: Gradient(stops: stops), startPoint: .topLeading, endPoint: .bottomTrailing)
     }
 }
-

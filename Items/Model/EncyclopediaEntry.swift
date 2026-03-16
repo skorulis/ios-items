@@ -1,4 +1,4 @@
-//Created by Alexander Skorulis on 21/2/2026.
+// Created by Alexander Skorulis on 21/2/2026.
 
 import Foundation
 import Models
@@ -49,7 +49,7 @@ extension EncyclopediaEntry {
             icon: AnyView(icon())
         )
     }
-    
+
     init(
         title: String,
         body: String,
@@ -83,17 +83,17 @@ extension EncyclopediaEntry {
                 Self.portal,
                 Self.warehouse,
                 Self.essences,
-                Self.artifacts,
+                Self.artifacts
             ]
         )
     }
-    
+
     static var portal: Self {
         .init(
             title: "The Portal",
             body: """
             Your portal to another dimension works. When activated, it pulled an object from another dimension.
-            
+
             Who knows what wonders this place contains, perhaps by studying the items you can slowly piece together what this dimension is.
             """,
             childItems: [Self.research, Self.portalUpgrades, Self.sacrifices],
@@ -137,7 +137,7 @@ extension EncyclopediaEntry {
             }
         )
     }
-    
+
     static var warehouse: Self {
         .init(
             title: "Warehouse",

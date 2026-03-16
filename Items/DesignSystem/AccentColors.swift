@@ -1,4 +1,4 @@
-//Created by Alexander Skorulis on 19/2/2026.
+// Created by Alexander Skorulis on 19/2/2026.
 
 import Foundation
 import SwiftUI
@@ -50,6 +50,6 @@ public enum AccentColors {
         amethyst,
         flamingo,
         chestnut,
-        slate,
+        slate
     ]
 }

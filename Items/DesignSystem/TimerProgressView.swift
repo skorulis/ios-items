@@ -1,4 +1,4 @@
-//Created by Alexander Skorulis on 2/3/2026.
+// Created by Alexander Skorulis on 2/3/2026.
 
 import Foundation
 import SwiftUI
@@ -11,7 +11,7 @@ import SwiftUI
     let duration: TimeInterval
 
     @State private var progress: Double = 0
-    
+
     init(
         timerId: UUID,
         duration: TimeInterval
@@ -19,7 +19,7 @@ import SwiftUI
         self.timerId = timerId
         self.duration = duration
     }
-    
+
     init(model: Model) {
         self.init(timerId: model.id, duration: model.duration)
     }

@@ -1,4 +1,4 @@
-//Created by Alexander Skorulis on 12/2/2026.
+// Created by Alexander Skorulis on 12/2/2026.
 
 import Foundation
 import Models
@@ -15,7 +15,7 @@ import SwiftUI
 // MARK: - Rendering
 
 extension ItemGridCell: View {
-    
+
     var body: some View {
         ItemView(item: item, quantity: quantity, showNewBadge: showNewBadge)
     }
@@ -30,6 +30,5 @@ extension ItemGridCell: View {
         ItemGridCell(item: .potionFlask, quantity: 10, showNewBadge: true)
     }
     .background(Color.black)
-    
-}
 
+}

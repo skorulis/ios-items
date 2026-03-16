@@ -1,4 +1,4 @@
-//Created by Alexander Skorulis on 11/3/2026.
+// Created by Alexander Skorulis on 11/3/2026.
 
 import Foundation
 import Models
@@ -12,7 +12,7 @@ struct SacrificePlan: Equatable {
 
     /// Essences that will be included in the sacrifice from consumed items, counting only essences unlocked by research.
     let essences: [Essence]
-    
+
     let essenceMultipliers: [Essence: Double]
 
     init(
@@ -60,7 +60,7 @@ struct SacrificePlan: Equatable {
     func isSatisfied(at index: Int) -> Bool {
         item(at: index) != nil
     }
-    
+
     func count(quality: ItemQuality) -> Int {
         consumedItems.filter { $0.quality == quality }.count
     }

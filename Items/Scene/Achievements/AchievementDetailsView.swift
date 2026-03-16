@@ -1,4 +1,4 @@
-//Created by Alexander Skorulis on 16/2/2026.
+// Created by Alexander Skorulis on 16/2/2026.
 
 import Foundation
 import Knit
@@ -8,21 +8,21 @@ import SwiftUI
 // MARK: - Memory footprint
 
 @MainActor struct AchievementDetailsView {
-    
+
     struct Model {
         var value: Int64
         let total: Int64
     }
-    
+
     @State var viewModel: AchievementDetailsViewModel
-    
+
     var model: Model { viewModel.model }
 }
 
 // MARK: - Rendering
 
 extension AchievementDetailsView: View {
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             HStack {
@@ -35,7 +35,7 @@ extension AchievementDetailsView: View {
                     .font(.title)
                 Spacer()
             }
-            
+
             Text(viewModel.achievement.requirement.description)
             if let bonus = viewModel.achievement.bonusMessage {
                 Text(bonus)
@@ -55,13 +55,12 @@ extension AchievementDetailsView: View {
             viewModel: assembler.resolver.achievementDetailsViewModel(achievement: .items10)
         )
         .background(CardBackground())
-        
+
         AchievementDetailsView(
             viewModel: assembler.resolver.achievementDetailsViewModel(achievement: .items100)
         )
         .background(CardBackground())
     }
     .padding(16)
-    
-}
 
+}

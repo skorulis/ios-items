@@ -1,4 +1,4 @@
-//Created by Alexander Skorulis on 5/3/2026.
+// Created by Alexander Skorulis on 5/3/2026.
 
 import Foundation
 import Knit
@@ -70,13 +70,13 @@ extension DebugViewModel {
         resetConcepts()
         resetNotifications()
     }
-    
+
     func addItems() {
         for item in BaseItem.allCases {
             mainStore.warehouse.add(item: item, count: 1)
         }
     }
-    
+
     func addArtifacts() {
         for artifact in Artifact.allCases {
             if let existing = mainStore.warehouse.artifactInstance(artifact),
@@ -92,4 +92,3 @@ extension DebugViewModel {
         toastService.showToast("Debug toast\n\(UUID().uuidString)")
     }
 }
-

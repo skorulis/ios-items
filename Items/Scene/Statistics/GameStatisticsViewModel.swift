@@ -1,4 +1,4 @@
-//Created for game statistics screen.
+// Created for game statistics screen.
 
 import ASKCoordinator
 import Combine
@@ -56,7 +56,7 @@ final class GameStatisticsViewModel: ObservableObject, CoordinatorViewModel {
             ("Multiple item creations", formatCount(statistics.multipleItemCreations)),
             ("Items sacrificed", formatCount(statistics.itemsSacrificed)),
             ("Number of items discovered", formatCount(Int64(itemsDiscoveredCount))),
-            ("Number of achievements unlocked", formatCount(Int64(achievementsUnlockedCount))),
+            ("Number of achievements unlocked", formatCount(Int64(achievementsUnlockedCount)))
         ]
         if isResearchUnlocked {
             rows.append(("Total levels of research", formatCount(Int64(lab.totalLevels))))

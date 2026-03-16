@@ -8,11 +8,11 @@ public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable, 
     case artifacts5
 
     case common1
-    
+
     case doubleItems10
     case doubleItems100
     case doubleItems1000
-    
+
     case items1
     case items10
     case items100
@@ -20,17 +20,17 @@ public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable, 
 
     case essence1
     case allEssences
-    
+
     case research1
     case research10
     case research100
 
     case researchLevel5
     case researchLevel10
-    
+
     case sacrificed1
     case sacrificed1000
-    
+
     case upgrade1
     case upgrade5
 

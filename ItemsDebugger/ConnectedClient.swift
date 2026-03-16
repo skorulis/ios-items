@@ -1,4 +1,4 @@
-//Created by Alexander Skorulis on 10/3/2026.
+// Created by Alexander Skorulis on 10/3/2026.
 
 import Foundation
 import Models
@@ -47,7 +47,7 @@ final class ConnectedClient: @unchecked Sendable {
         defer { lock.unlock() }
         return _cache
     }
-    
+
     func send(request payload: ItemsClientRequest.Payload) async -> (ItemsClientResponse.Payload, CacheDiff)? {
         guard let result = await _send(request: payload) else {
             return nil
@@ -58,7 +58,7 @@ final class ConnectedClient: @unchecked Sendable {
         let diff = await checkCacheDiff()
         return (result, diff)
     }
-    
+
     private func checkCacheDiff() async -> CacheDiff {
         let oldLinks = cache.links
         let oldUnlocked = cache.achievementsUnlocked
@@ -117,7 +117,7 @@ final class ConnectedClient: @unchecked Sendable {
         let request = ItemsClientRequest(payload: payload)
         let encoder = JSONEncoder()
         encoder.outputFormatting = .sortedKeys
-        
+
         guard let data = try? encoder.encode(request) else {
             return nil
         }

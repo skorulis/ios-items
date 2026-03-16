@@ -3,7 +3,7 @@ import SwiftUI
 struct CapsuleButtonStyle: ButtonStyle {
     var foreground: Color = .white
     var background: Color = .accentColor
-    var pressedBackground: Color? = nil
+    var pressedBackground: Color?
     var padding: EdgeInsets = EdgeInsets(top: 10, leading: 18, bottom: 10, trailing: 18)
     var shadow: Color = .black.opacity(0.15)
 

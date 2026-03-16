@@ -1,4 +1,4 @@
-//Created by Alexander Skorulis on 11/3/2026.
+// Created by Alexander Skorulis on 11/3/2026.
 
 import ASKCoordinator
 import Foundation
@@ -23,7 +23,7 @@ import SwiftUI
         )
         /// Slots with index < this value are interactive; others show as locked until portal upgrades add sacrifice slots.
         var unlockedSlotCount: Int = SacrificeConfig.slotCount
-        
+
         var centralColors: [Color] {
             consumptionPlan.essences.map { $0.color }
         }
@@ -107,7 +107,6 @@ extension SacrificeView: View {
                     .stroke(pentagramColor, lineWidth: 8)
                 PentagramShape()
                     .stroke(pentagramColor, lineWidth: 8)
-                
 
                 ForEach(0..<SacrificeConfig.slotCount, id: \.self) { index in
                     slotView(index: index)
@@ -125,7 +124,7 @@ extension SacrificeView: View {
         }
         .padding()
     }
-    
+
     @ViewBuilder
     private func innerCircle(radius: CGFloat, center: CGPoint) -> some View {
         if viewModel.model.sacrificesEnabled, viewModel.model.centralColors.count > 0 {

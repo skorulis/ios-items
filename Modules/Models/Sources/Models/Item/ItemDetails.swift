@@ -6,13 +6,13 @@ public struct ItemDetails: Codable, Equatable {
     public let item: BaseItem
     public let doubleChance: String
     public let researchLevel: Int?
-    
+
     /// Essences for the item. Undiscovered essences will be nil
     public let essences: [Essence?]
-    
+
     // Number of items needed for the next level of research
     public let researchCost: Int?
-    
+
     public init(
         item: BaseItem,
         doubleChance: String,

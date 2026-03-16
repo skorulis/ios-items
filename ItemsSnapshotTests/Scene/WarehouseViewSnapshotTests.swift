@@ -15,7 +15,7 @@ struct WarehouseViewSnapshotTests {
         let assembler = ItemsAssembly.testing()
         let viewModel = assembler.resolver.warehouseViewModel()
         let view = WarehouseView(viewModel: viewModel)
-        
+
         let mainStore = assembler.resolver.mainStore()
         mainStore.warehouse.add(item: .apple, count: 1)
 
@@ -59,4 +59,3 @@ struct WarehouseViewSnapshotTests {
         assertSnapshot(of: view, as: .image(on: .iPhoneSe))
     }
 }
-

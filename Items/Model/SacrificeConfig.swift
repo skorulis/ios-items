@@ -1,11 +1,11 @@
-//Created by Alexander Skorulis on 11/3/2026.
+// Created by Alexander Skorulis on 11/3/2026.
 
 import Foundation
 import Models
 
 /// Fixed five slots for sacrifice layout (pentagram vertices). Slot index 0 = top, then clockwise.
 struct SacrificeConfig: Codable, Equatable {
-    
+
     static let slotCount: Int = 5
 
     /// Exactly `slotCount` elements; `nil` means empty slot.

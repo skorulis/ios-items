@@ -39,4 +39,3 @@ import SwiftUI
         return "\(currentQuantity)/\(costItem.quantity)"
     }
 }
-

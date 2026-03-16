@@ -1,4 +1,4 @@
-//Created by Alexander Skorulis on 11/2/2026.
+// Created by Alexander Skorulis on 11/2/2026.
 
 import ASKCoordinator
 import ASKCore
@@ -10,17 +10,17 @@ import Models
 import SwiftUI
 
 @Observable final class CreationViewModel: CoordinatorViewModel {
-    
+
     private var makeTimer: Timer?
-    
+
     var model = CreationView.Model()
     weak var coordinator: ASKCoordinator.Coordinator?
-    
+
     @ObservationIgnored var upgradeButtonFrame: CGRect = .zero
     @ObservationIgnored var researchButtonFrame: CGRect = .zero
     @ObservationIgnored var sacrificesButtonFrame: CGRect = .zero
     @ObservationIgnored var mapLocationButtonFrame: CGRect = .zero
-    
+
     var automateCreation: Bool = false {
         didSet {
             mainStore.offlineState = OfflineState(
@@ -37,7 +37,7 @@ import SwiftUI
 
     /// Unique id for the current countdown. Changes each time the timer restarts so the progress view can reset and re-animate.
     private(set) var autoTimerProgress: TimerProgressView.Model?
-    
+
     private let itemGeneratorService: ItemGeneratorService
     private let calculations: CalculationsService
     private let mainStore: MainStore
@@ -45,7 +45,7 @@ import SwiftUI
     private let recipeService: RecipeService
     private let warehouseService: WarehouseService
     private var cancellables: Set<AnyCancellable> = []
-    
+
     @Resolvable<BaseResolver>
     init(
         itemGeneratorService: ItemGeneratorService,
@@ -61,7 +61,7 @@ import SwiftUI
         self.calculations = calculations
         self.upgradeService = upgradeService
         self.warehouseService = warehouseService
-        
+
         self.model.automationUnlocked = mainStore.portalUpgrades.purchased.contains(.portalAutomation)
         self.model.sacrificesUnlocked = mainStore.portalUpgrades.purchased.contains(.sacrifices)
         self.model.mapLocationsUnlocked = mainStore.portalUpgrades.purchased.contains(.mapLocations)
@@ -76,7 +76,7 @@ import SwiftUI
             self.model.sacrificePlan = plan
         }
         .store(in: &cancellables)
-        
+
         upgradeService.$purchasableUpgrades.sink { [unowned self] newValue in
             self.model.upgradesBadgeCount = newValue.count
         }
@@ -104,7 +104,7 @@ import SwiftUI
             self.model.researchBadgeCount = $0.newResearchLevels
         }
         .store(in: &cancellables)
-        
+
         calculations.$maxArtifactSlots.sink { [unowned self] in
             self.model.maxArtifacts = $0
         }
@@ -129,7 +129,7 @@ import SwiftUI
     private func startMakeTimer() {
         stopMakeTimer()
         let time = calculations.autoCreationMilliseconds / 1000
-        
+
         autoTimerProgress = .init(id: UUID(), duration: time)
         makeTimer = Timer.scheduledTimer(withTimeInterval: time, repeats: false) { [weak self] _ in
             Task { @MainActor in
@@ -152,7 +152,7 @@ import SwiftUI
 // MARK: - Logic
 
 extension CreationViewModel {
-    
+
     func make() async {
         if model.creationInProgress != nil { return }
         let plan = recipeService.sacrificePlan
@@ -169,7 +169,7 @@ extension CreationViewModel {
         self.model.createdItem = itemGeneratorService.makeAndStore(plan: plan)
         mainStore.offlineState.updateBackgroundedTime()
     }
-    
+
     func showRecipes() {
         let path = CircularAnimationPath(sourceRect: sacrificesButtonFrame, mainPath: .sacrifices)
         coordinator?.custom(overlay: .circularReveal, path)
@@ -183,7 +183,7 @@ extension CreationViewModel {
         let path = CircularAnimationPath(sourceRect: upgradeButtonFrame, mainPath: .portalUpgrades)
         coordinator?.custom(overlay: .circularReveal, path)
     }
-    
+
     func showDetails(item: BaseItem) {
         coordinator?.custom(overlay: .card, MainPath.itemDetails(item))
     }

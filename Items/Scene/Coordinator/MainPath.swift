@@ -1,4 +1,4 @@
-//Created by Alexander Skorulis on 11/2/2026.
+// Created by Alexander Skorulis on 11/2/2026.
 
 import ASKCoordinator
 import Foundation
@@ -7,10 +7,10 @@ import Models
 import SwiftUI
 
 enum MainPath: CoordinatorPath {
-    
+
     // Root content
     case content
-    
+
     case creation
     case warehouse
     case sacrifices
@@ -21,7 +21,7 @@ enum MainPath: CoordinatorPath {
     case encyclopediaEntry(EncyclopediaEntry)
     case gameStatistics
     case mapLocations
-    
+
     case itemDetails(BaseItem)
     case artifactDetails(ArtifactInstance)
     case artifactPicker(slot: Int)
@@ -30,10 +30,10 @@ enum MainPath: CoordinatorPath {
 
     // Present a block of text
     case dialog(String)
-    
+
     // Toast at the bottom of the screen
     case toast(AnyView?, String, UUID)
-    
+
     public var id: String {
         switch self {
         case let .toast(_, _, toastID):
@@ -45,9 +45,9 @@ enum MainPath: CoordinatorPath {
 }
 
 struct MainPathRenderer: CoordinatorPathRenderer {
-    
+
     let resolver: BaseResolver
-    
+
     @ViewBuilder
     func render(path: MainPath, in coordinator: Coordinator) -> some View {
         switch path {

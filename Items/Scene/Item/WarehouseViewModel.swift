@@ -1,4 +1,4 @@
-//Created by Alexander Skorulis on 11/2/2026.
+// Created by Alexander Skorulis on 11/2/2026.
 
 import ASKCoordinator
 import Combine
@@ -16,7 +16,7 @@ import SwiftUI
     private let calculationService: CalculationsService
     private(set) var warehouse: Warehouse
     private(set) var lab: Laboratory
-    
+
     var page: Page = .items {
         didSet {
             clearNew()
@@ -51,7 +51,7 @@ import SwiftUI
             self.model.showArtifactsTab = $0.unlocked.contains(.artifact1)
         }
         .store(in: &cancellables)
-        
+
         calculationService.$maxArtifactSlots.sink { [unowned self] in
             self.model.maxArtifactSlots = $0
         }
@@ -78,7 +78,7 @@ extension WarehouseViewModel {
 
         clearNew()
     }
-    
+
     private func clearNew() {
         switch self.page {
         case .artifacts:
@@ -103,7 +103,7 @@ extension WarehouseViewModel {
     func showEssenceBreakdown() {
         coordinator?.push(MainPath.essenceBreakdown)
     }
-    
+
     func artifactSlotPresed(index: Int) {
         coordinator?.custom(overlay: .card, MainPath.artifactPicker(slot: index))
     }

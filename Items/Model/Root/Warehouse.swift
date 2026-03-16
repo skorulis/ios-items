@@ -1,4 +1,4 @@
-//Created by Alexander Skorulis on 10/2/2026.
+// Created by Alexander Skorulis on 10/2/2026.
 
 import Foundation
 import Models
@@ -6,10 +6,10 @@ import Models
 struct Warehouse: Codable {
     // Current item storage
     private var current: [BaseItem: Int] = [:]
-    
+
     // Discovered artifacts
     private var artifacts: [Artifact: ItemQuality] = [:]
-    
+
     // Total items that have been found
     private var total: [BaseItem: Int] = [:]
 
@@ -19,7 +19,7 @@ struct Warehouse: Codable {
     func isNewDiscovery(item: BaseItem) -> Bool {
         return (total[item] ?? 0) == 0
     }
-    
+
     func isNewDiscovery(artifact: ArtifactInstance) -> Bool {
         if let existing = artifacts[artifact.type] {
             return artifact.quality > existing
@@ -27,7 +27,7 @@ struct Warehouse: Codable {
             return true
         }
     }
-    
+
     mutating func add(item: BaseItem, count: Int = 1) {
         current[item, default: 0] += count
         total[item, default: 0] += count
@@ -37,46 +37,46 @@ struct Warehouse: Codable {
         let quality = artifacts[artifact.type, default: .junk]
         artifacts[artifact.type] = max(quality, artifact.quality)
     }
-    
+
     mutating func remove(item: BaseItem, quantity: Int = 1) {
         let count = current[item] ?? 0
         current[item] = count - quantity
     }
-    
+
     func quantity(_ item: BaseItem) -> Int {
         return current[item] ?? 0
     }
-    
+
     func artifactInstance(_ artifact: Artifact) -> ArtifactInstance? {
         return quality(artifact).map { .init(type: artifact, quality: $0) }
     }
-    
+
     func has(artifact: ArtifactInstance) -> Bool {
         guard let quality = artifacts[artifact.type] else {
             return false
         }
         return quality >= artifact.quality
     }
-    
+
     func quality(_ artifact: Artifact) -> ItemQuality? {
         return artifacts[artifact]
     }
-    
+
     func nextArtifactQuality(artifact: Artifact) -> ItemQuality? {
         guard let current = quality(artifact) else {
             return .junk
         }
         return current.next
     }
-    
+
     func hasDiscovered(_ item: BaseItem) -> Bool {
         return total[item] != nil
     }
-    
+
     var totalItemsCollected: Int {
         return total.reduce(0) { $0 + $1.value }
     }
-    
+
     func totalItemsCollected(_ predicate: (BaseItem) -> Bool) -> Int {
         return total
             .filter { predicate($0.key) }
@@ -122,7 +122,7 @@ struct Warehouse: Codable {
         else { return nil }
         return .init(type: type, quality: quality)
     }
-    
+
     var artifactBonuses: [Bonus] {
         equippedArtifacts.compactMap { equippedArtifact($0)?.bonus }
     }

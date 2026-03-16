@@ -1,4 +1,4 @@
-//Created by Alexander Skorulis on 11/3/2026.
+// Created by Alexander Skorulis on 11/3/2026.
 
 import Foundation
 import Models
@@ -14,7 +14,7 @@ struct SacrificesButton {
     static let size: CGFloat = 44
 
     private let model: Model
-    
+
     init(model: Model) {
         self.model = model
     }
@@ -33,7 +33,7 @@ extension SacrificesButton {
 // MARK: - Rendering
 
 extension SacrificesButton: View {
-    
+
     var body: some View {
         Button(action: model.action) {
             ZStack {

@@ -1,4 +1,4 @@
-//Created by Alexander Skorulis on 5/3/2026.
+// Created by Alexander Skorulis on 5/3/2026.
 
 import ASKCore
 import Combine
@@ -26,7 +26,7 @@ final class UpgradeService: ObservableObject {
             .delayedChange()
             .sink { [unowned self] _ in self.updatePurchasableUpgrades() }
             .store(in: &cancellables)
-        
+
     }
 }
 
@@ -42,7 +42,7 @@ extension UpgradeService {
                 && isUnlocked(upgrade)
                 && canPurchase(upgrade)
         }
-        
+
         if newValue != purchasableUpgrades {
             purchasableUpgrades = newValue
         }

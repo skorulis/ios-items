@@ -1,4 +1,4 @@
-//Created for game statistics screen.
+// Created for game statistics screen.
 
 import ASKCoordinator
 import Knit

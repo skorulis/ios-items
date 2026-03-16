@@ -1,4 +1,4 @@
-//Created by Alexander Skorulis on 13/2/2026.
+// Created by Alexander Skorulis on 13/2/2026.
 
 import ASKCoordinator
 import Combine
@@ -10,32 +10,32 @@ import SwiftUI
 
 @Observable final class ResearchViewModel: CoordinatorViewModel {
     weak var coordinator: ASKCoordinator.Coordinator?
-    
+
     private(set) var warehouse: Warehouse
     private(set) var lab: Laboratory
     private let mainStore: MainStore
     var showingPicker: Bool = false
-    
+
     /// Updated by timer for smooth progress bar; used when computing progress.
     var now: Date = Date()
-    
+
     private let researchService: ResearchService
     private var cancellables: Set<AnyCancellable> = []
     private var timer: Timer?
-    
+
     @Resolvable<BaseResolver>
     init(mainStore: MainStore, researchService: ResearchService) {
         self.researchService = researchService
         self.mainStore = mainStore
-        
+
         self.warehouse = mainStore.warehouse
         self.lab = mainStore.lab
-        
+
         mainStore.$warehouse.sink { [unowned self] in
             self.warehouse = $0
         }
         .store(in: &cancellables)
-        
+
         mainStore.$lab.sink { [unowned self] in
             self.lab = $0
         }
@@ -54,18 +54,18 @@ import SwiftUI
 // MARK: - Logic
 
 extension ResearchViewModel {
-    
+
     func selectAndBeginResearch(item: BaseItem) {
         researchService.startResearch(to: item, now: Date())
     }
-    
+
     func rushCurrentResearch() {
         guard let item = lab.currentResearch?.item else { return }
         let now = Date()
         self.now = now
         try? researchService.rushResearch(to: item, useBooks: false, now: now)
     }
-    
+
     func viewItemDetails() {
         guard let selectedItem = lab.currentResearch?.item else { return }
         coordinator?.custom(overlay: .card, MainPath.itemDetails(selectedItem))
@@ -74,27 +74,27 @@ extension ResearchViewModel {
     func showHelp() {
         coordinator?.custom(overlay: .card, MainPath.dialog(HelpStrings.research))
     }
-    
+
     var currentLevel: Int {
         guard let selectedItem = lab.currentResearch?.item else { return 0 }
         return lab.currentLevel(item: selectedItem)
     }
-    
+
     var totalSeconds: TimeInterval {
         guard let selectedItem = lab.currentResearch?.item else { return 0 }
         return researchService.progressFor(item: selectedItem, now: now).total
     }
-    
+
     var completedSeconds: TimeInterval {
         guard let selectedItem = lab.currentResearch?.item else { return 0 }
         return researchService.progressFor(item: selectedItem, now: now).completed
     }
-    
+
     var rushCost: Int {
         guard let selectedItem = lab.currentResearch?.item else { return 0 }
         return researchService.rushCost(for: selectedItem, now: now)
     }
-    
+
     var canRush: Bool {
         guard let selectedItem = lab.currentResearch?.item else { return false }
         let cost = rushCost
@@ -132,12 +132,12 @@ extension ResearchViewModel {
         let multiplier = 1.0 + Double(researchBoostPercent) / 100.0
         return max(0.25, 1.0 / multiplier)
     }
-    
+
     func startTimer() {
         guard timer == nil else { return }
         scheduleTimer()
     }
-    
+
     private func scheduleTimer() {
         timer = Timer.scheduledTimer(withTimeInterval: timerInterval, repeats: false) { [weak self] _ in
             guard let self else { return }
@@ -150,23 +150,23 @@ extension ResearchViewModel {
         }
         RunLoop.main.add(timer!, forMode: .common)
     }
-    
+
     func updateResearchProgress() {
         self.now = Date()
         self.researchService.updateResearchProgress(now: self.now)
     }
-    
+
     func stopTimer() {
         timer?.invalidate()
         timer = nil
     }
-    
+
     func onAppear() {
         startTimer()
         updateResearchProgress()
         mainStore.notifications.clearNewResearchLevel()
     }
-    
+
     func onDisappear() {
         stopTimer()
         mainStore.notifications.clearNewResearchLevel()

@@ -13,7 +13,7 @@ public struct ItemsClientResponse: Codable {
         self.id = id
         self.payload = payload
     }
-    
+
     // The actual response type sent over the wire
     public enum Payload: Codable {
         case items([BaseItem: ItemWithDetails])
@@ -30,7 +30,7 @@ public struct ItemsClientResponse: Codable {
 public struct ItemWithDetails: Codable {
     public let count: Int
     public let details: ItemDetails
-    
+
     public init(count: Int, details: ItemDetails) {
         self.count = count
         self.details = details

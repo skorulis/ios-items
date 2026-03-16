@@ -1,4 +1,4 @@
-//Created by Alexander Skorulis on 15/2/2026.
+// Created by Alexander Skorulis on 15/2/2026.
 
 import Foundation
 import Models
@@ -14,7 +14,7 @@ import SwiftUI
 // MARK: - Rendering
 
 extension SegmentedResearchBar: View {
-    
+
     var body: some View {
         HStack(spacing: 8) {
             ForEach(0..<research.sections.count, id: \.self) { index in
@@ -22,12 +22,12 @@ extension SegmentedResearchBar: View {
             }
         }
     }
-    
+
     private func bar(index: Int, section: ResearchSection) -> some View {
         ZStack {
             Capsule()
                 .fill(fillColor(index: index, section: section))
-                
+
             icon(index: index, section: section)
                 .resizable()
                 .foregroundStyle(iconColor(index: index, section: section))
@@ -35,7 +35,7 @@ extension SegmentedResearchBar: View {
         }
         .frame(height: 24)
     }
-    
+
     private func fillColor(index: Int, section: ResearchSection) -> Color {
         if index >= level {
             return Color.gray
@@ -43,7 +43,7 @@ extension SegmentedResearchBar: View {
             return Color.blue
         }
     }
-    
+
     private func iconColor(index: Int, section: ResearchSection) -> Color {
         if index >= level {
             return Color.white
@@ -51,7 +51,7 @@ extension SegmentedResearchBar: View {
             return section.iconColor
         }
     }
-    
+
     private func icon(index: Int, section: ResearchSection) -> Image {
         let unlocked = level > index
         switch section {
@@ -64,7 +64,7 @@ extension SegmentedResearchBar: View {
         case .infinity:
             return Image(systemName: "infinity.circle.fill")
         }
-        
+
     }
 }
 
@@ -75,11 +75,11 @@ extension SegmentedResearchBar: View {
         SegmentedResearchBar(
             research: BaseItem.apple.availableResearch, level: 0
         )
-        
+
         SegmentedResearchBar(
             research: BaseItem.apple.availableResearch, level: 2
         )
     }
     .padding(16)
-    
+
 }

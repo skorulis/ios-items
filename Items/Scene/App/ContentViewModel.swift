@@ -1,4 +1,4 @@
-//Created by Alexander Skorulis on 10/2/2026.
+// Created by Alexander Skorulis on 10/2/2026.
 
 import Combine
 import Foundation
@@ -8,7 +8,7 @@ import KnitMacros
 import SwiftUI
 
 @Observable final class ContentViewModel {
-    
+
     var model: ContentView.Model = .init()
 
     private let mainStore: MainStore
@@ -17,7 +17,7 @@ import SwiftUI
     private let offlineCreationService: OfflineCreationService
     private let toastService: ToastService
     private var cancellables: Set<AnyCancellable> = []
-    
+
     @Resolvable<BaseResolver>
     init(
         mainStore: MainStore,
@@ -31,7 +31,7 @@ import SwiftUI
         self.researchService = researchService
         self.offlineCreationService = offlineCreationService
         self.toastService = toastService
-        
+
         mainStore.$achievements.sink { achievements in
             self.model.showingAchievements = achievements.unlocked.count > 0
             self.model.showingEncyclopedia = achievements.unlocked.count > 0
@@ -50,7 +50,7 @@ import SwiftUI
 // MARK: - Logic
 
 extension ContentViewModel {
-    
+
     /// Apply any research progress and offline creations that accrued while the app was backgrounded or closed.
     func onAppear() {
         researchService.startProgressCheckTimer()

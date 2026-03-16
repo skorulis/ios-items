@@ -35,12 +35,12 @@ public enum MapLocation: String, CaseIterable, Identifiable, Hashable, Codable {
                     .wealth: 1.5,
                     .knowledge: 1.1,
                     .dark: 0,
-                    .earth: 0,
+                    .earth: 0
                 ],
                 uniqueItems: [.merchantSigil],
                 cost: [
                     UpgradeCostItem(item: .mapFragment, quantity: 1),
-                    UpgradeCostItem(item: .silverFlorin, quantity: 1),
+                    UpgradeCostItem(item: .silverFlorin, quantity: 1)
                 ]
             )
         }
@@ -70,4 +70,3 @@ public struct LocationDetails: Codable, Hashable {
         essenceMultipliers[essence] ?? 1.0
     }
 }
-

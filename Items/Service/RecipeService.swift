@@ -1,4 +1,4 @@
-//Created by Alexander Skorulis on 13/2/2026.
+// Created by Alexander Skorulis on 13/2/2026.
 
 import Combine
 import Foundation
@@ -108,7 +108,7 @@ final class RecipeService: ObservableObject {
         let essences = consumedItems.flatMap { item in
             item.availableResearch.unlockedEssences(level: lab.currentLevel(item: item))
         }
-        
+
         var essenceMultipliers: [Essence: Double] = [:]
         for essence in essences {
             let value = essenceMultipliers[essence] ?? 1.0

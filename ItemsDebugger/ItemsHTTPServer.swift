@@ -1,40 +1,40 @@
-//Created by Alexander Skorulis on 9/3/2026.
+// Created by Alexander Skorulis on 9/3/2026.
 
 import Models
 import Foundation
 import Vapor
 
 final class ItemsHTTPServer {
-    
+
     let clients: ConnectedClient
-    
+
     init(clients: ConnectedClient) {
         self.clients = clients
     }
-    
+
     func run(app: Application, ) {
-        
+
         // Get the available actions that the client can perform
         app.get("actions") { _ async throws -> Response in
             let payload = try await self.getResponse(request: .getActions)
             return try Self.makeResponse(payload: payload)
         }
-        
+
         app.post("make") { _ async throws -> Response in
             let payload = try await self.getResponse(request: .makeItem)
             return try Self.makeResponse(payload: payload)
         }
-        
+
         app.get("items") { _ async throws -> Response in
             let payload = try await self.getResponse(request: .getItems)
             return try Self.makeResponse(payload: payload)
         }
-        
+
         app.get("artifacts") { _ async throws -> Response in
             let payload = try await self.getResponse(request: .getArtifacts)
             return try Self.makeResponse(payload: payload)
         }
-        
+
         app.get("upgrades") { _ async throws -> Response in
             let payload = try await self.getResponse(request: .getUpgrades)
             return try Self.makeResponse(payload: payload)
@@ -69,14 +69,14 @@ final class ItemsHTTPServer {
             return try Self.makeResponse(payload: payload)
         }
     }
-    
+
     private func getResponse(request: ItemsClientRequest.Payload) async throws -> (ItemsClientResponse.Payload, CacheDiff) {
         guard let payload = await clients.send(request: request) else {
             throw Abort(.serviceUnavailable, reason: "No client connected or no response received")
         }
         return payload
     }
-    
+
     static func makeResponse(payload: (ItemsClientResponse.Payload, CacheDiff)) throws -> Response {
         let cache = payload.1
         let payload = payload.0
@@ -91,7 +91,7 @@ final class ItemsHTTPServer {
         headers.contentType = .json
         return Response(status: .ok, headers: headers, body: .init(data: data))
     }
-    
+
     static func convert(payload: ItemsClientResponse.Payload, diff: CacheDiff) -> Codable {
         switch payload {
         case let .items(items):
@@ -104,7 +104,7 @@ final class ItemsHTTPServer {
         case let .actions(actions, data):
             let actionLinks = actions.map { Link(action: $0) }
             let dataLinks = data.map { Link(data: $0) }
-            
+
             return HATEOAS(_links: dataLinks + actionLinks)
         case let .artifacts(artifacts):
             return Dictionary(uniqueKeysWithValues: artifacts.map { (artifact, quality) in
@@ -117,7 +117,7 @@ final class ItemsHTTPServer {
             return [
                 "purchased": upgrades.purchased.map { HTTPPortalUpgrade(upgrade: $0) },
                 "unlocked": upgrades.unlocked.map { HTTPPortalUpgrade(upgrade: $0) },
-                "affordable": upgrades.affordable.map { HTTPPortalUpgrade(upgrade: $0) },
+                "affordable": upgrades.affordable.map { HTTPPortalUpgrade(upgrade: $0) }
             ]
         case let .achievements(completed, incomplete):
             return [
@@ -128,7 +128,7 @@ final class ItemsHTTPServer {
                         currentProgress: $0.currentProgress,
                         total: $0.total,
                     )
-                },
+                }
             ]
         case .ok:
             return OkResponse(status: "ok", diff: diff)

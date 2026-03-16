@@ -45,7 +45,7 @@ private extension ArtifactSlotView {
     var slotCount: Int {
         max(1, slots.count)
     }
-    
+
     var ringRadius: CGFloat {
         size.avatarSize.diameter * 0.8
     }
@@ -100,10 +100,10 @@ extension ArtifactSlotView: View {
                 ZStack {
                     Circle()
                         .fill(Color.white)
-                    
+
                     Circle()
                         .stroke(.secondary, lineWidth: 2)
-                    
+
                     Image(systemName: "plus")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
@@ -126,7 +126,7 @@ extension ArtifactSlotView: View {
 
 #Preview("1 slot - empty") {
     ArtifactSlotView(slots: [nil], size: .large)
-        
+
 }
 
 #Preview("1 slot - filled") {
@@ -140,7 +140,7 @@ extension ArtifactSlotView: View {
     ArtifactSlotView(
         slots: [
             ArtifactInstance(type: .luckyCoin, quality: .common),
-            nil,
+            nil
         ],
         size: .large
     )
@@ -151,7 +151,7 @@ extension ArtifactSlotView: View {
         slots: [
             ArtifactInstance(type: .frictionlessGear, quality: .good),
             ArtifactInstance(type: .perfectLens, quality: .rare),
-            nil,
+            nil
         ],
         size: .small
     )

@@ -34,7 +34,7 @@ final class DebugConnectionService {
     @Resolvable<BaseResolver>
     init(clientRequestHandler: ClientRequestHandler) {
         self.clientRequestHandler = clientRequestHandler
-        
+
         // Attempt to reconnect
         self.connect()
     }

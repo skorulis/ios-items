@@ -7,18 +7,18 @@ import SwiftUI
 
 @main
 struct ItemsApp: App {
-    
+
     private let assembler: ScopedModuleAssembler<BaseResolver> = {
         let assembler = ScopedModuleAssembler<BaseResolver>(
             [
-                ItemsAssembly(purpose: .normal),
+                ItemsAssembly(purpose: .normal)
             ]
         )
         return assembler
     }()
-    
+
     @State var mainCoordinator = Coordinator(root: MainPath.content)
-    
+
     var body: some Scene {
         WindowGroup {
             CoordinatorView(coordinator: mainCoordinator, useNavigationStack: false)

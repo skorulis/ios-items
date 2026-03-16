@@ -105,7 +105,7 @@ public enum BaseItem: String, Hashable, Equatable, CaseIterable, Identifiable, C
             return [.earth, .wealth]
         case .merchantSigil:
             return [.wealth, .magic]
-            
+
         case .goldFlorin:
             return [.wealth]
         case .giantThorn:
@@ -153,7 +153,7 @@ public enum BaseItem: String, Hashable, Equatable, CaseIterable, Identifiable, C
             return false
         }
     }
-    
+
     public static var locationSpecificItems: [BaseItem] {
         allCases.filter { $0.locationSpecific }
     }
@@ -170,15 +170,15 @@ public enum BaseItem: String, Hashable, Equatable, CaseIterable, Identifiable, C
         case .copperFlorin:
             return [
                 "The base unit of currency in the realm of Vesprium",
-                "Coins are the primary item used to purchase portal upgrades",
+                "Coins are the primary item used to purchase portal upgrades"
             ]
         case .gear:
             return [
-                "A mechanical gear that forms part of a machine",
+                "A mechanical gear that forms part of a machine"
             ]
         case .hourglass:
             return [
-                "A simple means of keeping track of time",
+                "A simple means of keeping track of time"
             ]
         case .silverFlorin:
             return [
@@ -191,7 +191,7 @@ public enum BaseItem: String, Hashable, Equatable, CaseIterable, Identifiable, C
         case .potionFlask:
             return [
                 "A glass flask for mixing or storing potions",
-                "The glass is embued with a subtle magic that prevents the contents from losing potency over time",
+                "The glass is embued with a subtle magic that prevents the contents from losing potency over time"
             ]
         case .lens:
             return [
@@ -220,7 +220,7 @@ public enum BaseItem: String, Hashable, Equatable, CaseIterable, Identifiable, C
         case .jadeFigurine:
             return [
                 "Carved from green jade; it's a humanoid figure but it's impossible to tell what the subject was",
-                "There are a large number of the same figurine, perhaps this is a religions relic.",
+                "There are a large number of the same figurine, perhaps this is a religions relic."
             ]
         case .merchantSigil:
             return [
@@ -240,23 +240,23 @@ public enum BaseItem: String, Hashable, Equatable, CaseIterable, Identifiable, C
         case .whetstone:
             return [
                 "A flat stone for sharpening blades; every smith and soldier carries one.",
-                "Keeping an edge is the difference between a clean cut and a messy one.",
+                "Keeping an edge is the difference between a clean cut and a messy one."
             ]
         case .embuedChalk:
             return [
                 "It looks like regular chalk but it's warm to the touch. Using it to draw leaves a line that glows faintly.",
-                "Can be used to create wards or runes.",
+                "Can be used to create wards or runes."
             ]
         case .metalBloom:
             return [
                 "A flower with fine metal lines running through its petals and stem. Part bloom, part vein of ore.",
                 "It's hard to say whether the metal grows naturally or if the plant has been deliberately altered.",
-                "The petals don't wilt no matter how long since it has been picked",
+                "The petals don't wilt no matter how long since it has been picked"
             ]
         case .mapFragment:
             return [
                 "A torn piece of parchment or vellum showing part of a landscape or route.",
-                "Several fragments from the same map could be pieced together to reveal a path or location.",
+                "Several fragments from the same map could be pieced together to reveal a path or location."
             ]
         case .soulEmber:
             return [
@@ -266,17 +266,17 @@ public enum BaseItem: String, Hashable, Equatable, CaseIterable, Identifiable, C
         case .anchorStone:
             return [
                 "A small, smooth stone with a hole through the center.",
-                "Used to keep a steady position when dealing with portal forces",
+                "Used to keep a steady position when dealing with portal forces"
             ]
         case .waxSeal:
             return [
-                "A used seal from a letter or document. The message is gone; only the stamped wax remains.",
+                "A used seal from a letter or document. The message is gone; only the stamped wax remains."
             ]
         case .memorySeed:
             return [
                 "A seed that holds a memory, locked inside until it is grown.",
                 "Those who nurture it to bloom are said to receive the memory as a vision.",
-                "Once the plant has grown more seeds can be harvested to be either sold or grown again to revist the memory",
+                "Once the plant has grown more seeds can be harvested to be either sold or grown again to revist the memory"
             ]
         case .nullLantern:
             return [

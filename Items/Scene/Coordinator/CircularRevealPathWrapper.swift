@@ -69,7 +69,7 @@ struct CircularRevealPathWrapper<Content: View>: View {
     @Environment(\.dismissCustomOverlay) private var onDismiss
     @State private var revealProgress: CGFloat = 0
     @State private var isDismissing = false
-    
+
     var circularPathRect: CGRect {
         return (path as? CircularAnimationPath)?.sourceRect ?? .zero
     }

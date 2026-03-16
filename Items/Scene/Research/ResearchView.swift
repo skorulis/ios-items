@@ -1,4 +1,4 @@
-//Created by Alexander Skorulis on 13/2/2026.
+// Created by Alexander Skorulis on 13/2/2026.
 
 import ASKCoordinator
 import Foundation
@@ -16,7 +16,7 @@ import SwiftUI
 // MARK: - Rendering
 
 extension ResearchView: View {
-    
+
     var body: some View {
         PageLayout(
             titleBar: { titleBar},
@@ -36,7 +36,7 @@ extension ResearchView: View {
         .onAppear { viewModel.onAppear() }
         .onDisappear { viewModel.onDisappear() }
     }
-    
+
     private var content: some View {
         VStack {
             Spacer()
@@ -48,7 +48,7 @@ extension ResearchView: View {
             Spacer()
         }
     }
-    
+
     @ViewBuilder
     private var itemView: some View {
         if let item = viewModel.lab.currentResearch?.item {
@@ -62,7 +62,7 @@ extension ResearchView: View {
             .padding(.horizontal, 16)
         }
     }
-    
+
     private func textBlock(item: BaseItem) -> some View {
         VStack {
             Text("Level: \(viewModel.currentLevel)")
@@ -71,7 +71,7 @@ extension ResearchView: View {
             }
         }
     }
-    
+
     private func progressBar(item: BaseItem) -> some View {
         VStack(alignment: .leading, spacing: 12) {
             SegmentedResearchBar(
@@ -100,7 +100,7 @@ extension ResearchView: View {
             }
         }
     }
-    
+
     private var titleBar: some View {
         TitleBar(
             title: "Research",

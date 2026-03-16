@@ -111,15 +111,15 @@ struct ParticleCanvasView: View {
 
 #Preview {
     @Previewable @State var animationID = UUID()
-    
+
     ZStack(alignment: .bottom) {
         ParticleCanvasView()
             .id(animationID)
             .border(Color.red)
-        
+
         Button("Restart") {
             animationID = UUID()
         }
     }
-    
+
 }

@@ -9,7 +9,7 @@ struct MapLocations: Codable {
 
     /// Locations that have been unlocked by the player.
     var unlocked: Set<MapLocation> = [.vesprium]
-    
+
     var selected: MapLocation = .vesprium
 
     /// Whether a given location is unlocked.
@@ -17,4 +17,3 @@ struct MapLocations: Codable {
         unlocked.contains(location)
     }
 }
-

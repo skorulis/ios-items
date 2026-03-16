@@ -1,4 +1,4 @@
-//Created by Cursor on 3/3/2026.
+// Created by Cursor on 3/3/2026.
 
 import Foundation
 import Models
@@ -6,12 +6,12 @@ import SwiftUI
 
 @MainActor
 struct ResearchRushButton: View {
-    
+
     let item: BaseItem
     let cost: Int
     let isEnabled: Bool
     let action: () -> Void
-    
+
     var body: some View {
         Button(action: action) {
             VStack(alignment: .leading, spacing: 4) {
@@ -20,7 +20,7 @@ struct ResearchRushButton: View {
                         .imageScale(.medium)
                     Text("Rush")
                         .font(.headline)
-                    
+
                 }
                 costView
             }
@@ -34,7 +34,7 @@ struct ResearchRushButton: View {
         }
         .disabled(!isEnabled)
     }
-    
+
     private var costView: some View {
         HStack {
             AvatarView(
@@ -57,4 +57,3 @@ struct ResearchRushButton: View {
     .padding()
     .background(Color.white)
 }
-

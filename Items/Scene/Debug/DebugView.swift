@@ -1,4 +1,4 @@
-//Created by Alexander Skorulis on 5/3/2026.
+// Created by Alexander Skorulis on 5/3/2026.
 
 import Foundation
 import Knit
@@ -36,7 +36,7 @@ extension DebugView: View {
                 viewModel.addItems()
             }
             .buttonStyle(CapsuleButtonStyle())
-            
+
             Button("Add all artifacts") {
                 viewModel.addArtifacts()
             }
@@ -146,4 +146,3 @@ private struct DebuggerConnectionSection: View {
     let assembler = ItemsAssembly.testing()
     return DebugView(viewModel: assembler.resolver.debugViewModel())
 }
-

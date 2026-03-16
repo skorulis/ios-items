@@ -76,7 +76,7 @@ public enum Bonus {
         if case let .booksForResearch(quality) = self { return quality }
         return nil
     }
-    
+
     public var artifactDiscoveryPercent: Int {
         if case let .artifactDiscovery(int) = self { return int }
         return 0
@@ -103,7 +103,7 @@ public extension Array where Element == Bonus {
     var artifactSlots: Int {
         return self.map { $0.artifactSlotBoost }.reduce(0, +)
     }
-    
+
     var artifactDiscovery: Int {
         return self.map { $0.artifactDiscoveryPercent }.reduce(0, +)
     }

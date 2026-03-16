@@ -1,14 +1,14 @@
-//Created by Alexander Skorulis on 1/12/2025.
+// Created by Alexander Skorulis on 1/12/2025.
 
 import Foundation
 import SwiftUI
 
 public struct PageLayout<TitleBar: View, Content: View, Footer: View>: View {
-    
+
     private let titleBar: () -> TitleBar
     private let content: () -> Content
     private let footer: () -> Footer
-    
+
     public init(
         titleBar: @escaping () -> TitleBar,
         content: @escaping () -> Content,
@@ -18,7 +18,7 @@ public struct PageLayout<TitleBar: View, Content: View, Footer: View>: View {
         self.content = content
         self.footer = footer
     }
-    
+
     public var body: some View {
         VStack(spacing: 0) {
             titleBar()
@@ -35,4 +35,3 @@ public struct PageLayout<TitleBar: View, Content: View, Footer: View>: View {
         .navigationBarHidden(true)
     }
 }
-

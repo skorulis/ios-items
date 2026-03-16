@@ -1,4 +1,4 @@
-//Created by Alexander Skorulis on 3/3/2026.
+// Created by Alexander Skorulis on 3/3/2026.
 
 import Foundation
 import Knit
@@ -112,11 +112,11 @@ extension WarehouseService {
     func unequip(_ artifact: Artifact) {
         mainStore.warehouse.unequip(artifact)
     }
-    
+
     func details(item: BaseItem) -> ItemDetails {
         let fraction = calculationService.multipleItemChanceFraction(item: item)
         let multipleItemChance = String(format: "%.1f%%", fraction * 100)
-        
+
         let researchLevel: Int?
         let researchCost: Int?
         if unlockRequirementService.isComplete(requirement: .upgradePurchased(.researchLab)) {
@@ -126,12 +126,12 @@ extension WarehouseService {
             researchLevel = nil
             researchCost = nil
         }
-        
+
         let essences: [Essence?] = item.essences.enumerated().map { index, essence in
             guard let researchLevel else { return nil }
             return researchLevel > index ? essence : nil
         }
-        
+
         return ItemDetails(
             item: item,
             doubleChance: multipleItemChance,
@@ -141,4 +141,3 @@ extension WarehouseService {
         )
     }
 }
-

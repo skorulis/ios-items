@@ -1,4 +1,4 @@
-//Created by Alexander Skorulis on 14/2/2026.
+// Created by Alexander Skorulis on 14/2/2026.
 
 import Foundation
 import Knit
@@ -14,9 +14,9 @@ import SwiftUI
 // MARK: - Rendering
 
 extension ItemDetailsView: View {
-    
+
     var item: BaseItem { viewModel.model.item }
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             HStack(spacing: 4) {
@@ -28,7 +28,7 @@ extension ItemDetailsView: View {
             researchProgress
             Text("Multiple item chance: \(viewModel.model.details.doubleChance)")
             artifactSection
-            
+
             if let lore = combinedLore {
                 Text(lore)
             }
@@ -36,7 +36,7 @@ extension ItemDetailsView: View {
         .padding(16)
         .onAppear { viewModel.markItemViewed() }
     }
-    
+
     private var titleBar: some View {
         VStack(alignment: .leading, spacing: 0) {
             essences
@@ -44,7 +44,7 @@ extension ItemDetailsView: View {
                 .font(.title)
         }
     }
-    
+
     @ViewBuilder
     private var artifactSection: some View {
         if let artifact = viewModel.model.unlockedArtifact {
@@ -63,14 +63,14 @@ extension ItemDetailsView: View {
             }
         }
     }
-    
+
     @ViewBuilder
     private var researchProgress: some View {
         if let researchLevel = viewModel.model.details.researchLevel {
             Text("Research level: \(researchLevel)")
         }
     }
-    
+
     private var essences: some View {
         HStack {
             ForEach(Array(viewModel.model.details.essences.enumerated()), id: \.offset) { _, essence in
@@ -84,9 +84,9 @@ extension ItemDetailsView: View {
                 }
             }
         }
-        
+
     }
-    
+
     private var combinedLore: String? {
         // TODO: Only show discovered lore
         return item.lore.joined(separator: "\n")
@@ -99,7 +99,7 @@ extension ItemDetailsView {
         var lab: Laboratory
         var warehouse: Warehouse
         var details: ItemDetails
-        
+
         var unlockedArtifact: Artifact? {
             item.associatedArtifact
         }

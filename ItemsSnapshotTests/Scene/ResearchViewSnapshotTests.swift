@@ -11,7 +11,7 @@ import Testing
 struct ResearchViewSnapshotTests {
 
     let assembler = ItemsAssembly.testing()
-    
+
     @Test
     func research_empty_state() {
         let viewModel = assembler.resolver.researchViewModel()
@@ -43,4 +43,3 @@ struct ResearchViewSnapshotTests {
     }
 
 }
-

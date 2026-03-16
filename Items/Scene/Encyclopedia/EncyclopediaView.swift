@@ -1,4 +1,4 @@
-//Created by Alexander Skorulis on 21/2/2026.
+// Created by Alexander Skorulis on 21/2/2026.
 
 import Foundation
 import Knit
@@ -13,14 +13,14 @@ import SwiftUI
 // MARK: - Rendering
 
 extension EncyclopediaView: View {
-    
+
     var body: some View {
         PageLayout(
             titleBar: { titleBar },
             content: { content }
         )
     }
-    
+
     private var content: some View {
         VStack {
             Text(viewModel.entry.body)
@@ -28,7 +28,7 @@ extension EncyclopediaView: View {
         }
         .padding(.horizontal, 16)
     }
-    
+
     private var children: some View {
         ForEach(viewModel.entry.childItems, id: \.title) { entry in
             if viewModel.isUnlocked(entry: entry) {
@@ -36,10 +36,10 @@ extension EncyclopediaView: View {
             } else {
                 lockedCell
             }
-            
+
         }
     }
-    
+
     private var lockedCell: some View {
         HStack {
             Text("<Locked>")
@@ -47,7 +47,7 @@ extension EncyclopediaView: View {
             Spacer()
         }
     }
-    
+
     @ViewBuilder
     private func cell(entry: EncyclopediaEntry) -> some View {
         if let icon = entry.icon {
@@ -60,7 +60,7 @@ extension EncyclopediaView: View {
             }
         }
     }
-    
+
     private var titleBar: some View {
         TitleBar(
             title: viewModel.entry.title,
@@ -86,4 +86,3 @@ extension EncyclopediaView: View {
     let assembler = ItemsAssembly.testing()
     EncyclopediaView(viewModel: assembler.resolver.encyclopediaViewModel(entry: .root))
 }
-

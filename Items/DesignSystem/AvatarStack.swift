@@ -1,4 +1,4 @@
-//Created by Alexander Skorulis on 2/3/2026.
+// Created by Alexander Skorulis on 2/3/2026.
 
 import SwiftUI
 
@@ -43,18 +43,18 @@ extension AvatarView.Size {
             avatars: [
                 AvatarView(text: "AB", image: nil, border: .orange, size: .small),
                 AvatarView(text: "CD", image: nil, border: .blue, size: .small),
-                AvatarView(text: "EF", image: nil, border: .green, size: .small),
+                AvatarView(text: "EF", image: nil, border: .green, size: .small)
             ],
             size: .small,
         )
-        
+
         AvatarStack(
             avatars: [
                 AvatarView(text: "AB", image: nil, border: .orange, size: .large),
-                AvatarView(text: "CD", image: nil, border: .blue, size: .large),
+                AvatarView(text: "CD", image: nil, border: .blue, size: .large)
             ],
             size: .large,
         )
     }
-    
+
 }

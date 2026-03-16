@@ -1,4 +1,4 @@
-//Created by Alexander Skorulis on 11/2/2026.
+// Created by Alexander Skorulis on 11/2/2026.
 
 import Knit
 import Models
@@ -11,11 +11,11 @@ struct ArtifactsListView: View {
     let warehouse: Warehouse
     // Artifacts to show in the list
     var artifacts: [Artifact] = Artifact.allCases
-    var onArtifactPressed: ((ArtifactInstance) -> Void)? = nil
-    var isNew: ((Artifact) -> Bool)? = nil
+    var onArtifactPressed: ((ArtifactInstance) -> Void)?
+    var isNew: ((Artifact) -> Bool)?
 
     private let columns = [
-        GridItem(.adaptive(minimum: 80)),
+        GridItem(.adaptive(minimum: 80))
     ]
 
     var body: some View {

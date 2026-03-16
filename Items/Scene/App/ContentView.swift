@@ -15,7 +15,7 @@ struct ContentView {
     @State var achievementsCoordinator = Coordinator(root: MainPath.achievements)
     @State var tab5Coordinator = Coordinator(root: MainPath.encyclopediaEntry(.root))
     @State private var selectedTab: Int = 0
-    
+
     var model: Model { viewModel.model }
 }
 
@@ -33,7 +33,7 @@ extension ContentView {
 // MARK: - Rendering
 
 extension ContentView: View {
-    
+
     var body: some View {
         tabs
         .onAppear { viewModel.onAppear() }
@@ -45,11 +45,11 @@ extension ContentView: View {
             }
         }
     }
-    
+
     private var tabs: some View {
         TabView(selection: $selectedTab) {
             creationTab
-            
+
             if viewModel.model.showingWarehouse {
                 warehouseTab
             }
@@ -57,7 +57,7 @@ extension ContentView: View {
             if viewModel.model.showingAchievements {
                 achievementsTab
             }
-            
+
             if viewModel.model.showingEncyclopedia {
                 encyclopediaTab
             }
@@ -65,10 +65,10 @@ extension ContentView: View {
 #if DEBUG
             debugTab
 #endif
-            
+
         }
     }
-    
+
     private var creationTab: some View {
         CoordinatorView(coordinator: creationCoordinator)
             .withRenderers(resolver: resolver!)
@@ -77,7 +77,7 @@ extension ContentView: View {
             }
             .tag(0)
     }
-    
+
     private var warehouseTab: some View {
         CoordinatorView(coordinator: warehouseCoordinator)
             .withRenderers(resolver: resolver!)
@@ -87,7 +87,7 @@ extension ContentView: View {
             .tag(1)
             .badge(model.notifications.warehouseNewCount > 0 ? "\(model.notifications.warehouseNewCount)" : nil)
     }
-    
+
     private var achievementsTab: some View {
         CoordinatorView(coordinator: achievementsCoordinator)
             .withRenderers(resolver: resolver!)
@@ -116,7 +116,7 @@ extension ContentView: View {
             .tag(5)
     }
 #endif
-    
+
 }
 
 #Preview {
@@ -124,4 +124,3 @@ extension ContentView: View {
     ContentView(viewModel: assembler.resolver.contentViewModel())
         .environment(\.resolver, assembler.resolver)
 }
-

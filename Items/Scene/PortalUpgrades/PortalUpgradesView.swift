@@ -1,4 +1,4 @@
-//Created by Alexander Skorulis on 5/3/2026.
+// Created by Alexander Skorulis on 5/3/2026.
 
 import Foundation
 import Knit
@@ -15,7 +15,7 @@ import SwiftUI
 // MARK: - Rendering
 
 extension PortalUpgradesView: View {
-    
+
     var body: some View {
         PageLayout(
             titleBar: { titleBar },

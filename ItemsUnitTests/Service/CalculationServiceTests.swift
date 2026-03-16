@@ -1,4 +1,4 @@
-//Created by Alexander Skorulis on 2/3/2026.
+// Created by Alexander Skorulis on 2/3/2026.
 
 @testable import Items
 import Knit
@@ -20,13 +20,13 @@ struct CalculationServiceTests {
         #expect(calculationService.artifactChance(quality: .junk, researchLevel: 2).fraction == 0.08)
         #expect(calculationService.artifactChance(quality: .junk, researchLevel: 3).fraction == 0.16)
         #expect(calculationService.artifactChance(quality: .junk, researchLevel: 20).fraction == 1.0) // capped
-        
+
         #expect(calculationService.artifactChance(quality: .exceptional, researchLevel: 10).fraction == 0.02048)
     }
 
     @Test
     func artifactChance_respectsQualityMultiplier() {
-        expectApproximate(calculationService.artifactChance(quality: .common, researchLevel: 0).fraction,  0.004)
+        expectApproximate(calculationService.artifactChance(quality: .common, researchLevel: 0).fraction, 0.004)
         expectApproximate(calculationService.artifactChance(quality: .good, researchLevel: 0).fraction, 0.001)
         expectApproximate(calculationService.artifactChance(quality: .exceptional, researchLevel: 0).fraction, 2e-5)
     }
@@ -57,9 +57,9 @@ struct CalculationServiceTests {
     func artifactChance_withEquippedEssenceFlask_addsBoostByQuality() {
         mainStore.warehouse.add(artifact: ArtifactInstance(type: .essenceFlask, quality: .common))
         mainStore.warehouse.equip(.essenceFlask, slot: 0)
-        
+
         #expect(calculationService.artifactChance(quality: .junk, researchLevel: 0).fraction == 0.03)
-        
+
     }
 
     @Test
@@ -73,4 +73,3 @@ struct CalculationServiceTests {
         }
     }
 }
-

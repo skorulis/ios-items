@@ -1,4 +1,4 @@
-//Created by Alexander Skorulis on 11/2/2026.
+// Created by Alexander Skorulis on 11/2/2026.
 
 import Foundation
 import Knit
@@ -14,12 +14,12 @@ import SwiftUI
         let id: UUID
         let duration: TimeInterval
         let sacrificedItems: [BaseItem]
-        
+
         var creationColors: [Color] {
             let fromSacrfice = sacrificedItems
                 .flatMap { $0.essences }
                 .map { $0.color }
-            
+
             if fromSacrfice.isEmpty {
                 return Essence.allCases.map { $0.color }
             } else {
@@ -36,7 +36,7 @@ import SwiftUI
 
         var warehouse: Warehouse = Warehouse()
         var achievements: Achievements = Achievements()
-        
+
         var recipesAvailable: Bool { achievements.unlocked.contains(.items10) }
         var upgradesAvailable: Bool { achievements.unlocked.contains(.items10) }
 
@@ -60,7 +60,7 @@ import SwiftUI
         var mapLocationsUnlocked: Bool = false
         var researchBadgeCount: Int = 0
         var upgradesBadgeCount: Int = 0
-        
+
         var maxArtifacts: Int = 0
         var artifactSlots: [ArtifactInstance?] {
             warehouse.equippedSlotsContents(upToSlotCount: maxArtifacts)
@@ -76,7 +76,7 @@ import SwiftUI
 // MARK: - Rendering
 
 extension CreationView: View {
-    
+
     var body: some View {
         ZStack {
             PortalView(
@@ -107,11 +107,11 @@ extension CreationView: View {
                 makeButtonRow
             }
             .padding()
-            
+
         }
         .coordinateSpace(name: "creation")
     }
-    
+
     private var upgradesButton: PortalView.ButtonOrProgress? {
         if viewModel.model.items10UnlockProgress == 0 {
             return nil
@@ -126,7 +126,7 @@ extension CreationView: View {
             )
             : .progress(viewModel.model.items10UnlockProgress)
     }
-    
+
     private var artifactSlotView: ArtifactSlotView? {
         guard viewModel.model.artifactSlots.count > 0 else { return nil }
         return ArtifactSlotView(
@@ -146,14 +146,14 @@ extension CreationView: View {
             .padding(.top, 48)
         }
     }
-    
+
     private var dimensionalPortalBackground: some View {
         Asset.Creation.dimensionalPortal.swiftUIImage
             .resizable()
             .scaledToFit()
             .frame(maxWidth: 280, maxHeight: 280)
     }
-    
+
     private var sacrificesButton: SacrificesButton.Model? {
         guard viewModel.model.sacrificesUnlocked else {
             return nil
@@ -164,7 +164,7 @@ extension CreationView: View {
             action: viewModel.showRecipes,
         )
     }
-    
+
     @ViewBuilder
     private var maybeCreationAnimation: some View {
         if let creation = viewModel.model.creationInProgress {
@@ -205,7 +205,7 @@ extension CreationView: View {
             EmptyView()
         }
     }
-    
+
     @ViewBuilder
     private func createdItem(item: MakeItemResult) -> some View {
         switch item {
@@ -220,7 +220,7 @@ extension CreationView: View {
             ArtifactView(artifact: instance)
         }
     }
-    
+
     private var makeButtonRow: some View {
         HStack(spacing: 12) {
             autoCreationButton
@@ -240,7 +240,7 @@ extension CreationView: View {
         .buttonStyle(.plain)
         .opacity(viewModel.model.automationUnlocked ? 1 : 0)
     }
-    
+
     private var planButton: some View {
         Button(action: viewModel.showCurrentRecipeDetail) {
             Image(systemName: "info.circle")
@@ -249,7 +249,7 @@ extension CreationView: View {
         .buttonStyle(.plain)
         .opacity(viewModel.model.firstItem ? 0 : 1)
     }
-    
+
     private var createButton: some View {
         CreateButtonWithTimerBorder(
             timer: viewModel.model.automationUnlocked && viewModel.automateCreation
@@ -275,4 +275,3 @@ extension CreationView: View {
     let assembler = ItemsAssembly.testing()
     CreationView(viewModel: assembler.resolver.creationViewModel())
 }
-

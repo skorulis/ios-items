@@ -1,4 +1,4 @@
-//Created by Alexander Skorulis on 11/2/2026.
+// Created by Alexander Skorulis on 11/2/2026.
 
 import ASKCoordinator
 import Knit
@@ -25,7 +25,7 @@ struct WarehouseView: View {
             viewModel.onAppear()
         }
     }
-    
+
     private var content: some View {
         VStack(alignment: .leading, spacing: 12) {
             maybePicker
@@ -37,7 +37,7 @@ struct WarehouseView: View {
             }
         }
     }
-    
+
     @ViewBuilder
     private var maybePicker: some View {
         if viewModel.model.showArtifactsTab {
@@ -51,7 +51,7 @@ struct WarehouseView: View {
             .padding(.horizontal, 16)
         }
     }
-    
+
     private var artifacts: some View {
         VStack(alignment: .leading, spacing: 16) {
             if viewModel.model.maxArtifactSlots > 0 {
@@ -73,7 +73,7 @@ struct WarehouseView: View {
 
             let maxSlots = viewModel.model.maxArtifactSlots
             let slots = viewModel.warehouse.equippedSlotsContents(upToSlotCount: maxSlots)
-            
+
             ArtifactSlotView(slots: slots, size: .large) { index in
                 viewModel.artifactSlotPresed(index: index)
             }
@@ -82,10 +82,10 @@ struct WarehouseView: View {
             .padding(.horizontal, 16)
         }
     }
-    
+
     private var items: some View {
         let columns = [
-            GridItem(.adaptive(minimum: 80)),
+            GridItem(.adaptive(minimum: 80))
         ]
         let grouped = Dictionary(grouping: BaseItem.allCases, by: { $0.quality })
 
@@ -111,7 +111,7 @@ struct WarehouseView: View {
         }
         .padding(.vertical, 16)
     }
-    
+
     @ViewBuilder
     private func cell(item: BaseItem) -> some View {
         if viewModel.warehouse.hasDiscovered(item) {
@@ -127,7 +127,7 @@ struct WarehouseView: View {
                 .grayscale(0.9)
         }
     }
-    
+
     private var titleBar: some View {
         TitleBar(
             title: "Warehouse",

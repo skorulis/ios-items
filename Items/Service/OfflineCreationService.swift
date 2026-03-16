@@ -47,11 +47,11 @@ final class OfflineCreationService {
             lastBackgroundedAt: nil,
             automationEnabled: state.automationEnabled
         )
-        
+
         let cycleDuration = 5 * (calculations.autoCreationMilliseconds + calculations.itemCreationMilliseconds) / 1000
         let maxCreations = Int(elapsed / cycleDuration)
         let itemsCreatedBefore = mainStore.statistics.itemsCreated
-        
+
         if maxCreations < 1 {
             return nil
         }

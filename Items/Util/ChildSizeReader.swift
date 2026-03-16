@@ -1,18 +1,18 @@
-//Created by Alexander Skorulis on 20/2/2026.
+// Created by Alexander Skorulis on 20/2/2026.
 
 import SwiftUI
 
 public struct ChildSizeReader<Content: View>: View {
     @Binding var size: CGSize
     let content: () -> Content
-    
+
     public init(size: Binding<CGSize>,
                 content: @escaping () -> Content
     ) {
         _size = size
         self.content = content
     }
-    
+
     public var body: some View {
         ZStack {
             content()

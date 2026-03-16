@@ -1,4 +1,4 @@
-//Created by Alexander Skorulis on 14/2/2026.
+// Created by Alexander Skorulis on 14/2/2026.
 
 import Foundation
 import Models
@@ -13,7 +13,7 @@ import SwiftUI
 // MARK: - Rendering
 
 extension EssenceView: View {
-    
+
     var body: some View {
         Rectangle()
             .fill(essence.color)
@@ -29,6 +29,5 @@ extension EssenceView: View {
         EssenceView(essence: .dark)
         EssenceView(essence: .light)
     }
-    
-}
 
+}
