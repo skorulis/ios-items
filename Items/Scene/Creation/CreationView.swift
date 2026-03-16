@@ -131,7 +131,7 @@ extension CreationView: View {
         guard viewModel.model.artifactSlots.count > 0 else { return nil }
         return ArtifactSlotView(
             slots: viewModel.model.artifactSlots,
-            size: .small,
+            size: .large,
             onSlotPressed: { viewModel.artifactSlotPressed(index: $0) }
         )
     }
