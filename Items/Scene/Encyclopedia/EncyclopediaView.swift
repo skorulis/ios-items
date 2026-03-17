@@ -22,8 +22,9 @@ extension EncyclopediaView: View {
     }
 
     private var content: some View {
-        VStack {
+        VStack(alignment: .leading) {
             Text(viewModel.entry.body)
+                .multilineTextAlignment(.leading)
             children
         }
         .padding(.horizontal, 16)
@@ -36,7 +37,6 @@ extension EncyclopediaView: View {
             } else {
                 lockedCell
             }
-
         }
     }
 
@@ -73,13 +73,16 @@ extension EncyclopediaView: View {
             title: viewModel.entry.title,
             backAction: viewModel.backAction,
             trailing: {
-                Button(action: { viewModel.showStatistics() }) {
-                    Image(systemName: "chart.bar")
-                        .font(.body.weight(.medium))
-                        .frame(width: 44, height: 44)
-                        .foregroundStyle(Color.black)
-                        .contentShape(Rectangle())
-                }
+                Button(
+                    action: { viewModel.showStatistics() },
+                    label: {
+                        Image(systemName: "chart.bar")
+                            .font(.body.weight(.medium))
+                            .frame(width: 44, height: 44)
+                            .foregroundStyle(Color.black)
+                            .contentShape(Rectangle())
+                    }
+                )
                 .buttonStyle(.plain)
                 .accessibilityLabel("Statistics")
             }

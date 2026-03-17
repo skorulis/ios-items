@@ -45,6 +45,9 @@ public enum UnlockRequirement: Codable {
 
     /// A specific achievement has been unlocked.
     case achievementUnlocked(Achievement)
+
+    /// A specific map location has been unlocked.
+    case locationUnlocked(MapLocation)
 }
 
 public extension UnlockRequirement {
@@ -80,6 +83,8 @@ public extension UnlockRequirement {
             return "Purchase \(formatCount(count)) portal upgrade\(count == 1 ? "" : "s")"
         case let .achievementUnlocked(achievement):
             return "Unlock \(achievement.name)"
+        case let .locationUnlocked(location):
+            return "Unlock \(location.name)"
         }
     }
 }

@@ -52,6 +52,8 @@ final class UnlockRequirementService {
             return Int64(mainStore.portalUpgrades.purchased.count)
         case let .achievementUnlocked(achievement):
             return mainStore.achievements.unlocked.contains(achievement) ? 1 : 0
+        case let .locationUnlocked(location):
+            return mainStore.mapLocations.isUnlocked(location) ? 1 : 0
         }
     }
 
@@ -74,7 +76,8 @@ final class UnlockRequirementService {
              .essenceUnlocked,
              .artifactUnlocked,
              .upgradePurchased,
-             .achievementUnlocked:
+             .achievementUnlocked,
+             .locationUnlocked:
             return 1
         }
     }

@@ -23,7 +23,7 @@ public enum MapLocation: String, CaseIterable, Identifiable, Hashable, Codable {
         switch self {
         case .vesprium:
             return LocationDetails(
-                description: "The world as a whole",
+                description: "Vesprium is the name of the world in the dimension you have discovered.",
                 essenceMultipliers: [:],
                 uniqueItems: [],
                 cost: [] // Unlocked by default

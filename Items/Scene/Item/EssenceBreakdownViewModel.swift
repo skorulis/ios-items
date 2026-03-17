@@ -31,7 +31,7 @@ extension EssenceBreakdownViewModel {
     var essenceCounts: [(Essence, Int)] {
         let counts = itemsInScope
             .flatMap(\.essences)
-            .reduce(into: [Essence: Int]()) { acc, e in acc[e, default: 0] += 1 }
+            .reduce(into: [Essence: Int]()) { acc, ess in acc[ess, default: 0] += 1 }
         return Essence.allCases.map { ($0, counts[$0, default: 0]) }
     }
 

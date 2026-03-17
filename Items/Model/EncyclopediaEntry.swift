@@ -84,8 +84,19 @@ extension EncyclopediaEntry {
                 Self.portal,
                 Self.warehouse,
                 Self.essences,
-                Self.artifacts
+                Self.artifacts,
+                Self.locations,
             ]
+        )
+    }
+
+    static var locations: Self {
+        .init(
+            title: "Locations",
+            body: "The portal can be tuned to draw items from different places in the dimension. Unlock and travel to new locations to discover unique items and essence biases.",
+            condition: .upgradePurchased(.mapLocations),
+            childItems: MapLocation.allCases.map { Self.locationEntry($0) },
+            iconImage: Image(systemName: "map")
         )
     }
 
@@ -166,6 +177,20 @@ extension EncyclopediaEntry {
     }
 }
 // swiftlint:enable line_length
+
+// MARK: - Locations
+
+extension EncyclopediaEntry {
+    static func locationEntry(_ location: MapLocation) -> Self {
+        return .init(
+            title: location.name,
+            body: location.details.description,
+            condition: .locationUnlocked(location),
+            childItems: [],
+            iconImage: Image(systemName: "mappin.circle")
+        )
+    }
+}
 
 // MARK: - Essences
 
