@@ -38,15 +38,28 @@ extension PortalUpgradeCell: View {
                 .font(.appCaption)
                 .foregroundStyle(.secondary)
 
-            HStack(spacing: 8) {
+            HStack(spacing: 0) {
                 UpgradeCostRow(cost: upgrade.cost, itemQuantity: itemQuantity)
-                Spacer()
+                    .layoutPriority(1)
+                Spacer(minLength: 8)
                 Button("Purchase", action: onPurchase)
                     .buttonStyle(CapsuleButtonStyle())
                     .disabled(!canPurchase)
+                    .layoutPriority(2)
             }
         }
         .padding(12)
         .background(Color.gray.opacity(0.1), in: RoundedRectangle(cornerRadius: 8))
     }
+}
+
+#Preview {
+    PortalUpgradeCell(
+        upgrade: .knowledgeSiphonLevel3,
+        itemQuantity: { _ in 5},
+        canPurchase: true,
+        onPurchase: {},
+        onInfo: {}
+    )
+    .padding()
 }
