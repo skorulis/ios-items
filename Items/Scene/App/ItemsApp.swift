@@ -23,6 +23,7 @@ struct ItemsApp: App {
         WindowGroup {
             content
                 .font(.appBody)
+                .dynamicTypeSize(..<DynamicTypeSize.accessibility1)
         }
     }
 
