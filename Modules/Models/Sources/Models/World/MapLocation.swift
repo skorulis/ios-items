@@ -59,7 +59,7 @@ public enum MapLocation: String, CaseIterable, Identifiable, Hashable, Codable {
                 cost: [
                     UpgradeCostItem(item: .mapFragment, quantity: 5),
                     UpgradeCostItem(item: .silverFlorin, quantity: 5),
-                    UpgradeCostItem(item: .apple, quantity: 200),
+                    UpgradeCostItem(item: .apple, quantity: 50),
                 ]
             )
         case .crystalMine:
@@ -73,7 +73,7 @@ public enum MapLocation: String, CaseIterable, Identifiable, Hashable, Codable {
                 cost: [
                     UpgradeCostItem(item: .mapFragment, quantity: 10),
                     UpgradeCostItem(item: .silverFlorin, quantity: 10),
-                    UpgradeCostItem(item: .rock, quantity: 200),
+                    UpgradeCostItem(item: .rock, quantity: 50),
                 ]
             )
         }

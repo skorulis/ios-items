@@ -174,8 +174,8 @@ extension CreationView: View {
         GeometryReader { geo in
             if let creation = viewModel.model.creationInProgress, !creation.sacrificedItems.isEmpty {
                 let startPosition = CGPoint(
-                    x: viewModel.sacrificesButtonFrame.maxX - 20,
-                    y: viewModel.sacrificesButtonFrame.midY,
+                    x: viewModel.sacrificesButtonFrame.minX,
+                    y: viewModel.sacrificesButtonFrame.midY - 50,
                 )
                 let endPosition = CGPoint(x: geo.size.width / 2, y: geo.size.height / 2)
                 SacrificeAnimationView(
