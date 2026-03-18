@@ -14,6 +14,12 @@ final class MainStore: ObservableObject {
         }
     }
 
+    @Published var tradingPost: TradingPost {
+        didSet {
+            try? self.store.set(codable: tradingPost, forKey: Self.tradingPostKey)
+        }
+    }
+
     @Published var statistics: Statistics {
         didSet {
             try! self.store.set(codable: statistics, forKey: Self.statisticsKey)
@@ -77,6 +83,7 @@ final class MainStore: ObservableObject {
     private static let recipesKey = "MainStore.recipes"
     private static let statisticsKey = "MainStore.statistics"
     private static let warehouseKey = "MainStore.warehouse"
+    private static let tradingPostKey = "MainStore.tradingPost"
     private static let mapLocationsKey = "MainStore.mapLocations"
 
     @Resolvable<BaseResolver>
@@ -84,6 +91,7 @@ final class MainStore: ObservableObject {
         self.store = store
 
         self.warehouse = (try? store.codable(forKey: Self.warehouseKey)) ?? Warehouse()
+        self.tradingPost = (try? store.codable(forKey: Self.tradingPostKey)) ?? TradingPost()
         self.statistics = (try? store.codable(forKey: Self.statisticsKey)) ?? Statistics()
         self.lab = (try? store.codable(forKey: Self.labKey)) ?? Laboratory()
         self.achievements = (try? store.codable(forKey: Self.achievementsKey)) ?? Achievements()

@@ -20,6 +20,10 @@ public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable, 
     case items1_000_000
     case allItems
 
+    case trades1
+    case trades10
+    case trades100
+
     case essence1
     case allEssences
 
@@ -63,6 +67,9 @@ public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable, 
         case .doubleItems10: return "Lucky streak"
         case .doubleItems100: return "Double or nothing"
         case .doubleItems1000: return "Jackpot harvest"
+        case .trades1: return "First trade"
+        case .trades10: return "Trading regular"
+        case .trades100: return "Master trader"
         }
     }
 
@@ -114,6 +121,12 @@ public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable, 
             return Image(systemName: "square.stack.3d.up.fill")
         case .doubleItems1000:
             return Image(systemName: "sparkles.square.filled.on.square")
+        case .trades1:
+            return Image(systemName: "arrow.triangle.swap")
+        case .trades10:
+            return Image(systemName: "arrow.triangle.swap.fill")
+        case .trades100:
+            return Image(systemName: "arrow.triangle.swap.circle.fill")
         }
     }
 
@@ -165,6 +178,12 @@ public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable, 
             return .multipleItemCreations(100)
         case .doubleItems1000:
             return .multipleItemCreations(1000)
+        case .trades1:
+            return .tradesCompleted(1)
+        case .trades10:
+            return .tradesCompleted(10)
+        case .trades100:
+            return .tradesCompleted(100)
         }
     }
 
@@ -186,11 +205,11 @@ public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable, 
 
     public var quality: ItemQuality {
         switch self {
-        case .items1, .items10, .artifact1, .essence1, .sacrificed1, .upgrade1, .research1, .research10, .researchLevel5, .doubleItems10:
+        case .items1, .items10, .artifact1, .essence1, .sacrificed1, .upgrade1, .research1, .research10, .researchLevel5, .doubleItems10, .trades1:
             return .junk
-        case .items25, .items100, .artifacts5, .common1, .allEssences, .sacrificed1000, .upgrade5, .research100, .researchLevel10, .doubleItems100:
+        case .items25, .items100, .artifacts5, .common1, .allEssences, .sacrificed1000, .upgrade5, .research100, .researchLevel10, .doubleItems100, .trades10:
             return .common
-        case .doubleItems1000:
+        case .doubleItems1000, .trades100:
             return .good
         case .items1_000_000, .allItems:
             return .exceptional

@@ -65,7 +65,7 @@ import SwiftUI
         /// Latest sacrifice config + consumption plan for `SacrificesButton` (and overlays).
         var sacrificeConfig: SacrificeConfig = SacrificeConfig()
         var sacrificePlan: SacrificePlan = SacrificePlan(slotsByIndex: [:])
-        
+
         var mapLocationsPurchasableCount: Int {
             MapLocation.allCases.filter { location in
                 guard !mapLocations.isUnlocked(location) else { return false }

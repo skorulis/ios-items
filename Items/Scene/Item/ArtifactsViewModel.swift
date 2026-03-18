@@ -11,9 +11,9 @@ import SwiftUI
 
 @Observable
 final class ArtifactsViewModel {
-    
+
     weak var coordinator: ASKCoordinator.Coordinator?
-    
+
     struct Model {
         var newArtifactsToShow: Set<Artifact> = []
         var maxArtifactSlots: Int = 0

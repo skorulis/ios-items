@@ -33,7 +33,7 @@ enum HelpStrings {
     """
 
     static let tradingPost = """
-    The Trading Post lets you exchange items of the same quality tier for other items. 
+    The Trading Post lets you exchange items of the same quality tier for other items.
     Trade options will be randomly available and can be refreshed by spending Merchant Sigils.
     """
 }

@@ -90,26 +90,36 @@ struct TradingPostView: View {
         }
     }
 
-    private func tradeCard(for trade: TradingPostViewModel.Trade) -> some View {
+    private func tradeCard(for trade: TradingPostTrade) -> some View {
         let remaining = viewModel.remainingExecutions(for: trade)
 
         return VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 14) {
-                ItemView(
-                    item: trade.fromItem,
-                    quantity: 5,
-                    size: .small
-                )
+                Button {
+                    viewModel.showItemDetails(trade.fromItem)
+                } label: {
+                    ItemView(
+                        item: trade.fromItem,
+                        quantity: trade.fromQuantity,
+                        size: .small
+                    )
+                }
+                .buttonStyle(.plain)
 
                 Image(systemName: "arrow.right")
                     .font(.title3.weight(.semibold))
                     .foregroundStyle(.secondary)
 
-                ItemView(
-                    item: trade.toItem,
-                    quantity: 2,
-                    size: .small
-                )
+                Button {
+                    viewModel.showItemDetails(trade.toItem)
+                } label: {
+                    ItemView(
+                        item: trade.toItem,
+                        quantity: trade.toQuantity,
+                        size: .small
+                    )
+                }
+                .buttonStyle(.plain)
             }
 
             HStack {
@@ -119,7 +129,7 @@ struct TradingPostView: View {
 
                 Spacer(minLength: 0)
 
-                Text("\(remaining)/5")
+                Text("\(remaining)/\(TradingPostTrade.maxExecutionsPerTrade)")
                     .font(.appMonospaceBadge)
             }
 
@@ -145,4 +155,3 @@ struct TradingPostView: View {
     assembler.resolver.mainStore().warehouse.add(item: .apple, count: 5)
     return TradingPostView(viewModel: assembler.resolver.tradingPostViewModel())
 }
-

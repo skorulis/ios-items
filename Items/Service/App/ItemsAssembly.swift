@@ -41,6 +41,7 @@ final class ItemsAssembly: AutoInitModuleAssembly {
             .inObjectScope(.container)
 
         container.register(WarehouseService.self) { WarehouseService.make(resolver: $0) }
+        container.register(TradingPostService.self) { TradingPostService.make(resolver: $0) }
 
         container.register(UnlockRequirementService.self) { UnlockRequirementService.make(resolver: $0) }
             .inObjectScope(.container)
@@ -85,7 +86,6 @@ final class ItemsAssembly: AutoInitModuleAssembly {
         container.register(MapLocationViewModel.self) { MapLocationViewModel.make(resolver: $0) }
         container.register(ArtifactsViewModel.self) { ArtifactsViewModel.make(resolver: $0) }
         container.register(TradingPostViewModel.self) { TradingPostViewModel.make(resolver: $0) }
-        
 
         container.register(EncyclopediaViewModel.self) { (resolver: BaseResolver, entry: EncyclopediaEntry) in
             EncyclopediaViewModel.make(resolver: resolver, entry: entry)

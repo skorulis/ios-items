@@ -12,6 +12,7 @@ struct WarehouseView: View {
     struct Model {
         var newItemsToShow: Set<BaseItem> = []
         var showArtifactsTab: Bool = false
+        var showTradingPostButton: Bool = false
     }
 
     var body: some View {
@@ -105,7 +106,15 @@ struct WarehouseView: View {
     private var titleBar: some View {
         TitleBar(
             title: "Warehouse",
-            trailing: { HStack(spacing: 8) { essenceBreakdownButton; tradingPostButton; helpButton } }
+            trailing: {
+                HStack(spacing: 8) {
+                    essenceBreakdownButton
+                    if viewModel.model.showTradingPostButton {
+                        tradingPostButton
+                    }
+                    helpButton
+                }
+            }
         )
     }
 

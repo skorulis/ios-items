@@ -43,7 +43,7 @@ public enum MapLocation: String, CaseIterable, Identifiable, Hashable, Codable {
                 cost: [
                     UpgradeCostItem(item: .mapFragment, quantity: 1),
                     UpgradeCostItem(item: .silverFlorin, quantity: 2),
-                    UpgradeCostItem(item: .copperFlorin, quantity: 100),
+                    UpgradeCostItem(item: .copperFlorin, quantity: 100)
                 ]
             )
         case .palaceGardens:
@@ -59,7 +59,7 @@ public enum MapLocation: String, CaseIterable, Identifiable, Hashable, Codable {
                 cost: [
                     UpgradeCostItem(item: .mapFragment, quantity: 5),
                     UpgradeCostItem(item: .silverFlorin, quantity: 5),
-                    UpgradeCostItem(item: .apple, quantity: 50),
+                    UpgradeCostItem(item: .apple, quantity: 50)
                 ]
             )
         case .crystalMine:
@@ -67,13 +67,13 @@ public enum MapLocation: String, CaseIterable, Identifiable, Hashable, Codable {
                 description: "A cavern mine where fractured crystals glow with captured lightning; the air hums with arcane resonance.",
                 essenceMultipliers: [
                     .earth: 1.6,
-                    .magic: 1.2,
+                    .magic: 1.2
                 ],
                 uniqueItems: [.quartzCrystal],
                 cost: [
                     UpgradeCostItem(item: .mapFragment, quantity: 10),
                     UpgradeCostItem(item: .silverFlorin, quantity: 10),
-                    UpgradeCostItem(item: .rock, quantity: 50),
+                    UpgradeCostItem(item: .rock, quantity: 50)
                 ]
             )
         }

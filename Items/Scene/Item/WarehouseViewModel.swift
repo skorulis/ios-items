@@ -42,6 +42,7 @@ import SwiftUI
         warehouse = mainStore.warehouse
         lab = mainStore.lab
         self.artifactsViewModel = artifactsViewModel
+        self.model.showTradingPostButton = mainStore.portalUpgrades.purchased.contains(.tradingPost)
 
         mainStore.$warehouse.sink { [unowned self] in
             self.warehouse = $0
@@ -55,6 +56,11 @@ import SwiftUI
 
         mainStore.$achievements.sink { [unowned self]  in
             self.model.showArtifactsTab = $0.unlocked.contains(.artifact1)
+        }
+        .store(in: &cancellables)
+
+        mainStore.$portalUpgrades.sink { [unowned self] in
+            self.model.showTradingPostButton = $0.purchased.contains(.tradingPost)
         }
         .store(in: &cancellables)
     }

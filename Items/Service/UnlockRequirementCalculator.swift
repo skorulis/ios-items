@@ -40,6 +40,8 @@ final class UnlockRequirementCalculator {
             return statistics.itemsSacrificed
         case .multipleItemCreations:
             return statistics.multipleItemCreations
+        case .tradesCompleted:
+            return statistics.tradesCompleted
         case let .itemsDiscovered:
             return Int64(
                 BaseItem.allCases.filter { item in
@@ -84,6 +86,7 @@ final class UnlockRequirementCalculator {
         case let .itemsCreated(count),
             let .itemsSacrificed(count),
             let .multipleItemCreations(count),
+            let .tradesCompleted(count),
             let .itemsDiscovered(count),
             let .totalResearch(count),
             let .maxResearchLevel(count),
@@ -109,4 +112,3 @@ final class UnlockRequirementCalculator {
         progressValue(requirement: requirement) >= progressTotal(requirement: requirement)
     }
 }
-

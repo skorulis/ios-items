@@ -6,5 +6,5 @@ struct Statistics: Codable {
     var itemsCreated: Int64 = 0
     var multipleItemCreations: Int64 = 0
     var itemsSacrificed: Int64 = 0
-
+    var tradesCompleted: Int64 = 0
 }

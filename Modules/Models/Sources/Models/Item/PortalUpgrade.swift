@@ -27,6 +27,7 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
     case offlineProgressLevel4
     case offlineProgressLevel5
     case mapLocations
+    case tradingPost
 
     public var id: Self { self }
 
@@ -54,6 +55,7 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
         case .offlineProgressLevel4: return "Offline Progress IV"
         case .offlineProgressLevel5: return "Offline Progress V"
         case .mapLocations: return "Locations"
+        case .tradingPost: return "Trading Post"
         }
     }
 
@@ -66,6 +68,7 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
         case .artifactSlotLevel2: return "Unlocks a second equipped artifact slot."
         case .artifactSlotLevel3: return "Unlocks a third equipped artifact slot."
         case .mapLocations: return "Unlocks pointing the portal at specific locations"
+        case .tradingPost: return "Unlocks the Trading Post in the warehouse."
         default:
             return self.bonus?.text ?? "TODO: Set manual description or add bonus"
         }
@@ -168,6 +171,10 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
             .init(item: .mapFragment, quantity: 5),
             .init(item: .silverFlorin, quantity: 10)
         ]
+        case .tradingPost: return [
+            .init(item: .merchantSigil, quantity: 2),
+            .init(item: .goldFlorin, quantity: 5),
+        ]
         }
     }
 
@@ -244,6 +251,11 @@ extension PortalUpgrade {
             return [.upgradePurchased(.offlineProgressLevel4)]
         case .mapLocations:
             return [.itemDiscovered(.mapFragment)]
+        case .tradingPost:
+            return [
+                .upgradePurchased(.mapLocations),
+                .locationUnlocked(.semilTradingPost)
+            ]
         default:
             return []
         }

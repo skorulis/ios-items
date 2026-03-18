@@ -27,6 +27,8 @@ extension PortalUpgrade {
             return Image(systemName: "arrow.up.circle.badge.clock")
         case .mapLocations:
             return Image(systemName: "map.fill")
+        case .tradingPost:
+            return Image(systemName: "storefront")
         }
     }
 }

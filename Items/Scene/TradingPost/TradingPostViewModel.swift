@@ -14,34 +14,40 @@ final class TradingPostViewModel: CoordinatorViewModel {
 
     private var cancellables: Set<AnyCancellable> = []
 
-    private let maxExecutionsPerTrade = 5
     private let refreshCostSigil = 1
 
-    // Fixed exchange preset for the first implementation.
-    private let fromQuantity = 5
-    private let toQuantity = 2
+    private let tradingPostService: TradingPostService
 
     var warehouse: Warehouse
-    var trades: [Trade] = []
+    var trades: [TradingPostTrade] = []
 
     @Resolvable<BaseResolver>
     init(
         mainStore: MainStore,
-        warehouseService: WarehouseService
+        warehouseService: WarehouseService,
+        tradingPostService: TradingPostService,
     ) {
         self.mainStore = mainStore
         self.warehouseService = warehouseService
         self.warehouse = mainStore.warehouse
+        self.trades = mainStore.tradingPost.trades
+        self.tradingPostService = tradingPostService
 
         mainStore.$warehouse
             .sink { [unowned self] in
                 self.warehouse = $0
             }
             .store(in: &cancellables)
+
+        mainStore.$tradingPost
+            .sink { [unowned self] in
+                self.trades = $0.trades
+            }
+            .store(in: &cancellables)
     }
 
     func onAppear() {
-        if trades.isEmpty {
+        if mainStore.tradingPost.trades.isEmpty {
             refreshTrades(consumeSigil: false)
         }
     }
@@ -64,23 +70,27 @@ final class TradingPostViewModel: CoordinatorViewModel {
             warehouseService.remove(item: .merchantSigil, quantity: refreshCostSigil)
         }
 
-        trades = generateTrades()
+        let newTrades = tradingPostService.generateTrades()
+
+        // Update persisted TradingPost state so trades remain stable
+        // between view model instances.
+        var tradingPost = mainStore.tradingPost
+        tradingPost.trades = newTrades
+        mainStore.tradingPost = tradingPost
     }
 
-    func remainingExecutions(for trade: Trade) -> Int {
-        let available = warehouse.quantity(trade.fromItem) / fromQuantity
-        return min(maxExecutionsPerTrade, max(0, available))
+    func remainingExecutions(for trade: TradingPostTrade) -> Int {
+        let fromInventory = warehouse.quantity(trade.fromItem) / trade.fromQuantity
+        return min(max(0, trade.quantity), max(0, fromInventory))
     }
 
-    func canExecute(trade: Trade) -> Bool {
+    func canExecute(trade: TradingPostTrade) -> Bool {
         remainingExecutions(for: trade) > 0
     }
 
-    func execute(trade: Trade) {
+    func execute(trade: TradingPostTrade) {
         guard canExecute(trade: trade) else { return }
-
-        warehouseService.remove(item: trade.fromItem, quantity: fromQuantity)
-        warehouseService.add(item: trade.toItem, count: toQuantity)
+        tradingPostService.executeTrade(tradeID: trade.id)
     }
 
     func showHelp() {
@@ -90,67 +100,7 @@ final class TradingPostViewModel: CoordinatorViewModel {
         )
     }
 
-    // MARK: - Trade generation
-
-    struct Trade: Identifiable, Hashable {
-        let id = UUID()
-        let fromItem: BaseItem
-        let toItem: BaseItem
-    }
-
-    private func generateTrades() -> [Trade] {
-        let itemsByQuality = Dictionary(grouping: BaseItem.allCases, by: \.quality)
-        let qualitiesWithPairs = ItemQuality.allCases.filter {
-            (itemsByQuality[$0]?.count ?? 0) >= 2
-        }
-
-        guard let qualityPool = qualitiesWithPairs.randomElement() else {
-            return []
-        }
-
-        func makeRandomTrade(preferExecutableFromItems: Bool) -> Trade? {
-            let quality = qualitiesWithPairs.randomElement() ?? qualityPool
-            guard let candidatesInTier = itemsByQuality[quality], candidatesInTier.count >= 2 else {
-                return nil
-            }
-
-            let executableFromItems = candidatesInTier.filter { warehouse.quantity($0) >= fromQuantity }
-            let fromPool = (preferExecutableFromItems && !executableFromItems.isEmpty)
-                ? executableFromItems
-                : candidatesInTier
-
-            guard let from = fromPool.randomElement() else { return nil }
-            let toCandidates = candidatesInTier.filter { $0 != from }
-            guard let to = toCandidates.randomElement() else { return nil }
-            return Trade(fromItem: from, toItem: to)
-        }
-
-        var result: [Trade] = []
-        var keys = Set<String>()
-
-        // First pass: prefer from-items we can actually execute.
-        var attempts = 0
-        while result.count < 3, attempts < 500 {
-            attempts += 1
-            guard let trade = makeRandomTrade(preferExecutableFromItems: true) else { continue }
-            let key = "\(trade.fromItem.rawValue)->\(trade.toItem.rawValue)"
-            guard !keys.contains(key) else { continue }
-            keys.insert(key)
-            result.append(trade)
-        }
-
-        // Second pass: fill remaining trades even if not currently executable.
-        attempts = 0
-        while result.count < 3, attempts < 500 {
-            attempts += 1
-            guard let trade = makeRandomTrade(preferExecutableFromItems: false) else { continue }
-            let key = "\(trade.fromItem.rawValue)->\(trade.toItem.rawValue)"
-            guard !keys.contains(key) else { continue }
-            keys.insert(key)
-            result.append(trade)
-        }
-
-        return Array(result.prefix(3))
+    func showItemDetails(_ item: BaseItem) {
+        coordinator?.custom(overlay: .card, MainPath.itemDetails(item))
     }
 }
-

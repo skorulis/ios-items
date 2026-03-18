@@ -33,6 +33,8 @@ extension PortalUpgrade {
             return .init(bodyText: """
             This upgrade unlocks the ability to point the portal at specific locations on the map, influencing which kinds of items are more likely to appear.
             """)
+        case .tradingPost:
+            return .init(bodyText: HelpStrings.tradingPost, title: "Trading Post")
         }
     }
 }
