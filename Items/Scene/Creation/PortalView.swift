@@ -7,7 +7,7 @@ import SwiftUI
 
 // MARK: - Portal view
 
-/// Encapsulates the dimensional portal background and corner action buttons.
+/// Renders the portal UI controls and (optionally) the circuit overlay.
 struct PortalView: View {
 
     let upgradesButton: ButtonOrProgress?
@@ -49,17 +49,10 @@ struct PortalView: View {
             if hasActiveWireFrames {
                 PortalCircuitWiresOverlay(sourceFrames: wireSourceFrames)
             }
-            dimensionalPortalBackground
+            PortalGraphic()
             cornerButtons
         }
         .aspectRatio(1, contentMode: .fit)
-    }
-
-    private var dimensionalPortalBackground: some View {
-        Asset.Creation.dimensionalPortal.swiftUIImage
-            .resizable()
-            .scaledToFit()
-            .frame(maxWidth: 280, maxHeight: 280)
     }
 
     private var topButtons: some View {

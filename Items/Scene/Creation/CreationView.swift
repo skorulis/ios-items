@@ -147,13 +147,6 @@ extension CreationView: View {
         }
     }
 
-    private var dimensionalPortalBackground: some View {
-        Asset.Creation.dimensionalPortal.swiftUIImage
-            .resizable()
-            .scaledToFit()
-            .frame(maxWidth: 280, maxHeight: 280)
-    }
-
     private var sacrificesButton: SacrificesButton.Model? {
         guard viewModel.model.sacrificesUnlocked else {
             return nil
