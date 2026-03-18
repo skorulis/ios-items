@@ -16,6 +16,8 @@ public enum UnlockRequirement: Codable {
     case itemsCreated(Int64)
     case itemsSacrificed(Int64)
     case multipleItemCreations(Int64)
+    /// Number of distinct base items discovered (at any quality).
+    case itemsDiscovered(Int64)
     case totalResearch(Int64)
     case maxResearchLevel(Int64)
     case commonItemsCreated(Int64)
@@ -59,6 +61,8 @@ public extension UnlockRequirement {
             return "Sacrifice \(formatCount(count)) item\(count == 1 ? "" : "s")"
         case let .multipleItemCreations(count):
             return "Create multiple items at once \(formatCount(count)) time\(count == 1 ? "" : "s")"
+        case let .itemsDiscovered(count):
+            return "Discover \(formatCount(count)) item\(count == 1 ? "" : "s")"
         case let .totalResearch(count):
             return "Complete \(formatCount(count)) levels of research"
         case let .maxResearchLevel(level):

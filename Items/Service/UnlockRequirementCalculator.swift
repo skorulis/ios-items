@@ -40,6 +40,12 @@ final class UnlockRequirementCalculator {
             return statistics.itemsSacrificed
         case .multipleItemCreations:
             return statistics.multipleItemCreations
+        case let .itemsDiscovered:
+            return Int64(
+                BaseItem.allCases.filter { item in
+                    warehouse.hasDiscovered(item)
+                }.count
+            )
         case .totalResearch:
             return Int64(lab.totalLevels)
         case .maxResearchLevel:
@@ -78,6 +84,7 @@ final class UnlockRequirementCalculator {
         case let .itemsCreated(count),
             let .itemsSacrificed(count),
             let .multipleItemCreations(count),
+            let .itemsDiscovered(count),
             let .totalResearch(count),
             let .maxResearchLevel(count),
             let .commonItemsCreated(count),

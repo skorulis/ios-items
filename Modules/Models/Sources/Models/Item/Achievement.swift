@@ -15,8 +15,10 @@ public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable, 
 
     case items1
     case items10
+    case items25
     case items100
     case items1_000_000
+    case allItems
 
     case essence1
     case allEssences
@@ -40,8 +42,10 @@ public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable, 
         switch self {
         case .items1: return "Portal unlocked"
         case .items10: return "Baby steps"
+        case .items25: return "Item collector"
         case .items100: return "Getting somewhere"
         case .items1_000_000: return "That's a lot"
+        case .allItems: return "Complete collection"
         case .sacrificed1: return "First sacrifice"
         case .sacrificed1000: return "Mass sacrifice"
         case .common1: return "Filthy Commoner"
@@ -68,12 +72,16 @@ public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable, 
             return Image(systemName: "line.3.crossed.swirl.circle")
         case .items10:
             return Image(systemName: "waterbottle")
+        case .items25:
+            return Image(systemName: "magnifyingglass.circle")
         case .items100:
             return Image(systemName: "gauge.with.dots.needle.bottom.100percent")
         case .common1:
             return Image(systemName: "command")
         case .items1_000_000:
             return Image(systemName: "gauge.with.dots.needle.100percent")
+        case .allItems:
+            return Image(systemName: "checkmark.seal.fill")
         case .sacrificed1:
             return Image(systemName: "flame")
         case .sacrificed1000:
@@ -115,10 +123,14 @@ public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable, 
             return .itemsCreated(1)
         case .items10:
             return .itemsCreated(10)
+        case .items25:
+            return .itemsDiscovered(25)
         case .items100:
             return .itemsCreated(100)
         case .items1_000_000:
             return .itemsCreated(1_000_000)
+        case .allItems:
+            return .itemsDiscovered(Int64(BaseItem.allCases.count))
         case .sacrificed1:
             return .itemsSacrificed(1)
         case .sacrificed1000:
@@ -176,9 +188,9 @@ public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable, 
         switch self {
         case .items1, .items10, .artifact1, .essence1, .sacrificed1, .upgrade1, .research1, .research10, .researchLevel5, .doubleItems10:
             return .junk
-        case .items100, .artifacts5, .common1, .allEssences, .sacrificed1000, .upgrade5, .research100, .researchLevel10, .doubleItems100:
+        case .items25, .items100, .artifacts5, .common1, .allEssences, .sacrificed1000, .upgrade5, .research100, .researchLevel10, .doubleItems100:
             return .common
-        case .items1_000_000, .doubleItems1000:
+        case .items1_000_000, .allItems, .doubleItems1000:
             return .exceptional
         }
     }
