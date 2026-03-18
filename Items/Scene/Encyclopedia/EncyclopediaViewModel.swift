@@ -1,6 +1,7 @@
 // Created by Alexander Skorulis on 21/2/2026.
 
 import ASKCoordinator
+import Combine
 import Foundation
 import Knit
 import KnitMacros
@@ -10,7 +11,8 @@ import SwiftUI
     weak var coordinator: ASKCoordinator.Coordinator?
 
     let entry: EncyclopediaEntry
-    private let unlockRequirementService: UnlockRequirementService
+    private var unlockRequirementCalculator: UnlockRequirementCalculator
+    private var cancellables: Set<AnyCancellable> = []
 
     @Resolvable<BaseResolver>
     init(
@@ -18,7 +20,11 @@ import SwiftUI
         unlockRequirementService: UnlockRequirementService
     ) {
         self.entry = entry
-        self.unlockRequirementService = unlockRequirementService
+        self.unlockRequirementCalculator = unlockRequirementService.calculator
+        unlockRequirementService.$calculator.sink { [unowned self] in
+            self.unlockRequirementCalculator = $0
+        }
+        .store(in: &cancellables)
     }
 }
 
@@ -38,7 +44,7 @@ extension EncyclopediaViewModel {
         guard let condition = entry.condition else {
             return true
         }
-        return unlockRequirementService.isComplete(requirement: condition)
+        return unlockRequirementCalculator.isComplete(requirement: condition)
     }
 
     func showChild(entry: EncyclopediaEntry) {
