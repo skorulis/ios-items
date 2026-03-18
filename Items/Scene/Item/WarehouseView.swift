@@ -11,9 +11,7 @@ struct WarehouseView: View {
 
     struct Model {
         var newItemsToShow: Set<BaseItem> = []
-        var newArtifactsToShow: Set<Artifact> = []
         var showArtifactsTab: Bool = false
-        var maxArtifactSlots: Int = 0
     }
 
     var body: some View {
@@ -53,45 +51,7 @@ struct WarehouseView: View {
     }
 
     private var artifacts: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            if viewModel.model.maxArtifactSlots > 0 {
-                equippedSection
-            }
-            ArtifactsListView(
-                warehouse: viewModel.warehouse,
-                onArtifactPressed: { viewModel.pressed(artifact: $0) },
-                isNew: { viewModel.isNew(artifact: $0) }
-            )
-        }
-    }
-
-    private var equippedSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack(spacing: 8) {
-                Text("Equipped")
-                    .font(.appTitle)
-
-                Button(action: viewModel.showArtifactBonusesInfo) {
-                    Image(systemName: "info.circle")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 18, height: 18)
-                        .foregroundStyle(Color.black)
-                }
-                .buttonStyle(.plain)
-            }
-            .padding(.horizontal, 16)
-
-            let maxSlots = viewModel.model.maxArtifactSlots
-            let slots = viewModel.warehouse.equippedSlotsContents(upToSlotCount: maxSlots)
-
-            ArtifactSlotView(slots: slots, size: .large) { index in
-                viewModel.artifactSlotPresed(index: index)
-            }
-            .frame(maxWidth: .infinity)
-            .frame(height: 200)
-            .padding(.horizontal, 16)
-        }
+        ArtifactsView(viewModel: viewModel.artifactsViewModel)
     }
 
     private var items: some View {

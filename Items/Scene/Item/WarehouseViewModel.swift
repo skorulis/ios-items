@@ -9,13 +9,17 @@ import SwiftUI
 
 @Observable final class WarehouseViewModel: CoordinatorViewModel {
 
-    weak var coordinator: ASKCoordinator.Coordinator?
+    weak var coordinator: ASKCoordinator.Coordinator? {
+        didSet {
+            artifactsViewModel.coordinator = coordinator
+        }
+    }
 
     private let mainStore: MainStore
     private let warehouseService: WarehouseService
-    private let calculationService: CalculationsService
     private(set) var warehouse: Warehouse
     private(set) var lab: Laboratory
+    var artifactsViewModel: ArtifactsViewModel
 
     var page: Page = .items {
         didSet {
@@ -27,15 +31,17 @@ import SwiftUI
     private var cancellables: Set<AnyCancellable> = []
 
     @Resolvable<BaseResolver>
-    init(mainStore: MainStore,
-         warehouseService: WarehouseService,
-         calculationService: CalculationsService
+    init(
+        mainStore: MainStore,
+        warehouseService: WarehouseService,
+        calculationService: CalculationsService,
+        artifactsViewModel: ArtifactsViewModel,
     ) {
         self.mainStore = mainStore
         self.warehouseService = warehouseService
-        self.calculationService = calculationService
         warehouse = mainStore.warehouse
         lab = mainStore.lab
+        self.artifactsViewModel = artifactsViewModel
 
         mainStore.$warehouse.sink { [unowned self] in
             self.warehouse = $0
@@ -49,11 +55,6 @@ import SwiftUI
 
         mainStore.$achievements.sink { [unowned self]  in
             self.model.showArtifactsTab = $0.unlocked.contains(.artifact1)
-        }
-        .store(in: &cancellables)
-
-        calculationService.$maxArtifactSlots.sink { [unowned self] in
-            self.model.maxArtifactSlots = $0
         }
         .store(in: &cancellables)
     }
@@ -74,7 +75,7 @@ extension WarehouseViewModel {
     func onAppear() {
         // Capture current "new" state for the UI, but immediately clear persisted flags
         model.newItemsToShow = mainStore.notifications.newItems
-        model.newArtifactsToShow = mainStore.notifications.newArtifacts
+        artifactsViewModel.onAppear()
 
         clearNew()
     }
@@ -82,7 +83,7 @@ extension WarehouseViewModel {
     private func clearNew() {
         switch self.page {
         case .artifacts:
-            warehouseService.clearNewArtifacts()
+            artifactsViewModel.clearNewArtifacts()
         case .items:
             warehouseService.clearNewItems()
         }
@@ -92,10 +93,6 @@ extension WarehouseViewModel {
         model.newItemsToShow.contains(item)
     }
 
-    func isNew(artifact: Artifact) -> Bool {
-        model.newArtifactsToShow.contains(artifact)
-    }
-
     func showInfo() {
         coordinator?.custom(
             overlay: .card,
@@ -103,32 +100,8 @@ extension WarehouseViewModel {
         )
     }
 
-    func showArtifactBonusesInfo() {
-        let bonuses = warehouse.artifactBonuses
-        guard !bonuses.isEmpty else {
-            coordinator?.custom(
-                overlay: .card,
-                MainPath.dialog("No artifact bonuses are currently active. Equip artifacts to gain bonuses."),
-            )
-            return
-        }
-
-        let header = "Current artifact bonuses:\n"
-        let list = bonuses.map { "• \($0.text)" }.joined(separator: "\n")
-        coordinator?.custom(overlay: .card, MainPath.dialog(header + list))
-    }
-
     func showEssenceBreakdown() {
         coordinator?.push(MainPath.essenceBreakdown)
-    }
-
-    func artifactSlotPresed(index: Int) {
-        coordinator?.custom(overlay: .card, MainPath.artifactPicker(slot: index))
-    }
-
-    func pressed(artifact: ArtifactInstance) {
-        model.newArtifactsToShow.remove(artifact.type)
-        coordinator?.custom(overlay: .card, MainPath.artifactDetails(artifact))
     }
 
     func pressed(item: BaseItem) {

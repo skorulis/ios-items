@@ -190,7 +190,9 @@ public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable, 
             return .junk
         case .items25, .items100, .artifacts5, .common1, .allEssences, .sacrificed1000, .upgrade5, .research100, .researchLevel10, .doubleItems100:
             return .common
-        case .items1_000_000, .allItems, .doubleItems1000:
+        case .doubleItems1000:
+            return .good
+        case .items1_000_000, .allItems:
             return .exceptional
         }
     }
