@@ -190,6 +190,7 @@ extension SacrificeView: View {
 
     private func filledSlot(item: BaseItem, index: Int, borderColor: Color) -> some View {
         let diameter = Self.slotDiameter
+        let quantity = viewModel.model.warehouse.quantity(item)
         return ZStack(alignment: .topTrailing) {
             ZStack {
                 Circle()
@@ -216,6 +217,15 @@ extension SacrificeView: View {
             .offset(x: 4, y: -4)
         }
         .frame(width: diameter, height: diameter)
+        .overlay(alignment: .bottomTrailing) {
+            // Render quantity outside the clipped item icon.
+            Text("\(quantity)")
+                .font(.appMonospaceBadge)
+                .foregroundStyle(Color.white)
+                .padding(2)
+                .background(Capsule().fill(Color.black.opacity(0.6)))
+                .padding(2)
+        }
     }
 }
 
