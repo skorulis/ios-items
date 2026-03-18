@@ -37,7 +37,10 @@ final class CalculationsService: ObservableObject {
     }
 
     var autoCreationMilliseconds: Double {
-        return 5000
+        let base: Double = 5000
+        let reduction = Double(mainStore.warehouse.artifactBonuses.automaticItemCreationTimeReductionMilliseconds)
+        let value = base - reduction
+        return max(value, 100)
     }
 
     var itemCreationMilliseconds: Double {

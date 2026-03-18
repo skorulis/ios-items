@@ -47,16 +47,6 @@ public extension Artifact {
         }
     }
 
-    func eternalHourglassTimeReduction(quality: ItemQuality) -> Int {
-        switch quality {
-        case .junk: return 500
-        case .common: return 1000
-        case .good: return 1500
-        case .rare: return 2000
-        case .exceptional: return 2500
-        }
-    }
-
     func luckyCoinMultipleItemChance(quality: ItemQuality) -> Int {
         switch quality {
         case .junk: return 10
@@ -110,8 +100,6 @@ public extension Artifact {
         switch self {
         case .frictionlessGear:
             return "Reduces item creation time by \(frictionlessGearTimeReduction(quality: quality)) milliseconds."
-        case .eternalHourglass:
-            return "Reduces automatic item creation time by \(eternalHourglassTimeReduction(quality: quality)) milliseconds"
         case .sacrificalSkull:
             return "Increase the effect of sacrifices by \(sacrificalSkullSacrificeEffectMultiplier(quality: quality))%"
         default:
@@ -125,6 +113,16 @@ public extension ArtifactInstance {
         switch self.type {
         case .perfectLens:
             return .researchSpeed(type.perfectLensResearchBoost(quality: quality))
+        case .eternalHourglass:
+            let reduction: Int
+            switch quality {
+            case .junk: reduction = 500
+            case .common: reduction = 1000
+            case .good: reduction = 1500
+            case .rare: reduction = 2000
+            case .exceptional: reduction = 2500
+            }
+            return .automaticItemCreationTimeReduction(reduction)
         case .essenceFlask:
             return .artifactDiscovery(type.essenceFlaskArtifactDiscoveryBoost(quality: quality))
         case .luckyCoin:

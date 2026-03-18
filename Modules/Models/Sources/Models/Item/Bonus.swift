@@ -10,6 +10,8 @@ public enum Bonus {
     case qualityBoost(Int, ItemQuality)
     case booksForResearch(ItemQuality)
     case artifactDiscovery(Int)
+    /// Reduction (in milliseconds) to the automatic item creation cycle time.
+    case automaticItemCreationTimeReduction(Int)
     /// Extra percent chance to create two items from one sacrifice (stacks additively with lab level and lucky coin).
     case multipleItemChance(Int)
     /// Maximum claimable offline progress time in minutes (stacks across upgrades).
@@ -29,6 +31,8 @@ public enum Bonus {
             return "Use books to research \(quality.name) items"
         case let .artifactDiscovery(percent):
             return "Boost artifact discovery chance by \(percent)%"
+        case let .automaticItemCreationTimeReduction(milliseconds):
+            return "Reduces automatic item creation time by \(milliseconds) milliseconds"
         case let .multipleItemChance(percent):
             return "Boost multiple item chance by \(percent)%"
         case let .offlineTimeMinutes(minutes):
@@ -82,6 +86,11 @@ public enum Bonus {
         return 0
     }
 
+    public var automaticItemCreationTimeReductionMilliseconds: Int {
+        if case let .automaticItemCreationTimeReduction(int) = self { return int }
+        return 0
+    }
+
     /// Percent added to double-item roll chance. Nil-equivalent is 0 for other bonus types.
     public var multipleItemChancePercent: Int {
         if case let .multipleItemChance(int) = self { return int }
@@ -106,6 +115,11 @@ public extension Array where Element == Bonus {
 
     var artifactDiscovery: Int {
         return self.map { $0.artifactDiscoveryPercent }.reduce(0, +)
+    }
+
+    /// Total milliseconds reduction to automatic item creation cycle time.
+    var automaticItemCreationTimeReductionMilliseconds: Int {
+        return self.map { $0.automaticItemCreationTimeReductionMilliseconds }.reduce(0, +)
     }
 
     /// Total percent added to multiple-item (double drop) chance from bonuses.
