@@ -67,9 +67,20 @@ struct WarehouseView: View {
 
     private var equippedSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Equipped")
-                .font(.headline)
-                .padding(.horizontal, 16)
+            HStack(spacing: 8) {
+                Text("Equipped")
+                    .font(.headline)
+
+                Button(action: viewModel.showArtifactBonusesInfo) {
+                    Image(systemName: "info.circle")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 18, height: 18)
+                        .foregroundStyle(Color.black)
+                }
+                .buttonStyle(.plain)
+            }
+            .padding(.horizontal, 16)
 
             let maxSlots = viewModel.model.maxArtifactSlots
             let slots = viewModel.warehouse.equippedSlotsContents(upToSlotCount: maxSlots)

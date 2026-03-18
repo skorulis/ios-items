@@ -112,8 +112,6 @@ public extension Artifact {
             return "Reduces item creation time by \(frictionlessGearTimeReduction(quality: quality)) milliseconds."
         case .eternalHourglass:
             return "Reduces automatic item creation time by \(eternalHourglassTimeReduction(quality: quality)) milliseconds"
-        case .luckyCoin:
-            return "Increase the chance of multiple items by \(luckyCoinMultipleItemChance(quality: quality))%"
         case .sacrificalSkull:
             return "Increase the effect of sacrifices by \(sacrificalSkullSacrificeEffectMultiplier(quality: quality))%"
         default:
@@ -129,6 +127,8 @@ public extension ArtifactInstance {
             return .researchSpeed(type.perfectLensResearchBoost(quality: quality))
         case .essenceFlask:
             return .artifactDiscovery(type.essenceFlaskArtifactDiscoveryBoost(quality: quality))
+        case .luckyCoin:
+            return .multipleItemChance(type.luckyCoinMultipleItemChance(quality: quality))
         default:
             return nil
         }
