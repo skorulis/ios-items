@@ -97,7 +97,10 @@ extension WarehouseViewModel {
     }
 
     func showInfo() {
-        coordinator?.custom(overlay: .card, MainPath.dialog(HelpStrings.warehouse))
+        coordinator?.custom(
+            overlay: .card,
+            MainPath.fullDialog(.init(bodyText: HelpStrings.warehouse, title: "Warehouse"))
+        )
     }
 
     func showArtifactBonusesInfo() {

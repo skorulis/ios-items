@@ -108,7 +108,7 @@ extension EncyclopediaEntry {
 
             Who knows what wonders this place contains, perhaps by studying the items you can slowly piece together what this dimension is.
             """,
-            childItems: [Self.research, Self.portalUpgrades, Self.sacrifices],
+            childItems: [Self.research, Self.portalUpgrades, Self.sacrifices, Self.offlineProgress],
             iconImage: Image(systemName: "camera.aperture"),
         )
     }
@@ -132,6 +132,18 @@ extension EncyclopediaEntry {
             condition: .itemsCreated(10),
             childItems: [],
             iconImage: Image(systemName: "arrow.up.circle.fill"),
+        )
+    }
+
+    static var offlineProgress: Self {
+        .init(
+            title: "Offline Progress",
+            body: """
+            Offline Progress lets the portal keep working when the app is closed or in the background. Each level adds up to 60 minutes of offline progress, so higher levels let you accumulate more items while away.
+            """,
+            condition: .upgradePurchased(.offlineProgress),
+            childItems: [],
+            iconImage: Image(systemName: "arrow.up.circle.badge.clock")
         )
     }
 

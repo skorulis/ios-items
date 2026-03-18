@@ -86,7 +86,10 @@ extension SacrificeViewModel {
     }
 
     func showHelp() {
-        coordinator?.custom(overlay: .card, MainPath.dialog(HelpStrings.sacrifices))
+        coordinator?.custom(
+            overlay: .card,
+            MainPath.fullDialog(.init(bodyText: HelpStrings.sacrifices, title: "Sacrifices"))
+        )
     }
 }
 
