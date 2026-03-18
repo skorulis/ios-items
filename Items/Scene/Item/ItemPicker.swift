@@ -54,9 +54,12 @@ extension ItemPicker: View {
         ]
         return LazyVGrid(columns: columns, spacing: 16) {
             ForEach(visibleItems) { item in
-                Button(action: { onSelect(item) }) {
-                    ItemGridCell(item: item, quantity: quantity(item))
-                }
+                Button(
+                    action: { onSelect(item) },
+                    label: {
+                        ItemGridCell(item: item, quantity: quantity(item))
+                    }
+                )
                 .buttonStyle(.plain)
             }
         }

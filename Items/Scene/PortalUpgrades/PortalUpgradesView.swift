@@ -98,9 +98,12 @@ extension PortalUpgradesView: View {
                 Text(upgrade.name)
                     .font(.headline)
                 Spacer()
-                Button(action: { viewModel.showUpgradeInfo(upgrade) }) {
-                    Image(systemName: "info.circle")
-                }
+                Button(
+                    action: { viewModel.showUpgradeInfo(upgrade) },
+                    label: {
+                        Image(systemName: "info.circle")
+                    }
+                )
                 .buttonStyle(.borderless)
             }
             Text(upgrade.description)

@@ -115,7 +115,6 @@ final class RecipeService: ObservableObject {
             essenceMultipliers[essence] = value + 1
         }
 
-        let multipliers = location.details.essenceMultipliers
         for (key, value) in location.details.essenceMultipliers {
             let oldValue = essenceMultipliers[key] ?? 1.0
             essenceMultipliers[key] = oldValue * value

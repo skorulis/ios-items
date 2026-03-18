@@ -47,7 +47,10 @@ struct ParticleCanvasView: View {
         self.spiralTurns = spiralTurns
         self.colors = colors
         _startingParticleOffsets = State(initialValue: (0 ..< particleCount).map { _ in CGFloat.random(in: 0 ... 1) })
-        _startingParticleAlphas = State(initialValue: (0 ..< particleCount).map { _ in CGFloat.random(in: 0 ... .pi * 2) })
+        _startingParticleAlphas = State(
+            initialValue: (0 ..< particleCount)
+                .map { _ in CGFloat.random(in: 0 ... .pi * 2) }
+        )
         _particleColorIndices = State(initialValue: (0 ..< particleCount).map { _ in
             Int.random(in: 0 ..< colors.count)
         })
@@ -93,7 +96,11 @@ struct ParticleCanvasView: View {
                 for i in 0 ..< particleCount {
                     let symbolId = particleColorIndices[i] % colorList.count
                     guard let particleSymbol = context.resolveSymbol(id: symbolId) else { continue }
-                    let positionAndAlpha = particlePositionAndAlpha(index: i, timeInterval: timeInterval, canvasSize: size)
+                    let positionAndAlpha = particlePositionAndAlpha(
+                        index: i,
+                        timeInterval: timeInterval,
+                        canvasSize: size
+                    )
                     context.opacity = positionAndAlpha.1
                     context.draw(particleSymbol, at: positionAndAlpha.0, anchor: .center)
                 }

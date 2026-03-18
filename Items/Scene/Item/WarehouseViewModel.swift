@@ -103,7 +103,10 @@ extension WarehouseViewModel {
     func showArtifactBonusesInfo() {
         let bonuses = warehouse.artifactBonuses
         guard !bonuses.isEmpty else {
-            coordinator?.custom(overlay: .card, MainPath.dialog("No artifact bonuses are currently active. Equip artifacts to gain bonuses."))
+            coordinator?.custom(
+                overlay: .card,
+                MainPath.dialog("No artifact bonuses are currently active. Equip artifacts to gain bonuses."),
+            )
             return
         }
 

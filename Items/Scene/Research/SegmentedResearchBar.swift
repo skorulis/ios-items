@@ -25,18 +25,21 @@ extension SegmentedResearchBar: View {
     }
 
     private func bar(index: Int, section: ResearchSection) -> some View {
-        Button(action: { onTapLevel(index) }) {
-            ZStack {
-                Capsule()
-                    .fill(fillColor(index: index, section: section))
+        Button(
+            action: { onTapLevel(index) },
+            label: {
+                ZStack {
+                    Capsule()
+                        .fill(fillColor(index: index, section: section))
 
-                icon(index: index, section: section)
-                    .resizable()
-                    .foregroundStyle(iconColor(index: index, section: section))
-                    .frame(width: 16, height: 16)
+                    icon(index: index, section: section)
+                        .resizable()
+                        .foregroundStyle(iconColor(index: index, section: section))
+                        .frame(width: 16, height: 16)
+                }
+                .frame(height: 24)
             }
-            .frame(height: 24)
-        }
+        )
         .buttonStyle(.plain)
     }
 

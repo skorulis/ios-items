@@ -80,9 +80,7 @@ struct ArtifactsListView: View {
                     }
                 }
             if let onPressed = onArtifactPressed {
-                Button(action: { onPressed(instance) }) {
-                    content
-                }
+                Button(action: { onPressed(instance) }, label: { content })
             } else {
                 content
             }

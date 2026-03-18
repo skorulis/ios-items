@@ -16,6 +16,7 @@ final class UnlockRequirementService {
         self.mainStore = mainStore
     }
 
+    // swiftlint:disable:next cyclomatic_complexity
     func progressValue(requirement: UnlockRequirement) -> Int64 {
         switch requirement {
         case .itemsCreated:

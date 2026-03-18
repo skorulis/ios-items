@@ -115,10 +115,8 @@ extension ArtifactSlotView: View {
                 .frame(width: avatarSize.diameter, height: avatarSize.diameter)
             }
         }
-        Button(action: { onSlotPressed(index) }) {
-            content
-        }
-        .buttonStyle(.plain)
+        Button(action: { onSlotPressed(index) }, label: { content })
+            .buttonStyle(.plain)
     }
 }
 

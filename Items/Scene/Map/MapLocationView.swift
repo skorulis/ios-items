@@ -89,32 +89,38 @@ extension MapLocationView: View {
                 )
             }
 
-            HStack {
-                if unlocked {
-                    Button {
-                        viewModel.select(location)
-                    } label: {
-                        Text(selected ? "Current Location" : "Set as Current")
-                            .frame(maxWidth: .infinity)
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .disabled(selected)
-                } else {
-                    Button {
-                        viewModel.purchase(location)
-                    } label: {
-                        Text("Unlock")
-                            .frame(maxWidth: .infinity)
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .disabled(!viewModel.canAfford(location))
-                }
-            }
-            .padding(.top, 4)
+            button(location: location)
+                .padding(.top, 4)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(12)
         .background(Color.gray.opacity(0.05), in: RoundedRectangle(cornerRadius: 8))
+    }
+
+    private func button(location: MapLocation) -> some View {
+        let unlocked = viewModel.isUnlocked(location)
+        let selected = viewModel.isSelected(location)
+        return HStack {
+            if unlocked {
+                Button {
+                    viewModel.select(location)
+                } label: {
+                    Text(selected ? "Current Location" : "Set as Current")
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.borderedProminent)
+                .disabled(selected)
+            } else {
+                Button {
+                    viewModel.purchase(location)
+                } label: {
+                    Text("Unlock")
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.borderedProminent)
+                .disabled(!viewModel.canAfford(location))
+            }
+        }
     }
 }
 
