@@ -9,6 +9,8 @@ public extension BaseItem {
             return .frictionlessGear
         case .hourglass:
             return .eternalHourglass
+        case .quartzCrystal:
+            return .chargedQuartz
         case .copperFlorin:
             return .luckyCoin
         case .lens:
@@ -26,6 +28,7 @@ public extension Artifact {
         switch self {
         case .frictionlessGear: return .gear
         case .eternalHourglass: return .hourglass
+        case .chargedQuartz: return .quartzCrystal
         case .luckyCoin: return .copperFlorin
         case .perfectLens: return .lens
         case .sacrificalSkull: return .humanSkull

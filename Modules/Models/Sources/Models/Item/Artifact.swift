@@ -5,6 +5,7 @@ import Foundation
 public enum Artifact: Identifiable, Hashable, CaseIterable, Codable {
     case frictionlessGear
     case eternalHourglass
+    case chargedQuartz
     case luckyCoin
     case perfectLens
     case sacrificalSkull
@@ -22,6 +23,8 @@ public enum Artifact: Identifiable, Hashable, CaseIterable, Codable {
             return "A gear that spins with no resistance, speeding up all item crafting."
         case .eternalHourglass:
             return "A timeless hourglass that accelerates automatic item creation."
+        case .chargedQuartz:
+            return "A glowing piece of quartz that emits a regular pulse"
         case .luckyCoin:
             return "A coin blessed with fortune, increasing the chance of multiple item rewards."
         case .perfectLens:
@@ -117,10 +120,20 @@ public extension ArtifactInstance {
             let reduction: Int
             switch quality {
             case .junk: reduction = 500
+            case .common: reduction = 750
+            case .good: reduction = 1000
+            case .rare: reduction = 1250
+            case .exceptional: reduction = 1500
+            }
+            return .automaticItemCreationTimeReduction(reduction)
+        case .chargedQuartz:
+            let reduction: Int
+            switch quality {
+            case .junk: reduction = 750
             case .common: reduction = 1000
-            case .good: reduction = 1500
-            case .rare: reduction = 2000
-            case .exceptional: reduction = 2500
+            case .good: reduction = 1250
+            case .rare: reduction = 1500
+            case .exceptional: reduction = 2000
             }
             return .automaticItemCreationTimeReduction(reduction)
         case .essenceFlask:

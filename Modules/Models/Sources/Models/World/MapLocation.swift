@@ -7,6 +7,7 @@ public enum MapLocation: String, CaseIterable, Identifiable, Hashable, Codable {
     case vesprium
     case semilTradingPost
     case palaceGardens
+    case crystalMine
 
     public var id: Self { self }
 
@@ -41,7 +42,8 @@ public enum MapLocation: String, CaseIterable, Identifiable, Hashable, Codable {
                 uniqueItems: [.merchantSigil],
                 cost: [
                     UpgradeCostItem(item: .mapFragment, quantity: 1),
-                    UpgradeCostItem(item: .silverFlorin, quantity: 1)
+                    UpgradeCostItem(item: .silverFlorin, quantity: 2),
+                    UpgradeCostItem(item: .copperFlorin, quantity: 100),
                 ]
             )
         case .palaceGardens:
@@ -56,7 +58,22 @@ public enum MapLocation: String, CaseIterable, Identifiable, Hashable, Codable {
                 uniqueItems: [],
                 cost: [
                     UpgradeCostItem(item: .mapFragment, quantity: 5),
-                    UpgradeCostItem(item: .silverFlorin, quantity: 5)
+                    UpgradeCostItem(item: .silverFlorin, quantity: 5),
+                    UpgradeCostItem(item: .apple, quantity: 200),
+                ]
+            )
+        case .crystalMine:
+            return LocationDetails(
+                description: "A cavern mine where fractured crystals glow with captured lightning; the air hums with arcane resonance.",
+                essenceMultipliers: [
+                    .earth: 1.6,
+                    .magic: 1.2,
+                ],
+                uniqueItems: [.quartzCrystal],
+                cost: [
+                    UpgradeCostItem(item: .mapFragment, quantity: 10),
+                    UpgradeCostItem(item: .silverFlorin, quantity: 10),
+                    UpgradeCostItem(item: .rock, quantity: 200),
                 ]
             )
         }

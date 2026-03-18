@@ -147,7 +147,7 @@ public enum BaseItem: String, Hashable, Equatable, CaseIterable, Identifiable, C
     /// When `true`, item generation outside `LocationDetails.uniqueItems` should not include this item.
     public var locationSpecific: Bool {
         switch self {
-        case .merchantSigil:
+        case .merchantSigil, .quartzCrystal:
             return true
         default:
             return false
