@@ -104,6 +104,10 @@ extension WarehouseViewModel {
         coordinator?.push(MainPath.essenceBreakdown)
     }
 
+    func showTradingPost() {
+        coordinator?.push(MainPath.tradingPost)
+    }
+
     func pressed(item: BaseItem) {
         model.newItemsToShow.remove(item)
         coordinator?.custom(overlay: .card, MainPath.itemDetails(item))

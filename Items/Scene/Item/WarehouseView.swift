@@ -105,7 +105,7 @@ struct WarehouseView: View {
     private var titleBar: some View {
         TitleBar(
             title: "Warehouse",
-            trailing: { HStack(spacing: 8) { essenceBreakdownButton; helpButton } }
+            trailing: { HStack(spacing: 8) { essenceBreakdownButton; tradingPostButton; helpButton } }
         )
     }
 
@@ -120,6 +120,16 @@ struct WarehouseView: View {
                     .foregroundStyle(Color.black)
             }
         )
+    }
+
+    private var tradingPostButton: some View {
+        Button(action: viewModel.showTradingPost) {
+            Image(systemName: "storefront")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 24, height: 24)
+                .foregroundStyle(Color.black)
+        }
     }
 
     private var helpButton: some View {

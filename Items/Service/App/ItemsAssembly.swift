@@ -84,6 +84,7 @@ final class ItemsAssembly: AutoInitModuleAssembly {
         container.register(GameStatisticsViewModel.self) { GameStatisticsViewModel.make(resolver: $0) }
         container.register(MapLocationViewModel.self) { MapLocationViewModel.make(resolver: $0) }
         container.register(ArtifactsViewModel.self) { ArtifactsViewModel.make(resolver: $0) }
+        container.register(TradingPostViewModel.self) { TradingPostViewModel.make(resolver: $0) }
         
 
         container.register(EncyclopediaViewModel.self) { (resolver: BaseResolver, entry: EncyclopediaEntry) in
