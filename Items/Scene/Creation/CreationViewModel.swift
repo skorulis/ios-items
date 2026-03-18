@@ -69,6 +69,11 @@ import SwiftUI
         }
         .store(in: &cancellables)
 
+        mainStore.$mapLocations.sink { [unowned self] in
+            self.model.mapLocations = $0
+        }
+        .store(in: &cancellables)
+
         recipeService.$sacrificePlan.sink { [unowned self] plan in
             self.model.sacrificePlan = plan
         }

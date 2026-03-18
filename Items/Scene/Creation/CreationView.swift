@@ -52,6 +52,7 @@ import SwiftUI
         var sacrificesUnlocked: Bool = false
         var showingResearch: Bool = false
         var mapLocationsUnlocked: Bool = false
+        var mapLocations: MapLocations = MapLocations()
         var researchBadgeCount: Int = 0
         var researchUnderway: Bool = false
         var upgradesBadgeCount: Int = 0
@@ -64,6 +65,17 @@ import SwiftUI
         /// Latest sacrifice config + consumption plan for `SacrificesButton` (and overlays).
         var sacrificeConfig: SacrificeConfig = SacrificeConfig()
         var sacrificePlan: SacrificePlan = SacrificePlan(slotsByIndex: [:])
+        
+        var mapLocationsPurchasableCount: Int {
+            MapLocation.allCases.filter { location in
+                guard !mapLocations.isUnlocked(location) else { return false }
+                return location.details.cost.allSatisfy { line in
+                    warehouse.quantity(line.item) >= line.quantity
+                }
+            }
+            .count
+        }
+
     }
 
 }
@@ -88,7 +100,7 @@ extension CreationView: View {
                 mapLocationsButton: viewModel.model.mapLocationsUnlocked
                     ? .init(
                         action: viewModel.showMapLocations,
-                        badge: nil,
+                        badge: .count(viewModel.model.mapLocationsPurchasableCount),
                         frameBinding: $viewModel.mapLocationButtonFrame
                     )
                     : nil,
