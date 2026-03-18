@@ -20,7 +20,7 @@ extension ArtifactDetailView: View {
                 ArtifactView(artifact: viewModel.artifact)
 
                 Text(viewModel.artifact.type.name)
-                    .font(.title)
+                    .font(.appTitle)
 
                 Spacer()
             }
@@ -29,7 +29,7 @@ extension ArtifactDetailView: View {
             VStack(alignment: .leading, spacing: 8) {
                 HStack {
                     Text("Quality:")
-                        .font(.headline)
+                        .font(.appSubheadline)
                     Text(viewModel.artifact.quality.name)
                         .foregroundStyle(viewModel.artifact.quality.color)
                         .bold()
@@ -37,7 +37,7 @@ extension ArtifactDetailView: View {
                 }
 
                 Text(viewModel.artifact.type.description)
-                    .font(.subheadline)
+                    .font(.appSubheadline)
                     .foregroundStyle(.secondary)
 
                 Text(viewModel.artifact.bonusMessage)

@@ -25,7 +25,7 @@ import SwiftUI
                         size: .small
                     )
                     Text(quantityString(costItem: costItem))
-                        .font(.caption)
+                        .font(.appCaption)
                         .foregroundStyle(
                             itemQuantity(costItem.item) >= costItem.quantity ? Color.green : Color.red
                         )

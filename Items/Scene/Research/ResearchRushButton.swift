@@ -19,7 +19,7 @@ struct ResearchRushButton: View {
                     Image(systemName: "bolt.fill")
                         .imageScale(.medium)
                     Text("Rush")
-                        .font(.headline)
+                        .font(.appButton)
 
                 }
                 costView
@@ -44,7 +44,7 @@ struct ResearchRushButton: View {
                 size: .small
             )
             Text("×\(cost)")
-                .font(.subheadline)
+                .font(.appSubheadline)
         }
     }
 }

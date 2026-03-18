@@ -63,7 +63,7 @@ extension DebugView: View {
     private var mainStoreResetSection: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("MainStore Reset")
-                .font(.headline)
+                .font(.appTitle)
 
             LazyVGrid(
                 columns: [
@@ -107,7 +107,7 @@ private struct DebuggerConnectionSection: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Debugger connection")
-                .font(.headline)
+                .font(.appTitle)
             TextField("Host", text: Binding(
                 get: { service.host },
                 set: { service.host = $0 }

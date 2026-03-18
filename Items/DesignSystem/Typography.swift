@@ -4,6 +4,7 @@ struct Typography {
 
     static let largeTitle: Font = FontName.bold.font(30)
     static let title: Font = FontName.semibold.font(24)
+    static let sectionTitle: Font = FontName.semibold.font(20)
     static let subheadline: Font = FontName.regular.font(15)
     static let body: Font = FontName.regular.font(16)
     static let caption: Font = FontName.regular.font(12)
@@ -14,6 +15,7 @@ struct Typography {
 extension Font {
     static var appLargeTitle: Font { Typography.largeTitle }
     static var appTitle: Font { Typography.title }
+    static var appSectionTitle: Font { Typography.sectionTitle }
     static var appSubheadline: Font { Typography.subheadline }
     static var appBody: Font { Typography.body }
     static var appCaption: Font { Typography.caption }

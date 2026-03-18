@@ -32,7 +32,7 @@ extension AchievementDetailsView: View {
                     border: Color.gray,
                 )
                 Text(viewModel.achievement.name)
-                    .font(.title)
+                    .font(.appTitle)
                 Spacer()
             }
 

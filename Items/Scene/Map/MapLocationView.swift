@@ -55,23 +55,23 @@ extension MapLocationView: View {
         return VStack(alignment: .leading, spacing: 6) {
             HStack {
                 Text(location.name)
-                    .font(.headline)
+                    .font(.appTitle)
 
                 if selected {
                     Text("Selected")
-                        .font(.caption2)
+                        .font(.appCaption)
                         .padding(.horizontal, 6)
                         .padding(.vertical, 2)
                         .background(Color.accentColor.opacity(0.15), in: Capsule())
                 } else if unlocked {
                     Text("Unlocked")
-                        .font(.caption2)
+                        .font(.appCaption)
                         .padding(.horizontal, 6)
                         .padding(.vertical, 2)
                         .background(Color.green.opacity(0.15), in: Capsule())
                 } else {
                     Text("Locked")
-                        .font(.caption2)
+                        .font(.appCaption)
                         .padding(.horizontal, 6)
                         .padding(.vertical, 2)
                         .background(Color.gray.opacity(0.15), in: Capsule())
@@ -79,7 +79,7 @@ extension MapLocationView: View {
             }
 
             Text(details.description)
-                .font(.caption)
+                .font(.appCaption)
                 .foregroundStyle(.secondary)
 
             if !details.cost.isEmpty {

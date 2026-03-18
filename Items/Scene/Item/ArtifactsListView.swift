@@ -38,7 +38,7 @@ struct ArtifactsListView: View {
     private func qualitySection(quality: ItemQuality, artifacts: [Artifact]) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(quality.name)
-                .font(.headline)
+                .font(.appSectionTitle)
                 .foregroundStyle(quality.color)
                 .padding(.horizontal, 16)
 
@@ -54,7 +54,7 @@ struct ArtifactsListView: View {
     private func undiscoveredSection(artifacts: [Artifact]) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Not discovered")
-                .font(.headline)
+                .font(.appSectionTitle)
                 .foregroundStyle(.secondary)
                 .padding(.horizontal, 16)
 

@@ -42,7 +42,7 @@ extension EssenceBreakdownView: View {
     private var filterSection: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Quality filter")
-                .font(.headline)
+                .font(.appTitle)
             Picker("Quality", selection: Binding(
                 get: { viewModel.selectedQualityFilter },
                 set: { viewModel.selectedQualityFilter = $0 }
@@ -78,7 +78,7 @@ extension EssenceBreakdownView: View {
             .accessibilityValue(segments.map { "\($0.0.name): \($0.1)" }.joined(separator: ", "))
         } else {
             Text("No essences for this quality")
-                .font(.subheadline)
+                .font(.appSubheadline)
                 .foregroundStyle(.secondary)
                 .frame(maxWidth: .infinity)
                 .frame(height: 120)
@@ -88,14 +88,14 @@ extension EssenceBreakdownView: View {
     private var legendSection: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Counts")
-                .font(.headline)
+                .font(.appTitle)
             ForEach(viewModel.essenceCounts, id: \.0) { essence, count in
                 HStack {
                     EssenceView(essence: essence)
                     Text(essence.name)
                         .frame(maxWidth: .infinity, alignment: .leading)
                     Text("\(count)")
-                        .font(.body.monospacedDigit())
+                        .font(.appBody.monospacedDigit())
                 }
                 .accessibilityElement(children: .combine)
                 .accessibilityLabel("\(essence.name): \(count)")

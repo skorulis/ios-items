@@ -83,7 +83,7 @@ extension SacrificeView: View {
     private var sacrificesToggleRow: some View {
         HStack {
             Text("Sacrifices enabled")
-                .font(.subheadline.weight(.medium))
+                .font(.appSubheadline.weight(.semibold))
             Spacer()
             Toggle("", isOn: Binding(
                 get: { viewModel.model.sacrificesEnabled },

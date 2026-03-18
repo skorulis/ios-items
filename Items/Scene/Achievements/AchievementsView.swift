@@ -43,7 +43,7 @@ extension AchievementsView: View {
                 if let achievementsInQuality = grouped[quality], !achievementsInQuality.isEmpty {
                     VStack(alignment: .leading, spacing: 8) {
                         Text(quality.name)
-                            .font(.headline)
+                            .font(.appSectionTitle)
                             .foregroundStyle(quality.color)
                             .padding(.horizontal, 16)
 

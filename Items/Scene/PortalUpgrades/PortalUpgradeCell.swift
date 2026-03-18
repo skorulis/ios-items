@@ -27,7 +27,7 @@ extension PortalUpgradeCell: View {
                         .frame(width: 24, height: 24)
                 }
                 Text(upgrade.name)
-                    .font(.headline)
+                    .font(.appSectionTitle)
                 Spacer()
                 Button(action: onInfo) {
                     Image(systemName: "info.circle")
@@ -35,7 +35,7 @@ extension PortalUpgradeCell: View {
                 .buttonStyle(.borderless)
             }
             Text(upgrade.description)
-                .font(.caption)
+                .font(.appCaption)
                 .foregroundStyle(.secondary)
 
             HStack(spacing: 8) {

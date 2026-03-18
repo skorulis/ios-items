@@ -32,7 +32,7 @@ extension ItemPicker: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             Text(title)
-                .font(.title2.weight(.semibold))
+                .font(.appTitle)
                 .foregroundStyle(.primary)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 20)

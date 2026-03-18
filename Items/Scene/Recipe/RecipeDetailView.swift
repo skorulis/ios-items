@@ -34,10 +34,10 @@ extension RecipeDetailView: View {
     private var header: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text("Creation")
-                .font(.title2.weight(.semibold))
+                .font(.appTitle)
             if !viewModel.model.plan.consumedItems.isEmpty {
                 Text(recipeDescription)
-                    .font(.subheadline)
+                    .font(.appSubheadline)
                     .foregroundStyle(.secondary)
             }
         }
@@ -51,7 +51,7 @@ extension RecipeDetailView: View {
     private var qualitySection: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Quality chances")
-                .font(.headline)
+                .font(.appTitle)
 
             ForEach(viewModel.model.qualityChances, id: \.0) { quality, chance in
                 HStack {
@@ -60,7 +60,7 @@ extension RecipeDetailView: View {
                         .bold()
                         .foregroundStyle(quality.color)
                     Text(formatPercentage(chance))
-                        .font(.body.monospacedDigit())
+                        .font(.appBody.monospacedDigit())
                         .frame(alignment: .trailing)
                 }
             }
@@ -75,7 +75,7 @@ extension RecipeDetailView: View {
 
             VStack(alignment: .leading, spacing: 8) {
                 Text("Essence bonuses")
-                    .font(.headline)
+                    .font(.appTitle)
 
                 ForEach(nonZeroBonuses, id: \.0) { essence, boost in
                     HStack {
@@ -85,7 +85,7 @@ extension RecipeDetailView: View {
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                         Text(formatMultiplier(boost))
-                            .font(.body.monospacedDigit())
+                            .font(.appBody.monospacedDigit())
                             .frame(alignment: .trailing)
                     }
                 }

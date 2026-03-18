@@ -96,7 +96,7 @@ extension PortalUpgradesView: View {
                         .frame(width: 24, height: 24)
                 }
                 Text(upgrade.name)
-                    .font(.headline)
+                    .font(.appSectionTitle)
                 Spacer()
                 Button(
                     action: { viewModel.showUpgradeInfo(upgrade) },
@@ -107,7 +107,7 @@ extension PortalUpgradesView: View {
                 .buttonStyle(.borderless)
             }
             Text(upgrade.description)
-                .font(.caption)
+                .font(.appCaption)
                 .foregroundStyle(.secondary)
         }
         .frame(maxWidth: .infinity, alignment: .leading)

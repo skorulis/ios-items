@@ -13,7 +13,7 @@ struct ArtifactPickerView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             Text("Choose artifact")
-                .font(.headline)
+                .font(.appTitle)
                 .padding(.horizontal, 16)
 
             ScrollView {

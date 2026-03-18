@@ -40,11 +40,11 @@ extension GameStatisticsView: View {
     private func statRow(name: String, value: String, index: Int) -> some View {
         HStack(alignment: .firstTextBaseline) {
             Text(name)
-                .font(.body)
+                .font(.appBody)
                 .foregroundStyle(.primary)
             Spacer(minLength: 16)
             Text(value)
-                .font(.body.monospacedDigit())
+                .font(.appBody.monospacedDigit())
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.trailing)
         }

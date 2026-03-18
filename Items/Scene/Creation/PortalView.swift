@@ -182,7 +182,7 @@ struct PortalCornerButton: View {
         switch badge {
         case let .count(value) where value > 0:
             Text("\(value)")
-                .font(.caption2.bold())
+                .font(.appMonospaceBadge)
                 .foregroundStyle(.white)
                 .frame(minWidth: 18, minHeight: 18)
         case let .icon(image):
@@ -190,7 +190,6 @@ struct PortalCornerButton: View {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .padding(4)
-                .font(.caption2.bold())
                 .frame(width: 18, height: 18)
                 .foregroundStyle(.white)
         default:

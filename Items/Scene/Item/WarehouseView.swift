@@ -69,7 +69,7 @@ struct WarehouseView: View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(spacing: 8) {
                 Text("Equipped")
-                    .font(.headline)
+                    .font(.appTitle)
 
                 Button(action: viewModel.showArtifactBonusesInfo) {
                     Image(systemName: "info.circle")
@@ -106,7 +106,7 @@ struct WarehouseView: View {
                    itemsInQuality.contains(where: { viewModel.warehouse.hasDiscovered($0) }) {
                     VStack(alignment: .leading, spacing: 8) {
                         Text(quality.name)
-                            .font(.headline)
+                            .font(.appSectionTitle)
                             .foregroundStyle(quality.color)
                             .padding(.horizontal, 16)
 
@@ -126,13 +126,16 @@ struct WarehouseView: View {
     @ViewBuilder
     private func cell(item: BaseItem) -> some View {
         if viewModel.warehouse.hasDiscovered(item) {
-            Button(action: {viewModel.pressed(item: item)}) {
-                ItemGridCell(
-                    item: item,
-                    quantity: viewModel.warehouse.quantity(item),
-                    showNewBadge: viewModel.isNew(item: item)
-                )
-            }
+            Button(
+                action: {viewModel.pressed(item: item)},
+                label: {
+                    ItemGridCell(
+                        item: item,
+                        quantity: viewModel.warehouse.quantity(item),
+                        showNewBadge: viewModel.isNew(item: item)
+                    )
+                }
+            )
         } else {
             AvatarView.emptyState(size: .medium)
                 .grayscale(0.9)
@@ -147,13 +150,16 @@ struct WarehouseView: View {
     }
 
     private var essenceBreakdownButton: some View {
-        Button(action: { viewModel.showEssenceBreakdown() }) {
-            Image(systemName: "chart.pie")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 24, height: 24)
-                .foregroundStyle(Color.black)
-        }
+        Button(
+            action: { viewModel.showEssenceBreakdown() },
+            label: {
+                Image(systemName: "chart.pie")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 24, height: 24)
+                    .foregroundStyle(Color.black)
+            }
+        )
     }
 
     private var helpButton: some View {

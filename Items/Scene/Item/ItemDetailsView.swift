@@ -56,7 +56,7 @@ extension ItemDetailsView: View {
         VStack(alignment: .leading, spacing: 0) {
             essences
             Text(item.name)
-                .font(.title)
+                .font(.appTitle)
         }
     }
 
