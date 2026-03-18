@@ -22,6 +22,7 @@ struct ItemsApp: App {
     var body: some Scene {
         WindowGroup {
             content
+                .font(.appBody)
         }
     }
 

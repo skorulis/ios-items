@@ -101,9 +101,7 @@ extension AvatarView: View {
     private var maybeBadge: some View {
         if let badge {
             Text(badge)
-                .monospaced()
-                .bold()
-                .font(.subheadline)
+                .font(.appMonospaceBadge)
                 .foregroundStyle(Color.white)
                 .padding(2)
                 .background(Capsule())
@@ -138,11 +136,11 @@ extension AvatarView.Size {
     var font: Font {
         switch self {
         case .small:
-            return .body
+            return .appBody
         case .medium:
-            return .title
+            return .appTitle
         case .large:
-            return .largeTitle
+            return .appLargeTitle
         }
     }
 }

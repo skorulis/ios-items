@@ -9,7 +9,7 @@ struct CapsuleButtonStyle: ButtonStyle {
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .font(.headline)
+            .font(.appButton)
             .foregroundStyle(foreground)
             .padding(padding)
             .background(

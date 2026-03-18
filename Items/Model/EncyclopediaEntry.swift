@@ -85,7 +85,7 @@ extension EncyclopediaEntry {
                 Self.warehouse,
                 Self.essences,
                 Self.artifacts,
-                Self.locations,
+                Self.locations
             ]
         )
     }

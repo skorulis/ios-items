@@ -29,12 +29,13 @@ public struct ChevronRow<Leading: View>: View {
                 leading
                 VStack(alignment: .leading, spacing: 2) {
                     Text(title)
+                        .font(.appBody)
                         .foregroundStyle(isEnabled ? .primary : .secondary)
                         .lineLimit(1)
                         .truncationMode(.tail)
                     if let subtitle {
                         Text(subtitle)
-                            .font(.subheadline)
+                            .font(.appSubheadline)
                             .foregroundStyle(isEnabled ? .secondary : .tertiary)
                             .lineLimit(1)
                             .truncationMode(.tail)
@@ -42,7 +43,7 @@ public struct ChevronRow<Leading: View>: View {
                 }
                 Spacer(minLength: 8)
                 Image(systemName: "chevron.forward")
-                    .font(.body.weight(.semibold))
+                    .font(.appCaption)
                     .foregroundStyle(isEnabled ? .primary : .secondary)
             }
             .padding(.vertical, 8)
@@ -56,7 +57,7 @@ public struct ChevronRow<Leading: View>: View {
     private struct PressableRowStyle: ButtonStyle {
         var pressedBackground: Color = Color.secondary.opacity(0.12)
         var normalBackground: Color = .clear
-        
+
         @Environment(\.margin) private var margin
 
         func makeBody(configuration: Configuration) -> some View {

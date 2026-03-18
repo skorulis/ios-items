@@ -45,7 +45,7 @@ public struct TitleBar<TrailingIcon: View>: View {
                 maybeBackButton
 
                 Text(title)
-                    .font(.title)
+                    .font(.appTitle)
                 Spacer()
                 trailing()
             }
