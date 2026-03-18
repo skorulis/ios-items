@@ -6,6 +6,7 @@ import Foundation
 public enum MapLocation: String, CaseIterable, Identifiable, Hashable, Codable {
     case vesprium
     case semilTradingPost
+    case palaceGardens
 
     public var id: Self { self }
 
@@ -41,6 +42,21 @@ public enum MapLocation: String, CaseIterable, Identifiable, Hashable, Codable {
                 cost: [
                     UpgradeCostItem(item: .mapFragment, quantity: 1),
                     UpgradeCostItem(item: .silverFlorin, quantity: 1)
+                ]
+            )
+        case .palaceGardens:
+            return LocationDetails(
+                description: "An elegant palace overgrown with ornamental gardens, where stone paths wind between blooming terraces.",
+                essenceMultipliers: [
+                    .life: 1.5,
+                    .earth: 1.2,
+                    .dark: 0,
+                    .technology: 0
+                ],
+                uniqueItems: [],
+                cost: [
+                    UpgradeCostItem(item: .mapFragment, quantity: 5),
+                    UpgradeCostItem(item: .silverFlorin, quantity: 5)
                 ]
             )
         }
