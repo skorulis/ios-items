@@ -29,7 +29,7 @@ public struct PageLayout<TitleBar: View, Content: View, Footer: View>: View {
             }
             .background(Color.white)
             footer()
-                .padding(.horizontal, 16)
+                .margin()
                 .padding(.vertical, 8)
         }
         .navigationBarHidden(true)

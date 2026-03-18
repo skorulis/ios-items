@@ -27,7 +27,7 @@ extension EncyclopediaView: View {
                 .multilineTextAlignment(.leading)
             children
         }
-        .padding(.horizontal, 16)
+        .margin()
     }
 
     private var children: some View {

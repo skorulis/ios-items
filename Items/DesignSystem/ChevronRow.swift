@@ -56,13 +56,15 @@ public struct ChevronRow<Leading: View>: View {
     private struct PressableRowStyle: ButtonStyle {
         var pressedBackground: Color = Color.secondary.opacity(0.12)
         var normalBackground: Color = .clear
-        var cornerRadius: CGFloat = 12
+        
+        @Environment(\.margin) private var margin
 
         func makeBody(configuration: Configuration) -> some View {
             configuration.label
                 .background(
-                    RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+                    Rectangle()
                         .fill(configuration.isPressed ? pressedBackground : normalBackground)
+                        .padding(.horizontal, -(margin ?? 0))
                 )
         }
     }
@@ -89,27 +91,20 @@ public extension ChevronRow where Leading == EmptyView {
 
 struct ChevronRow_Previews: PreviewProvider {
     static var previews: some View {
-        Group {
-            List {
-                ChevronRow(title: "Settings") {}
-                ChevronRow(title: "Profile", subtitle: "View and edit") {}
-            }
-            .listStyle(.insetGrouped)
-            .previewDisplayName("ChevronRow - Title only")
+        VStack(spacing: 0) {
+            ChevronRow(title: "Settings") {}
+            ChevronRow(title: "Profile", subtitle: "View and edit") {}
 
-            List {
-                ChevronRow(
-                    title: "With icon",
-                    leading: {
-                        Image(systemName: "wifi")
-                            .foregroundStyle(.blue)
-                            .frame(width: 28, height: 28)
-                    },
-                    action: {}
-                )
-            }
-            .listStyle(.insetGrouped)
-            .previewDisplayName("ChevronRow - With leading")
+            ChevronRow(
+                title: "With icon",
+                leading: {
+                    Image(systemName: "wifi")
+                        .foregroundStyle(.blue)
+                        .frame(width: 28, height: 28)
+                },
+                action: {}
+            )
         }
+        .margin()
     }
 }
