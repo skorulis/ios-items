@@ -26,7 +26,7 @@ public enum Artifact: Identifiable, Hashable, CaseIterable, Codable {
         case .chargedQuartz:
             return "A glowing piece of quartz that emits a regular pulse"
         case .luckyCoin:
-            return "A coin blessed with fortune, increasing the chance of multiple item rewards."
+            return "A coin blessed with fortune, increasing the chance of duplicate item rewards."
         case .perfectLens:
             return "A flawless lens that boosts research."
         case .sacrificalSkull:
@@ -139,7 +139,7 @@ public extension ArtifactInstance {
         case .essenceFlask:
             return .artifactDiscovery(type.essenceFlaskArtifactDiscoveryBoost(quality: quality))
         case .luckyCoin:
-            return .multipleItemChance(type.luckyCoinMultipleItemChance(quality: quality))
+            return .duplicateItemChance(type.luckyCoinMultipleItemChance(quality: quality))
         default:
             return nil
         }

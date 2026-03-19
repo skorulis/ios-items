@@ -52,7 +52,7 @@ final class CalculationsService: ObservableObject {
         return max(value, 100)
     }
 
-    /// Raw multiple-item chance as a fraction (e.g. 1.5 = 150% = 1 guaranteed extra + 50% for another).
+    /// Raw duplicate-item chance as a fraction (e.g. 1.5 = 150% = 1 guaranteed extra + 50% for another).
     /// Use this for determining how many items to create; can exceed 1.
     func multipleItemChanceFraction(item: BaseItem) -> Double {
         let level = Double(mainStore.lab.currentLevel(item: item))
@@ -60,8 +60,8 @@ final class CalculationsService: ObservableObject {
         if let coin = mainStore.warehouse.equippedArtifact(.luckyCoin) {
             fraction += Double(coin.type.luckyCoinMultipleItemChance(quality: coin.quality)) / 100
         }
-        fraction += Double(mainStore.portalUpgrades.bonuses.multipleItemChance) / 100
-        fraction += Double(mainStore.achievements.bonuses.multipleItemChance) / 100
+        fraction += Double(mainStore.portalUpgrades.bonuses.duplicateItemChance) / 100
+        fraction += Double(mainStore.achievements.bonuses.duplicateItemChance) / 100
         return max(0, fraction)
     }
 

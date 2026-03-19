@@ -32,7 +32,7 @@ extension ItemDetailsView: View {
                         .foregroundStyle(item.quality.color)
                 }
                 researchProgress
-                Text("Multiple item chance: \(viewModel.model.details.doubleChance)")
+                Text("Duplicate item chance: \(viewModel.model.details.doubleChance)")
                 artifactSection
 
                 if let lore = combinedLore {

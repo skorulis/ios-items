@@ -228,7 +228,7 @@ public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable, 
         case .researchLevel5, .research10:
             return .researchSpeed(5)
         case .doubleItems10, .doubleItems100, .doubleItems1000:
-            return .multipleItemChance(5)
+            return .duplicateItemChance(5)
         default:
             return nil
         }

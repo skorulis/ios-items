@@ -13,7 +13,7 @@ public enum Bonus {
     /// Reduction (in milliseconds) to the automatic item creation cycle time.
     case automaticItemCreationTimeReduction(Int)
     /// Extra percent chance to create two items from one sacrifice (stacks additively with lab level and lucky coin).
-    case multipleItemChance(Int)
+    case duplicateItemChance(Int)
     /// Maximum claimable offline progress time in minutes (stacks across upgrades).
     case offlineTimeMinutes(Int)
 
@@ -33,8 +33,8 @@ public enum Bonus {
             return "Boost artifact discovery chance by \(percent)%"
         case let .automaticItemCreationTimeReduction(milliseconds):
             return "Reduces automatic item creation time by \(milliseconds) milliseconds"
-        case let .multipleItemChance(percent):
-            return "Boost multiple item chance by \(percent)%"
+        case let .duplicateItemChance(percent):
+            return "Boost duplicate item chance by \(percent)%"
         case let .offlineTimeMinutes(minutes):
             return "Add \(minutes) minutes of claimable offline progress"
         }
@@ -91,9 +91,9 @@ public enum Bonus {
         return 0
     }
 
-    /// Percent added to double-item roll chance. Nil-equivalent is 0 for other bonus types.
-    public var multipleItemChancePercent: Int {
-        if case let .multipleItemChance(int) = self { return int }
+    /// Percent added to duplicate-item roll chance. Nil-equivalent is 0 for other bonus types.
+    public var duplicateItemChancePercent: Int {
+        if case let .duplicateItemChance(int) = self { return int }
         return 0
     }
 
@@ -122,9 +122,9 @@ public extension Array where Element == Bonus {
         return self.map { $0.automaticItemCreationTimeReductionMilliseconds }.reduce(0, +)
     }
 
-    /// Total percent added to multiple-item (double drop) chance from bonuses.
-    var multipleItemChance: Int {
-        return self.map { $0.multipleItemChancePercent }.reduce(0, +)
+    /// Total percent added to duplicate-item (double drop) chance from bonuses.
+    var duplicateItemChance: Int {
+        return self.map { $0.duplicateItemChancePercent }.reduce(0, +)
     }
 
     /// Total claimable offline progress time in minutes (sum of all offline time bonuses).
