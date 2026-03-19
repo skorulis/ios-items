@@ -112,6 +112,8 @@ struct TradingPostView: View {
 
     private func tradeCard(for trade: TradingPostTrade) -> some View {
         let remaining = viewModel.remainingExecutions(for: trade)
+        let missing = viewModel.missingFromItemCount(for: trade)
+        let rarityColor = trade.fromItem.quality.color
 
         return VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 14) {
@@ -153,19 +155,32 @@ struct TradingPostView: View {
                     .font(.appMonospaceBadge)
             }
 
-            Button(action: { viewModel.execute(trade: trade) }) {
-                Text(remaining > 0 ? "Trade" : "Unavailable")
-                    .frame(maxWidth: .infinity)
-            }
-            .buttonStyle(.borderedProminent)
-            .disabled(remaining == 0)
+            tradeButton(trade: trade)
         }
         .padding(14)
         .background(Color.white.opacity(0.9), in: RoundedRectangle(cornerRadius: 14))
         .overlay(
             RoundedRectangle(cornerRadius: 14)
-                .stroke(Color.black.opacity(0.08), lineWidth: 1)
+                .stroke(rarityColor.opacity(0.25), lineWidth: 1)
         )
+    }
+    
+    private func tradeButton(trade: TradingPostTrade) -> some View {
+        let remaining = viewModel.remainingExecutions(for: trade)
+        let missing = viewModel.missingFromItemCount(for: trade)
+        return Button(
+            action: { viewModel.execute(trade: trade) },
+            label: {
+                Text(
+                    remaining > 0
+                        ? "Trade"
+                        : (missing > 0 ? "Missing \(missing) items" : "Unavailable")
+                )
+                    .frame(maxWidth: .infinity)
+            }
+        )
+        .buttonStyle(.borderedProminent)
+        .disabled(remaining == 0)
     }
 }
 

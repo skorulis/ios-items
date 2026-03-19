@@ -102,6 +102,14 @@ final class TradingPostViewModel: CoordinatorViewModel {
         remainingExecutions(for: trade) > 0
     }
 
+    /// How many additional `fromItem`s are needed to perform at least one execution of this trade.
+    /// Returns 0 if the player has enough items for one execution.
+    func missingFromItemCount(for trade: TradingPostTrade) -> Int {
+        let requiredForOneExecution = trade.fromQuantity
+        let available = warehouse.quantity(trade.fromItem)
+        return max(0, requiredForOneExecution - available)
+    }
+
     func execute(trade: TradingPostTrade) {
         guard canExecute(trade: trade) else { return }
         tradingPostService.executeTrade(tradeID: trade.id)
