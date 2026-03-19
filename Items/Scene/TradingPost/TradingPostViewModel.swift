@@ -63,17 +63,11 @@ final class TradingPostViewModel: CoordinatorViewModel {
 
         // Refresh immediately if the list is empty.
         // Only reset manual-refresh cost escalation when we're actually doing the hourly auto refresh.
-        if mainStore.tradingPost.trades.isEmpty {
-            refreshTrades(
-                consumeSigil: false,
-                autoRefreshHour: isAutoRefreshForThisHour ? nil : currentHour
-            )
-        } else if !isAutoRefreshForThisHour {
-            // Hourly auto refresh: free and resets the manual refresh cost escalation.
-            refreshTrades(consumeSigil: false, autoRefreshHour: currentHour)
+        if mainStore.tradingPost.trades.isEmpty || !isAutoRefreshForThisHour {
+            tradingPostService.refreshTrades(manual: false)
         }
 
-        nextAutoRefreshHourStart = nextHourStart(from: now)
+        nextAutoRefreshHourStart = tradingPostService.nextHourStart(from: now)
         updateCountdown(now: now)
         startAutoRefreshCountdown()
     }
@@ -96,26 +90,7 @@ final class TradingPostViewModel: CoordinatorViewModel {
     }
 
     func refreshTrades() {
-        refreshTrades(consumeSigil: true)
-    }
-
-    private func refreshTrades(consumeSigil: Bool, autoRefreshHour: Date? = nil) {
-        var tradingPost = mainStore.tradingPost
-
-        if consumeSigil {
-            guard canRefreshTrades else { return }
-            warehouseService.remove(item: .merchantSigil, quantity: currentRefreshCostSigil)
-            tradingPost.manualRefreshCount += 1
-        } else if let autoRefreshHour {
-            // Hourly scheduled refresh: free, resets manual refresh escalation.
-            tradingPost.manualRefreshCount = 0
-            tradingPost.lastAutoRefreshHour = autoRefreshHour
-        }
-
-        let newTrades = tradingPostService.generateTrades()
-
-        tradingPost.trades = newTrades
-        mainStore.tradingPost = tradingPost
+        tradingPostService.refreshTrades(manual: true)
     }
 
     func remainingExecutions(for trade: TradingPostTrade) -> Int {
@@ -151,11 +126,6 @@ final class TradingPostViewModel: CoordinatorViewModel {
         return cal.date(from: comps) ?? date
     }
 
-    private func nextHourStart(from date: Date) -> Date {
-        let cal = Calendar.current
-        return cal.date(byAdding: .hour, value: 1, to: hourStart(for: date)) ?? date.addingTimeInterval(3600)
-    }
-
     private func updateCountdown(now: Date) {
         guard let next = nextAutoRefreshHourStart else { return }
         secondsUntilNextAutoRefresh = max(0, Int(ceil(next.timeIntervalSince(now))))
@@ -177,7 +147,7 @@ final class TradingPostViewModel: CoordinatorViewModel {
         updateCountdown(now: now)
 
         guard let next = nextAutoRefreshHourStart else {
-            nextAutoRefreshHourStart = nextHourStart(from: now)
+            nextAutoRefreshHourStart = tradingPostService.nextHourStart(from: now)
             return
         }
 
@@ -188,10 +158,10 @@ final class TradingPostViewModel: CoordinatorViewModel {
         guard mainStore.tradingPost.lastAutoRefreshHour != currentHour else { return }
 
         // This is always a free refresh (hourly schedule).
-        refreshTrades(consumeSigil: false, autoRefreshHour: currentHour)
+        tradingPostService.refreshTrades(manual: false)
 
         // Roll the countdown forward; the next tick will update the displayed remaining time.
-        nextAutoRefreshHourStart = nextHourStart(from: now)
+        nextAutoRefreshHourStart = tradingPostService.nextHourStart(from: now)
         secondsUntilNextAutoRefresh = 0
     }
 }

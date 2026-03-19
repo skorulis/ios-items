@@ -27,6 +27,34 @@ final class TradingPostService {
         ].reduce(0, +)
         return baseTradeCount + extraTrades
     }
+    
+    func refreshTrades(manual: Bool) {
+        var tradingPost = mainStore.tradingPost
+        
+        if manual {
+            let cost = mainStore.tradingPost.manualRefreshCount + 1
+            guard mainStore.warehouse.quantity(.merchantSigil) > cost else { return }
+            warehouseService.remove(item: .merchantSigil, quantity: cost)
+            mainStore.tradingPost.manualRefreshCount += 1
+        } else  {
+            // Hourly scheduled refresh: free, resets manual refresh escalation.
+            tradingPost.manualRefreshCount = 0
+            tradingPost.lastAutoRefreshHour = hourStart(for: Date())
+        }
+        tradingPost.trades = generateTrades()
+        mainStore.tradingPost = tradingPost
+    }
+    
+    func nextHourStart(from date: Date) -> Date {
+        let cal = Calendar.current
+        return cal.date(byAdding: .hour, value: 1, to: hourStart(for: date)) ?? date.addingTimeInterval(3600)
+    }
+    
+    func hourStart(for date: Date) -> Date {
+        let cal = Calendar.current
+        let comps = cal.dateComponents([.year, .month, .day, .hour], from: date)
+        return cal.date(from: comps) ?? date
+    }
 
     func generateTrades() -> [TradingPostTrade] {
         let tradeCount = tradeCountForCurrentUpgrades()
