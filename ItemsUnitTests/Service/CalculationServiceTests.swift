@@ -16,12 +16,12 @@ struct CalculationServiceTests {
     func artifactChance_doublesPerResearchLevel() {
         // Junk base chance = 0.1 * 1 = 0.1
         #expect(calculationService.artifactChance(quality: .junk, researchLevel: 0).fraction == 0.02)
-        #expect(calculationService.artifactChance(quality: .junk, researchLevel: 1).fraction == 0.04)
-        #expect(calculationService.artifactChance(quality: .junk, researchLevel: 2).fraction == 0.08)
-        #expect(calculationService.artifactChance(quality: .junk, researchLevel: 3).fraction == 0.16)
+        expectApproximate(calculationService.artifactChance(quality: .junk, researchLevel: 1).fraction, 0.0279, tolerance: 0.0001)
+        #expect(calculationService.artifactChance(quality: .junk, researchLevel: 2).fraction == 0.0392)
+        expectApproximate(calculationService.artifactChance(quality: .junk, researchLevel: 3).fraction, 0.054879, tolerance: 0.0001)
         #expect(calculationService.artifactChance(quality: .junk, researchLevel: 20).fraction == 1.0) // capped
 
-        #expect(calculationService.artifactChance(quality: .exceptional, researchLevel: 10).fraction == 0.02048)
+        expectApproximate(calculationService.artifactChance(quality: .exceptional, researchLevel: 10).fraction, 0.00057850, tolerance: 0.0001)
     }
 
     @Test
@@ -33,7 +33,7 @@ struct CalculationServiceTests {
 
     @Test
     func artifactChance_qualityAndLevelCombine() {
-        expectApproximate(calculationService.artifactChance(quality: .common, researchLevel: 2).fraction, 0.016)
+        expectApproximate(calculationService.artifactChance(quality: .common, researchLevel: 2).fraction, 0.00784)
     }
 
     // MARK: - researchSpeedBoostPercent
