@@ -179,15 +179,15 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
         ]
         case .tradingPost: return [
             .init(item: .merchantSigil, quantity: 2),
-            .init(item: .goldFlorin, quantity: 5),
+            .init(item: .goldFlorin, quantity: 5)
         ]
         case .tradingPostLevel2: return [
             .init(item: .merchantSigil, quantity: 10),
-            .init(item: .goldFlorin, quantity: 10),
+            .init(item: .goldFlorin, quantity: 10)
         ]
         case .tradingPostLevel3: return [
             .init(item: .merchantSigil, quantity: 25),
-            .init(item: .goldFlorin, quantity: 10), // TODO: Update to 
+            .init(item: .goldFlorin, quantity: 10) // TODO: Update to 
         ]
         }
     }

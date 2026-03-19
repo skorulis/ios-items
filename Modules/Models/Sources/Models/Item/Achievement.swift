@@ -5,7 +5,7 @@ import SwiftUI
 
 public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable, Sendable {
     case items1
-    
+
     case artifact1
     case artifacts5
 

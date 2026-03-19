@@ -59,7 +59,7 @@ struct TradingPostView: View {
 
     private var autoRefreshCountdownRow: some View {
         HStack {
-            Text("Next free refresh in \(formatSeconds(viewModel.secondsUntilNextAutoRefresh))")
+            Text("Refreshes in \(formatSeconds(viewModel.secondsUntilNextAutoRefresh))")
                 .font(.appCaption)
                 .foregroundStyle(.secondary)
             Spacer(minLength: 0)

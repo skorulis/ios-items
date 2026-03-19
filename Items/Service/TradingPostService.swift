@@ -7,8 +7,16 @@ import Models
 /// Kept out of the view model so the UI just consumes persisted offers.
 final class TradingPostService {
     private let baseTradeCount = 3
-    private let fromQuantity = 5
-    private let toQuantity = 2
+    private let baseMaxFromQuantity = 5
+
+    /// Base conversion ratio range: 50% to 150%.
+    private let baseConversionRatioRange: ClosedRange<Double> = 0.5...1.5
+
+    /// Each additional Trading Post upgrade level gives a 25% boost to conversion ratio.
+    private let conversionBoostPerLevelMultiplier: Double = 1.25
+
+    /// Ensures trades always grant at least 1 item.
+    private let minToQuantity: Int = 1
 
     private let mainStore: MainStore
     private let warehouseService: WarehouseService
@@ -27,16 +35,40 @@ final class TradingPostService {
         ].reduce(0, +)
         return baseTradeCount + extraTrades
     }
-    
+
+    private func tradingPostAdditionalLevels() -> Int {
+        let purchased = mainStore.portalUpgrades.purchased
+        // Level 2 and above are "additional levels" for ratio boosting.
+        return [
+            purchased.contains(.tradingPostLevel2) ? 1 : 0,
+            purchased.contains(.tradingPostLevel3) ? 1 : 0
+        ].reduce(0, +)
+    }
+
+    private func generateRandomQuantities() -> (fromQuantity: Int, toQuantity: Int) {
+        let additionalLevels = tradingPostAdditionalLevels()
+        let maxFromQuantity = baseMaxFromQuantity + additionalLevels
+
+        let fromQuantity = Int.random(in: 1...maxFromQuantity)
+
+        let baseRatio = Double.random(in: baseConversionRatioRange)
+        // "25% boost per level" interpreted as linear: multiplier = 1 + 0.25 * levels.
+        let additionalMultiplier = 1.0 + ((conversionBoostPerLevelMultiplier - 1.0) * Double(additionalLevels))
+        let boostedRatio = baseRatio * additionalMultiplier
+
+        let rawToQuantity = Int(floor(Double(fromQuantity) * boostedRatio))
+        return (fromQuantity, max(minToQuantity, rawToQuantity))
+    }
+
     func refreshTrades(manual: Bool) {
         var tradingPost = mainStore.tradingPost
-        
+
         if manual {
             let cost = mainStore.tradingPost.manualRefreshCount + 1
             guard mainStore.warehouse.quantity(.merchantSigil) > cost else { return }
             warehouseService.remove(item: .merchantSigil, quantity: cost)
-            mainStore.tradingPost.manualRefreshCount += 1
-        } else  {
+            tradingPost.manualRefreshCount += 1
+        } else {
             // Hourly scheduled refresh: free, resets manual refresh escalation.
             tradingPost.manualRefreshCount = 0
             tradingPost.lastAutoRefreshHour = hourStart(for: Date())
@@ -44,12 +76,12 @@ final class TradingPostService {
         tradingPost.trades = generateTrades()
         mainStore.tradingPost = tradingPost
     }
-    
+
     func nextHourStart(from date: Date) -> Date {
         let cal = Calendar.current
         return cal.date(byAdding: .hour, value: 1, to: hourStart(for: date)) ?? date.addingTimeInterval(3600)
     }
-    
+
     func hourStart(for date: Date) -> Date {
         let cal = Calendar.current
         let comps = cal.dateComponents([.year, .month, .day, .hour], from: date)
@@ -74,6 +106,9 @@ final class TradingPostService {
                 return nil
             }
 
+            // Quantities are decided per trade offer.
+            let (fromQuantity, toQuantity) = generateRandomQuantities()
+
             let executableFromItems = candidatesInTier.filter { mainStore.warehouse.quantity($0) >= fromQuantity }
             let fromPool = (preferExecutableFromItems && !executableFromItems.isEmpty)
                 ? executableFromItems
@@ -87,8 +122,8 @@ final class TradingPostService {
                 fromItem: from,
                 toItem: to,
                 quantity: TradingPostTrade.maxExecutionsPerTrade,
-                fromQuantity: self.fromQuantity,
-                toQuantity: self.toQuantity,
+                fromQuantity: fromQuantity,
+                toQuantity: toQuantity,
             )
         }
 
