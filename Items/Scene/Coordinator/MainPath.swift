@@ -21,6 +21,7 @@ enum MainPath: CoordinatorPath {
     case encyclopediaEntry(EncyclopediaEntry)
     case gameStatistics
     case mapLocations
+    case mapLocationBonuses(MapLocation)
 
     case itemDetails(BaseItem)
     case artifactDetails(ArtifactInstance)
@@ -73,6 +74,8 @@ struct MainPathRenderer: CoordinatorPathRenderer {
             PortalUpgradesView(viewModel: coordinator.apply(resolver.portalUpgradesViewModel()))
         case .mapLocations:
             MapLocationView(viewModel: coordinator.apply(resolver.mapLocationViewModel()))
+        case let .mapLocationBonuses(location):
+            MapLocationBonusesDialogView(location: location)
         case .essenceBreakdown:
             EssenceBreakdownView(viewModel: coordinator.apply(resolver.essenceBreakdownViewModel()))
         case let .encyclopediaEntry(entry):

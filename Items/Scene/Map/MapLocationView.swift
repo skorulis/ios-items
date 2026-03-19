@@ -107,6 +107,13 @@ extension MapLocationView: View {
                         .padding(.vertical, 2)
                         .background(Color.accentColor.opacity(0.15), in: Capsule())
                 }
+                Spacer()
+                Button {
+                    viewModel.showBonuses(for: location)
+                } label: {
+                    Image(systemName: "info.circle")
+                }
+                .buttonStyle(.borderless)
             }
 
             Text(details.description)
@@ -132,8 +139,17 @@ extension MapLocationView: View {
         let details = location.details
 
         return VStack(alignment: .leading, spacing: 6) {
-            Text(location.name)
-                .font(.appTitle)
+            HStack {
+                Text(location.name)
+                    .font(.appTitle)
+                Spacer()
+                Button {
+                    viewModel.showBonuses(for: location)
+                } label: {
+                    Image(systemName: "info.circle")
+                }
+                .buttonStyle(.borderless)
+            }
 
             Text(details.description)
                 .font(.appCaption)

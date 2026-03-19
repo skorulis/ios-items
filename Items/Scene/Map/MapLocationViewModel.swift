@@ -80,6 +80,10 @@ extension MapLocationViewModel {
         mainStore.mapLocations.selected = location
     }
 
+    func showBonuses(for location: MapLocation) {
+        coordinator?.custom(overlay: .card, MainPath.mapLocationBonuses(location))
+    }
+
     func pop() {
         coordinator?.pop()
     }
