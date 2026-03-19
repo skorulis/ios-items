@@ -29,6 +29,11 @@ final class ItemGeneratorService {
         )
     }
 
+    /// Total percent chance to generate extra item results from active bonuses.
+    func multipleItemsChancePercent() -> Int {
+        activeBonuses.multipleItemsChancePercent
+    }
+
     func makeAndStore(plan: SacrificePlan, allowArtifacts: Bool = true) -> [MakeItemResult] {
         let results = makeMultiple(plan: plan, allowArtifacts: allowArtifacts)
         for item in results {
@@ -123,10 +128,7 @@ final class ItemGeneratorService {
     }
 
     private var activeBonuses: [Bonus] {
-        let fromAchievements = Achievement.allCases
-            .filter { mainStore.achievements.unlocked.contains($0) }
-            .compactMap(\.bonus)
-        return fromAchievements + mainStore.portalUpgrades.bonuses
+        mainStore.activeBonuses
     }
 
     private func qualityBonuses(plan: SacrificePlan) -> [ItemQuality: Double] {

@@ -67,7 +67,7 @@ extension SacrificesButton: View {
             return .green
         }
         if satisfiedCount == 0 {
-            return .gray
+            return .red
         }
         return .yellow
     }

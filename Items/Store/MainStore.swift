@@ -3,6 +3,7 @@
 import ASKCore
 import Combine
 import Foundation
+import Models
 import Knit
 import KnitMacros
 
@@ -104,3 +105,12 @@ final class MainStore: ObservableObject {
     }
 }
 // swiftlint:enable force_try
+
+extension MainStore {
+    var activeBonuses: [Bonus] {
+        let fromAchievements = Achievement.allCases
+            .filter { achievements.unlocked.contains($0) }
+            .compactMap(\.bonus)
+        return fromAchievements + portalUpgrades.bonuses
+    }
+}

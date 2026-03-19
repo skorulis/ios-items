@@ -40,7 +40,7 @@ public enum Bonus {
         case let .offlineTimeMinutes(minutes):
             return "Add \(minutes) minutes of claimable offline progress"
         case let .multipleItems(percent):
-            return "Boost extra item chance by \(percent)%"
+            return "Boost additional item chance by \(percent)%"
         }
     }
 

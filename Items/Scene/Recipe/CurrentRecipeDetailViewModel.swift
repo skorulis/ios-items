@@ -16,7 +16,8 @@ final class CurrentRecipeDetailViewModel: RecipeDetailViewModel {
     var model: RecipeDetailView.Model = .init(
         plan: .init(itemsInOrder: []),
         qualityChances: [],
-        essenceBonuses: []
+        essenceBonuses: [],
+        multipleItemsChancePercent: 0
     )
 
     private var cancellables: Set<AnyCancellable> = []
@@ -43,10 +44,12 @@ final class CurrentRecipeDetailViewModel: RecipeDetailViewModel {
         let info = itemGeneratorService.recipeInfo(plan: plan)
         let qualityChances = Self.normalizedQualityChances(from: info.quality)
         let essenceBonuses = Self.sortedEssenceBonuses(from: info.essenceBoosts)
+        let multipleItemsChancePercent = itemGeneratorService.multipleItemsChancePercent()
         return RecipeDetailView.Model(
             plan: plan,
             qualityChances: qualityChances,
-            essenceBonuses: essenceBonuses
+            essenceBonuses: essenceBonuses,
+            multipleItemsChancePercent: multipleItemsChancePercent
         )
     }
 }

@@ -15,6 +15,7 @@ struct RecipeDetailView {
         let plan: SacrificePlan
         let qualityChances: [(ItemQuality, Double)]
         let essenceBonuses: [(Essence, Double)]
+        let multipleItemsChancePercent: Int
     }
 }
 
@@ -25,6 +26,7 @@ extension RecipeDetailView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             header
+            multipleItemsSection
             qualitySection
             essenceSection
         }
@@ -63,6 +65,19 @@ extension RecipeDetailView: View {
                         .font(.appBody.monospacedDigit())
                         .frame(alignment: .trailing)
                 }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var multipleItemsSection: some View {
+        if viewModel.model.multipleItemsChancePercent > 0 {
+            HStack {
+                Text("Extra item chance")
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                Text("\(viewModel.model.multipleItemsChancePercent)%")
+                    .font(.appBody.monospacedDigit())
+                    .frame(alignment: .trailing)
             }
         }
     }
