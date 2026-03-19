@@ -82,7 +82,7 @@ struct MainPathRenderer: CoordinatorPathRenderer {
         case .gameStatistics:
             GameStatisticsView(viewModel: coordinator.apply(resolver.gameStatisticsViewModel()))
         case let .itemDetails(item):
-            ItemDetailsView(viewModel: resolver.itemDetailsViewModel(item: item))
+            ItemDetailsView(viewModel: coordinator.apply(resolver.itemDetailsViewModel(item: item)))
         case let .artifactDetails(instance):
             ArtifactDetailView(viewModel: resolver.artifactDetailViewModel(artifact: instance))
         case let .artifactPicker(slot):

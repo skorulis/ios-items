@@ -67,7 +67,12 @@ extension ItemDetailsView: View {
                 HStack {
                     Text("Artifact:")
                     if let instance = viewModel.model.warehouse.artifactInstance(artifact) {
-                        ArtifactView(artifact: instance, size: .small)
+                        Button {
+                            viewModel.pressed(artifactInstance: instance)
+                        } label: {
+                            ArtifactView(artifact: instance, size: .small)
+                        }
+                        .buttonStyle(.plain)
                     } else {
                         Image(systemName: "questionmark.circle.dashed")
                     }

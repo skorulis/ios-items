@@ -2,12 +2,14 @@
 
 import Combine
 import Foundation
+import ASKCoordinator
 import Knit
 import KnitMacros
 import Models
 import SwiftUI
 
-@Observable final class ItemDetailsViewModel {
+@Observable final class ItemDetailsViewModel: CoordinatorViewModel {
+    weak var coordinator: ASKCoordinator.Coordinator?
 
     var model: ItemDetailsView.Model
 
@@ -73,6 +75,10 @@ extension ItemDetailsViewModel {
 
     func markItemViewed() {
         warehouseService.markItemViewed(model.item)
+    }
+
+    func pressed(artifactInstance: ArtifactInstance) {
+        coordinator?.custom(overlay: .card, MainPath.artifactDetails(artifactInstance))
     }
 
     /// True when this item has research information available.
