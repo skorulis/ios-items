@@ -18,7 +18,7 @@ public enum Bonus {
     case offlineTimeMinutes(Int)
     /// Percent chance to generate another item result per creation.
     case multipleItems(Int)
-    
+
     case sacrificePower(Int)
 
     public var text: String {

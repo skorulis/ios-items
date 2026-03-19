@@ -24,6 +24,7 @@ struct ItemsApp: App {
             content
                 .font(.appBody)
                 .dynamicTypeSize(..<DynamicTypeSize.accessibility1)
+                .colorScheme(.light)
         }
     }
 

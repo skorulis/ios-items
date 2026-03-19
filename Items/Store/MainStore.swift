@@ -111,7 +111,7 @@ extension MainStore {
         let fromAchievements = Achievement.allCases
             .filter { achievements.unlocked.contains($0) }
             .compactMap(\.bonus)
-        
+
         let artifacts = self.warehouse.artifactBonuses
         return fromAchievements + portalUpgrades.bonuses + artifacts
     }

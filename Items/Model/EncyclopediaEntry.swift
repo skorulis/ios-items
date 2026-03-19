@@ -127,7 +127,9 @@ extension EncyclopediaEntry {
         .init(
             title: "Portal Upgrades",
             body: """
-            You can use some of the items being pulled through the portal to add upgrades. This will help to access more of the hidden dimension
+            You can use some of the items that have been pulled through the portal to add upgrades.
+
+            This will help to access more of the hidden dimension
             """,
             condition: .itemsCreated(10),
             childItems: [],
