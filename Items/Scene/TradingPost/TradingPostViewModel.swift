@@ -14,12 +14,13 @@ final class TradingPostViewModel: CoordinatorViewModel {
 
     private var cancellables: Set<AnyCancellable> = []
 
-    private let refreshCostSigil = 1
+    private let baseRefreshCostSigil = 1
 
     private let tradingPostService: TradingPostService
 
     var warehouse: Warehouse
     var trades: [TradingPostTrade] = []
+    private var manualRefreshCount: Int = 0
 
     /// Countdown to the next scheduled free refresh (every hour on the hour mark).
     var secondsUntilNextAutoRefresh: Int = 0
@@ -37,6 +38,7 @@ final class TradingPostViewModel: CoordinatorViewModel {
         self.warehouseService = warehouseService
         self.warehouse = mainStore.warehouse
         self.trades = mainStore.tradingPost.trades
+        self.manualRefreshCount = mainStore.tradingPost.manualRefreshCount
         self.tradingPostService = tradingPostService
 
         mainStore.$warehouse
@@ -48,6 +50,7 @@ final class TradingPostViewModel: CoordinatorViewModel {
         mainStore.$tradingPost
             .sink { [unowned self] in
                 self.trades = $0.trades
+                self.manualRefreshCount = $0.manualRefreshCount
             }
             .store(in: &cancellables)
     }
@@ -56,8 +59,17 @@ final class TradingPostViewModel: CoordinatorViewModel {
         let now = Date()
         let currentHour = hourStart(for: now)
 
-        // If the hour hasn't been auto-refreshed yet (or the list is empty), refresh immediately for free.
-        if mainStore.tradingPost.trades.isEmpty || mainStore.tradingPost.lastAutoRefreshHour != currentHour {
+        let isAutoRefreshForThisHour = mainStore.tradingPost.lastAutoRefreshHour == currentHour
+
+        // Refresh immediately if the list is empty.
+        // Only reset manual-refresh cost escalation when we're actually doing the hourly auto refresh.
+        if mainStore.tradingPost.trades.isEmpty {
+            refreshTrades(
+                consumeSigil: false,
+                autoRefreshHour: isAutoRefreshForThisHour ? nil : currentHour
+            )
+        } else if !isAutoRefreshForThisHour {
+            // Hourly auto refresh: free and resets the manual refresh cost escalation.
             refreshTrades(consumeSigil: false, autoRefreshHour: currentHour)
         }
 
@@ -75,8 +87,12 @@ final class TradingPostViewModel: CoordinatorViewModel {
         warehouse.quantity(.merchantSigil)
     }
 
+    var currentRefreshCostSigil: Int {
+        baseRefreshCostSigil + manualRefreshCount
+    }
+
     var canRefreshTrades: Bool {
-        merchantSigilCount >= refreshCostSigil
+        merchantSigilCount >= currentRefreshCostSigil
     }
 
     func refreshTrades() {
@@ -84,20 +100,21 @@ final class TradingPostViewModel: CoordinatorViewModel {
     }
 
     private func refreshTrades(consumeSigil: Bool, autoRefreshHour: Date? = nil) {
+        var tradingPost = mainStore.tradingPost
+
         if consumeSigil {
             guard canRefreshTrades else { return }
-            warehouseService.remove(item: .merchantSigil, quantity: refreshCostSigil)
+            warehouseService.remove(item: .merchantSigil, quantity: currentRefreshCostSigil)
+            tradingPost.manualRefreshCount += 1
+        } else if let autoRefreshHour {
+            // Hourly scheduled refresh: free, resets manual refresh escalation.
+            tradingPost.manualRefreshCount = 0
+            tradingPost.lastAutoRefreshHour = autoRefreshHour
         }
 
         let newTrades = tradingPostService.generateTrades()
 
-        // Update persisted TradingPost state so trades remain stable
-        // between view model instances.
-        var tradingPost = mainStore.tradingPost
         tradingPost.trades = newTrades
-        if let autoRefreshHour {
-            tradingPost.lastAutoRefreshHour = autoRefreshHour
-        }
         mainStore.tradingPost = tradingPost
     }
 

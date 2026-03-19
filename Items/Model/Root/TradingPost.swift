@@ -7,14 +7,19 @@ public struct TradingPost: Codable, Equatable {
     public var trades: [TradingPostTrade] = []
     /// The hour start (local time) when the Trading Post was last auto-refreshed for free.
     /// Used to keep refresh behavior consistent across view model instances and app sessions.
-    public var lastAutoRefreshHour: Date? = nil
+    public var lastAutoRefreshHour: Date?
+    /// Number of manual sigil-based refreshes since the last auto refresh.
+    /// Current manual refresh cost is `1 + manualRefreshCount`.
+    public var manualRefreshCount: Int = 0
 
     public init(
         trades: [TradingPostTrade] = [],
-        lastAutoRefreshHour: Date? = nil
+        lastAutoRefreshHour: Date? = nil,
+        manualRefreshCount: Int = 0
     ) {
         self.trades = trades
         self.lastAutoRefreshHour = lastAutoRefreshHour
+        self.manualRefreshCount = manualRefreshCount
     }
 }
 

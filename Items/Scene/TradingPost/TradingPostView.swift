@@ -84,7 +84,7 @@ struct TradingPostView: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text("Merchant Sigil")
                     .font(.appSubheadline.weight(.semibold))
-                Text("Refresh costs 1 sigil")
+                Text("Refresh costs \(viewModel.currentRefreshCostSigil) sigil\(viewModel.currentRefreshCostSigil == 1 ? "" : "s")")
                     .font(.appCaption)
                     .foregroundStyle(.secondary)
             }
