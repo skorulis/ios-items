@@ -164,7 +164,7 @@ struct TradingPostView: View {
                 .stroke(rarityColor.opacity(0.25), lineWidth: 1)
         )
     }
-    
+
     private func tradeButton(trade: TradingPostTrade) -> some View {
         let remaining = viewModel.remainingExecutions(for: trade)
         let missing = viewModel.missingFromItemCount(for: trade)

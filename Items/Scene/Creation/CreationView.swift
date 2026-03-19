@@ -111,7 +111,7 @@ extension CreationView: View {
             maybeCreationAnimation
             sacrificeAvatarsOverlay
             CreatedItemView(
-                item: viewModel.model.createdItem,
+                items: viewModel.model.createdItem.map { [$0] } ?? [],
                 onDetailsTap: { viewModel.showDetails(item: $0) }
             )
             VStack {

@@ -18,7 +18,7 @@ import SwiftUI
 
     /// Snapshot of the current map location state.
     var mapLocations: MapLocations
-    
+
     var segment: MapLocationView.Segment = .purchased
 
     private let mainStore: MainStore

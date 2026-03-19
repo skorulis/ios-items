@@ -68,13 +68,13 @@ public enum MapLocation: String, CaseIterable, Identifiable, Hashable, Codable {
                 description: "A grand university where scholars study the workings of the nature.",
                 essenceMultipliers: [
                     .knowledge: 1.6,
-                    .technology: 1.2,
+                    .technology: 1.2
                 ],
                 uniqueItems: [],
                 cost: [
                     UpgradeCostItem(item: .mapFragment, quantity: 8),
                     UpgradeCostItem(item: .silverFlorin, quantity: 8),
-                    UpgradeCostItem(item: .book, quantity: 50),
+                    UpgradeCostItem(item: .book, quantity: 50)
                 ]
             )
         case .crystalMine:
