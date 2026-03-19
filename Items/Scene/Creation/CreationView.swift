@@ -110,7 +110,10 @@ extension CreationView: View {
             artifactSlotsOverlay
             maybeCreationAnimation
             sacrificeAvatarsOverlay
-            itemContainer
+            CreatedItemView(
+                item: viewModel.model.createdItem,
+                onDetailsTap: { viewModel.showDetails(item: $0) }
+            )
             VStack {
                 Spacer()
                 makeButtonRow
@@ -200,33 +203,6 @@ extension CreationView: View {
             }
         }
         .allowsHitTesting(false)
-    }
-
-    @ViewBuilder
-    private var itemContainer: some View {
-        if let item = viewModel.model.createdItem {
-            createdItem(item: item)
-        } else {
-            EmptyView()
-        }
-    }
-
-    @ViewBuilder
-    private func createdItem(item: MakeItemResult) -> some View {
-        switch item {
-        case let .base(baseItem, count):
-            Button(
-                action: { viewModel.showDetails(item: baseItem) },
-                label: {
-                    ItemView(
-                        item: baseItem,
-                        quantity: count > 1 ? count : nil,
-                    )
-                }
-            )
-        case let .artifact(instance):
-            ArtifactView(artifact: instance)
-        }
     }
 
     private var makeButtonRow: some View {

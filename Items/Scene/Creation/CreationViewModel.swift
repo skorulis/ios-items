@@ -189,8 +189,13 @@ extension CreationViewModel {
         coordinator?.custom(overlay: .circularReveal, path)
     }
 
-    func showDetails(item: BaseItem) {
-        coordinator?.custom(overlay: .card, MainPath.itemDetails(item))
+    func showDetails(item: MakeItemResult) {
+        switch item {
+        case let .base(item, _):
+            coordinator?.custom(overlay: .card, MainPath.itemDetails(item))
+        case let .artifact(artifact):
+            coordinator?.custom(overlay: .card, MainPath.artifactDetails(artifact))
+        }
     }
 
     func showResearch() {
