@@ -36,5 +36,13 @@ enum HelpStrings {
     The Trading Post lets you exchange items of the same quality tier for other items.
     Trade options will be randomly available and can be refreshed by spending Merchant Sigils.
     """
+
+    static let tradingPostLevel2 = """
+    Upgrading the Trading Post adds 1 extra trade offer each time the list is regenerated.
+    """
+
+    static let tradingPostLevel3 = """
+    Upgrading the Trading Post adds 1 extra trade offer each time the list is regenerated.
+    """
 }
 // swiftlint:enable line_length

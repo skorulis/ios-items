@@ -29,6 +29,8 @@ extension PortalUpgrade {
             return Image(systemName: "map.fill")
         case .tradingPost:
             return Image(systemName: "storefront")
+        case .tradingPostLevel2, .tradingPostLevel3:
+            return Image(systemName: "storefront")
         }
     }
 }

@@ -35,6 +35,10 @@ extension PortalUpgrade {
             """)
         case .tradingPost:
             return .init(bodyText: HelpStrings.tradingPost, title: "Trading Post")
+        case .tradingPostLevel2:
+            return .init(bodyText: HelpStrings.tradingPostLevel2, title: "Trading Post II")
+        case .tradingPostLevel3:
+            return .init(bodyText: HelpStrings.tradingPostLevel3, title: "Trading Post III")
         }
     }
 }

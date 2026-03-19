@@ -28,6 +28,8 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
     case offlineProgressLevel5
     case mapLocations
     case tradingPost
+    case tradingPostLevel2
+    case tradingPostLevel3
 
     public var id: Self { self }
 
@@ -56,6 +58,8 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
         case .offlineProgressLevel5: return "Offline Progress V"
         case .mapLocations: return "Locations"
         case .tradingPost: return "Trading Post"
+        case .tradingPostLevel2: return "Trading Post II"
+        case .tradingPostLevel3: return "Trading Post III"
         }
     }
 
@@ -69,6 +73,8 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
         case .artifactSlotLevel3: return "Unlocks a third equipped artifact slot."
         case .mapLocations: return "Unlocks pointing the portal at specific locations"
         case .tradingPost: return "Unlocks the Trading Post in the warehouse."
+        case .tradingPostLevel2: return "Adds 1 extra trade offer when the list is regenerated."
+        case .tradingPostLevel3: return "Adds 1 extra trade offer when the list is regenerated."
         default:
             return self.bonus?.text ?? "TODO: Set manual description or add bonus"
         }
@@ -175,6 +181,14 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
             .init(item: .merchantSigil, quantity: 2),
             .init(item: .goldFlorin, quantity: 5),
         ]
+        case .tradingPostLevel2: return [
+            .init(item: .merchantSigil, quantity: 10),
+            .init(item: .goldFlorin, quantity: 10),
+        ]
+        case .tradingPostLevel3: return [
+            .init(item: .merchantSigil, quantity: 25),
+            .init(item: .goldFlorin, quantity: 10), // TODO: Update to 
+        ]
         }
     }
 
@@ -256,6 +270,10 @@ extension PortalUpgrade {
                 .upgradePurchased(.mapLocations),
                 .locationUnlocked(.semilTradingPost)
             ]
+        case .tradingPostLevel2:
+            return [.upgradePurchased(.tradingPost)]
+        case .tradingPostLevel3:
+            return [.upgradePurchased(.tradingPostLevel2)]
         default:
             return []
         }

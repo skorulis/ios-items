@@ -6,7 +6,7 @@ import Models
 /// Generates randomized Trading Post trade offers.
 /// Kept out of the view model so the UI just consumes persisted offers.
 final class TradingPostService {
-    private let tradeCount = 3
+    private let baseTradeCount = 3
     private let fromQuantity = 5
     private let toQuantity = 2
 
@@ -19,8 +19,19 @@ final class TradingPostService {
         self.warehouseService = warehouseService
     }
 
+    private func tradeCountForCurrentUpgrades() -> Int {
+        let purchased = mainStore.portalUpgrades.purchased
+        let extraTrades = [
+            purchased.contains(.tradingPostLevel2) ? 1 : 0,
+            purchased.contains(.tradingPostLevel3) ? 1 : 0
+        ].reduce(0, +)
+        return baseTradeCount + extraTrades
+    }
+
     func generateTrades() -> [TradingPostTrade] {
-        let itemsByQuality = Dictionary(grouping: BaseItem.allCases, by: \.quality)
+        let tradeCount = tradeCountForCurrentUpgrades()
+        let discovered = BaseItem.allCases.filter { mainStore.warehouse.hasDiscovered($0) }
+        let itemsByQuality = Dictionary(grouping: discovered, by: \.quality)
         let qualitiesWithPairs = ItemQuality.allCases.filter {
             (itemsByQuality[$0]?.count ?? 0) >= 2
         }
