@@ -23,9 +23,10 @@ final class ItemGeneratorService {
     /// Quality/essence weights derived from the items that would be consumed for this plan.
     /// Essence boosts use only the plan’s essences (those unlocked by research).
     func recipeInfo(plan: SacrificePlan) -> RecipeInfo {
+        let sacrificeMultiplier = 1 + Double(activeBonuses.sacrificePowerPercent) / 100
         return RecipeInfo(
-            quality: qualityBonuses(plan: plan),
-            essenceBoosts: plan.essenceMultipliers,
+            quality: qualityBonuses(plan: plan, sacrificeMultiplier: sacrificeMultiplier),
+            essenceBoosts: plan.essenceMultipliers.mapValues { $0 * sacrificeMultiplier },
         )
     }
 
@@ -131,8 +132,9 @@ final class ItemGeneratorService {
         mainStore.activeBonuses
     }
 
-    private func qualityBonuses(plan: SacrificePlan) -> [ItemQuality: Double] {
+    private func qualityBonuses(plan: SacrificePlan, sacrificeMultiplier: Double) -> [ItemQuality: Double] {
         let qualityBoosts = activeBonuses.qualityBoosts
+        let sacrificeBoost = 0.5 * sacrificeMultiplier
         return Dictionary(
             uniqueKeysWithValues: ItemQuality.allCases.map { quality in
                 let weight: Double
@@ -140,16 +142,16 @@ final class ItemGeneratorService {
                 case .junk:
                     weight = 1
                 case .common:
-                    weight = 0.5 * Double(plan.count(quality: .junk))
+                    weight = sacrificeBoost * Double(plan.count(quality: .junk))
                 case .good:
-                    weight = 0.5 * Double(plan.count(quality: .common))
+                    weight = sacrificeBoost * Double(plan.count(quality: .common))
                 case .rare:
-                    weight = 0.5 * Double(plan.count(quality: .good))
+                    weight = sacrificeBoost * Double(plan.count(quality: .good))
                 case .exceptional:
-                    weight = 0.5 * Double(plan.count(quality: .rare))
+                    weight = sacrificeBoost * Double(plan.count(quality: .rare))
                 }
                 let boostPercent = Double(qualityBoosts[quality] ?? 0)
-                let boostedWeight = weight + (boostPercent / 100)
+                let boostedWeight = (weight + (boostPercent / 100))
                 return (quality, boostedWeight)
             }
         )

@@ -18,6 +18,8 @@ public enum Bonus {
     case offlineTimeMinutes(Int)
     /// Percent chance to generate another item result per creation.
     case multipleItems(Int)
+    
+    case sacrificePower(Int)
 
     public var text: String {
         switch self {
@@ -41,6 +43,8 @@ public enum Bonus {
             return "Add \(minutes) minutes of claimable offline progress"
         case let .multipleItems(percent):
             return "Boost additional item chance by \(percent)%"
+        case let .sacrificePower(percent):
+            return "Increase sacrifice bonuses by \(percent)%"
         }
     }
 
@@ -107,6 +111,12 @@ public enum Bonus {
         return 0
     }
 
+    /// Percent increase applied to sacrifice-derived bonuses (quality weights, essence multipliers, etc.).
+    public var sacrificePowerPercent: Int {
+        if case let .sacrificePower(int) = self { return int }
+        return 0
+    }
+
     /// Percent chance to generate another item result. Stacks across bonuses.
     public var multipleItemsChancePercent: Int {
         if case let .multipleItems(int) = self { return int }
@@ -145,6 +155,11 @@ public extension Array where Element == Bonus {
     /// Total percent chance to generate another item result from all bonuses.
     var multipleItemsChancePercent: Int {
         return self.map(\.multipleItemsChancePercent).reduce(0, +)
+    }
+
+    /// Total percent increase applied to sacrifice-derived bonuses.
+    var sacrificePowerPercent: Int {
+        return self.map(\.sacrificePowerPercent).reduce(0, +)
     }
 
     /// Sum of quality boost percent per quality (e.g. [.common: 1] means +1% chance for common).

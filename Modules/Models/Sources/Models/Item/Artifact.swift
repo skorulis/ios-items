@@ -10,6 +10,7 @@ public enum Artifact: Identifiable, Hashable, CaseIterable, Codable {
     case perfectLens
     case sacrificalSkull
     case essenceFlask
+    case skullOfStHermain
 
     public var id: Self { self }
 
@@ -33,6 +34,8 @@ public enum Artifact: Identifiable, Hashable, CaseIterable, Codable {
             return "A grim relic that strengthens the effects of sacrifices."
         case .essenceFlask:
             return "A flask attuned to latent essences that attracts other artifacts"
+        case .skullOfStHermain:
+            return "The skull of a priest known for brutal sacrifices to the dark god"
         }
     }
 }
@@ -80,6 +83,17 @@ public extension Artifact {
         }
     }
 
+    /// Extra percentage multiplier applied to sacrifice bonuses.
+    func skullOfStHermainSacrificeEffectMultiplier(quality: ItemQuality) -> Int {
+        switch quality {
+        case .junk: return 20
+        case .common: return 40
+        case .good: return 60
+        case .rare: return 80
+        case .exceptional: return 100
+        }
+    }
+
     /// Extra percentage points added to artifact discovery/upgrade roll (same units as `Chance.adding(percent:)`).
     func essenceFlaskArtifactDiscoveryBoost(quality: ItemQuality) -> Int {
         switch quality {
@@ -105,6 +119,8 @@ public extension Artifact {
             return "Reduces item creation time by \(frictionlessGearTimeReduction(quality: quality)) milliseconds."
         case .sacrificalSkull:
             return "Increase the effect of sacrifices by \(sacrificalSkullSacrificeEffectMultiplier(quality: quality))%"
+        case .skullOfStHermain:
+            return "Increase sacrifice bonuses by \(skullOfStHermainSacrificeEffectMultiplier(quality: quality))%"
         default:
             fatalError("Should be handled by a bonus")
         }
@@ -140,6 +156,8 @@ public extension ArtifactInstance {
             return .artifactDiscovery(type.essenceFlaskArtifactDiscoveryBoost(quality: quality))
         case .luckyCoin:
             return .duplicateItemChance(type.luckyCoinMultipleItemChance(quality: quality))
+        case .skullOfStHermain:
+            return .sacrificePower(type.skullOfStHermainSacrificeEffectMultiplier(quality: quality))
         default:
             return nil
         }

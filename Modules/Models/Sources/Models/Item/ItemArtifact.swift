@@ -17,6 +17,8 @@ public extension BaseItem {
             return .perfectLens
         case .potionFlask:
             return .essenceFlask
+        case .humanSkull:
+            return .skullOfStHermain
         default:
             return nil
         }
@@ -33,6 +35,7 @@ public extension Artifact {
         case .perfectLens: return .lens
         case .sacrificalSkull: return .humanSkull
         case .essenceFlask: return .potionFlask
+        case .skullOfStHermain: return .humanSkull
         }
     }
 }
