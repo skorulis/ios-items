@@ -2,6 +2,7 @@ import ASKCoordinator
 import Knit
 import Models
 import SwiftUI
+import Foundation
 
 @MainActor
 struct TradingPostView: View {
@@ -15,6 +16,7 @@ struct TradingPostView: View {
             content: { content }
         )
         .onAppear { viewModel.onAppear() }
+        .onDisappear { viewModel.onDisappear() }
     }
 
     private var titleBar: some View {
@@ -47,10 +49,28 @@ struct TradingPostView: View {
             Text("Trades")
                 .font(.appSectionTitle)
 
+            autoRefreshCountdownRow
+
             tradesList
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 8)
+    }
+
+    private var autoRefreshCountdownRow: some View {
+        HStack {
+            Text("Next free refresh in \(formatSeconds(viewModel.secondsUntilNextAutoRefresh))")
+                .font(.appCaption)
+                .foregroundStyle(.secondary)
+            Spacer(minLength: 0)
+        }
+    }
+
+    private func formatSeconds(_ seconds: Int) -> String {
+        let clamped = max(0, seconds)
+        let minutes = clamped / 60
+        let remainingSeconds = clamped % 60
+        return String(format: "%02d:%02d", minutes, remainingSeconds)
     }
 
     private var sigilAndRefreshRow: some View {

@@ -4,6 +4,8 @@ import Foundation
 import SwiftUI
 
 public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable, Sendable {
+    case items1
+    
     case artifact1
     case artifacts5
 
@@ -13,7 +15,6 @@ public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable, 
     case doubleItems100
     case doubleItems1000
 
-    case items1
     case items10
     case items25
     case items100
@@ -124,9 +125,9 @@ public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable, 
         case .trades1:
             return Image(systemName: "arrow.triangle.swap")
         case .trades10:
-            return Image(systemName: "arrow.triangle.swap.fill")
+            return Image(systemName: "arrow.down.left.arrow.up.right")
         case .trades100:
-            return Image(systemName: "arrow.triangle.swap.circle.fill")
+            return Image(systemName: "arrow.up.left.arrow.down.right")
         }
     }
 
@@ -205,12 +206,14 @@ public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable, 
 
     public var quality: ItemQuality {
         switch self {
-        case .items1, .items10, .artifact1, .essence1, .sacrificed1, .upgrade1, .research1, .research10, .researchLevel5, .doubleItems10, .trades1:
+        case .items1, .items10, .artifact1, .essence1, .sacrificed1, .upgrade1, .research1, .research10, .researchLevel5, .doubleItems10:
             return .junk
-        case .items25, .items100, .artifacts5, .common1, .allEssences, .sacrificed1000, .upgrade5, .research100, .researchLevel10, .doubleItems100, .trades10:
+        case .items25, .items100, .artifacts5, .common1, .allEssences, .sacrificed1000, .upgrade5, .research100, .researchLevel10, .doubleItems100, .trades1:
             return .common
-        case .doubleItems1000, .trades100:
+        case .doubleItems1000, .trades10:
             return .good
+        case .trades100:
+            return .rare
         case .items1_000_000, .allItems:
             return .exceptional
         }

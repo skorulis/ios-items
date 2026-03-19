@@ -5,9 +5,16 @@ import Models
 /// Keeps the currently offered trades stable when navigating away and back.
 public struct TradingPost: Codable, Equatable {
     public var trades: [TradingPostTrade] = []
+    /// The hour start (local time) when the Trading Post was last auto-refreshed for free.
+    /// Used to keep refresh behavior consistent across view model instances and app sessions.
+    public var lastAutoRefreshHour: Date? = nil
 
-    public init(trades: [TradingPostTrade] = []) {
+    public init(
+        trades: [TradingPostTrade] = [],
+        lastAutoRefreshHour: Date? = nil
+    ) {
         self.trades = trades
+        self.lastAutoRefreshHour = lastAutoRefreshHour
     }
 }
 

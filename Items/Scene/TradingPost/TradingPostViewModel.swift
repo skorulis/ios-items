@@ -21,6 +21,12 @@ final class TradingPostViewModel: CoordinatorViewModel {
     var warehouse: Warehouse
     var trades: [TradingPostTrade] = []
 
+    /// Countdown to the next scheduled free refresh (every hour on the hour mark).
+    var secondsUntilNextAutoRefresh: Int = 0
+
+    private var autoRefreshTimer: AnyCancellable?
+    private var nextAutoRefreshHourStart: Date?
+
     @Resolvable<BaseResolver>
     init(
         mainStore: MainStore,
@@ -47,9 +53,22 @@ final class TradingPostViewModel: CoordinatorViewModel {
     }
 
     func onAppear() {
-        if mainStore.tradingPost.trades.isEmpty {
-            refreshTrades(consumeSigil: false)
+        let now = Date()
+        let currentHour = hourStart(for: now)
+
+        // If the hour hasn't been auto-refreshed yet (or the list is empty), refresh immediately for free.
+        if mainStore.tradingPost.trades.isEmpty || mainStore.tradingPost.lastAutoRefreshHour != currentHour {
+            refreshTrades(consumeSigil: false, autoRefreshHour: currentHour)
         }
+
+        nextAutoRefreshHourStart = nextHourStart(from: now)
+        updateCountdown(now: now)
+        startAutoRefreshCountdown()
+    }
+
+    func onDisappear() {
+        autoRefreshTimer?.cancel()
+        autoRefreshTimer = nil
     }
 
     var merchantSigilCount: Int {
@@ -64,7 +83,7 @@ final class TradingPostViewModel: CoordinatorViewModel {
         refreshTrades(consumeSigil: true)
     }
 
-    private func refreshTrades(consumeSigil: Bool) {
+    private func refreshTrades(consumeSigil: Bool, autoRefreshHour: Date? = nil) {
         if consumeSigil {
             guard canRefreshTrades else { return }
             warehouseService.remove(item: .merchantSigil, quantity: refreshCostSigil)
@@ -76,6 +95,9 @@ final class TradingPostViewModel: CoordinatorViewModel {
         // between view model instances.
         var tradingPost = mainStore.tradingPost
         tradingPost.trades = newTrades
+        if let autoRefreshHour {
+            tradingPost.lastAutoRefreshHour = autoRefreshHour
+        }
         mainStore.tradingPost = tradingPost
     }
 
@@ -102,5 +124,57 @@ final class TradingPostViewModel: CoordinatorViewModel {
 
     func showItemDetails(_ item: BaseItem) {
         coordinator?.custom(overlay: .card, MainPath.itemDetails(item))
+    }
+
+    // MARK: - Hourly auto refresh
+
+    private func hourStart(for date: Date) -> Date {
+        let cal = Calendar.current
+        let comps = cal.dateComponents([.year, .month, .day, .hour], from: date)
+        return cal.date(from: comps) ?? date
+    }
+
+    private func nextHourStart(from date: Date) -> Date {
+        let cal = Calendar.current
+        return cal.date(byAdding: .hour, value: 1, to: hourStart(for: date)) ?? date.addingTimeInterval(3600)
+    }
+
+    private func updateCountdown(now: Date) {
+        guard let next = nextAutoRefreshHourStart else { return }
+        secondsUntilNextAutoRefresh = max(0, Int(ceil(next.timeIntervalSince(now))))
+    }
+
+    private func startAutoRefreshCountdown() {
+        autoRefreshTimer?.cancel()
+
+        autoRefreshTimer = Timer
+            .publish(every: 1, on: .main, in: .common)
+            .autoconnect()
+            .sink { [weak self] _ in
+                self?.tickAutoRefresh()
+            }
+    }
+
+    private func tickAutoRefresh() {
+        let now = Date()
+        updateCountdown(now: now)
+
+        guard let next = nextAutoRefreshHourStart else {
+            nextAutoRefreshHourStart = nextHourStart(from: now)
+            return
+        }
+
+        // When the fixed countdown hits/passes the target hour, refresh for free (once per hour).
+        guard now >= next else { return }
+
+        let currentHour = hourStart(for: now)
+        guard mainStore.tradingPost.lastAutoRefreshHour != currentHour else { return }
+
+        // This is always a free refresh (hourly schedule).
+        refreshTrades(consumeSigil: false, autoRefreshHour: currentHour)
+
+        // Roll the countdown forward; the next tick will update the displayed remaining time.
+        nextAutoRefreshHourStart = nextHourStart(from: now)
+        secondsUntilNextAutoRefresh = 0
     }
 }

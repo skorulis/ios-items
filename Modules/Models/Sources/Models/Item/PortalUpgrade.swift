@@ -73,8 +73,8 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
         case .artifactSlotLevel3: return "Unlocks a third equipped artifact slot."
         case .mapLocations: return "Unlocks pointing the portal at specific locations"
         case .tradingPost: return "Unlocks the Trading Post in the warehouse."
-        case .tradingPostLevel2: return "Adds 1 extra trade offer when the list is regenerated."
-        case .tradingPostLevel3: return "Adds 1 extra trade offer when the list is regenerated."
+        case .tradingPostLevel2: return "Adds 1 extra trade offer and improves conversion rates."
+        case .tradingPostLevel3: return "Adds 1 extra trade offer and improves conversion rates."
         default:
             return self.bonus?.text ?? "TODO: Set manual description or add bonus"
         }
