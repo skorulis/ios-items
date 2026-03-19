@@ -10,6 +10,24 @@ struct TradingPostView: View {
 
     @Environment(\.dismissCircularReveal) private var dismissCircularReveal
 
+    /// Trades still have executions remaining on the offer (`quantity > 0`).
+    private var activeTrades: [TradingPostTrade] {
+        viewModel.trades.filter { $0.quantity > 0 }
+    }
+
+    /// Trades whose offer uses are fully exhausted (`quantity == 0`).
+    private var completedTrades: [TradingPostTrade] {
+        viewModel.trades.filter { $0.quantity == 0 }
+    }
+
+    /// Changes when any trade crosses between active and complete; drives layout animation.
+    private var tradeListAnimationSignature: String {
+        viewModel.trades
+            .map { "\($0.id.uuidString):\($0.quantity)" }
+            .sorted()
+            .joined(separator: "|")
+    }
+
     var body: some View {
         PageLayout(
             titleBar: { titleBar },
@@ -84,7 +102,10 @@ struct TradingPostView: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text("Merchant Sigil")
                     .font(.appSubheadline.weight(.semibold))
-                Text("Refresh costs \(viewModel.currentRefreshCostSigil) sigil\(viewModel.currentRefreshCostSigil == 1 ? "" : "s")")
+                Text(
+                    "Refresh costs \(viewModel.currentRefreshCostSigil) "
+                        + (viewModel.currentRefreshCostSigil == 1 ? "sigil" : "sigils")
+                )
                     .font(.appCaption)
                     .foregroundStyle(.secondary)
             }
@@ -104,83 +125,24 @@ struct TradingPostView: View {
 
     private var tradesList: some View {
         VStack(spacing: 12) {
-            ForEach(viewModel.trades) { trade in
-                tradeCard(for: trade)
+            ForEach(activeTrades) { trade in
+                TradingPostTradeCardView(trade: trade, viewModel: viewModel)
+                    .id(trade.id)
+            }
+
+            if !completedTrades.isEmpty {
+                Text("Complete")
+                    .font(.appSectionTitle)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.top, 4)
+
+                ForEach(completedTrades) { trade in
+                    TradingPostTradeCardView(trade: trade, viewModel: viewModel)
+                        .id(trade.id)
+                }
             }
         }
-    }
-
-    private func tradeCard(for trade: TradingPostTrade) -> some View {
-        let remaining = viewModel.remainingExecutions(for: trade)
-        let missing = viewModel.missingFromItemCount(for: trade)
-        let rarityColor = trade.fromItem.quality.color
-
-        return VStack(alignment: .leading, spacing: 12) {
-            HStack(spacing: 14) {
-                Button {
-                    viewModel.showItemDetails(trade.fromItem)
-                } label: {
-                    ItemView(
-                        item: trade.fromItem,
-                        quantity: trade.fromQuantity,
-                        size: .small
-                    )
-                }
-                .buttonStyle(.plain)
-
-                Image(systemName: "arrow.right")
-                    .font(.title3.weight(.semibold))
-                    .foregroundStyle(.secondary)
-
-                Button {
-                    viewModel.showItemDetails(trade.toItem)
-                } label: {
-                    ItemView(
-                        item: trade.toItem,
-                        quantity: trade.toQuantity,
-                        size: .small
-                    )
-                }
-                .buttonStyle(.plain)
-            }
-
-            HStack {
-                Text("Uses left")
-                    .font(.appCaption)
-                    .foregroundStyle(.secondary)
-
-                Spacer(minLength: 0)
-
-                Text("\(remaining)/\(TradingPostTrade.maxExecutionsPerTrade)")
-                    .font(.appMonospaceBadge)
-            }
-
-            tradeButton(trade: trade)
-        }
-        .padding(14)
-        .background(Color.white.opacity(0.9), in: RoundedRectangle(cornerRadius: 14))
-        .overlay(
-            RoundedRectangle(cornerRadius: 14)
-                .stroke(rarityColor.opacity(0.25), lineWidth: 1)
-        )
-    }
-
-    private func tradeButton(trade: TradingPostTrade) -> some View {
-        let remaining = viewModel.remainingExecutions(for: trade)
-        let missing = viewModel.missingFromItemCount(for: trade)
-        return Button(
-            action: { viewModel.execute(trade: trade) },
-            label: {
-                Text(
-                    remaining > 0
-                        ? "Trade"
-                        : (missing > 0 ? "Missing \(missing) items" : "Unavailable")
-                )
-                    .frame(maxWidth: .infinity)
-            }
-        )
-        .buttonStyle(.borderedProminent)
-        .disabled(remaining == 0)
+        .animation(.spring(response: 0.45, dampingFraction: 0.86), value: tradeListAnimationSignature)
     }
 }
 
