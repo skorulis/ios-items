@@ -29,21 +29,29 @@ final class ItemGeneratorService {
         )
     }
 
-    func makeAndStore(plan: SacrificePlan, allowArtifacts: Bool = true) -> MakeItemResult {
-        let item = make(plan: plan, allowArtifacts: allowArtifacts)
-        switch item {
-        case let .base(baseItem, count):
-            warehouseService.add(item: baseItem, count: count)
-
-            mainStore.statistics.itemsCreated += Int64(count)
-            if count > 1 {
-                mainStore.statistics.multipleItemCreations += 1
+    func makeAndStore(plan: SacrificePlan, allowArtifacts: Bool = true) -> [MakeItemResult] {
+        let results = makeMultiple(plan: plan, allowArtifacts: allowArtifacts)
+        for item in results {
+            switch item {
+            case let .base(baseItem, count):
+                warehouseService.add(item: baseItem, count: count)
+                mainStore.statistics.itemsCreated += Int64(count)
+                if count > 1 {
+                    mainStore.statistics.multipleItemCreations += 1
+                }
+            case let .artifact(artifact):
+                warehouseService.add(artifact: artifact)
             }
-        case let .artifact(artifact):
-            warehouseService.add(artifact: artifact)
+            mainStore.mapLocations.incrementPullCount()
         }
-        mainStore.mapLocations.incrementPullCount()
-        return item
+        return results
+    }
+
+    /// Returns 1 + multipleItems bonus independent item results for one sacrifice.
+    func makeMultiple(plan: SacrificePlan, allowArtifacts: Bool = true) -> [MakeItemResult] {
+        let extraRolls = activeBonuses.multipleItems
+        let totalRolls = 1 + extraRolls
+        return (0..<totalRolls).map { _ in make(plan: plan, allowArtifacts: allowArtifacts) }
     }
 
     func make(plan: SacrificePlan, allowArtifacts: Bool = true) -> MakeItemResult {

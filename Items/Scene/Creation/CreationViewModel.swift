@@ -164,14 +164,14 @@ extension CreationViewModel {
             duration: duration,
             sacrificedItems: consumed,
         )
-        self.model.createdItem = nil
+        self.model.createdItems = []
         recipeService.consumePlan(plan)
         mainStore.statistics.itemsSacrificed += Int64(consumed.count)
 
         try? await Task.sleep(for: .milliseconds(calculations.itemCreationMilliseconds))
         self.model.creationInProgress = nil
 
-        self.model.createdItem = itemGeneratorService.makeAndStore(plan: plan)
+        self.model.createdItems = itemGeneratorService.makeAndStore(plan: plan)
         mainStore.offlineState.updateBackgroundedTime()
     }
 

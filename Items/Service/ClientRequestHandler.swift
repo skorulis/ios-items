@@ -59,8 +59,8 @@ final class ClientRequestHandler {
         case .makeItem:
             let plan = recipeService.sacrificeConsumptionPlan()
             recipeService.consumePlan(plan)
-            let result = itemGeneratorService.makeAndStore(plan: plan)
-            return .makeItemResult(result)
+            let results = itemGeneratorService.makeAndStore(plan: plan)
+            return .makeItemResult(results.first!)
         case .getActions:
             return .actions(
                 getAvailableActions(),

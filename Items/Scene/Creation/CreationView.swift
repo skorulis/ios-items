@@ -29,7 +29,7 @@ import SwiftUI
     }
 
     struct Model {
-        var createdItem: MakeItemResult?
+        var createdItems: [MakeItemResult] = []
         var creationInProgress: CreationInProgress?
 
         var isCreating: Bool { creationInProgress != nil }
@@ -111,7 +111,7 @@ extension CreationView: View {
             maybeCreationAnimation
             sacrificeAvatarsOverlay
             CreatedItemView(
-                items: viewModel.model.createdItem.map { [$0] } ?? [],
+                items: viewModel.model.createdItems,
                 onDetailsTap: { viewModel.showDetails(item: $0) }
             )
             VStack {
