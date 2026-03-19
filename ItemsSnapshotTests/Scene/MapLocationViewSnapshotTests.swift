@@ -21,6 +21,15 @@ struct MapLocationViewSnapshotTests {
 
         assertSnapshot(of: view, as: .image(on: .iPhoneSe))
     }
+    
+    @Test
+    func mapLocations_initial_state_available() {
+        let viewModel = assembler.resolver.mapLocationViewModel()
+        viewModel.segment = .available
+        let view = MapLocationView(viewModel: viewModel)
+
+        assertSnapshot(of: view, as: .image(on: .iPhoneSe))
+    }
 
     @Test
     func mapLocations_some_unlocked_and_selected() {

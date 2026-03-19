@@ -7,6 +7,7 @@ public enum MapLocation: String, CaseIterable, Identifiable, Hashable, Codable {
     case vesprium
     case semilTradingPost
     case palaceGardens
+    case university
     case crystalMine
 
     public var id: Self { self }
@@ -60,6 +61,20 @@ public enum MapLocation: String, CaseIterable, Identifiable, Hashable, Codable {
                     UpgradeCostItem(item: .mapFragment, quantity: 5),
                     UpgradeCostItem(item: .silverFlorin, quantity: 5),
                     UpgradeCostItem(item: .apple, quantity: 50)
+                ]
+            )
+        case .university:
+            return LocationDetails(
+                description: "A grand university where scholars study the workings of the nature.",
+                essenceMultipliers: [
+                    .knowledge: 1.6,
+                    .technology: 1.2,
+                ],
+                uniqueItems: [],
+                cost: [
+                    UpgradeCostItem(item: .mapFragment, quantity: 8),
+                    UpgradeCostItem(item: .silverFlorin, quantity: 8),
+                    UpgradeCostItem(item: .book, quantity: 50),
                 ]
             )
         case .crystalMine:

@@ -12,6 +12,11 @@ import SwiftUI
 @MainActor struct MapLocationView {
     @State var viewModel: MapLocationViewModel
     @Environment(\.dismissCircularReveal) private var dismissCircularReveal
+
+    enum Segment: String, CaseIterable {
+        case purchased = "Purchased"
+        case available = "Available"
+    }
 }
 
 // MARK: - Rendering
@@ -40,15 +45,53 @@ extension MapLocationView: View {
     }
 
     private var content: some View {
-        VStack(spacing: 4) {
-            ForEach(viewModel.allLocations, id: \.self) { location in
-                row(for: location)
+        VStack(alignment: .leading, spacing: 12) {
+            Picker("Mode", selection: $viewModel.segment) {
+                ForEach(Segment.allCases, id: \.self) { segment in
+                    Text(segment.rawValue).tag(segment)
+                }
+            }
+            .pickerStyle(.segmented)
+            .padding(.horizontal, 16)
+
+            switch viewModel.segment {
+            case .purchased:
+                purchasedLocationsList
+            case .available:
+                availableLocationsList
             }
         }
     }
 
-    private func row(for location: MapLocation) -> some View {
-        let unlocked = viewModel.isUnlocked(location)
+    private var purchasedLocations: [MapLocation] {
+        viewModel.allLocations.filter { viewModel.isUnlocked($0) }
+    }
+
+    private var availableLocations: [MapLocation] {
+        viewModel.allLocations.filter { !viewModel.isUnlocked($0) }
+    }
+
+    private var purchasedLocationsList: some View {
+        LazyVStack(alignment: .leading, spacing: 4) {
+            ForEach(purchasedLocations, id: \.self) { location in
+                purchasedLocationCell(for: location)
+            }
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 8)
+    }
+
+    private var availableLocationsList: some View {
+        LazyVStack(alignment: .leading, spacing: 4) {
+            ForEach(availableLocations, id: \.self) { location in
+                availableLocationCell(for: location)
+            }
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 8)
+    }
+
+    private func purchasedLocationCell(for location: MapLocation) -> some View {
         let selected = viewModel.isSelected(location)
         let details = location.details
 
@@ -63,20 +106,34 @@ extension MapLocationView: View {
                         .padding(.horizontal, 6)
                         .padding(.vertical, 2)
                         .background(Color.accentColor.opacity(0.15), in: Capsule())
-                } else if unlocked {
-                    Text("Unlocked")
-                        .font(.appCaption)
-                        .padding(.horizontal, 6)
-                        .padding(.vertical, 2)
-                        .background(Color.green.opacity(0.15), in: Capsule())
-                } else {
-                    Text("Locked")
-                        .font(.appCaption)
-                        .padding(.horizontal, 6)
-                        .padding(.vertical, 2)
-                        .background(Color.gray.opacity(0.15), in: Capsule())
                 }
             }
+
+            Text(details.description)
+                .font(.appCaption)
+                .foregroundStyle(.secondary)
+
+            Button {
+                viewModel.select(location)
+            } label: {
+                Text(selected ? "Current Location" : "Set as Current")
+                    .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.borderedProminent)
+            .disabled(selected)
+            .padding(.top, 4)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(12)
+        .background(Color.gray.opacity(0.05), in: RoundedRectangle(cornerRadius: 8))
+    }
+
+    private func availableLocationCell(for location: MapLocation) -> some View {
+        let details = location.details
+
+        return VStack(alignment: .leading, spacing: 6) {
+            Text(location.name)
+                .font(.appTitle)
 
             Text(details.description)
                 .font(.appCaption)
@@ -89,38 +146,19 @@ extension MapLocationView: View {
                 )
             }
 
-            button(location: location)
-                .padding(.top, 4)
+            Button {
+                viewModel.purchase(location)
+            } label: {
+                Text("Unlock")
+                    .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.borderedProminent)
+            .disabled(!viewModel.canAfford(location))
+            .padding(.top, 4)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(12)
         .background(Color.gray.opacity(0.05), in: RoundedRectangle(cornerRadius: 8))
-    }
-
-    private func button(location: MapLocation) -> some View {
-        let unlocked = viewModel.isUnlocked(location)
-        let selected = viewModel.isSelected(location)
-        return HStack {
-            if unlocked {
-                Button {
-                    viewModel.select(location)
-                } label: {
-                    Text(selected ? "Current Location" : "Set as Current")
-                        .frame(maxWidth: .infinity)
-                }
-                .buttonStyle(.borderedProminent)
-                .disabled(selected)
-            } else {
-                Button {
-                    viewModel.purchase(location)
-                } label: {
-                    Text("Unlock")
-                        .frame(maxWidth: .infinity)
-                }
-                .buttonStyle(.borderedProminent)
-                .disabled(!viewModel.canAfford(location))
-            }
-        }
     }
 }
 
