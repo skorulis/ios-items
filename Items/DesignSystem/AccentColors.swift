@@ -50,6 +50,6 @@ public enum AccentColors {
         amethyst,
         flamingo,
         chestnut,
-        slate
+        slate,
     ]
 }

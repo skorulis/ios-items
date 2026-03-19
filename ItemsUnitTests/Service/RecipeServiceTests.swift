@@ -67,7 +67,7 @@ struct RecipeServiceTests {
         setSacrificeConfig(assembly, config: SacrificeConfig(slots: [
             0: .apple,
             1: .apple,
-            2: .apple
+            2: .apple,
         ]))
 
         let plan = service.sacrificeConsumptionPlan()
@@ -86,7 +86,7 @@ struct RecipeServiceTests {
         setSacrificeConfig(assembly, config: SacrificeConfig(slots: [
             0: .gear,
             1: .gear,
-            2: .gear
+            2: .gear,
         ]))
 
         let plan = service.sacrificeConsumptionPlan()
@@ -106,7 +106,7 @@ struct RecipeServiceTests {
         setSacrificeConfig(assembly, config: SacrificeConfig(slots: [
             0: .apple,
             1: .rock,
-            2: .apple
+            2: .apple,
         ]))
 
         let plan = service.sacrificeConsumptionPlan()

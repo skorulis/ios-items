@@ -28,7 +28,7 @@ struct SacrificeViewSnapshotTests {
             .sacrificesLevel2,
             .sacrificesLevel3,
             .sacrificesLevel4,
-            .sacrificesLevel5
+            .sacrificesLevel5,
         ])
         mainStore.portalUpgrades = pu
     }

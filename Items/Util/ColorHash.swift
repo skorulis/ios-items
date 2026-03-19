@@ -42,7 +42,7 @@ public enum ColorHash {
         let stops: [Gradient.Stop] = [
             .init(color: c1, location: 0.0),
             .init(color: c2, location: 0.55),
-            .init(color: c3, location: 1.0)
+            .init(color: c3, location: 1.0),
         ]
         // Angular gradients look nice within circles; fall back to linear if preferred.
         return LinearGradient(

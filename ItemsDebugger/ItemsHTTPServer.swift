@@ -117,7 +117,7 @@ final class ItemsHTTPServer {
             return [
                 "purchased": upgrades.purchased.map { HTTPPortalUpgrade(upgrade: $0) },
                 "unlocked": upgrades.unlocked.map { HTTPPortalUpgrade(upgrade: $0) },
-                "affordable": upgrades.affordable.map { HTTPPortalUpgrade(upgrade: $0) }
+                "affordable": upgrades.affordable.map { HTTPPortalUpgrade(upgrade: $0) },
             ]
         case let .achievements(completed, incomplete):
             return [
@@ -128,7 +128,7 @@ final class ItemsHTTPServer {
                         currentProgress: $0.currentProgress,
                         total: $0.total,
                     )
-                }
+                },
             ]
         case .ok:
             return OkResponse(status: "ok", diff: diff)

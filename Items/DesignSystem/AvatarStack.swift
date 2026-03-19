@@ -43,7 +43,7 @@ extension AvatarView.Size {
             avatars: [
                 AvatarView(text: "AB", image: nil, border: .orange, size: .small),
                 AvatarView(text: "CD", image: nil, border: .blue, size: .small),
-                AvatarView(text: "EF", image: nil, border: .green, size: .small)
+                AvatarView(text: "EF", image: nil, border: .green, size: .small),
             ],
             size: .small,
         )
@@ -51,7 +51,7 @@ extension AvatarView.Size {
         AvatarStack(
             avatars: [
                 AvatarView(text: "AB", image: nil, border: .orange, size: .large),
-                AvatarView(text: "CD", image: nil, border: .blue, size: .large)
+                AvatarView(text: "CD", image: nil, border: .blue, size: .large),
             ],
             size: .large,
         )

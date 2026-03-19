@@ -31,7 +31,7 @@ final class TradingPostService {
         let purchased = mainStore.portalUpgrades.purchased
         let extraTrades = [
             purchased.contains(.tradingPostLevel2) ? 1 : 0,
-            purchased.contains(.tradingPostLevel3) ? 1 : 0
+            purchased.contains(.tradingPostLevel3) ? 1 : 0,
         ].reduce(0, +)
         return baseTradeCount + extraTrades
     }
@@ -41,7 +41,7 @@ final class TradingPostService {
         // Level 2 and above are "additional levels" for ratio boosting.
         return [
             purchased.contains(.tradingPostLevel2) ? 1 : 0,
-            purchased.contains(.tradingPostLevel3) ? 1 : 0
+            purchased.contains(.tradingPostLevel3) ? 1 : 0,
         ].reduce(0, +)
     }
 

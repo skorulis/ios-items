@@ -138,7 +138,7 @@ extension ArtifactSlotView: View {
     ArtifactSlotView(
         slots: [
             ArtifactInstance(type: .luckyCoin, quality: .common),
-            nil
+            nil,
         ],
         size: .large
     )
@@ -149,7 +149,7 @@ extension ArtifactSlotView: View {
         slots: [
             ArtifactInstance(type: .frictionlessGear, quality: .good),
             ArtifactInstance(type: .perfectLens, quality: .rare),
-            nil
+            nil,
         ],
         size: .small
     )

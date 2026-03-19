@@ -85,109 +85,109 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
         switch self {
         case .portalAutomation: return [
             .init(item: .gear, quantity: 1),
-            .init(item: .copperFlorin, quantity: 1)
+            .init(item: .copperFlorin, quantity: 1),
         ]
         case .researchLab: return [
             .init(item: .potionFlask, quantity: 1),
-            .init(item: .copperFlorin, quantity: 1)
+            .init(item: .copperFlorin, quantity: 1),
         ]
         case .researchLabLevel2: return [
             .init(item: .potionFlask, quantity: 2),
             .init(item: .lens, quantity: 2),
-            .init(item: .silverFlorin, quantity: 2)
+            .init(item: .silverFlorin, quantity: 2),
         ]
         case .sacrifices: return [
             .init(item: .humanSkull, quantity: 1),
-            .init(item: .copperFlorin, quantity: 3)
+            .init(item: .copperFlorin, quantity: 3),
         ]
         case .sacrificesLevel2: return [
             .init(item: .humanSkull, quantity: 1),
-            .init(item: .copperFlorin, quantity: 5)
+            .init(item: .copperFlorin, quantity: 5),
         ]
         case .sacrificesLevel3: return [
             .init(item: .humanSkull, quantity: 2),
-            .init(item: .silverFlorin, quantity: 2)
+            .init(item: .silverFlorin, quantity: 2),
         ]
         case .sacrificesLevel4: return [
             .init(item: .humanSkull, quantity: 3),
-            .init(item: .silverFlorin, quantity: 4)
+            .init(item: .silverFlorin, quantity: 4),
         ]
         case .sacrificesLevel5: return [
             .init(item: .humanSkull, quantity: 4),
-            .init(item: .goldFlorin, quantity: 2)
+            .init(item: .goldFlorin, quantity: 2),
         ]
         case .artifactSlot: return [
             .init(item: .lens, quantity: 1),
-            .init(item: .copperFlorin, quantity: 2)
+            .init(item: .copperFlorin, quantity: 2),
         ]
         case .artifactSlotLevel2: return [
             .init(item: .lens, quantity: 2),
-            .init(item: .silverFlorin, quantity: 1)
+            .init(item: .silverFlorin, quantity: 1),
         ]
         case .artifactSlotLevel3: return [
             .init(item: .lens, quantity: 3),
-            .init(item: .goldFlorin, quantity: 1)
+            .init(item: .goldFlorin, quantity: 1),
         ]
         case .knowledgeSiphon: return [
             .init(item: .book, quantity: 2),
             .init(item: .lens, quantity: 1),
-            .init(item: .silverFlorin, quantity: 1)
+            .init(item: .silverFlorin, quantity: 1),
         ]
         case .knowledgeSiphonLevel2: return [
             .init(item: .book, quantity: 4),
             .init(item: .lens, quantity: 2),
-            .init(item: .silverFlorin, quantity: 2)
+            .init(item: .silverFlorin, quantity: 2),
         ]
         case .knowledgeSiphonLevel3: return [
             .init(item: .book, quantity: 6),
             .init(item: .lens, quantity: 3),
-            .init(item: .goldFlorin, quantity: 1)
+            .init(item: .goldFlorin, quantity: 1),
         ]
         case .knowledgeSiphonLevel4: return [
             .init(item: .book, quantity: 10),
             .init(item: .lens, quantity: 4),
-            .init(item: .goldFlorin, quantity: 2)
+            .init(item: .goldFlorin, quantity: 2),
         ]
         case .knowledgeSiphonLevel5: return [
             .init(item: .book, quantity: 14),
             .init(item: .lens, quantity: 5),
-            .init(item: .goldFlorin, quantity: 3)
+            .init(item: .goldFlorin, quantity: 3),
         ]
         case .offlineProgress: return [
             .init(item: .gear, quantity: 2),
-            .init(item: .copperFlorin, quantity: 5)
+            .init(item: .copperFlorin, quantity: 5),
         ]
         case .offlineProgressLevel2: return [
             .init(item: .gear, quantity: 4),
-            .init(item: .silverFlorin, quantity: 2)
+            .init(item: .silverFlorin, quantity: 2),
         ]
         case .offlineProgressLevel3: return [
             .init(item: .gear, quantity: 6),
-            .init(item: .silverFlorin, quantity: 4)
+            .init(item: .silverFlorin, quantity: 4),
         ]
         case .offlineProgressLevel4: return [
             .init(item: .gear, quantity: 8),
-            .init(item: .goldFlorin, quantity: 2)
+            .init(item: .goldFlorin, quantity: 2),
         ]
         case .offlineProgressLevel5: return [
             .init(item: .gear, quantity: 10),
-            .init(item: .goldFlorin, quantity: 4)
+            .init(item: .goldFlorin, quantity: 4),
         ]
         case .mapLocations: return [
             .init(item: .mapFragment, quantity: 5),
-            .init(item: .silverFlorin, quantity: 10)
+            .init(item: .silverFlorin, quantity: 10),
         ]
         case .tradingPost: return [
             .init(item: .merchantSigil, quantity: 2),
-            .init(item: .goldFlorin, quantity: 5)
+            .init(item: .goldFlorin, quantity: 5),
         ]
         case .tradingPostLevel2: return [
             .init(item: .merchantSigil, quantity: 10),
-            .init(item: .goldFlorin, quantity: 10)
+            .init(item: .goldFlorin, quantity: 10),
         ]
         case .tradingPostLevel3: return [
             .init(item: .merchantSigil, quantity: 25),
-            .init(item: .goldFlorin, quantity: 10) // TODO: Update to 
+            .init(item: .goldFlorin, quantity: 10), // TODO: Update to 
         ]
         }
     }
@@ -231,7 +231,7 @@ extension PortalUpgrade {
         case .artifactSlotLevel2:
             return [
                 .upgradePurchased(.artifactSlot),
-                .achievementUnlocked(.artifacts5)
+                .achievementUnlocked(.artifacts5),
             ]
         case .artifactSlotLevel3:
             return [.upgradePurchased(.artifactSlotLevel2)]
@@ -268,7 +268,7 @@ extension PortalUpgrade {
         case .tradingPost:
             return [
                 .upgradePurchased(.mapLocations),
-                .locationUnlocked(.semilTradingPost)
+                .locationUnlocked(.semilTradingPost),
             ]
         case .tradingPostLevel2:
             return [.upgradePurchased(.tradingPost)]

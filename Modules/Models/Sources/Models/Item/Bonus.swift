@@ -16,7 +16,7 @@ public enum Bonus {
     case duplicateItemChance(Int)
     /// Maximum claimable offline progress time in minutes (stacks across upgrades).
     case offlineTimeMinutes(Int)
-    /// Extra item rolls per creation (one sacrifice produces 1 + this many separate MakeItemResult).
+    /// Percent chance to generate another item result per creation.
     case multipleItems(Int)
 
     public var text: String {
@@ -39,8 +39,8 @@ public enum Bonus {
             return "Boost duplicate item chance by \(percent)%"
         case let .offlineTimeMinutes(minutes):
             return "Add \(minutes) minutes of claimable offline progress"
-        case let .multipleItems(count):
-            return "Create \(count) extra item\(count == 1 ? "" : "s") per summon"
+        case let .multipleItems(percent):
+            return "Boost extra item chance by \(percent)%"
         }
     }
 
@@ -107,8 +107,8 @@ public enum Bonus {
         return 0
     }
 
-    /// Extra item rolls per creation. Stacks across bonuses.
-    public var multipleItemsCount: Int {
+    /// Percent chance to generate another item result. Stacks across bonuses.
+    public var multipleItemsChancePercent: Int {
         if case let .multipleItems(int) = self { return int }
         return 0
     }
@@ -142,9 +142,9 @@ public extension Array where Element == Bonus {
         return self.map { $0.offlineTimeMinutes }.reduce(0, +)
     }
 
-    /// Total extra item rolls per creation (1 + this many results from one summon).
-    var multipleItems: Int {
-        return self.map(\.multipleItemsCount).reduce(0, +)
+    /// Total percent chance to generate another item result from all bonuses.
+    var multipleItemsChancePercent: Int {
+        return self.map(\.multipleItemsChancePercent).reduce(0, +)
     }
 
     /// Sum of quality boost percent per quality (e.g. [.common: 1] means +1% chance for common).

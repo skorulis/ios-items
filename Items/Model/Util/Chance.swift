@@ -11,7 +11,11 @@ struct Chance: Codable, Hashable {
     /// Creates a chance from a fractional value between 0 and 1.
     /// Values above 1 can be treated in different ways
     init(_ fraction: Double) {
-        self.value = min(1, fraction)
+        self.value = fraction
+    }
+
+    init(percent: Int) {
+        self.value = Double(percent) / 100
     }
 
     /// The underlying fractional value, guaranteed to be between 0 and 1.
@@ -24,8 +28,19 @@ struct Chance: Codable, Hashable {
     }
 
     func check() -> Bool {
+        if fraction == 0 {
+            return false
+        }
         let roll = Double.random(in: 0...1)
         return roll <= fraction
+    }
+
+    /// Perform a check with the possibility of the chance being over 1
+    func bonus() -> Int {
+        let guaranteed = Int(fraction)
+        let remainder = fraction - Double(guaranteed)
+        let roll = Double.random(in: 0...1)
+        return roll <= remainder ? 1 + guaranteed : guaranteed
     }
 
     func adding(percent: Int) -> Chance {

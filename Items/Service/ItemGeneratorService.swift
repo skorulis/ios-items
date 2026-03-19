@@ -47,11 +47,14 @@ final class ItemGeneratorService {
         return results
     }
 
-    /// Returns 1 + multipleItems bonus independent item results for one sacrifice.
+    /// Returns one or more independent item results for one sacrifice.
+    /// `multipleItems` is treated as a percent chance for an extra result
+    /// (e.g. 150% => 1 guaranteed extra + 50% chance for another).
     func makeMultiple(plan: SacrificePlan, allowArtifacts: Bool = true) -> [MakeItemResult] {
-        let extraRolls = activeBonuses.multipleItems
-        let totalRolls = 1 + extraRolls
-        return (0..<totalRolls).map { _ in make(plan: plan, allowArtifacts: allowArtifacts) }
+        let chancePercent = activeBonuses.multipleItemsChancePercent
+        let chance = Chance(percent: chancePercent)
+        let rolls = 1 + chance.bonus()
+        return (0..<rolls).map { _ in make(plan: plan, allowArtifacts: allowArtifacts) }
     }
 
     func make(plan: SacrificePlan, allowArtifacts: Bool = true) -> MakeItemResult {

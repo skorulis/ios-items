@@ -13,6 +13,9 @@ excluded:
 # Treat warnings as errors (set to true for strict CI)
 strict: false
 
+trailing_comma:
+    mandatory_comma: true
+
 # Line length: warning at 120, error at 150
 line_length:
   warning: 120

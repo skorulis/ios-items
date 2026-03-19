@@ -57,7 +57,7 @@ final class GameStatisticsViewModel: ObservableObject, CoordinatorViewModel {
             ("Items sacrificed", formatCount(statistics.itemsSacrificed)),
             ("Trades completed", formatCount(statistics.tradesCompleted)),
             ("Number of items discovered", formatCount(Int64(itemsDiscoveredCount))),
-            ("Number of achievements unlocked", formatCount(Int64(achievementsUnlockedCount)))
+            ("Number of achievements unlocked", formatCount(Int64(achievementsUnlockedCount))),
         ]
         if isResearchUnlocked {
             rows.append(("Total levels of research", formatCount(Int64(lab.totalLevels))))

@@ -7,13 +7,13 @@ let package = Package(
     name: "Models",
     platforms: [
         .iOS(.v15),
-        .macOS(.v12)
+        .macOS(.v12),
     ],
     products: [
         .library(
             name: "Models",
             targets: ["Models"]
-        )
+        ),
     ],
     targets: [
         .target(
@@ -22,6 +22,6 @@ let package = Package(
         .testTarget(
             name: "ModelsTests",
             dependencies: ["Models"]
-        )
+        ),
     ]
 )

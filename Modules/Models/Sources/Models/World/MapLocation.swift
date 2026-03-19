@@ -38,13 +38,13 @@ public enum MapLocation: String, CaseIterable, Identifiable, Hashable, Codable {
                     .wealth: 1.5,
                     .knowledge: 1.1,
                     .dark: 0,
-                    .earth: 0
+                    .earth: 0,
                 ],
                 uniqueItems: [.merchantSigil],
                 cost: [
                     UpgradeCostItem(item: .mapFragment, quantity: 1),
                     UpgradeCostItem(item: .silverFlorin, quantity: 2),
-                    UpgradeCostItem(item: .copperFlorin, quantity: 100)
+                    UpgradeCostItem(item: .copperFlorin, quantity: 100),
                 ]
             )
         case .palaceGardens:
@@ -54,13 +54,13 @@ public enum MapLocation: String, CaseIterable, Identifiable, Hashable, Codable {
                     .life: 1.5,
                     .earth: 1.2,
                     .dark: 0,
-                    .technology: 0
+                    .technology: 0,
                 ],
                 uniqueItems: [],
                 cost: [
                     UpgradeCostItem(item: .mapFragment, quantity: 5),
                     UpgradeCostItem(item: .silverFlorin, quantity: 5),
-                    UpgradeCostItem(item: .apple, quantity: 50)
+                    UpgradeCostItem(item: .apple, quantity: 50),
                 ]
             )
         case .university:
@@ -68,13 +68,13 @@ public enum MapLocation: String, CaseIterable, Identifiable, Hashable, Codable {
                 description: "A grand university where scholars study the workings of the nature.",
                 essenceMultipliers: [
                     .knowledge: 1.6,
-                    .technology: 1.2
+                    .technology: 1.2,
                 ],
                 uniqueItems: [],
                 cost: [
                     UpgradeCostItem(item: .mapFragment, quantity: 8),
                     UpgradeCostItem(item: .silverFlorin, quantity: 8),
-                    UpgradeCostItem(item: .book, quantity: 50)
+                    UpgradeCostItem(item: .book, quantity: 50),
                 ]
             )
         case .crystalMine:
@@ -82,13 +82,13 @@ public enum MapLocation: String, CaseIterable, Identifiable, Hashable, Codable {
                 description: "A cavern mine where fractured crystals glow with captured lightning; the air hums with arcane resonance.",
                 essenceMultipliers: [
                     .earth: 1.6,
-                    .magic: 1.2
+                    .magic: 1.2,
                 ],
                 uniqueItems: [.quartzCrystal],
                 cost: [
                     UpgradeCostItem(item: .mapFragment, quantity: 10),
                     UpgradeCostItem(item: .silverFlorin, quantity: 10),
-                    UpgradeCostItem(item: .rock, quantity: 50)
+                    UpgradeCostItem(item: .rock, quantity: 50),
                 ]
             )
         }
