@@ -54,7 +54,7 @@ extension BaseItem {
         case .anchorStone:
             return nil
         case .waxSeal:
-            return nil
+            return Asset.BaseItem.waxSeal.swiftUIImage
         case .memorySeed:
             return nil
         case .nullLantern:
