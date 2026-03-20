@@ -8,6 +8,7 @@ public struct BadgeView: View {
     public enum Style: Equatable {
         case dot
         case number(Int)
+        case icon(Image)
     }
 
     private let style: Style?
@@ -32,6 +33,14 @@ public struct BadgeView: View {
                     numberPill(raw: raw, text: Self.numberText(raw))
                 }
             }
+        case let .icon(image):
+            image
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .padding(4)
+                .frame(width: 18, height: 18)
+                .foregroundStyle(.white)
+                .background(Circle().fill(Color.red))
         }
     }
 
@@ -72,6 +81,10 @@ public struct BadgeView: View {
         HStack {
             Text("Many")
             BadgeView(style: .number(140))
+        }
+        HStack {
+            Text("Image")
+            BadgeView(style: .icon(.init(systemName: "exclamationmark")))
         }
         HStack {
             Text("Hidden")
