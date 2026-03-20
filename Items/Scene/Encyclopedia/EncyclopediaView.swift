@@ -1,5 +1,6 @@
 // Created by Alexander Skorulis on 21/2/2026.
 
+import ASKCoordinator
 import Foundation
 import Knit
 import SwiftUI
@@ -31,13 +32,37 @@ extension EncyclopediaView: View {
     }
 
     private var children: some View {
-        ForEach(viewModel.entry.childItems, id: \.title) { entry in
-            if viewModel.isUnlocked(entry: entry) {
-                cell(entry: entry)
-            } else {
-                lockedCell
+        VStack(alignment: .leading, spacing: 0) {
+            rootRows
+            ForEach(viewModel.entry.childItems, id: \.title) { entry in
+                if viewModel.isUnlocked(entry: entry) {
+                    cell(entry: entry)
+                } else {
+                    lockedCell
+                }
             }
         }
+    }
+    
+    @ViewBuilder
+    private var rootRows: some View {
+        if viewModel.coordinator?.canPop == false {
+            statisticsRow
+        }
+    }
+
+    private var statisticsRow: some View {
+        ChevronRow(
+            title: "Statistics",
+            leading: {
+                Image(systemName: "chart.bar")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 24, height: 24)
+            },
+            action: { viewModel.showStatistics() }
+        )
+        .accessibilityLabel("Statistics")
     }
 
     private var lockedCell: some View {
@@ -71,21 +96,7 @@ extension EncyclopediaView: View {
     private var titleBar: some View {
         TitleBar(
             title: viewModel.entry.title,
-            backAction: viewModel.backAction,
-            trailing: {
-                Button(
-                    action: { viewModel.showStatistics() },
-                    label: {
-                        Image(systemName: "chart.bar")
-                            .font(.body.weight(.medium))
-                            .frame(width: 44, height: 44)
-                            .foregroundStyle(Color.black)
-                            .contentShape(Rectangle())
-                    }
-                )
-                .buttonStyle(.plain)
-                .accessibilityLabel("Statistics")
-            }
+            backAction: viewModel.backAction
         )
     }
 }
