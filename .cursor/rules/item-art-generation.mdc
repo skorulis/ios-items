@@ -12,7 +12,7 @@ When asked to create or update item images for this project, follow these rules 
 - **Overall look**
   - Make a single, isolated game item centered in frame.
   - No background, no props, no text, no logo.
-  - Transparent background PNG (no visible background color or gradient).
+  - Square aspect ratio
 - **Rendering style**
   - 2D stylized, cartoony illustration.
   - Clean, thick dark outline around the item.
@@ -34,8 +34,26 @@ When asked to create or update item images for this project, follow these rules 
 
 - Generate square images with a size of 384x384
 - Keep the file size of the image small
-- Output format should be PNG with transparency.
+- Output format should be PNG with transparency (real alpha is produced in **post-processing** below—models often fake transparency with a checkerboard or solid fill).
 - Keep edges clean so the icon looks good on dark and light UI backgrounds.
+
+## Post-processing (required)
+
+Generators frequently output a **checkerboard pattern**, solid white/gray, or other non-transparent backgrounds. **Always** run post-processing before adding the PNG to the asset catalog.
+
+1. **Square and 384×384** — If the render is not square, crop to a **centered** square using the smaller dimension, then resize to **384×384** (e.g. `sips` or ImageMagick `-gravity center -crop … +repage -resize 384x384`).
+
+2. **Remove checkerboard / background** — Produce true transparency (do not ship visible grid):
+   - Prefer **ImageMagick** `magick`: make the outer background transparent. For a **uniform or near-uniform** edge (common after checkerboard flattening), sample a corner and flood transparent with fuzz, e.g.  
+     `magick input.png … -fuzz 15% -transparent "$(magick input.png -format '%[pixel:p{0,0}]' info:)" output.png`  
+   - For an obvious **solid** background, e.g. `-fuzz 12% -transparent white` (adjust fuzz so the subject is not eaten into).
+   - If one pass leaves grid artifacts, increase fuzz slightly or use a dedicated background-removal step; **edges must read cleanly** on dark and light UI.
+
+3. **Verify alpha** — `sips -g hasAlpha output.png` must report **`hasAlpha: yes`**.
+
+4. **Optimize file size** — Strip metadata and apply strong PNG compression, e.g.  
+   `magick output.png -strip -define png:compression-level=9 output.png`  
+   If `pngquant` (or similar) is available and the result still looks crisp at inventory size, optional palette quantization may be used to shrink the file further.
 
 ## Prompt Template
 
@@ -49,6 +67,8 @@ The [ITEM NAME] should represent: [ESSENCES / THEMES, e.g. wealth, technology, m
 Visual style: bold dark outline, simple stylized shapes, saturated colors, 2–3 tone cell shading, soft light from the upper left, subtle glossy highlights where appropriate. No text, no logo, no extra props.
 
 Framing: item centered, fully visible, on a transparent background, square canvas, no background elements, just the object.
+
+(If the tool still draws a checkerboard or solid backdrop, strip it in post-processing—see Post-processing section.)
 ```
 
 ## Mapping From Code to Art
@@ -70,5 +90,5 @@ When creating new items, derive their look from:
 - Their `name` and any mention of essences (e.g. wealth, technology, magic, life, dark, earth, light).
 - Their rarity/quality (junk, common, good) if provided: higher quality can have slightly more ornamentation and subtle glow.
 
-Create an Xcode .imageset under Items/Resource/Assets.xcassets 
-Once an image is generated, run `swiftgen`.
+Create an Xcode `.imageset` under `Items/Resource/Assets.xcassets` (typically `baseItem/` for `BaseItem` art).  
+After generation, **post-process** (above), place the final PNG in the imageset, then run `swiftgen`.
