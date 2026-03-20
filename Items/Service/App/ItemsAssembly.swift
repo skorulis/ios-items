@@ -76,6 +76,7 @@ final class ItemsAssembly: AutoInitModuleAssembly {
         container.register(ContentViewModel.self) { ContentViewModel.make(resolver: $0) }
         container.register(CreationViewModel.self) { CreationViewModel.make(resolver: $0) }
             .inObjectScope(.weak) // Not sure why this one is having problems, this is a hack to fix
+        container.register(GolemsViewModel.self) { GolemsViewModel.make(resolver: $0) }
         container.register(WarehouseViewModel.self) { WarehouseViewModel.make(resolver: $0) }
         container.register(DebugViewModel.self) { DebugViewModel.make(resolver: $0) }
         container.register(SacrificeViewModel.self) { SacrificeViewModel.make(resolver: $0) }

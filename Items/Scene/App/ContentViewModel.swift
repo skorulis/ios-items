@@ -32,14 +32,20 @@ import SwiftUI
         self.offlineCreationService = offlineCreationService
         self.toastService = toastService
 
+        self.model.showingGolems = mainStore.portalUpgrades.purchased.contains(.golems)
+
         mainStore.$achievements.sink { achievements in
             self.model.showingEncyclopedia = achievements.unlocked.count > 0
             self.model.showingWarehouse = achievements.unlocked.contains(.items1)
         }
         .store(in: &cancellables)
 
-        mainStore.$notifications
-            .sink { [weak self] in self?.model.notifications = $0 }
+        mainStore.$portalUpgrades.sink { [unowned self] upgrades in
+            self.model.showingGolems = upgrades.purchased.contains(.golems)
+        }
+        .store(in: &cancellables)
+
+        mainStore.$notifications.sink { [unowned self] in self.model.notifications = $0 }
             .store(in: &cancellables)
 
         self.model.notifications = mainStore.notifications

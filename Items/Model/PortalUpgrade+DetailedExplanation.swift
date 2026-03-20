@@ -39,6 +39,14 @@ extension PortalUpgrade {
             return .init(bodyText: HelpStrings.tradingPostLevel2, title: "Trading Post II")
         case .tradingPostLevel3:
             return .init(bodyText: HelpStrings.tradingPostLevel3, title: "Trading Post III")
+        case .golems:
+            return .init(
+                bodyText: """
+                Golems are summoned helpers that can be sent into the portal as agents.
+                Purchasing this upgrade unlocks the Golems tab for managing your golems.
+                """,
+                title: "Golems"
+            )
         }
     }
 }

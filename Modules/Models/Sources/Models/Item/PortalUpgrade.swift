@@ -30,6 +30,7 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
     case tradingPost
     case tradingPostLevel2
     case tradingPostLevel3
+    case golems
 
     public var id: Self { self }
 
@@ -60,6 +61,7 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
         case .tradingPost: return "Trading Post"
         case .tradingPostLevel2: return "Trading Post II"
         case .tradingPostLevel3: return "Trading Post III"
+        case .golems: return "Golems"
         }
     }
 
@@ -75,6 +77,7 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
         case .tradingPost: return "Unlocks the Trading Post in the warehouse."
         case .tradingPostLevel2: return "Adds 1 extra trade offer and improves conversion rates."
         case .tradingPostLevel3: return "Adds 1 extra trade offer and improves conversion rates."
+        case .golems: return "Unlocks the Golems tab."
         default:
             return self.bonus?.text ?? "TODO: Set manual description or add bonus"
         }
@@ -188,6 +191,10 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
         case .tradingPostLevel3: return [
             .init(item: .merchantSigil, quantity: 25),
             .init(item: .goldFlorin, quantity: 10), // TODO: Update to 
+        ]
+        case .golems: return [
+            .init(item: .humanSkull, quantity: 1),
+            .init(item: .silverFlorin, quantity: 5),
         ]
         }
     }

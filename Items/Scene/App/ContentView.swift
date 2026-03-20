@@ -11,6 +11,7 @@ struct ContentView {
     @Environment(\.scenePhase) private var scenePhase
     @State var viewModel: ContentViewModel
     @State var creationCoordinator = Coordinator(root: MainPath.creation)
+    @State var golemsCoordinator = Coordinator(root: MainPath.golems)
     @State var warehouseCoordinator = Coordinator(root: MainPath.warehouse)
     @State var tab5Coordinator = Coordinator(root: MainPath.encyclopediaEntry(.root))
     @State private var selectedTab: Int = 0
@@ -24,6 +25,7 @@ extension ContentView {
     struct Model {
         var showingWarehouse: Bool = false
         var showingEncyclopedia: Bool = false
+        var showingGolems: Bool = false
         var notifications: Notifications = Notifications()
     }
 }
@@ -51,6 +53,9 @@ extension ContentView: View {
             if viewModel.model.showingWarehouse {
                 warehouseTab
             }
+            if viewModel.model.showingGolems {
+                golemsTab
+            }
 
             if viewModel.model.showingEncyclopedia {
                 encyclopediaTab
@@ -70,6 +75,15 @@ extension ContentView: View {
                 Label("Portal", systemImage: "camera.aperture")
             }
             .tag(0)
+    }
+
+    private var golemsTab: some View {
+        CoordinatorView(coordinator: golemsCoordinator)
+            .withRenderers(resolver: resolver!)
+            .tabItem {
+                Label("Golems", systemImage: "gearshape.2")
+            }
+            .tag(2)
     }
 
     private var warehouseTab: some View {

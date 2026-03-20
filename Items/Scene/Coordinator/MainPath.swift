@@ -12,6 +12,7 @@ enum MainPath: CoordinatorPath {
     case content
 
     case creation
+    case golems
     case warehouse
     case sacrifices
     case research
@@ -62,6 +63,8 @@ struct MainPathRenderer: CoordinatorPathRenderer {
                 .environment(\.resolver, resolver)
         case .creation:
             CreationView(viewModel: coordinator.apply(resolver.creationViewModel()))
+        case .golems:
+            GolemsView(viewModel: coordinator.apply(resolver.golemsViewModel()))
         case .warehouse:
             WarehouseView(viewModel: coordinator.apply(resolver.warehouseViewModel()))
         case .sacrifices:
