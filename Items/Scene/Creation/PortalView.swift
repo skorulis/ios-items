@@ -122,13 +122,8 @@ struct PortalView: View {
 extension PortalView {
     struct Button {
         let action: () -> Void
-        let badge: BadgeContent?
+        let badge: BadgeView.Style?
         let frameBinding: Binding<CGRect>
-    }
-
-    enum BadgeContent {
-        case count(Int)
-        case icon(Image)
     }
 
     enum ButtonOrProgress {
@@ -143,7 +138,7 @@ extension PortalView {
 struct PortalCornerButton: View {
     let icon: Image
     let action: () -> Void
-    var badge: PortalView.BadgeContent?
+    var badge: BadgeView.Style?
     let frameBinding: Binding<CGRect>
 
     private let size: CGFloat = 44
@@ -160,34 +155,13 @@ struct PortalCornerButton: View {
                             .foregroundStyle(.white)
                     }
                 if let badge {
-                    badgeContent(badge: badge)
-                        .background(Circle().fill(Color.red))
+                    BadgeView(style: badge)
                         .offset(x: 4, y: -4)
                 }
             }
         }
         .buttonStyle(.plain)
         .readFrame(frame: frameBinding)
-    }
-
-    @ViewBuilder
-    private func badgeContent(badge: PortalView.BadgeContent) -> some View {
-        switch badge {
-        case let .count(value) where value > 0:
-            Text("\(value)")
-                .font(.appMonospaceBadge)
-                .foregroundStyle(.white)
-                .frame(minWidth: 18, minHeight: 18)
-        case let .icon(image):
-            image
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .padding(4)
-                .frame(width: 18, height: 18)
-                .foregroundStyle(.white)
-        default:
-            EmptyView()
-        }
     }
 }
 

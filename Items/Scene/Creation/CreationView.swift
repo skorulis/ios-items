@@ -92,7 +92,7 @@ extension CreationView: View {
                     ? .init(
                         action: viewModel.showResearch,
                         badge: viewModel.model.researchUnderway
-                            ? .count(viewModel.model.researchBadgeCount)
+                            ? .number(viewModel.model.researchBadgeCount)
                             : .icon(Image(systemName: "exclamationmark")),
                         frameBinding: $viewModel.researchButtonFrame,
                     )
@@ -100,7 +100,7 @@ extension CreationView: View {
                 mapLocationsButton: viewModel.model.mapLocationsUnlocked
                     ? .init(
                         action: viewModel.showMapLocations,
-                        badge: .count(viewModel.model.mapLocationsPurchasableCount),
+                        badge: .number(viewModel.model.mapLocationsPurchasableCount),
                         frameBinding: $viewModel.mapLocationButtonFrame
                     )
                     : nil,
@@ -132,7 +132,7 @@ extension CreationView: View {
             ? .button(
                 .init(
                     action: viewModel.showPortalUpgrades,
-                    badge: .count(viewModel.model.upgradesBadgeCount),
+                    badge: .number(viewModel.model.upgradesBadgeCount),
                     frameBinding: $viewModel.upgradeButtonFrame,
                 )
             )
