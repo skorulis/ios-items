@@ -33,7 +33,6 @@ import SwiftUI
         self.toastService = toastService
 
         mainStore.$achievements.sink { achievements in
-            self.model.showingAchievements = achievements.unlocked.count > 0
             self.model.showingEncyclopedia = achievements.unlocked.count > 0
             self.model.showingWarehouse = achievements.unlocked.contains(.items1)
         }

@@ -81,6 +81,7 @@ extension AchievementsView: View {
     private var titleBar: some View {
         TitleBar(
             title: "Achievements",
+            backAction: viewModel.backAction
         )
     }
 }

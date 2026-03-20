@@ -43,12 +43,39 @@ extension EncyclopediaView: View {
             }
         }
     }
-    
+
     @ViewBuilder
     private var rootRows: some View {
         if viewModel.coordinator?.canPop == false {
+            achievementsRow
             statisticsRow
         }
+    }
+
+    private var achievementsRow: some View {
+        ChevronRow(
+            title: "Achievements",
+            leading: {
+                Image(systemName: "fireworks")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 24, height: 24)
+                    .overlay(alignment: .trailing) {
+                        achievementsbadge
+                    }
+            },
+            action: { viewModel.showAchievements() }
+        )
+        .accessibilityLabel("Achievements")
+    }
+
+    private var achievementsbadge: some View {
+        BadgeView(
+            style: viewModel.achievementsNewCount > 0
+                ? .number(viewModel.achievementsNewCount)
+                : nil
+        )
+        .offset(x: 6)
     }
 
     private var statisticsRow: some View {

@@ -14,17 +14,27 @@ import SwiftUI
     private var unlockRequirementCalculator: UnlockRequirementCalculator
     private var cancellables: Set<AnyCancellable> = []
 
+    private(set) var achievementsNewCount: Int = 0
+
     @Resolvable<BaseResolver>
     init(
         @Argument entry: EncyclopediaEntry,
+        mainStore: MainStore,
         unlockRequirementService: UnlockRequirementService
     ) {
         self.entry = entry
         self.unlockRequirementCalculator = unlockRequirementService.calculator
+        achievementsNewCount = mainStore.notifications.achievementsNewCount
         unlockRequirementService.$calculator.sink { [unowned self] in
             self.unlockRequirementCalculator = $0
         }
         .store(in: &cancellables)
+
+        mainStore.$notifications
+            .sink { [weak self] in
+                self?.achievementsNewCount = $0.achievementsNewCount
+            }
+            .store(in: &cancellables)
     }
 }
 
@@ -53,5 +63,9 @@ extension EncyclopediaViewModel {
 
     func showStatistics() {
         coordinator?.push(MainPath.gameStatistics)
+    }
+
+    func showAchievements() {
+        coordinator?.push(MainPath.achievements)
     }
 }

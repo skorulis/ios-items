@@ -12,7 +12,6 @@ struct ContentView {
     @State var viewModel: ContentViewModel
     @State var creationCoordinator = Coordinator(root: MainPath.creation)
     @State var warehouseCoordinator = Coordinator(root: MainPath.warehouse)
-    @State var achievementsCoordinator = Coordinator(root: MainPath.achievements)
     @State var tab5Coordinator = Coordinator(root: MainPath.encyclopediaEntry(.root))
     @State private var selectedTab: Int = 0
 
@@ -24,7 +23,6 @@ struct ContentView {
 extension ContentView {
     struct Model {
         var showingWarehouse: Bool = false
-        var showingAchievements: Bool = false
         var showingEncyclopedia: Bool = false
         var notifications: Notifications = Notifications()
     }
@@ -52,10 +50,6 @@ extension ContentView: View {
 
             if viewModel.model.showingWarehouse {
                 warehouseTab
-            }
-
-            if viewModel.model.showingAchievements {
-                achievementsTab
             }
 
             if viewModel.model.showingEncyclopedia {
@@ -88,16 +82,6 @@ extension ContentView: View {
             .badge(model.notifications.warehouseNewCount > 0 ? "\(model.notifications.warehouseNewCount)" : nil)
     }
 
-    private var achievementsTab: some View {
-        CoordinatorView(coordinator: achievementsCoordinator)
-            .withRenderers(resolver: resolver!)
-            .tabItem {
-                Label("Achievements", systemImage: "fireworks")
-            }
-            .tag(2)
-            .badge(model.notifications.achievementsNewCount > 0 ? "\(model.notifications.achievementsNewCount)" : nil)
-    }
-
     private var encyclopediaTab: some View {
         CoordinatorView(coordinator: tab5Coordinator)
             .withRenderers(resolver: resolver!)
@@ -105,6 +89,7 @@ extension ContentView: View {
                 Label("Encyclopedia", systemImage: "books.vertical")
             }
             .tag(4)
+            .badge(model.notifications.achievementsNewCount > 0 ? "\(model.notifications.achievementsNewCount)" : nil)
     }
 
 #if DEBUG

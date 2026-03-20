@@ -28,6 +28,11 @@ import SwiftUI
 
 extension AchievementsViewModel {
 
+    var backAction: (() -> Void)? {
+        guard let coordinator, coordinator.canPop else { return nil }
+        return { coordinator.pop() }
+    }
+
     func isComplete(achievement: Achievement) -> Bool {
         mainStore.achievements.unlocked.contains(achievement)
     }
