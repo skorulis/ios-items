@@ -14,6 +14,7 @@ import SwiftUI
     private let mainStore: MainStore
     private let achievementService: AchievementService
     private let researchService: ResearchService
+    private let golemMissionService: GolemMissionService
     private let offlineCreationService: OfflineCreationService
     private let toastService: ToastService
     private let analyticsService: AnalyticsService
@@ -25,6 +26,7 @@ import SwiftUI
         analyticsService: AnalyticsService,
         achievementService: AchievementService,
         researchService: ResearchService,
+        golemMissionService: GolemMissionService,
         offlineCreationService: OfflineCreationService,
         toastService: ToastService
     ) {
@@ -32,6 +34,7 @@ import SwiftUI
         self.analyticsService = analyticsService
         self.achievementService = achievementService
         self.researchService = researchService
+        self.golemMissionService = golemMissionService
         self.offlineCreationService = offlineCreationService
         self.toastService = toastService
 
@@ -62,8 +65,10 @@ extension ContentViewModel {
     /// Apply any research progress and offline creations that accrued while the app was backgrounded or closed.
     func onAppear() {
         researchService.startProgressCheckTimer()
+        golemMissionService.startProgressCheckTimer()
 
         researchService.resumeResearchProgressIfNeeded()
+        golemMissionService.resumeMissionProgressIfNeeded()
         if let summary = offlineCreationService.processOfflineCreationsIfNeeded() {
             toastService.showToast(summary.toastMessage)
         }

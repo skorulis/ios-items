@@ -2,7 +2,7 @@
 
 import Foundation
 
-public enum MakeItemResult: Codable {
+public enum MakeItemResult: Codable, Equatable {
     case base(BaseItem, Int)
     case artifact(ArtifactInstance)
 }

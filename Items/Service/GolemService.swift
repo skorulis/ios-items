@@ -45,11 +45,10 @@ extension GolemService {
     func missionProgress(slotIndex: Int, at date: Date) -> Double {
         guard let slot = missionSlot(at: slotIndex),
               slot.phase == .running,
-              let start = slot.startedAt,
               let duration = slot.duration,
               duration > 0
         else { return 0 }
-        return min(1, max(0, date.timeIntervalSince(start) / duration))
+        return min(1, max(0, date.timeIntervalSince(slot.startedAt) / duration))
     }
 
     func setReservedGolem(slotIndex: Int, newType: GolemType?) {
@@ -93,8 +92,7 @@ extension GolemService {
               mainStore.mapLocations.isUnlocked(location)
         else { return }
 
-        slot.phase = .running
-        slot.startedAt = Date()
+        slot.start(date: Date())
         slot.duration = GolemMissionTiming.defaultDuration
         golems.slots[slotIndex] = slot
         mainStore.golems = golems
@@ -120,9 +118,8 @@ extension GolemService {
             var slot = golems.slots[index]!
             guard slot.phase == .running,
                   let golem = slot.golemType,
-                  let start = slot.startedAt,
                   let duration = slot.duration,
-                  date.timeIntervalSince(start) >= duration
+                  date.timeIntervalSince(slot.startedAt) >= duration
             else { continue }
 
             golems.addOne(golem)

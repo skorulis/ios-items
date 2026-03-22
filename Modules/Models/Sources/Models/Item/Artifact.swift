@@ -166,7 +166,7 @@ public extension ArtifactInstance {
 
 // MARK: -
 
-public struct ArtifactInstance: Codable {
+public struct ArtifactInstance: Codable, Equatable {
     public let type: Artifact
     public let quality: ItemQuality
 
