@@ -1,6 +1,7 @@
 // Created by Cursor on 16/3/2026.
 
 import Foundation
+import SwiftUI
 
 /// A location that can be unlocked on the world map.
 public enum MapLocation: String, CaseIterable, Identifiable, Hashable, Codable {
@@ -91,6 +92,26 @@ public enum MapLocation: String, CaseIterable, Identifiable, Hashable, Codable {
                     UpgradeCostItem(item: .rock, quantity: 50),
                 ]
             )
+        }
+    }
+}
+
+// MARK: - Icon
+
+public extension MapLocation {
+    /// SF Symbol shown in map location lists and related UI.
+    public var icon: Image {
+        switch self {
+        case .vesprium:
+            return Image(systemName: "globe.americas.fill")
+        case .semilTradingPost:
+            return Image(systemName: "storefront.fill")
+        case .palaceGardens:
+            return Image(systemName: "leaf.fill")
+        case .university:
+            return Image(systemName: "building.columns.fill")
+        case .crystalMine:
+            return Image(systemName: "diamond.fill")
         }
     }
 }

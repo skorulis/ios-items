@@ -96,7 +96,12 @@ extension MapLocationView: View {
         let details = location.details
 
         return VStack(alignment: .leading, spacing: 6) {
-            HStack {
+            HStack(alignment: .center, spacing: 10) {
+                location.icon
+                    .font(.title2)
+                    .foregroundStyle(.secondary)
+                    .frame(width: 28, alignment: .center)
+
                 Text(location.name)
                     .font(.appTitle)
 
@@ -139,7 +144,12 @@ extension MapLocationView: View {
         let details = location.details
 
         return VStack(alignment: .leading, spacing: 6) {
-            HStack {
+            HStack(alignment: .center, spacing: 10) {
+                location.icon
+                    .font(.title2)
+                    .foregroundStyle(.secondary)
+                    .frame(width: 28, alignment: .center)
+
                 Text(location.name)
                     .font(.appTitle)
                 Spacer()
