@@ -112,6 +112,10 @@ extension GolemMissionSlotView: View {
                 )
             }
 
+            Text(slot.missionActivityState.displayTitle)
+                .font(.appCaption)
+                .foregroundStyle(.secondary)
+
             ProgressView(value: viewModel.missionProgress(slotIndex: slotIndex))
                 .tint(.accentColor)
 
@@ -167,6 +171,15 @@ extension GolemMissionSlotView: View {
                 .stroke(Color.gray.opacity(0.55), lineWidth: Self.slotStrokeWidth)
         }
         .clipShape(RoundedRectangle(cornerRadius: 8))
+    }
+}
+
+private extension GolemMissionSlot.MissionActivityState {
+    var displayTitle: String {
+        switch self {
+        case .exploring: return "Exploring"
+        case .gathering: return "Gathering"
+        }
     }
 }
 
