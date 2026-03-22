@@ -30,21 +30,44 @@ extension GolemMissionSlotView: View {
 
     private func setupBody(slot: GolemMissionSlot) -> some View {
         VStack(alignment: .leading, spacing: 10) {
-            Picker("Golem", selection: golemSelectionBinding) {
-                Text("None").tag(Optional<GolemType>.none)
-                ForEach(viewModel.selectableGolemTypes(for: slotIndex), id: \.self) { type in
-                    Text(type.name).tag(GolemType?.some(type))
-                }
-            }
-            .pickerStyle(.menu)
+            HStack(alignment: .top, spacing: 20) {
+                missionSlotColumn(
+                    title: "Golem",
+                    accessibilityLabel: "Choose golem",
+                    action: { viewModel.openMissionGolemPicker(slotIndex: slotIndex) },
+                    content: {
+                        if let type = slot.golemType, let image = type.image {
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .padding(8)
+                        } else {
+                            Image(systemName: "plus")
+                                .font(.title2.weight(.semibold))
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                )
 
-            Picker("Location", selection: locationSelectionBinding) {
-                Text("None").tag(Optional<MapLocation>.none)
-                ForEach(viewModel.unlockedMissionLocations(), id: \.self) { location in
-                    Text(location.name).tag(MapLocation?.some(location))
-                }
+                missionSlotColumn(
+                    title: "Location",
+                    accessibilityLabel: "Choose location",
+                    action: { viewModel.openMissionLocationPicker(slotIndex: slotIndex) },
+                    content: {
+                        if let location = slot.location {
+                            location.icon
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .padding(8)
+                                .symbolRenderingMode(.hierarchical)
+                        } else {
+                            Image(systemName: "plus")
+                                .font(.title2.weight(.semibold))
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                )
             }
-            .pickerStyle(.menu)
 
             HStack {
                 Spacer(minLength: 0)
@@ -59,15 +82,34 @@ extension GolemMissionSlotView: View {
 
     private func runningBody(slot: GolemMissionSlot) -> some View {
         VStack(alignment: .leading, spacing: 10) {
-            if let golem = slot.golemType {
-                Text(golem.name)
-                    .font(.appCaption)
-                    .foregroundStyle(.secondary)
-            }
-            if let location = slot.location {
-                Text(location.name)
-                    .font(.appCaption)
-                    .foregroundStyle(.secondary)
+            HStack(alignment: .top, spacing: 20) {
+                missionSlotColumn(
+                    title: "Golem",
+                    accessibilityLabel: "Golem",
+                    action: nil,
+                    content: {
+                        if let type = slot.golemType, let image = type.image {
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .padding(8)
+                        }
+                    }
+                )
+                missionSlotColumn(
+                    title: "Location",
+                    accessibilityLabel: "Location",
+                    action: nil,
+                    content: {
+                        if let location = slot.location {
+                            location.icon
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .padding(8)
+                                .symbolRenderingMode(.hierarchical)
+                        }
+                    }
+                )
             }
 
             ProgressView(value: viewModel.missionProgress(slotIndex: slotIndex))
@@ -83,18 +125,48 @@ extension GolemMissionSlotView: View {
         }
     }
 
-    private var golemSelectionBinding: Binding<GolemType?> {
-        Binding(
-            get: { viewModel.missionSlot(at: slotIndex).golemType },
-            set: { viewModel.setReservedGolem(slotIndex: slotIndex, newType: $0) }
-        )
+    private static let slotSize: CGFloat = 64
+    private static let slotStrokeWidth: CGFloat = 3
+
+    @ViewBuilder
+    private func missionSlotColumn(
+        title: String,
+        accessibilityLabel: String,
+        action: (() -> Void)?,
+        @ViewBuilder content: () -> some View
+    ) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text(title)
+                .font(.appCaption.weight(.semibold))
+                .foregroundStyle(.secondary)
+
+            Group {
+                if let action {
+                    Button(action: action) {
+                        slotSquare { content() }
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel(accessibilityLabel)
+                } else {
+                    slotSquare { content() }
+                        .accessibilityElement(children: .combine)
+                        .accessibilityLabel(accessibilityLabel)
+                }
+            }
+        }
     }
 
-    private var locationSelectionBinding: Binding<MapLocation?> {
-        Binding(
-            get: { viewModel.missionSlot(at: slotIndex).location },
-            set: { viewModel.setMissionLocation(slotIndex: slotIndex, location: $0) }
-        )
+    private func slotSquare(@ViewBuilder content: () -> some View) -> some View {
+        ZStack {
+            Color(.systemBackground)
+            content()
+        }
+        .frame(width: Self.slotSize, height: Self.slotSize)
+        .overlay {
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(Color.gray.opacity(0.55), lineWidth: Self.slotStrokeWidth)
+        }
+        .clipShape(RoundedRectangle(cornerRadius: 8))
     }
 }
 

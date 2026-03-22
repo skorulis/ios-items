@@ -91,6 +91,14 @@ extension GolemsViewModel {
         coordinator?.custom(overlay: .card, MainPath.dialog(type.detailedExplanation))
     }
 
+    func openMissionGolemPicker(slotIndex: Int) {
+        coordinator?.custom(overlay: .card, MainPath.golemMissionGolemPicker(slotIndex: slotIndex))
+    }
+
+    func openMissionLocationPicker(slotIndex: Int) {
+        coordinator?.custom(overlay: .card, MainPath.golemMissionLocationPicker(slotIndex: slotIndex))
+    }
+
     func selectableGolemTypes(for slotIndex: Int) -> [GolemType] {
         let reserved = missionSlot(at: slotIndex).golemType
         return GolemType.allCases.filter { type in
