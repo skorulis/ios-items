@@ -19,6 +19,7 @@ import SwiftUI
     var warehouse: Warehouse = Warehouse()
     var golems: Golems = Golems()
     var mapLocations: MapLocations = MapLocations()
+    private(set) var portalUpgrades: PortalUpgrades = PortalUpgrades()
     /// Bumped every second so running mission progress updates without mutating store.
     private(set) var now: Date = Date()
 
@@ -33,6 +34,7 @@ import SwiftUI
         self.warehouse = mainStore.warehouse
         self.golems = mainStore.golems
         self.mapLocations = mainStore.mapLocations
+        self.portalUpgrades = mainStore.portalUpgrades
         mainStore.$warehouse.sink { [weak self] in
             self?.warehouse = $0
         }
@@ -43,6 +45,10 @@ import SwiftUI
         .store(in: &cancellables)
         mainStore.$mapLocations.sink { [weak self] in
             self?.mapLocations = $0
+        }
+        .store(in: &cancellables)
+        mainStore.$portalUpgrades.sink { [weak self] in
+            self?.portalUpgrades = $0
         }
         .store(in: &cancellables)
 
@@ -67,8 +73,12 @@ extension GolemsViewModel {
         GolemType.allCases.sorted { $0.name < $1.name }
     }
 
+    var missionSlotCount: Int {
+        Golems.baseMissionSlotCount + portalUpgrades.bonuses.golemMissionSlots
+    }
+
     var missionSlotIndices: Range<Int> {
-        0..<Golems.slotCount
+        0..<missionSlotCount
     }
 
     func missionSlot(at index: Int) -> GolemMissionSlot {

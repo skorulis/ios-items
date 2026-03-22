@@ -5,6 +5,8 @@ import Foundation
 public enum Bonus {
     case researchSpeed(Int)
     case artifactSlots(Int)
+    /// Extra concurrent golem mission slots (stacks with `Golems.baseMissionSlotCount`).
+    case golemMissionSlots(Int)
     /// Extra sacrifice slots (not yet consumed by gameplay; reserved for future use).
     case sacrificeSlot(Int)
     case qualityBoost(Int, ItemQuality)
@@ -27,6 +29,8 @@ public enum Bonus {
             return "Boost research speed by \(int)%"
         case let .artifactSlots(int):
             return "Add \(int) artifact slot"
+        case let .golemMissionSlots(int):
+            return "Add \(int) golem mission slot\(int == 1 ? "" : "s")"
         case let .sacrificeSlot(int):
             return "Add \(int) sacrifice slot\(int == 1 ? "" : "s")"
         case let .qualityBoost(amount, quality):
@@ -60,6 +64,15 @@ public enum Bonus {
     public var artifactSlotBoost: Int {
         switch self {
         case .artifactSlots(let int):
+            return int
+        default:
+            return 0
+        }
+    }
+
+    public var golemMissionSlotBoost: Int {
+        switch self {
+        case .golemMissionSlots(let int):
             return int
         default:
             return 0
@@ -131,6 +144,10 @@ public extension Array where Element == Bonus {
 
     var artifactSlots: Int {
         return self.map { $0.artifactSlotBoost }.reduce(0, +)
+    }
+
+    var golemMissionSlots: Int {
+        return self.map { $0.golemMissionSlotBoost }.reduce(0, +)
     }
 
     var artifactDiscovery: Int {

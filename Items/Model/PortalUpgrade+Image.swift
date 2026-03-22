@@ -27,7 +27,11 @@ extension PortalUpgrade {
             return Image(systemName: "arrow.up.circle.badge.clock")
         case .mapLocations:
             return Image(systemName: "map.fill")
-        case .golems:
+        case .golems,
+                .golemMissionSlotsLevel2,
+                .golemMissionSlotsLevel3,
+                .golemMissionSlotsLevel4,
+                .golemMissionSlotsLevel5:
             return Image(systemName: "person.3.fill")
         case .tradingPost:
             return Image(systemName: "storefront")

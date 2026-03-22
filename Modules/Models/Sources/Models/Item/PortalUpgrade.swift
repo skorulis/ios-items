@@ -31,6 +31,10 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
     case tradingPostLevel2
     case tradingPostLevel3
     case golems
+    case golemMissionSlotsLevel2
+    case golemMissionSlotsLevel3
+    case golemMissionSlotsLevel4
+    case golemMissionSlotsLevel5
 
     public var id: Self { self }
 
@@ -62,6 +66,10 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
         case .tradingPostLevel2: return "Trading Post II"
         case .tradingPostLevel3: return "Trading Post III"
         case .golems: return "Golems"
+        case .golemMissionSlotsLevel2: return "Golem Missions II"
+        case .golemMissionSlotsLevel3: return "Golem Missions III"
+        case .golemMissionSlotsLevel4: return "Golem Missions IV"
+        case .golemMissionSlotsLevel5: return "Golem Missions V"
         }
     }
 
@@ -78,6 +86,10 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
         case .tradingPostLevel2: return "Adds 1 extra trade offer and improves conversion rates."
         case .tradingPostLevel3: return "Adds 1 extra trade offer and improves conversion rates."
         case .golems: return "Unlocks the Golems tab."
+        case .golemMissionSlotsLevel2: return "Adds a second concurrent golem mission."
+        case .golemMissionSlotsLevel3: return "Adds a third concurrent golem mission."
+        case .golemMissionSlotsLevel4: return "Adds a fourth concurrent golem mission."
+        case .golemMissionSlotsLevel5: return "Adds a fifth concurrent golem mission."
         default:
             return self.bonus?.text ?? "TODO: Set manual description or add bonus"
         }
@@ -196,6 +208,25 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
             .init(item: .humanSkull, quantity: 1),
             .init(item: .silverFlorin, quantity: 5),
         ]
+        case .golemMissionSlotsLevel2: return [
+            .init(item: .humanSkull, quantity: 1),
+            .init(item: .silverFlorin, quantity: 8),
+        ]
+        case .golemMissionSlotsLevel3: return [
+            .init(item: .humanSkull, quantity: 2),
+            .init(item: .lens, quantity: 1),
+            .init(item: .silverFlorin, quantity: 12),
+        ]
+        case .golemMissionSlotsLevel4: return [
+            .init(item: .humanSkull, quantity: 3),
+            .init(item: .lens, quantity: 2),
+            .init(item: .goldFlorin, quantity: 2),
+        ]
+        case .golemMissionSlotsLevel5: return [
+            .init(item: .humanSkull, quantity: 4),
+            .init(item: .lens, quantity: 3),
+            .init(item: .goldFlorin, quantity: 5),
+        ]
         }
     }
 
@@ -220,6 +251,8 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
             return .sacrificeSlot(1)
         case .offlineProgress, .offlineProgressLevel2, .offlineProgressLevel3, .offlineProgressLevel4, .offlineProgressLevel5:
             return .offlineTimeMinutes(60)
+        case .golemMissionSlotsLevel2, .golemMissionSlotsLevel3, .golemMissionSlotsLevel4, .golemMissionSlotsLevel5:
+            return .golemMissionSlots(1)
         default:
             return nil
         }
@@ -281,6 +314,14 @@ extension PortalUpgrade {
             return [.upgradePurchased(.tradingPost)]
         case .tradingPostLevel3:
             return [.upgradePurchased(.tradingPostLevel2)]
+        case .golemMissionSlotsLevel2:
+            return [.upgradePurchased(.golems)]
+        case .golemMissionSlotsLevel3:
+            return [.upgradePurchased(.golemMissionSlotsLevel2)]
+        case .golemMissionSlotsLevel4:
+            return [.upgradePurchased(.golemMissionSlotsLevel3)]
+        case .golemMissionSlotsLevel5:
+            return [.upgradePurchased(.golemMissionSlotsLevel4)]
         default:
             return []
         }

@@ -5,7 +5,8 @@ import Models
 
 struct Golems: Codable {
 
-    static let slotCount = 1
+    /// Mission slots before portal upgrades (`golemMissionSlots` bonuses add to this).
+    static let baseMissionSlotCount = 1
 
     /// Owned count per golem type (missing keys mean zero).
     var inventory: [GolemType: Int] = [:]

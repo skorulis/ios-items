@@ -47,6 +47,14 @@ extension PortalUpgrade {
                 """,
                 title: "Golems"
             )
+        case .golemMissionSlotsLevel2, .golemMissionSlotsLevel3, .golemMissionSlotsLevel4, .golemMissionSlotsLevel5:
+            return .init(
+                bodyText: """
+                Each Golem Missions upgrade adds another concurrent mission slot on the Missions tab.
+                With all four upgrades unlocked, you can run up to five golem missions at the same time.
+                """,
+                title: "Golem Missions"
+            )
         }
     }
 }
