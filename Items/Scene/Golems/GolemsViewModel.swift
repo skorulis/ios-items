@@ -146,14 +146,14 @@ extension GolemsViewModel {
     func showMissionGainedItems(slotIndex: Int) {
         let gained = missionSlot(at: slotIndex).gainedItems
         guard !gained.isEmpty else {
-            coordinator?.custom(overlay: .card, MainPath.dialog("No items gathered yet."))
+            coordinator?.custom(overlay: .card, MainPath.dialog("No items gained yet."))
             return
         }
         let lines = gained
             .sorted { $0.key.name < $1.key.name }
             .map { "• \($0.key.name): \($0.value)" }
             .joined(separator: "\n")
-        let text = "Items gathered on this mission:\n\n" + lines
+        let text = "Items gained on this mission:\n\n" + lines
         coordinator?.custom(overlay: .card, MainPath.dialog(text))
     }
 }

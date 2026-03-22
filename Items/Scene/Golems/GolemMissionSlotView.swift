@@ -14,8 +14,14 @@ extension GolemMissionSlotView: View {
     var body: some View {
         let slot = viewModel.missionSlot(at: slotIndex)
         VStack(alignment: .leading, spacing: 12) {
-            Text("Mission \(slotIndex + 1)")
-                .font(.appSectionTitle)
+            HStack(alignment: .center, spacing: 8) {
+                Text("Mission \(slotIndex + 1)")
+                    .font(.appSectionTitle)
+                Spacer(minLength: 0)
+                if slot.phase == .running || slot.phase == .complete {
+                    gainedItemsIconButton
+                }
+            }
 
             switch slot.phase {
             case .setup:
@@ -28,6 +34,20 @@ extension GolemMissionSlotView: View {
         }
         .padding(12)
         .background(Color.gray.opacity(0.1), in: RoundedRectangle(cornerRadius: 8))
+    }
+
+    private var gainedItemsIconButton: some View {
+        Button {
+            viewModel.showMissionGainedItems(slotIndex: slotIndex)
+        } label: {
+            Image(systemName: "archivebox")
+                .font(.body.weight(.semibold))
+                .foregroundStyle(.primary)
+                .frame(minWidth: 44, minHeight: 44)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("Gained items")
     }
 
     private func setupBody(slot: GolemMissionSlot) -> some View {
@@ -99,10 +119,6 @@ extension GolemMissionSlotView: View {
                 .tint(.accentColor)
 
             HStack {
-                Button("Gained items") {
-                    viewModel.showMissionGainedItems(slotIndex: slotIndex)
-                }
-                .buttonStyle(CapsuleButtonStyle())
                 Spacer(minLength: 0)
                 Button("Cancel") {
                     viewModel.presentCancelMissionConfirmation(slotIndex: slotIndex)
@@ -121,10 +137,6 @@ extension GolemMissionSlotView: View {
                 .foregroundStyle(.secondary)
 
             HStack {
-                Button("Gained items") {
-                    viewModel.showMissionGainedItems(slotIndex: slotIndex)
-                }
-                .buttonStyle(CapsuleButtonStyle())
                 Spacer(minLength: 0)
                 Button("Clear") {
                     viewModel.clearCompletedMission(slotIndex: slotIndex)
