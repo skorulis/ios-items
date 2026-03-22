@@ -45,38 +45,51 @@ final class GolemMissionService {
                   slot.phase == .running
             else { continue }
 
+            var slotMutated = false
             switch slot.missionActivityState {
             case .exploring:
-                guard Self.exploringToGatheringChance.check() else { continue }
-                slot.setActivity(state: .gathering, date: now)
-                golems.slots[index] = slot
-                changed = true
+                if Self.exploringToGatheringChance.check() {
+                    slot.setActivity(state: .gathering, date: now)
+                    slotMutated = true
+                }
 
             case .gathering:
                 let start = slot.activityStartDate
-                guard now.timeIntervalSince(start) >= Self.gatheringDuration else { continue }
+                if now.timeIntervalSince(start) >= Self.gatheringDuration {
+                    let hadMissionLocation = slot.location != nil
+                    let previousSelected = mainStore.mapLocations.selected
+                    if let missionLocation = slot.location {
+                        var mapLocations = mainStore.mapLocations
+                        mapLocations.selected = missionLocation
+                        mainStore.mapLocations = mapLocations
+                    }
 
-                let hadMissionLocation = slot.location != nil
-                let previousSelected = mainStore.mapLocations.selected
-                if let missionLocation = slot.location {
-                    var mapLocations = mainStore.mapLocations
-                    mapLocations.selected = missionLocation
-                    mainStore.mapLocations = mapLocations
+                    let results = itemGeneratorService.makeAndStore(
+                        plan: SacrificePlan(slotsByIndex: [:]),
+                        allowArtifacts: false,
+                    )
+
+                    if hadMissionLocation {
+                        var mapLocations = mainStore.mapLocations
+                        mapLocations.selected = previousSelected
+                        mainStore.mapLocations = mapLocations
+                    }
+
+                    slot.add(results: results)
+                    slot.setActivity(state: .exploring, date: now)
+                    slotMutated = true
                 }
+            }
 
-                let results = itemGeneratorService.makeAndStore(
-                    plan: SacrificePlan(slotsByIndex: [:]),
-                    allowArtifacts: false,
-                )
-
-                if hadMissionLocation {
-                    var mapLocations = mainStore.mapLocations
-                    mapLocations.selected = previousSelected
-                    mainStore.mapLocations = mapLocations
+            if slot.phase == .running, let health = slot.remainingHealth, health > 0 {
+                slot.remainingHealth = health - 1
+                if slot.remainingHealth == 0 {
+                    slot.phase = .complete
                 }
+                slotMutated = true
+            }
 
-                slot.add(results: results)
-                slot.setActivity(state: .exploring, date: now)
+            if slotMutated {
                 golems.slots[index] = slot
                 changed = true
             }

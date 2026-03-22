@@ -31,11 +31,6 @@ struct Golems: Codable {
 
 }
 
-/// Default mission length (seconds); tune in one place.
-enum GolemMissionTiming {
-    static let defaultDuration: TimeInterval = 60
-}
-
 struct GolemMissionSlot: Codable {
 
     enum Phase: String, Codable {
@@ -55,7 +50,8 @@ struct GolemMissionSlot: Codable {
 
     // When the mission started (only relevant for the runnin phase)
     private(set) var startedAt: Date
-    var duration: TimeInterval?
+    /// Health remaining while running or zero when complete; nil in setup.
+    var remainingHealth: Int?
     // The last time the activity changed
     private(set) var activityStartDate: Date
     private(set) var missionActivityState: MissionActivityState
@@ -66,9 +62,10 @@ struct GolemMissionSlot: Codable {
         self.missionActivityState = state
     }
 
-    mutating func start(date: Date) {
+    mutating func start(date: Date, initialHealth: Int) {
         self.phase = .running
         self.startedAt = date
+        self.remainingHealth = initialHealth
         self.missionActivityState = .exploring
         self.activityStartDate = date
         self.gainedItems = [:]
@@ -90,7 +87,7 @@ struct GolemMissionSlot: Codable {
         phase: Phase,
         golemType: GolemType?,
         location: MapLocation?,
-        duration: TimeInterval?,
+        remainingHealth: Int? = nil,
         missionActivityState: MissionActivityState = .exploring,
     ) {
         self.phase = phase
@@ -98,7 +95,7 @@ struct GolemMissionSlot: Codable {
         self.location = location
         self.startedAt = Date()
         self.activityStartDate = Date()
-        self.duration = duration
+        self.remainingHealth = remainingHealth
         self.missionActivityState = missionActivityState
         self.gainedItems = [:]
     }
@@ -108,7 +105,7 @@ struct GolemMissionSlot: Codable {
             phase: .setup,
             golemType: nil,
             location: nil,
-            duration: nil
+            remainingHealth: nil
         )
     }
 }

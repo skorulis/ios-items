@@ -12,9 +12,6 @@ struct GolemsView: View {
             titleBar: { titleBar },
             content: { content }
         )
-        .onAppear {
-            viewModel.onAppear()
-        }
     }
 
     private var titleBar: some View {

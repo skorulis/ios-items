@@ -42,14 +42,16 @@ extension GolemService {
         return mainStore.golems.slots[index]
     }
 
-    func missionProgress(slotIndex: Int, at date: Date) -> Double {
+    /// Fraction of mission health still remaining (1 = full, 0 = depleted or complete).
+    func missionHealthRemainingFraction(slotIndex: Int) -> Double {
         guard let slot = missionSlot(at: slotIndex) else { return 0 }
-        if slot.phase == .complete { return 1 }
+        if slot.phase == .complete { return 0 }
         guard slot.phase == .running,
-              let duration = slot.duration,
-              duration > 0
+              let type = slot.golemType,
+              let remaining = slot.remainingHealth,
+              type.missionMaxHealth > 0
         else { return 0 }
-        return min(1, max(0, date.timeIntervalSince(slot.startedAt) / duration))
+        return min(1, max(0, Double(remaining) / Double(type.missionMaxHealth)))
     }
 
     func setReservedGolem(slotIndex: Int, newType: GolemType?) {
@@ -93,8 +95,8 @@ extension GolemService {
               mainStore.mapLocations.isUnlocked(location)
         else { return }
 
-        slot.start(date: Date())
-        slot.duration = GolemMissionTiming.defaultDuration
+        guard let golemType = slot.golemType else { return }
+        slot.start(date: Date(), initialHealth: golemType.missionMaxHealth)
         golems.slots[slotIndex] = slot
         mainStore.golems = golems
     }
@@ -104,25 +106,7 @@ extension GolemService {
         guard var slot = golems.slots[slotIndex] else { return }
         guard slot.phase == .running else { return }
 
-        if let golem = slot.golemType {
-            golems.addOne(golem)
-        }
         slot = .empty()
-        golems.slots[slotIndex] = slot
-        mainStore.golems = golems
-    }
-
-    func restartMission(slotIndex: Int) {
-        var golems = mainStore.golems
-        guard var slot = golems.slots[slotIndex] else { return }
-        guard slot.phase == .complete,
-              slot.golemType != nil,
-              let location = slot.location,
-              mainStore.mapLocations.isUnlocked(location)
-        else { return }
-
-        slot.start(date: Date())
-        slot.duration = GolemMissionTiming.defaultDuration
         golems.slots[slotIndex] = slot
         mainStore.golems = golems
     }
@@ -132,33 +116,8 @@ extension GolemService {
         guard var slot = golems.slots[slotIndex] else { return }
         guard slot.phase == .complete else { return }
 
-        if let golem = slot.golemType {
-            golems.addOne(golem)
-        }
         slot = .empty()
         golems.slots[slotIndex] = slot
         mainStore.golems = golems
-    }
-
-    func finalizeCompletedSlots(at date: Date) {
-        var golems = mainStore.golems
-        var changed = false
-
-        for index in golems.slots.keys {
-            var slot = golems.slots[index]!
-            guard slot.phase == .running,
-                  let duration = slot.duration,
-                  duration > 0,
-                  date.timeIntervalSince(slot.startedAt) >= duration
-            else { continue }
-
-            slot.phase = .complete
-            golems.slots[index] = slot
-            changed = true
-        }
-
-        if changed {
-            mainStore.golems = golems
-        }
     }
 }

@@ -41,6 +41,15 @@ public enum GolemType: String, Codable, Hashable, CaseIterable, Identifiable {
         }
     }
 
+    /// Hit points while on a portal mission; one point is lost each mission tick (1s).
+    public var missionMaxHealth: Int {
+        switch self {
+        case .clay: return 30
+        case .iron: return 60
+        case .crystal: return 120
+        }
+    }
+
     public var cost: [UpgradeCostItem] {
         switch self {
         case .clay:

@@ -146,3 +146,41 @@ struct GolemMissionLocationPickerView: View {
     let assembler = ItemsAssembly.testing()
     GolemMissionLocationPickerView(slotIndex: 0, viewModel: assembler.resolver.golemsViewModel())
 }
+
+/// Confirms golem loss before cancelling an in-progress mission.
+@MainActor
+struct GolemCancelMissionConfirmView: View {
+    let slotIndex: Int
+    @State var viewModel: GolemsViewModel
+    @Environment(\.dismissCustomOverlay) private var dismiss
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text("Cancel mission?")
+                .font(.appTitle)
+
+            Text(
+                "The golem cannot be recovered once a mission has started. "
+                    + "Cancelling will end the mission and you will lose this golem."
+            )
+            .font(.appBody)
+            .fixedSize(horizontal: false, vertical: true)
+
+            HStack(spacing: 12) {
+                Button("Keep mission") {
+                    dismiss()
+                }
+                .buttonStyle(CapsuleButtonStyle())
+
+                Spacer(minLength: 0)
+
+                Button("Cancel mission") {
+                    viewModel.confirmCancelMission(slotIndex: slotIndex)
+                    dismiss()
+                }
+                .buttonStyle(CapsuleButtonStyle())
+            }
+        }
+        .padding(16)
+    }
+}

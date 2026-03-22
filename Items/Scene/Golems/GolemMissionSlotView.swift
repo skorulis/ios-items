@@ -90,7 +90,12 @@ extension GolemMissionSlotView: View {
                 .font(.appCaption)
                 .foregroundStyle(.secondary)
 
-            ProgressView(value: viewModel.missionProgress(slotIndex: slotIndex))
+            if let type = slot.golemType, let remaining = slot.remainingHealth {
+                Text("Health: \(remaining) / \(type.missionMaxHealth)")
+                    .font(.appCaption.weight(.semibold))
+            }
+
+            ProgressView(value: viewModel.missionHealthRemainingFraction(slotIndex: slotIndex))
                 .tint(.accentColor)
 
             HStack {
@@ -100,7 +105,7 @@ extension GolemMissionSlotView: View {
                 .buttonStyle(CapsuleButtonStyle())
                 Spacer(minLength: 0)
                 Button("Cancel") {
-                    viewModel.cancelMission(slotIndex: slotIndex)
+                    viewModel.presentCancelMissionConfirmation(slotIndex: slotIndex)
                 }
                 .buttonStyle(CapsuleButtonStyle())
             }
@@ -115,29 +120,16 @@ extension GolemMissionSlotView: View {
                 .font(.appCaption)
                 .foregroundStyle(.secondary)
 
-            ProgressView(value: viewModel.missionProgress(slotIndex: slotIndex))
-                .tint(.accentColor)
-
-            VStack(alignment: .leading, spacing: 8) {
-                HStack {
-                    Button("Gained items") {
-                        viewModel.showMissionGainedItems(slotIndex: slotIndex)
-                    }
-                    .buttonStyle(CapsuleButtonStyle())
-                    Spacer(minLength: 0)
+            HStack {
+                Button("Gained items") {
+                    viewModel.showMissionGainedItems(slotIndex: slotIndex)
                 }
-                HStack {
-                    Button("Restart") {
-                        viewModel.restartMission(slotIndex: slotIndex)
-                    }
-                    .buttonStyle(CapsuleButtonStyle())
-                    .disabled(!viewModel.canRestartMission(slotIndex: slotIndex))
-                    Spacer(minLength: 0)
-                    Button("Clear") {
-                        viewModel.clearCompletedMission(slotIndex: slotIndex)
-                    }
-                    .buttonStyle(CapsuleButtonStyle())
+                .buttonStyle(CapsuleButtonStyle())
+                Spacer(minLength: 0)
+                Button("Clear") {
+                    viewModel.clearCompletedMission(slotIndex: slotIndex)
                 }
+                .buttonStyle(CapsuleButtonStyle())
             }
         }
     }

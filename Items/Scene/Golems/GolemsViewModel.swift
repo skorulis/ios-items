@@ -20,8 +20,6 @@ import SwiftUI
     var golems: Golems = Golems()
     var mapLocations: MapLocations = MapLocations()
     private(set) var portalUpgrades: PortalUpgrades = PortalUpgrades()
-    /// Bumped every second so running mission progress updates without mutating store.
-    private(set) var now: Date = Date()
 
     private let mainStore: MainStore
     private let golemService: GolemService
@@ -51,19 +49,6 @@ import SwiftUI
             self?.portalUpgrades = $0
         }
         .store(in: &cancellables)
-
-        Timer.publish(every: 1, on: .main, in: .common)
-            .autoconnect()
-            .sink { [weak self] date in
-                guard let self else { return }
-                self.now = date
-                self.golemService.finalizeCompletedSlots(at: date)
-            }
-            .store(in: &cancellables)
-    }
-
-    func onAppear() {
-        golemService.finalizeCompletedSlots(at: Date())
     }
 }
 
@@ -121,8 +106,8 @@ extension GolemsViewModel {
         golemService.unlockedMissionLocations(from: mapLocations)
     }
 
-    func missionProgress(slotIndex: Int) -> Double {
-        golemService.missionProgress(slotIndex: slotIndex, at: now)
+    func missionHealthRemainingFraction(slotIndex: Int) -> Double {
+        golemService.missionHealthRemainingFraction(slotIndex: slotIndex)
     }
 
     func canStartMission(slotIndex: Int) -> Bool {
@@ -146,25 +131,16 @@ extension GolemsViewModel {
         golemService.startMission(slotIndex: slotIndex)
     }
 
-    func cancelMission(slotIndex: Int) {
-        golemService.cancelMission(slotIndex: slotIndex)
+    func presentCancelMissionConfirmation(slotIndex: Int) {
+        coordinator?.custom(overlay: .card, MainPath.golemCancelMissionConfirm(slotIndex: slotIndex))
     }
 
-    func restartMission(slotIndex: Int) {
-        golemService.restartMission(slotIndex: slotIndex)
+    func confirmCancelMission(slotIndex: Int) {
+        golemService.cancelMission(slotIndex: slotIndex)
     }
 
     func clearCompletedMission(slotIndex: Int) {
         golemService.clearCompletedMission(slotIndex: slotIndex)
-    }
-
-    func canRestartMission(slotIndex: Int) -> Bool {
-        let slot = missionSlot(at: slotIndex)
-        guard slot.phase == .complete,
-              slot.golemType != nil,
-              let location = slot.location
-        else { return false }
-        return mapLocations.isUnlocked(location)
     }
 
     func showMissionGainedItems(slotIndex: Int) {
