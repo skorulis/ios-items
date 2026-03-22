@@ -13,6 +13,7 @@
 		FA111FAB2F5E691400F67CF9 /* Models in Frameworks */ = {isa = PBXBuildFile; productRef = FA111E562F5E609000F67CF9 /* Models */; };
 		FA1120FA2F5E776F00F67CF9 /* Models in Frameworks */ = {isa = PBXBuildFile; productRef = FA1120F92F5E776F00F67CF9 /* Models */; };
 		FA1121122F5E9F0900F67CF9 /* Vapor in Frameworks */ = {isa = PBXBuildFile; productRef = FA1121112F5E9F0900F67CF9 /* Vapor */; };
+		FA482E992F6F6BED00DF99F6 /* AmplitudeUnified in Frameworks */ = {isa = PBXBuildFile; productRef = FA482E982F6F6BED00DF99F6 /* AmplitudeUnified */; };
 		FA6D90A32F3B334E003DE626 /* ASKCoordinator in Frameworks */ = {isa = PBXBuildFile; productRef = FA6D90A22F3B334E003DE626 /* ASKCoordinator */; };
 		FA6D90A62F3B3389003DE626 /* Knit in Frameworks */ = {isa = PBXBuildFile; productRef = FA6D90A52F3B3389003DE626 /* Knit */; };
 		FA6D90A82F3B3389003DE626 /* KnitMacros in Frameworks */ = {isa = PBXBuildFile; productRef = FA6D90A72F3B3389003DE626 /* KnitMacros */; };
@@ -100,6 +101,7 @@
 				FA111E572F5E609000F67CF9 /* Models in Frameworks */,
 				FA6D90A62F3B3389003DE626 /* Knit in Frameworks */,
 				FA6D90A82F3B3389003DE626 /* KnitMacros in Frameworks */,
+				FA482E992F6F6BED00DF99F6 /* AmplitudeUnified in Frameworks */,
 				FA6D90A32F3B334E003DE626 /* ASKCoordinator in Frameworks */,
 				FA777FFF2F3FE15E000C40C3 /* ASKCore in Frameworks */,
 			);
@@ -217,6 +219,7 @@
 				FA6D90A72F3B3389003DE626 /* KnitMacros */,
 				FA777FFE2F3FE15E000C40C3 /* ASKCore */,
 				FA111E562F5E609000F67CF9 /* Models */,
+				FA482E982F6F6BED00DF99F6 /* AmplitudeUnified */,
 			);
 			productName = Items;
 			productReference = FA6D90922F3B32F1003DE626 /* Items.app */;
@@ -314,6 +317,7 @@
 				FA111E552F5E608F00F67CF9 /* XCLocalSwiftPackageReference "Modules/Models" */,
 				FA1121102F5E9F0900F67CF9 /* XCRemoteSwiftPackageReference "vapor" */,
 				FA1122A02F5E000100F67CF9 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */,
+				FA482E972F6F6BED00DF99F6 /* XCRemoteSwiftPackageReference "AmplitudeUnified-Swift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = FA6D90932F3B32F1003DE626 /* Products */;
@@ -791,6 +795,14 @@
 				minimumVersion = 0.60.0;
 			};
 		};
+		FA482E972F6F6BED00DF99F6 /* XCRemoteSwiftPackageReference "AmplitudeUnified-Swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/amplitude/AmplitudeUnified-Swift";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		FA6D90A12F3B334E003DE626 /* XCRemoteSwiftPackageReference "ASKCoordinator" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/skorulis/ASKCoordinator";
@@ -844,6 +856,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = FA1122A02F5E000100F67CF9 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */;
 			productName = "plugin:SwiftLintBuildToolPlugin";
+		};
+		FA482E982F6F6BED00DF99F6 /* AmplitudeUnified */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA482E972F6F6BED00DF99F6 /* XCRemoteSwiftPackageReference "AmplitudeUnified-Swift" */;
+			productName = AmplitudeUnified;
 		};
 		FA4940AC2F60B599000A33E3 /* Models */ = {
 			isa = XCSwiftPackageProductDependency;

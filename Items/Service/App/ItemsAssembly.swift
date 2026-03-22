@@ -54,6 +54,15 @@ final class ItemsAssembly: AutoInitModuleAssembly {
             .inObjectScope(.container)
         container.register(ToastService.self) { ToastService.make(resolver: $0) }
             .inObjectScope(.container)
+        if purpose == .normal {
+            container.register(AnalyticsService.self) { AmplitudeAnalyticsService.make(resolver: $0) }
+                .inObjectScope(.container)
+        } else {
+            // @knit ignore
+            container.register(AnalyticsService.self) { _ in FakeAnalyticsService() }
+                .inObjectScope(.container)
+        }
+
         container.register(ResearchService.self) { ResearchService.make(resolver: $0) }
         container.register(UpgradeService.self) { UpgradeService.make(resolver: $0) }
             .inObjectScope(.container)
