@@ -120,6 +120,10 @@ extension GolemMissionSlotView: View {
                 .tint(.accentColor)
 
             HStack {
+                Button("Gained items") {
+                    viewModel.showMissionGainedItems(slotIndex: slotIndex)
+                }
+                .buttonStyle(CapsuleButtonStyle())
                 Spacer(minLength: 0)
                 Button("Cancel") {
                     viewModel.cancelMission(slotIndex: slotIndex)

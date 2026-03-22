@@ -139,4 +139,18 @@ extension GolemsViewModel {
     func cancelMission(slotIndex: Int) {
         golemService.cancelMission(slotIndex: slotIndex)
     }
+
+    func showMissionGainedItems(slotIndex: Int) {
+        let gained = missionSlot(at: slotIndex).gainedItems
+        guard !gained.isEmpty else {
+            coordinator?.custom(overlay: .card, MainPath.dialog("No items gathered yet."))
+            return
+        }
+        let lines = gained
+            .sorted { $0.key.name < $1.key.name }
+            .map { "• \($0.key.name): \($0.value)" }
+            .joined(separator: "\n")
+        let text = "Items gathered on this mission:\n\n" + lines
+        coordinator?.custom(overlay: .card, MainPath.dialog(text))
+    }
 }
