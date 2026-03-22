@@ -143,48 +143,23 @@ extension MapLocationView: View {
     private func availableLocationCell(for location: MapLocation) -> some View {
         let details = location.details
 
-        return VStack(alignment: .leading, spacing: 6) {
-            HStack(alignment: .center, spacing: 10) {
+        return PurchaseItemCell(
+            leading: {
                 location.icon
                     .font(.title2)
                     .foregroundStyle(.secondary)
                     .frame(width: 28, alignment: .center)
-
-                Text(location.name)
-                    .font(.appTitle)
-                Spacer()
-                Button {
-                    viewModel.showBonuses(for: location)
-                } label: {
-                    Image(systemName: "info.circle")
-                }
-                .buttonStyle(.borderless)
-            }
-
-            Text(details.description)
-                .font(.appCaption)
-                .foregroundStyle(.secondary)
-
-            if !details.cost.isEmpty {
-                UpgradeCostRow(
-                    cost: details.cost,
-                    itemQuantity: { viewModel.warehouse.quantity($0) }
-                )
-            }
-
-            Button {
-                viewModel.purchase(location)
-            } label: {
-                Text("Unlock")
-                    .frame(maxWidth: .infinity)
-            }
-            .buttonStyle(.borderedProminent)
-            .disabled(!viewModel.canAfford(location))
-            .padding(.top, 4)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(12)
-        .background(Color.gray.opacity(0.05), in: RoundedRectangle(cornerRadius: 8))
+            },
+            title: location.name,
+            description: details.description,
+            cost: details.cost,
+            itemQuantity: { viewModel.warehouse.quantity($0) },
+            actionStyle: .fullWidthBorderedProminent(),
+            canPurchase: viewModel.canAfford(location),
+            purchaseTitle: "Unlock",
+            onPurchase: { viewModel.purchase(location) },
+            onInfo: { viewModel.showBonuses(for: location) }
+        )
     }
 }
 

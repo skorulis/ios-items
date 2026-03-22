@@ -59,10 +59,22 @@ extension PortalUpgradesView: View {
     private var purchaseList: some View {
         LazyVStack(alignment: .leading, spacing: 12) {
             ForEach(viewModel.availableToPurchase, id: \.self) { upgrade in
-                PortalUpgradeCell(
-                    upgrade: upgrade,
+                PurchaseItemCell(
+                    leading: {
+                        if let image = upgrade.image {
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 24, height: 24)
+                        }
+                    },
+                    title: upgrade.name,
+                    description: upgrade.description,
+                    cost: upgrade.cost,
                     itemQuantity: { viewModel.warehouse.quantity($0) },
+                    actionStyle: .capsuleBesideCost,
                     canPurchase: viewModel.canPurchase(upgrade),
+                    purchaseTitle: "Purchase",
                     onPurchase: {
                         withAnimation(.easeOut(duration: 0.3)) {
                             viewModel.purchase(upgrade)

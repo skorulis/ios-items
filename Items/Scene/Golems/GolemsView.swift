@@ -53,11 +53,23 @@ struct GolemsView: View {
     private var constructionList: some View {
         LazyVStack(alignment: .leading, spacing: 12) {
             ForEach(viewModel.allGolemTypes, id: \.self) { golemType in
-                GolemConstructionRow(
-                    golemType: golemType,
-                    ownedCount: viewModel.owned(golemType),
+                PurchaseItemCell(
+                    leading: {
+                        if let image = golemType.image {
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 24, height: 24)
+                        }
+                    },
+                    title: golemType.name,
+                    description: golemType.description,
+                    extraCaption: "Owned: \(viewModel.owned(golemType))",
+                    cost: golemType.cost,
                     itemQuantity: { viewModel.warehouse.quantity($0) },
+                    actionStyle: .capsuleBesideCost,
                     canPurchase: viewModel.canPurchase(golemType),
+                    purchaseTitle: "Purchase",
                     onPurchase: {
                         withAnimation(.easeOut(duration: 0.3)) {
                             viewModel.purchase(golemType)
