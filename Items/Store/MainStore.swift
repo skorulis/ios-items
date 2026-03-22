@@ -50,9 +50,9 @@ final class MainStore: ObservableObject {
         }
     }
 
-    @Published var golemInventory: GolemInventory {
+    @Published var golems: Golems {
         didSet {
-            try! self.store.set(codable: golemInventory, forKey: Self.golemInventoryKey)
+            try! self.store.set(codable: golems, forKey: Self.golemsKey)
         }
     }
 
@@ -90,7 +90,7 @@ final class MainStore: ObservableObject {
     private static let achievementsKey = "MainStore.achievements"
     private static let offlineStateKey = "MainStore.offlineState"
     private static let portalUpgradesKey = "MainStore.portalUpgrades"
-    private static let golemInventoryKey = "MainStore.golemInventory"
+    private static let golemsKey = "MainStore.golemsKey"
     private static let conceptsKey = "MainStore.concepts"
     private static let labKey = "MainStore.lab"
     private static let notificationsKey = "MainStore.notifications"
@@ -111,7 +111,7 @@ final class MainStore: ObservableObject {
         self.lab = (try? store.codable(forKey: Self.labKey)) ?? Laboratory()
         self.achievements = (try? store.codable(forKey: Self.achievementsKey)) ?? Achievements()
         self.portalUpgrades = (try? store.codable(forKey: Self.portalUpgradesKey)) ?? PortalUpgrades()
-        self.golemInventory = (try? store.codable(forKey: Self.golemInventoryKey)) ?? GolemInventory()
+        self.golems = (try? store.codable(forKey: Self.golemsKey)) ?? Golems()
         self.recipes = (try? store.codable(forKey: Self.recipesKey)) ?? Recipes()
         self.concepts = (try? store.codable(forKey: Self.conceptsKey)) ?? Concepts()
         self.notifications = (try? store.codable(forKey: Self.notificationsKey)) ?? Notifications()

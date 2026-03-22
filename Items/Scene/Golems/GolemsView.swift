@@ -35,9 +35,19 @@ struct GolemsView: View {
             case .construction:
                 constructionList
             case .missions:
-                EmptyView()
+                missionsList
             }
         }
+    }
+
+    private var missionsList: some View {
+        LazyVStack(alignment: .leading, spacing: 12) {
+            ForEach(Array(viewModel.missionSlotIndices), id: \.self) { index in
+                GolemMissionSlotView(slotIndex: index, viewModel: viewModel)
+            }
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 8)
     }
 
     private var constructionList: some View {
