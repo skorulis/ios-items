@@ -140,6 +140,23 @@ extension GolemsViewModel {
         golemService.cancelMission(slotIndex: slotIndex)
     }
 
+    func restartMission(slotIndex: Int) {
+        golemService.restartMission(slotIndex: slotIndex)
+    }
+
+    func clearCompletedMission(slotIndex: Int) {
+        golemService.clearCompletedMission(slotIndex: slotIndex)
+    }
+
+    func canRestartMission(slotIndex: Int) -> Bool {
+        let slot = missionSlot(at: slotIndex)
+        guard slot.phase == .complete,
+              slot.golemType != nil,
+              let location = slot.location
+        else { return false }
+        return mapLocations.isUnlocked(location)
+    }
+
     func showMissionGainedItems(slotIndex: Int) {
         let gained = missionSlot(at: slotIndex).gainedItems
         guard !gained.isEmpty else {

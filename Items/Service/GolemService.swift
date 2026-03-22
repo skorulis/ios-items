@@ -43,8 +43,9 @@ extension GolemService {
     }
 
     func missionProgress(slotIndex: Int, at date: Date) -> Double {
-        guard let slot = missionSlot(at: slotIndex),
-              slot.phase == .running,
+        guard let slot = missionSlot(at: slotIndex) else { return 0 }
+        if slot.phase == .complete { return 1 }
+        guard slot.phase == .running,
               let duration = slot.duration,
               duration > 0
         else { return 0 }
@@ -101,6 +102,35 @@ extension GolemService {
     func cancelMission(slotIndex: Int) {
         var golems = mainStore.golems
         guard var slot = golems.slots[slotIndex] else { return }
+        guard slot.phase == .running else { return }
+
+        if let golem = slot.golemType {
+            golems.addOne(golem)
+        }
+        slot = .empty()
+        golems.slots[slotIndex] = slot
+        mainStore.golems = golems
+    }
+
+    func restartMission(slotIndex: Int) {
+        var golems = mainStore.golems
+        guard var slot = golems.slots[slotIndex] else { return }
+        guard slot.phase == .complete,
+              slot.golemType != nil,
+              let location = slot.location,
+              mainStore.mapLocations.isUnlocked(location)
+        else { return }
+
+        slot.start(date: Date())
+        slot.duration = GolemMissionTiming.defaultDuration
+        golems.slots[slotIndex] = slot
+        mainStore.golems = golems
+    }
+
+    func clearCompletedMission(slotIndex: Int) {
+        var golems = mainStore.golems
+        guard var slot = golems.slots[slotIndex] else { return }
+        guard slot.phase == .complete else { return }
 
         if let golem = slot.golemType {
             golems.addOne(golem)
@@ -117,13 +147,12 @@ extension GolemService {
         for index in golems.slots.keys {
             var slot = golems.slots[index]!
             guard slot.phase == .running,
-                  let golem = slot.golemType,
                   let duration = slot.duration,
+                  duration > 0,
                   date.timeIntervalSince(slot.startedAt) >= duration
             else { continue }
 
-            golems.addOne(golem)
-            slot = .empty()
+            slot.phase = .complete
             golems.slots[index] = slot
             changed = true
         }

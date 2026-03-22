@@ -64,7 +64,6 @@ struct GolemsViewSnapshotTests {
             phase: .setup,
             golemType: .clay,
             location: .vesprium,
-            startedAt: nil,
             duration: nil
         )
         mainStore.golems = golems

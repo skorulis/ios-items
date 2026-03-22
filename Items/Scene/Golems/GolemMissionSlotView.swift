@@ -22,6 +22,8 @@ extension GolemMissionSlotView: View {
                 setupBody(slot: slot)
             case .running:
                 runningBody(slot: slot)
+            case .complete:
+                completeBody(slot: slot)
             }
         }
         .padding(12)
@@ -82,35 +84,7 @@ extension GolemMissionSlotView: View {
 
     private func runningBody(slot: GolemMissionSlot) -> some View {
         VStack(alignment: .leading, spacing: 10) {
-            HStack(alignment: .top, spacing: 20) {
-                missionSlotColumn(
-                    title: "Golem",
-                    accessibilityLabel: "Golem",
-                    action: nil,
-                    content: {
-                        if let type = slot.golemType, let image = type.image {
-                            image
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .padding(8)
-                        }
-                    }
-                )
-                missionSlotColumn(
-                    title: "Location",
-                    accessibilityLabel: "Location",
-                    action: nil,
-                    content: {
-                        if let location = slot.location {
-                            location.icon
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .padding(8)
-                                .symbolRenderingMode(.hierarchical)
-                        }
-                    }
-                )
-            }
+            missionSlotReadOnlyRow(slot: slot)
 
             Text(slot.missionActivityState.displayTitle)
                 .font(.appCaption)
@@ -130,6 +104,74 @@ extension GolemMissionSlotView: View {
                 }
                 .buttonStyle(CapsuleButtonStyle())
             }
+        }
+    }
+
+    private func completeBody(slot: GolemMissionSlot) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            missionSlotReadOnlyRow(slot: slot)
+
+            Text("Mission complete")
+                .font(.appCaption)
+                .foregroundStyle(.secondary)
+
+            ProgressView(value: viewModel.missionProgress(slotIndex: slotIndex))
+                .tint(.accentColor)
+
+            VStack(alignment: .leading, spacing: 8) {
+                HStack {
+                    Button("Gained items") {
+                        viewModel.showMissionGainedItems(slotIndex: slotIndex)
+                    }
+                    .buttonStyle(CapsuleButtonStyle())
+                    Spacer(minLength: 0)
+                }
+                HStack {
+                    Button("Restart") {
+                        viewModel.restartMission(slotIndex: slotIndex)
+                    }
+                    .buttonStyle(CapsuleButtonStyle())
+                    .disabled(!viewModel.canRestartMission(slotIndex: slotIndex))
+                    Spacer(minLength: 0)
+                    Button("Clear") {
+                        viewModel.clearCompletedMission(slotIndex: slotIndex)
+                    }
+                    .buttonStyle(CapsuleButtonStyle())
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func missionSlotReadOnlyRow(slot: GolemMissionSlot) -> some View {
+        HStack(alignment: .top, spacing: 20) {
+            missionSlotColumn(
+                title: "Golem",
+                accessibilityLabel: "Golem",
+                action: nil,
+                content: {
+                    if let type = slot.golemType, let image = type.image {
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .padding(8)
+                    }
+                }
+            )
+            missionSlotColumn(
+                title: "Location",
+                accessibilityLabel: "Location",
+                action: nil,
+                content: {
+                    if let location = slot.location {
+                        location.icon
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .padding(8)
+                            .symbolRenderingMode(.hierarchical)
+                    }
+                }
+            )
         }
     }
 

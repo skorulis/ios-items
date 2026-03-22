@@ -40,6 +40,7 @@ struct GolemMissionSlot: Codable {
     enum Phase: String, Codable {
         case setup
         case running
+        case complete
     }
 
     enum MissionActivityState: String, Codable {
