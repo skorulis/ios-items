@@ -16,17 +16,20 @@ import SwiftUI
     private let researchService: ResearchService
     private let offlineCreationService: OfflineCreationService
     private let toastService: ToastService
+    private let analyticsService: AnalyticsService
     private var cancellables: Set<AnyCancellable> = []
 
     @Resolvable<BaseResolver>
     init(
         mainStore: MainStore,
+        analyticsService: AnalyticsService,
         achievementService: AchievementService,
         researchService: ResearchService,
         offlineCreationService: OfflineCreationService,
         toastService: ToastService
     ) {
         self.mainStore = mainStore
+        self.analyticsService = analyticsService
         self.achievementService = achievementService
         self.researchService = researchService
         self.offlineCreationService = offlineCreationService
@@ -59,6 +62,8 @@ extension ContentViewModel {
     /// Apply any research progress and offline creations that accrued while the app was backgrounded or closed.
     func onAppear() {
         researchService.startProgressCheckTimer()
+        analyticsService.viewScreen(name: "content")
+        
         researchService.resumeResearchProgressIfNeeded()
         if let summary = offlineCreationService.processOfflineCreationsIfNeeded() {
             toastService.showToast(summary.toastMessage)

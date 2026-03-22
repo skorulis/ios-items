@@ -74,6 +74,12 @@ final class MainStore: ObservableObject {
         }
     }
 
+    @Published var userInfo: UserInfo {
+        didSet {
+            try! self.store.set(codable: userInfo, forKey: Self.userInfoKey)
+        }
+    }
+
     private let store: PKeyValueStore
     private static let achievementsKey = "MainStore.achievements"
     private static let offlineStateKey = "MainStore.offlineState"
@@ -86,6 +92,7 @@ final class MainStore: ObservableObject {
     private static let warehouseKey = "MainStore.warehouse"
     private static let tradingPostKey = "MainStore.tradingPost"
     private static let mapLocationsKey = "MainStore.mapLocations"
+    private static let userInfoKey = "MainStore.userInfo"
 
     @Resolvable<BaseResolver>
     init(store: PKeyValueStore) {
@@ -102,6 +109,12 @@ final class MainStore: ObservableObject {
         self.notifications = (try? store.codable(forKey: Self.notificationsKey)) ?? Notifications()
         self.offlineState = (try? store.codable(forKey: Self.offlineStateKey)) ?? OfflineState()
         self.mapLocations = (try? store.codable(forKey: Self.mapLocationsKey)) ?? MapLocations()
+        if let existingUser: UserInfo = (try? store.codable(forKey: Self.userInfoKey)) {
+            self.userInfo = existingUser
+        } else {
+            self.userInfo = UserInfo()
+            try? self.store.set(codable: userInfo, forKey: Self.userInfoKey)
+        }
     }
 }
 // swiftlint:enable force_try
