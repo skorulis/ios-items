@@ -62,7 +62,6 @@ extension ContentViewModel {
     /// Apply any research progress and offline creations that accrued while the app was backgrounded or closed.
     func onAppear() {
         researchService.startProgressCheckTimer()
-        analyticsService.viewScreen(name: "content")
         
         researchService.resumeResearchProgressIfNeeded()
         if let summary = offlineCreationService.processOfflineCreationsIfNeeded() {

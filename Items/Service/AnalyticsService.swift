@@ -13,7 +13,7 @@ extension AnalyticsService {
     func track(event name: String) {
         self.track(event: name, properties: nil)
     }
-    
+
     func viewScreen(name: String) {
         self.track(event: "view-screen-\(name)")
     }

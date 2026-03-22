@@ -17,6 +17,7 @@ import SwiftUI
 
     private let mainStore: MainStore
     private let warehouseService: WarehouseService
+    private let analytics: AnalyticsService
     private(set) var warehouse: Warehouse
     private(set) var lab: Laboratory
     var artifactsViewModel: ArtifactsViewModel
@@ -36,9 +37,11 @@ import SwiftUI
         warehouseService: WarehouseService,
         calculationService: CalculationsService,
         artifactsViewModel: ArtifactsViewModel,
+        analytics: AnalyticsService,
     ) {
         self.mainStore = mainStore
         self.warehouseService = warehouseService
+        self.analytics = analytics
         warehouse = mainStore.warehouse
         lab = mainStore.lab
         self.artifactsViewModel = artifactsViewModel
@@ -79,6 +82,7 @@ extension WarehouseViewModel {
 extension WarehouseViewModel {
 
     func onAppear() {
+        analytics.viewScreen(name: "warehouse")
         // Capture current "new" state for the UI, but immediately clear persisted flags
         model.newItemsToShow = mainStore.notifications.newItems
         artifactsViewModel.onAppear()

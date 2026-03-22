@@ -122,6 +122,7 @@ extension CreationView: View {
 
         }
         .coordinateSpace(name: "creation")
+        .onAppear { viewModel.onAppear() }
     }
 
     private var upgradesButton: PortalView.ButtonOrProgress? {

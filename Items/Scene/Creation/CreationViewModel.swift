@@ -44,6 +44,7 @@ import SwiftUI
     private let upgradeService: UpgradeService
     private let recipeService: RecipeService
     private let warehouseService: WarehouseService
+    private let analytics: AnalyticsService
     private var cancellables: Set<AnyCancellable> = []
 
     @Resolvable<BaseResolver>
@@ -54,6 +55,7 @@ import SwiftUI
         calculations: CalculationsService,
         upgradeService: UpgradeService,
         warehouseService: WarehouseService,
+        analytics: AnalyticsService,
     ) {
         self.itemGeneratorService = itemGeneratorService
         self.mainStore = mainStore
@@ -61,6 +63,7 @@ import SwiftUI
         self.calculations = calculations
         self.upgradeService = upgradeService
         self.warehouseService = warehouseService
+        self.analytics = analytics
 
         self.automateCreation = mainStore.offlineState.automationEnabled
 
@@ -153,6 +156,10 @@ import SwiftUI
 // MARK: - Logic
 
 extension CreationViewModel {
+
+    func onAppear() {
+        analytics.viewScreen(name: "creation")
+    }
 
     func make() async {
         if model.creationInProgress != nil { return }
