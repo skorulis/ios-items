@@ -23,6 +23,8 @@ extension BaseItem {
             return Asset.BaseItem.silverCoin.swiftUIImage
         case .goldFlorin:
             return Asset.BaseItem.goldCoin.swiftUIImage
+        case .platinumFlorin:
+            return nil
         case .lens:
             return Asset.BaseItem.lens.swiftUIImage
         case .humanSkull:
@@ -68,6 +70,8 @@ extension BaseItem {
         case .oathforgedChain:
             return nil
         case .sunwellPhial:
+            return nil
+        case .astralFlorin:
             return nil
         }
     }

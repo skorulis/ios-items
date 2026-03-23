@@ -37,11 +37,15 @@ public enum BaseItem: String, Hashable, Equatable, CaseIterable, Identifiable, C
     case nullLantern
 
     // Rare
+    case platinumFlorin
     case axisHeart
     case nullWeaveCloak
     case oathforgedChain
     case sunwellPhial
     case heartgear
+
+    // Exceptional
+    case astralFlorin
 
     public var id: Self { self }
 
@@ -57,8 +61,10 @@ public enum BaseItem: String, Hashable, Equatable, CaseIterable, Identifiable, C
             return .common
         case .goldFlorin, .jadeFigurine, .portalShard, .soulEmber, .anchorStone, .memorySeed, .nullLantern:
             return .good
-        case .axisHeart, .nullWeaveCloak, .oathforgedChain, .sunwellPhial, .heartgear:
+        case .platinumFlorin, .axisHeart, .nullWeaveCloak, .oathforgedChain, .sunwellPhial, .heartgear:
             return .rare
+        case .astralFlorin:
+            return .exceptional
         }
     }
 
@@ -68,6 +74,14 @@ public enum BaseItem: String, Hashable, Equatable, CaseIterable, Identifiable, C
         switch self {
         case .copperFlorin:
             return 2.0
+        case .silverFlorin:
+            return 1.5
+        case .goldFlorin:
+            return 1.25
+        case .platinumFlorin:
+            return 1.1
+        case .astralFlorin:
+            return 0.8
         default:
             return 1.0
         }
@@ -108,6 +122,8 @@ public enum BaseItem: String, Hashable, Equatable, CaseIterable, Identifiable, C
 
         case .goldFlorin:
             return [.wealth]
+        case .platinumFlorin:
+            return [.wealth, .technology]
         case .giantThorn:
             return [.life, .earth]
         case .portalShard:
@@ -140,6 +156,8 @@ public enum BaseItem: String, Hashable, Equatable, CaseIterable, Identifiable, C
             return [.light, .life]
         case .heartgear:
             return [.life, .technology]
+        case .astralFlorin:
+            return [.wealth, .magic, .light]
         }
     }
 
@@ -187,6 +205,16 @@ public enum BaseItem: String, Hashable, Equatable, CaseIterable, Identifiable, C
         case .goldFlorin:
             return [
                 "Worth 100 silver Florins"
+            ]
+        case .platinumFlorin:
+            return [
+                "Worth 100 gold Florins",
+                "Minted in tiny batches for the largest guild contracts and cross-city levies.",
+            ]
+        case .astralFlorin:
+            return [
+                "Worth 100 platinum Florins",
+                "An exceptional coin infused with astral light, accepted as collateral by portal keepers.",
             ]
         case .potionFlask:
             return [
