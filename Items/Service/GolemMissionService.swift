@@ -57,10 +57,10 @@ final class GolemMissionService {
                     slotMutated = true
                 }
 
-            case .toeStub:
-                let damage = Int.random(in: 1 ... 2)
+            case let .accident(kind):
+                let damage = Int.random(in: kind.damageRange)
                 slot.takeDamage(damage)
-                slot.appendActivityLog("Stubbed their toe for \(damage) damage.", date: now)
+                slot.appendActivityLog(kind.activityLogMessage(damage: damage), date: now)
                 slot.setActivity(state: .exploring, date: now)
                 slotMutated = true
             }
@@ -82,7 +82,7 @@ final class GolemMissionService {
             mainStore.golems = golems
         }
     }
-    
+
     private func checkForNewState() -> GolemMissionSlot.MissionActivityState? {
         guard Self.exploringToGatheringChance.check() else {
             return nil
@@ -90,7 +90,8 @@ final class GolemMissionService {
         if Bool.random() {
             return .gathering
         } else {
-            return .toeStub
+            let accidentKind = GolemMissionSlot.AccidentType.allCases.randomElement() ?? .toeStub
+            return .accident(accidentKind)
         }
     }
 
@@ -135,7 +136,7 @@ final class GolemMissionService {
         slot.remainingHealth = health - 1
         return true
     }
-    
+
     private func checkDeath(slot: inout GolemMissionSlot, now: Date) -> Bool {
         if slot.remainingHealth == 0 {
             slot.phase = .complete
