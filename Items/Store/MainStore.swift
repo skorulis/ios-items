@@ -110,7 +110,11 @@ final class MainStore: ObservableObject {
         self.statistics = (try? store.codable(forKey: Self.statisticsKey)) ?? Statistics()
         self.lab = (try? store.codable(forKey: Self.labKey)) ?? Laboratory()
         self.achievements = (try? store.codable(forKey: Self.achievementsKey)) ?? Achievements()
-        self.portalUpgrades = (try? store.codable(forKey: Self.portalUpgradesKey)) ?? PortalUpgrades()
+        var loadedPortalUpgrades = (try? store.codable(forKey: Self.portalUpgradesKey)) ?? PortalUpgrades()
+        if !loadedPortalUpgrades.purchased.isEmpty, !loadedPortalUpgrades.purchased.contains(.portalUnlocked) {
+            loadedPortalUpgrades.purchased.insert(.portalUnlocked)
+        }
+        self.portalUpgrades = loadedPortalUpgrades
         self.golems = (try? store.codable(forKey: Self.golemsKey)) ?? Golems()
         self.recipes = (try? store.codable(forKey: Self.recipesKey)) ?? Recipes()
         self.concepts = (try? store.codable(forKey: Self.conceptsKey)) ?? Concepts()

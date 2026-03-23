@@ -11,23 +11,23 @@ import SwiftUI
 @Observable final class PortalUpgradesViewModel: CoordinatorViewModel {
     weak var coordinator: ASKCoordinator.Coordinator?
 
-    enum Segment: String, CaseIterable {
-        case purchase = "Purchase"
-        case purchased = "Purchased"
-    }
-
-    var segment: Segment = .purchase
     var warehouse: Warehouse = Warehouse()
     var purchasedUpgrades: PortalUpgrades
 
     private let mainStore: MainStore
     private let upgradeService: UpgradeService
+    private let unlockRequirementService: UnlockRequirementService
     private var cancellables: Set<AnyCancellable> = []
 
     @Resolvable<BaseResolver>
-    init(mainStore: MainStore, upgradeService: UpgradeService) {
+    init(
+        mainStore: MainStore,
+        upgradeService: UpgradeService,
+        unlockRequirementService: UnlockRequirementService
+    ) {
         self.mainStore = mainStore
         self.upgradeService = upgradeService
+        self.unlockRequirementService = unlockRequirementService
         self.warehouse = mainStore.warehouse
         self.purchasedUpgrades = mainStore.portalUpgrades
         mainStore.$warehouse.sink { [weak self] in
@@ -59,6 +59,14 @@ extension PortalUpgradesViewModel {
         upgradeService.canPurchase(upgrade)
     }
 
+    func isUnlocked(_ upgrade: PortalUpgrade) -> Bool {
+        upgradeService.isUnlocked(upgrade)
+    }
+
+    func isRequirementComplete(_ requirement: UnlockRequirement) -> Bool {
+        unlockRequirementService.isComplete(requirement: requirement)
+    }
+
     func purchase(_ upgrade: PortalUpgrade) {
         upgradeService.purchase(upgrade)
     }
@@ -67,7 +75,11 @@ extension PortalUpgradesViewModel {
         coordinator?.pop()
     }
 
-    func showUpgradeInfo(_ upgrade: PortalUpgrade) {
+    func showUpgradeDetail(_ upgrade: PortalUpgrade) {
+        coordinator?.custom(overlay: .card, MainPath.portalUpgradeDetail(upgrade))
+    }
+
+    func showUpgradeLongFormExplanation(_ upgrade: PortalUpgrade) {
         coordinator?.custom(overlay: .card, MainPath.fullDialog(upgrade.detailedExplanation))
     }
 }

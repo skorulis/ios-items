@@ -35,11 +35,9 @@ struct PortalUpgradesViewSnapshotTests {
     @Test
     func portalUpgrades_purchased_segment() {
         let mainStore = assembler.resolver.mainStore()
-        mainStore.portalUpgrades = PortalUpgrades(purchased: [.portalAutomation, .researchLab])
+        mainStore.portalUpgrades = PortalUpgrades(purchased: [.portalUnlocked, .portalAutomation, .researchLab])
 
         let viewModel = assembler.resolver.portalUpgradesViewModel()
-        viewModel.segment = .purchased
-
         let view = PortalUpgradesView(viewModel: viewModel)
 
         assertSnapshot(of: view, as: .image(on: .iPhoneSe))

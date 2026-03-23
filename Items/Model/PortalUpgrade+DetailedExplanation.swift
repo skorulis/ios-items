@@ -8,6 +8,13 @@ extension PortalUpgrade {
 
     var detailedExplanation: DefaultDialogContent.Model {
         switch self {
+        case .portalUnlocked:
+            return .init(
+                bodyText: """
+                Opening the portal to access an entirely new dimension
+                """,
+                title: "Portal Unlocked"
+            )
         case .portalAutomation:
             return .init(
                 bodyText: """

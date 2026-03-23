@@ -22,7 +22,7 @@ struct ItemDetailsViewSnapshotTests {
 
     @Test
     func itemDetails_rare_item() {
-        assembler.resolver.mainStore().portalUpgrades.purchased.insert(.researchLab)
+        assembler.resolver.mainStore().portalUpgrades.purchased.formUnion([.portalUnlocked, .researchLab])
         let viewModel = assembler.resolver.itemDetailsViewModel(item: .axisHeart)
         let view = ItemDetailsView(viewModel: viewModel)
 

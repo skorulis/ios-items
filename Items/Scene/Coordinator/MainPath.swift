@@ -33,6 +33,8 @@ enum MainPath: CoordinatorPath {
     case achievementDetails(Achievement)
     case currentRecipeDetail
 
+    case portalUpgradeDetail(PortalUpgrade)
+
     case tradingPost
 
     // Present a block of text
@@ -115,6 +117,11 @@ struct MainPathRenderer: CoordinatorPathRenderer {
             AchievementDetailsView(viewModel: resolver.achievementDetailsViewModel(achievement: achievement))
         case .currentRecipeDetail:
             RecipeDetailView(viewModel: resolver.currentRecipeDetailViewModel())
+        case let .portalUpgradeDetail(upgrade):
+            PortalUpgradeDetailView(
+                upgrade: upgrade,
+                viewModel: coordinator.apply(resolver.portalUpgradesViewModel())
+            )
         case .tradingPost:
             TradingPostView(viewModel: coordinator.apply(resolver.tradingPostViewModel()))
         case let .dialog(text):

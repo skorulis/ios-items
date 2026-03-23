@@ -9,6 +9,8 @@ extension PortalUpgrade {
 
     var image: Image? {
         switch self {
+        case .portalUnlocked:
+            return Image(systemName: "lock.open.fill")
         case .portalAutomation:
             return Image(systemName: "play.circle.fill")
         case .researchLab:

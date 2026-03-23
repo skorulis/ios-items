@@ -5,6 +5,8 @@
 import Foundation
 
 public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable {
+    /// Root of the upgrade tree; all other upgrades require this (directly or via ancestors).
+    case portalUnlocked
     case portalAutomation
     case researchLab
     case researchLabLevel2
@@ -40,6 +42,7 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
 
     public var name: String {
         switch self {
+        case .portalUnlocked: return "Portal Unlocked"
         case .portalAutomation: return "Portal Automation"
         case .researchLab: return "Research Lab"
         case .researchLabLevel2: return "Research Lab II"
@@ -75,6 +78,7 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
 
     public var description: String {
         switch self {
+        case .portalUnlocked: return "Opens the portal’s upgrade paths."
         case .portalAutomation: return "Automatically pulls items out of the portal."
         case .researchLab: return "Unlocks the Research lab."
         case .sacrifices: return "Unlocks the Sacrifices feature."
@@ -98,6 +102,7 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
     /// Items required to purchase this upgrade (item and quantity per line).
     public var cost: [UpgradeCostItem] {
         switch self {
+        case .portalUnlocked: return []
         case .portalAutomation: return [
             .init(item: .gear, quantity: 1),
             .init(item: .copperFlorin, quantity: 1),
@@ -261,69 +266,87 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
 
 extension PortalUpgrade {
 
-    /// Requirements that must all be met before this upgrade becomes available.
-    public var requirements: [UnlockRequirement] {
+    /// Parent in the tech tree; `nil` only for the root (`portalUnlocked`).
+    public var treeParent: PortalUpgrade? {
         switch self {
+        case .portalUnlocked:
+            return nil
+        case .portalAutomation, .researchLab, .sacrifices, .golems, .mapLocations, .knowledgeSiphon, .artifactSlot:
+            return .portalUnlocked
         case .researchLabLevel2:
-            return [.upgradePurchased(.researchLab)]
+            return .researchLab
+        case .sacrificesLevel2:
+            return .sacrifices
+        case .sacrificesLevel3:
+            return .sacrificesLevel2
+        case .sacrificesLevel4:
+            return .sacrificesLevel3
+        case .sacrificesLevel5:
+            return .sacrificesLevel4
+        case .artifactSlotLevel2:
+            return .artifactSlot
+        case .artifactSlotLevel3:
+            return .artifactSlotLevel2
+        case .knowledgeSiphonLevel2:
+            return .knowledgeSiphon
+        case .knowledgeSiphonLevel3:
+            return .knowledgeSiphonLevel2
+        case .knowledgeSiphonLevel4:
+            return .knowledgeSiphonLevel3
+        case .knowledgeSiphonLevel5:
+            return .knowledgeSiphonLevel4
+        case .offlineProgress:
+            return .portalAutomation
+        case .offlineProgressLevel2:
+            return .offlineProgress
+        case .offlineProgressLevel3:
+            return .offlineProgressLevel2
+        case .offlineProgressLevel4:
+            return .offlineProgressLevel3
+        case .offlineProgressLevel5:
+            return .offlineProgressLevel4
+        case .tradingPost:
+            return .mapLocations
+        case .tradingPostLevel2:
+            return .tradingPost
+        case .tradingPostLevel3:
+            return .tradingPostLevel2
+        case .golemMissionSlotsLevel2:
+            return .golems
+        case .golemMissionSlotsLevel3:
+            return .golemMissionSlotsLevel2
+        case .golemMissionSlotsLevel4:
+            return .golemMissionSlotsLevel3
+        case .golemMissionSlotsLevel5:
+            return .golemMissionSlotsLevel4
+        }
+    }
+
+    /// Non–tree-parent requirements (achievements, items, locations). The tree edge is `upgradePurchased(treeParent)`.
+    public var intrinsicUnlockRequirements: [UnlockRequirement] {
+        switch self {
+        case .portalUnlocked:
+            return [.achievementUnlocked(.items10)]
         case .artifactSlot:
             return [.achievementUnlocked(.artifact1)]
         case .artifactSlotLevel2:
-            return [
-                .upgradePurchased(.artifactSlot),
-                .achievementUnlocked(.artifacts5),
-            ]
-        case .artifactSlotLevel3:
-            return [.upgradePurchased(.artifactSlotLevel2)]
+            return [.achievementUnlocked(.artifacts5)]
         case .knowledgeSiphon:
             return [.itemDiscovered(.book)]
-        case .knowledgeSiphonLevel2:
-            return [.upgradePurchased(.knowledgeSiphon)]
-        case .knowledgeSiphonLevel3:
-            return [.upgradePurchased(.knowledgeSiphonLevel2)]
-        case .knowledgeSiphonLevel4:
-            return [.upgradePurchased(.knowledgeSiphonLevel3)]
-        case .knowledgeSiphonLevel5:
-            return [.upgradePurchased(.knowledgeSiphonLevel4)]
-        case .sacrificesLevel2:
-            return [.upgradePurchased(.sacrifices)]
-        case .sacrificesLevel3:
-            return [.upgradePurchased(.sacrificesLevel2)]
-        case .sacrificesLevel4:
-            return [.upgradePurchased(.sacrificesLevel3)]
-        case .sacrificesLevel5:
-            return [.upgradePurchased(.sacrificesLevel4)]
-        case .offlineProgress:
-            return [.achievementUnlocked(.items10), .upgradePurchased(.portalAutomation)]
-        case .offlineProgressLevel2:
-            return [.upgradePurchased(.offlineProgress)]
-        case .offlineProgressLevel3:
-            return [.upgradePurchased(.offlineProgressLevel2)]
-        case .offlineProgressLevel4:
-            return [.upgradePurchased(.offlineProgressLevel3)]
-        case .offlineProgressLevel5:
-            return [.upgradePurchased(.offlineProgressLevel4)]
         case .mapLocations:
             return [.itemDiscovered(.mapFragment)]
         case .tradingPost:
-            return [
-                .upgradePurchased(.mapLocations),
-                .locationUnlocked(.semilTradingPost),
-            ]
-        case .tradingPostLevel2:
-            return [.upgradePurchased(.tradingPost)]
-        case .tradingPostLevel3:
-            return [.upgradePurchased(.tradingPostLevel2)]
-        case .golemMissionSlotsLevel2:
-            return [.upgradePurchased(.golems)]
-        case .golemMissionSlotsLevel3:
-            return [.upgradePurchased(.golemMissionSlotsLevel2)]
-        case .golemMissionSlotsLevel4:
-            return [.upgradePurchased(.golemMissionSlotsLevel3)]
-        case .golemMissionSlotsLevel5:
-            return [.upgradePurchased(.golemMissionSlotsLevel4)]
+            return [.locationUnlocked(.semilTradingPost)]
         default:
             return []
         }
+    }
+
+    /// Requirements that must all be met before this upgrade becomes available.
+    public var requirements: [UnlockRequirement] {
+        if let parent = treeParent {
+            return intrinsicUnlockRequirements + [.upgradePurchased(parent)]
+        }
+        return intrinsicUnlockRequirements
     }
 }
