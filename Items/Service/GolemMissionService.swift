@@ -48,19 +48,27 @@ final class GolemMissionService {
             var slotMutated = false
             switch slot.missionActivityState {
             case .exploring:
-                if Self.exploringToGatheringChance.check() {
-                    slot.appendActivityLog("Began gathering resources.", date: now)
-                    slot.setActivity(state: .gathering, date: now)
+                if let newState = checkForNewState() {
+                    slot.setActivity(state: newState, date: now)
                     slotMutated = true
                 }
-
             case .gathering:
                 if completeGatheringPhase(slot: &slot, now: now) {
                     slotMutated = true
                 }
+
+            case .toeStub:
+                let damage = Int.random(in: 1 ... 2)
+                slot.takeDamage(damage)
+                slot.appendActivityLog("Stubbed their toe for \(damage) damage.", date: now)
+                slot.setActivity(state: .exploring, date: now)
+                slotMutated = true
             }
 
             if applyMissionHealthTick(slot: &slot, now: now) {
+                slotMutated = true
+            }
+            if checkDeath(slot: &slot, now: now) {
                 slotMutated = true
             }
 
@@ -72,6 +80,17 @@ final class GolemMissionService {
 
         if changed {
             mainStore.golems = golems
+        }
+    }
+    
+    private func checkForNewState() -> GolemMissionSlot.MissionActivityState? {
+        guard Self.exploringToGatheringChance.check() else {
+            return nil
+        }
+        if Bool.random() {
+            return .gathering
+        } else {
+            return .toeStub
         }
     }
 
@@ -114,11 +133,16 @@ final class GolemMissionService {
             return false
         }
         slot.remainingHealth = health - 1
+        return true
+    }
+    
+    private func checkDeath(slot: inout GolemMissionSlot, now: Date) -> Bool {
         if slot.remainingHealth == 0 {
             slot.phase = .complete
             slot.appendActivityLog("golem died", date: now)
+            return true
         }
-        return true
+        return false
     }
 
     private static func gatheringLogMessage(results: [MakeItemResult]) -> String? {

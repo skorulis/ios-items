@@ -246,6 +246,7 @@ private extension GolemMissionSlot.MissionActivityState {
         switch self {
         case .exploring: return "Exploring"
         case .gathering: return "Gathering"
+        case .toeStub: return "Stubbing their toe"
         }
     }
 }

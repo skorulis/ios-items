@@ -47,6 +47,7 @@ struct GolemMissionSlot: Codable {
     enum MissionActivityState: String, Codable {
         case exploring
         case gathering
+        case toeStub
     }
 
     var phase: Phase
@@ -94,6 +95,11 @@ struct GolemMissionSlot: Codable {
                 print("Unexpected. Golems should not find artifacts")
             }
         }
+    }
+    
+    mutating func takeDamage(_ damage: Int) {
+        let health = remainingHealth ?? 0
+        remainingHealth = max(0, health)
     }
 
     init(
