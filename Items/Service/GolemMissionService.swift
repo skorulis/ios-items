@@ -101,7 +101,9 @@ final class GolemMissionService {
         }
 
         slot.add(results: results)
-        slot.appendActivityLog(Self.gatheringLogMessage(results: results), date: now)
+        if let message = Self.gatheringLogMessage(results: results) {
+            slot.appendActivityLog(message, date: now)
+        }
         slot.setActivity(state: .exploring, date: now)
         return true
     }
@@ -119,7 +121,7 @@ final class GolemMissionService {
         return true
     }
 
-    private static func gatheringLogMessage(results: [MakeItemResult]) -> String {
+    private static func gatheringLogMessage(results: [MakeItemResult]) -> String? {
         let parts = results.compactMap { result -> String? in
             switch result {
             case let .base(item, count):
@@ -129,8 +131,8 @@ final class GolemMissionService {
             }
         }
         if parts.isEmpty {
-            return "Gathering complete — nothing found."
+            return nil
         }
-        return "Gathering complete — " + parts.joined(separator: ", ") + "."
+        return "Found — " + parts.joined(separator: ", ") + "."
     }
 }

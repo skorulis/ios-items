@@ -27,7 +27,7 @@ extension ResearchBarView {
         GeometryReader { geometry in
             ZStack(alignment: .center) {
                 bar(geometry: geometry)
-                Text(formattedRemainingTime(remainingSeconds))
+                Text(CompactDurationFormat.string(fromInterval: remainingSeconds, roundingRule: .up))
                     .font(.caption.monospacedDigit())
                     .foregroundStyle(.primary)
             }
@@ -56,30 +56,6 @@ extension ResearchBarView {
         .clipShape(Capsule())
     }
 
-    private func formattedRemainingTime(_ timeInterval: TimeInterval) -> String {
-        let totalSeconds = max(Int(ceil(timeInterval)), 0)
-
-        if totalSeconds < 60 {
-            return "\(totalSeconds)s"
-        }
-
-        let seconds = totalSeconds % 60
-        let minutes = (totalSeconds / 60) % 60
-        let hours = (totalSeconds / 3600) % 24
-        let days = totalSeconds / 86400
-
-        if totalSeconds < 3600 {
-            // Under 1 hour: MM:SS
-            return String(format: "%dm %02ds", minutes, seconds)
-        } else if totalSeconds < 86_400 {
-            // Under 1 day: H:MM:SS
-            let totalHours = totalSeconds / 3600
-            return String(format: "%dh %02dm %02ds", totalHours, minutes, seconds)
-        } else {
-            // 1 day or more: Dd HH:MM:SS
-            return String(format: "%dd %02dh %02dm %02ds", days, hours, minutes, seconds)
-        }
-    }
 }
 
 // MARK: - Previews

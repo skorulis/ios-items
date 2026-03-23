@@ -166,28 +166,11 @@ extension GolemsViewModel {
         }
         let missionStart = slot.startedAt
         let lines = entries.map { entry in
-            "\(Self.formatMissionLogElapsed(from: missionStart, event: entry.date)): \(entry.message)"
+            let elapsed = entry.date.timeIntervalSince(missionStart)
+            let stamp = CompactDurationFormat.string(fromInterval: elapsed, roundingRule: .towardZero)
+            return "\(stamp): \(entry.message)"
         }
         .joined(separator: "\n")
-        coordinator?.custom(overlay: .card, MainPath.dialog("Mission log\n(Elapsed since start)\n\n\(lines)"))
-    }
-}
-
-private extension GolemsViewModel {
-
-    static func formatMissionLogElapsed(from missionStart: Date, event: Date) -> String {
-        let totalSeconds = Int(max(0, event.timeIntervalSince(missionStart).rounded(.towardZero)))
-        if totalSeconds < 60 {
-            return "\(totalSeconds)s"
-        }
-        if totalSeconds < 3600 {
-            let mins = totalSeconds / 60
-            let seconds = totalSeconds % 60
-            return String(format: "%dm %02ds", mins, seconds)
-        }
-        let hours = totalSeconds / 3600
-        let mins = (totalSeconds % 3600) / 60
-        let seconds = totalSeconds % 60
-        return String(format: "%dh %dm %02ds", hours, mins, seconds)
+        coordinator?.custom(overlay: .card, MainPath.dialog("Mission log\n\n\(lines)"))
     }
 }
