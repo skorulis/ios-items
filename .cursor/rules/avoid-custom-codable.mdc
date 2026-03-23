@@ -1,0 +1,48 @@
+---
+description: Prefer synthesized Codable; avoid custom Encodable/Decodable implementations
+globs: "**/*.swift"
+alwaysApply: false
+---
+
+# Codable: avoid custom encoders and decoders
+
+Do **not** add hand-written `Codable` conformance via `init(from:)`, `encode(to:)`, or manual `CodingKeys` **unless there is no reasonable alternative**.
+
+## Prefer instead
+
+- **Synthesized `Codable`** on structs/enums when all stored properties are encodable.
+- **Model shape changes** that stay synthesizable: e.g. optional properties with `nil` meaning “missing”, combined with sensible defaults at the call site or a thin migration when loading persisted data.
+- **Separate types**: a persisted DTO or snapshot struct that matches storage exactly (synthesized), mapped to/from domain types in one place (e.g. store or migration), instead of encoding logic spread through domain models.
+- **Encoding elsewhere**: if only one layer needs a custom wire format, implement that in the service that encodes/decodes, not on the core model.
+
+## When custom `Codable` is acceptable
+
+Reserve explicit `init(from:)` / `encode(to:)` for cases that truly cannot be expressed with synthesis and a mapper—e.g. an external schema you do not control.
+
+- Keep the implementation **minimal and localized** (ideally one type dedicated to that format).
+- Add a **short comment** stating why synthesis is not used.
+
+## Examples
+
+```swift
+// ❌ Avoid: manual CodingKeys + decode for one new field when a migration or DTO would do
+struct Player: Codable {
+    var name: String
+    var score: Int
+    enum CodingKeys: String, CodingKey { case name, score, badges }
+    init(from decoder: Decoder) throws { … }
+}
+
+// ✅ Prefer: optional + default when reading old data (synthesized Codable)
+struct Player: Codable {
+    var name: String
+    var score: Int
+    var badges: [String]?  // old saves omit this; treat nil as [] where used
+}
+
+// ✅ Prefer: dedicated persisted shape + mapping
+struct PlayerRecord: Codable { var name: String; var score: Int; var badges: [String] }
+struct Player { var name: String; var score: Int; var badges: [String] }
+```
+
+When editing persistence or models, **default to synthesis** and push compatibility concerns toward migrations, optional fields, or explicit record types—not custom `Codable` on every model.

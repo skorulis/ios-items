@@ -49,43 +49,18 @@ final class GolemMissionService {
             switch slot.missionActivityState {
             case .exploring:
                 if Self.exploringToGatheringChance.check() {
+                    slot.appendActivityLog("Began gathering resources.", date: now)
                     slot.setActivity(state: .gathering, date: now)
                     slotMutated = true
                 }
 
             case .gathering:
-                let start = slot.activityStartDate
-                if now.timeIntervalSince(start) >= Self.gatheringDuration {
-                    let hadMissionLocation = slot.location != nil
-                    let previousSelected = mainStore.mapLocations.selected
-                    if let missionLocation = slot.location {
-                        var mapLocations = mainStore.mapLocations
-                        mapLocations.selected = missionLocation
-                        mainStore.mapLocations = mapLocations
-                    }
-
-                    let results = itemGeneratorService.makeAndStore(
-                        plan: SacrificePlan(slotsByIndex: [:]),
-                        allowArtifacts: false,
-                    )
-
-                    if hadMissionLocation {
-                        var mapLocations = mainStore.mapLocations
-                        mapLocations.selected = previousSelected
-                        mainStore.mapLocations = mapLocations
-                    }
-
-                    slot.add(results: results)
-                    slot.setActivity(state: .exploring, date: now)
+                if completeGatheringPhase(slot: &slot, now: now) {
                     slotMutated = true
                 }
             }
 
-            if slot.phase == .running, let health = slot.remainingHealth, health > 0 {
-                slot.remainingHealth = health - 1
-                if slot.remainingHealth == 0 {
-                    slot.phase = .complete
-                }
+            if applyMissionHealthTick(slot: &slot, now: now) {
                 slotMutated = true
             }
 
@@ -98,5 +73,64 @@ final class GolemMissionService {
         if changed {
             mainStore.golems = golems
         }
+    }
+
+    /// Returns `true` if gathering finished and the slot was updated.
+    private func completeGatheringPhase(slot: inout GolemMissionSlot, now: Date) -> Bool {
+        guard now.timeIntervalSince(slot.activityStartDate) >= Self.gatheringDuration else {
+            return false
+        }
+
+        let hadMissionLocation = slot.location != nil
+        let previousSelected = mainStore.mapLocations.selected
+        if let missionLocation = slot.location {
+            var mapLocations = mainStore.mapLocations
+            mapLocations.selected = missionLocation
+            mainStore.mapLocations = mapLocations
+        }
+
+        let results = itemGeneratorService.makeAndStore(
+            plan: SacrificePlan(slotsByIndex: [:]),
+            allowArtifacts: false,
+        )
+
+        if hadMissionLocation {
+            var mapLocations = mainStore.mapLocations
+            mapLocations.selected = previousSelected
+            mainStore.mapLocations = mapLocations
+        }
+
+        slot.add(results: results)
+        slot.appendActivityLog(Self.gatheringLogMessage(results: results), date: now)
+        slot.setActivity(state: .exploring, date: now)
+        return true
+    }
+
+    /// Returns `true` if health was decremented or the mission completed.
+    private func applyMissionHealthTick(slot: inout GolemMissionSlot, now: Date) -> Bool {
+        guard slot.phase == .running, let health = slot.remainingHealth, health > 0 else {
+            return false
+        }
+        slot.remainingHealth = health - 1
+        if slot.remainingHealth == 0 {
+            slot.phase = .complete
+            slot.appendActivityLog("golem died", date: now)
+        }
+        return true
+    }
+
+    private static func gatheringLogMessage(results: [MakeItemResult]) -> String {
+        let parts = results.compactMap { result -> String? in
+            switch result {
+            case let .base(item, count):
+                return "\(item.name) ×\(count)"
+            case .artifact:
+                return nil
+            }
+        }
+        if parts.isEmpty {
+            return "Gathering complete — nothing found."
+        }
+        return "Gathering complete — " + parts.joined(separator: ", ") + "."
     }
 }

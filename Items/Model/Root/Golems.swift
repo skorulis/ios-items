@@ -31,6 +31,11 @@ struct Golems: Codable {
 
 }
 
+struct GolemMissionLogEntry: Codable, Equatable, Hashable {
+    var date: Date
+    var message: String
+}
+
 struct GolemMissionSlot: Codable {
 
     enum Phase: String, Codable {
@@ -56,10 +61,16 @@ struct GolemMissionSlot: Codable {
     private(set) var activityStartDate: Date
     private(set) var missionActivityState: MissionActivityState
     var gainedItems: [BaseItem: Int]
+    /// Timeline of notable mission events (started, activity changes, gathering results, completion).
+    var activityLog: [GolemMissionLogEntry]
 
     mutating func setActivity(state: MissionActivityState, date: Date) {
         self.activityStartDate = date
         self.missionActivityState = state
+    }
+
+    mutating func appendActivityLog(_ message: String, date: Date) {
+        activityLog.append(GolemMissionLogEntry(date: date, message: message))
     }
 
     mutating func start(date: Date, initialHealth: Int) {
@@ -69,6 +80,8 @@ struct GolemMissionSlot: Codable {
         self.missionActivityState = .exploring
         self.activityStartDate = date
         self.gainedItems = [:]
+        self.activityLog = []
+        appendActivityLog("Mission started.", date: date)
     }
 
     mutating func add(results: [MakeItemResult]) {
@@ -89,6 +102,7 @@ struct GolemMissionSlot: Codable {
         location: MapLocation?,
         remainingHealth: Int? = nil,
         missionActivityState: MissionActivityState = .exploring,
+        activityLog: [GolemMissionLogEntry] = [],
     ) {
         self.phase = phase
         self.golemType = golemType
@@ -98,6 +112,7 @@ struct GolemMissionSlot: Codable {
         self.remainingHealth = remainingHealth
         self.missionActivityState = missionActivityState
         self.gainedItems = [:]
+        self.activityLog = activityLog
     }
 
     static func empty() -> GolemMissionSlot {
