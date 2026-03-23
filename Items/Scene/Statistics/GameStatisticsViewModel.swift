@@ -56,6 +56,7 @@ final class GameStatisticsViewModel: ObservableObject, CoordinatorViewModel {
             ("Multiple item creations", formatCount(statistics.multipleItemCreations)),
             ("Items sacrificed", formatCount(statistics.itemsSacrificed)),
             ("Trades completed", formatCount(statistics.tradesCompleted)),
+            ("Total golem distance traveled (m)", formatCount(statistics.golemDistanceTraveledMeters)),
             ("Number of items discovered", formatCount(Int64(itemsDiscoveredCount))),
             ("Number of achievements unlocked", formatCount(Int64(achievementsUnlockedCount))),
         ]

@@ -14,6 +14,7 @@ final class GolemMissionService {
     /// Wall time spent in gathering before generating items.
     private static let gatheringDuration: TimeInterval = 3
     private static let exploringToGatheringChance = Chance(percent: 10)
+    private static let exploringMetersPerTick = 1
 
     @Resolvable<BaseResolver>
     init(mainStore: MainStore, itemGeneratorService: ItemGeneratorService) {
@@ -48,9 +49,10 @@ final class GolemMissionService {
             var slotMutated = false
             switch slot.missionActivityState {
             case .exploring:
+                slot.exploringDistanceMeters += Self.exploringMetersPerTick
+                slotMutated = true
                 if let newState = checkForNewState() {
                     slot.setActivity(state: newState, date: now)
-                    slotMutated = true
                 }
             case .gathering:
                 if completeGatheringPhase(slot: &slot, now: now) {
@@ -71,6 +73,7 @@ final class GolemMissionService {
 //            }
             if checkDeath(slot: &slot, now: now) {
                 slotMutated = true
+                recordCompletedMissionExploredDistance(slot: slot)
             }
 
             if slotMutated {
@@ -141,10 +144,22 @@ final class GolemMissionService {
     private func checkDeath(slot: inout GolemMissionSlot, now: Date) -> Bool {
         if slot.remainingHealth == 0 {
             slot.phase = .complete
-            slot.appendActivityLog("golem died", date: now)
+            slot.appendActivityLog("golem died after travelling \(slot.exploringDistanceMeters)m", date: now)
             return true
         }
         return false
+    }
+
+    private func recordCompletedMissionExploredDistance(slot: GolemMissionSlot) {
+        guard slot.phase == .complete,
+              let location = slot.location
+        else { return }
+        let meters = slot.exploringDistanceMeters
+        guard meters > 0 else { return }
+        var mapLocations = mainStore.mapLocations
+        mapLocations.addGolemExploredDistance(meters, for: location)
+        mainStore.mapLocations = mapLocations
+        mainStore.statistics.golemDistanceTraveledMeters += Int64(meters)
     }
 
     private static func gatheringLogMessage(results: [MakeItemResult]) -> String? {

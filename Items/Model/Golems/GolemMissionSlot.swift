@@ -57,6 +57,8 @@ struct GolemMissionSlot: Codable {
     var gainedItems: [BaseItem: Int]
     /// Timeline of notable mission events (started, activity changes, gathering results, completion).
     var activityLog: [GolemMissionLogEntry]
+    /// Meters travelled while in the exploring activity (this mission run).
+    var exploringDistanceMeters: Int = 0
 
     mutating func setActivity(state: MissionActivityState, date: Date) {
         self.activityStartDate = date
@@ -75,6 +77,7 @@ struct GolemMissionSlot: Codable {
         self.activityStartDate = date
         self.gainedItems = [:]
         self.activityLog = []
+        self.exploringDistanceMeters = 0
         appendActivityLog("Mission started.", date: date)
     }
 
@@ -102,6 +105,7 @@ struct GolemMissionSlot: Codable {
         remainingHealth: Int? = nil,
         missionActivityState: MissionActivityState = .exploring,
         activityLog: [GolemMissionLogEntry] = [],
+        exploringDistanceMeters: Int = 0,
     ) {
         self.phase = phase
         self.golemType = golemType
@@ -112,6 +116,7 @@ struct GolemMissionSlot: Codable {
         self.missionActivityState = missionActivityState
         self.gainedItems = [:]
         self.activityLog = activityLog
+        self.exploringDistanceMeters = exploringDistanceMeters
     }
 
     static func empty() -> GolemMissionSlot {

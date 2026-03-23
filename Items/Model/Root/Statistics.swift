@@ -7,4 +7,6 @@ struct Statistics: Codable {
     var multipleItemCreations: Int64 = 0
     var itemsSacrificed: Int64 = 0
     var tradesCompleted: Int64 = 0
+    /// Total meters traveled by golems on completed missions (all locations).
+    var golemDistanceTraveledMeters: Int64 = 0
 }
