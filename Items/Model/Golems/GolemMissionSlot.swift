@@ -92,7 +92,7 @@ struct GolemMissionSlot: Codable {
 
     mutating func takeDamage(_ damage: Int) {
         let health = remainingHealth ?? 0
-        remainingHealth = max(0, health)
+        remainingHealth = max(0, health - damage)
     }
 
     init(

@@ -65,9 +65,10 @@ final class GolemMissionService {
                 slotMutated = true
             }
 
-            if applyMissionHealthTick(slot: &slot, now: now) {
-                slotMutated = true
-            }
+            // Not sure if this should be how it works
+//            if applyMissionHealthTick(slot: &slot, now: now) {
+//                slotMutated = true
+//            }
             if checkDeath(slot: &slot, now: now) {
                 slotMutated = true
             }
