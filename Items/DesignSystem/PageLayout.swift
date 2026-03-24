@@ -36,7 +36,7 @@ public struct PageLayout<TitleBar: View, Content: View, Footer: View>: View {
                 content()
                     .background(Color.white)
             }
-            
+
             footer()
                 .margin()
                 .padding(.vertical, 8)

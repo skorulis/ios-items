@@ -271,9 +271,9 @@ extension PortalUpgrade {
         switch self {
         case .portalUnlocked:
             return nil
-        case .portalAutomation, .researchLab, .sacrifices, .golems, .mapLocations, .knowledgeSiphon, .artifactSlot:
+        case .portalAutomation, .researchLab, .sacrifices, .golems, .mapLocations, .artifactSlot:
             return .portalUnlocked
-        case .researchLabLevel2:
+        case .researchLabLevel2, .knowledgeSiphon:
             return .researchLab
         case .sacrificesLevel2:
             return .sacrifices

@@ -28,8 +28,9 @@ enum PortalUpgradeTreeLayout {
             return CGPoint(x: 120, y: -140)
         case .artifactSlot:
             return CGPoint(x: 300, y: -50)
+        // Knowledge siphon branches from researchLab (see `treeParent`).
         case .knowledgeSiphon:
-            return CGPoint(x: 300, y: 80)
+            return CGPoint(x: -260, y: -200)
         case .mapLocations:
             return CGPoint(x: 120, y: 140)
         case .golems:
@@ -49,13 +50,13 @@ enum PortalUpgradeTreeLayout {
         case .artifactSlotLevel3:
             return CGPoint(x: 300, y: -290)
         case .knowledgeSiphonLevel2:
-            return CGPoint(x: 300, y: 200)
+            return CGPoint(x: -340, y: -280)
         case .knowledgeSiphonLevel3:
-            return CGPoint(x: 300, y: 320)
+            return CGPoint(x: -420, y: -360)
         case .knowledgeSiphonLevel4:
-            return CGPoint(x: 300, y: 440)
+            return CGPoint(x: -500, y: -440)
         case .knowledgeSiphonLevel5:
-            return CGPoint(x: 300, y: 560)
+            return CGPoint(x: -580, y: -520)
         case .offlineProgress:
             return CGPoint(x: -440, y: -50)
         case .offlineProgressLevel2:

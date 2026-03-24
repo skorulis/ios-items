@@ -87,6 +87,17 @@ extension PortalUpgradesView: View {
         let canBuy = viewModel.canPurchase(upgrade)
         let lockedDim: Double = (unlocked || purchased) ? 1 : 0.55
 
+        let borderColor: Color = {
+            if purchased { return .green }
+            if canBuy { return Color.accentColor }
+            return Color.gray.opacity(0.35)
+        }()
+        let borderWidth: CGFloat = {
+            if purchased { return 4.5 }
+            if canBuy { return 3 }
+            return 1.5
+        }()
+
         return Button {
             viewModel.showUpgradeDetail(upgrade)
         } label: {
@@ -95,25 +106,10 @@ extension PortalUpgradesView: View {
                     .fill(Color.gray.opacity(0.12))
                     .overlay {
                         Circle()
-                            .stroke(
-                                canBuy && !purchased ? Color.accentColor : Color.gray.opacity(0.35),
-                                lineWidth: canBuy && !purchased ? 3 : 1.5
-                            )
+                            .stroke(borderColor, lineWidth: borderWidth)
                     }
-                if let image = upgrade.image {
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 26, height: 26)
-                        .foregroundStyle(unlocked || purchased ? Color.primary : Color.secondary)
-                }
-                if purchased {
-                    Image(systemName: "checkmark.circle.fill")
-                        .symbolRenderingMode(.palette)
-                        .foregroundStyle(.white, Color.accentColor)
-                        .font(.system(size: 16))
-                        .offset(x: 16, y: -16)
-                }
+                upgrade.layeredIcon.size(37)
+                    .foregroundStyle(unlocked || purchased ? Color.primary : Color.secondary)
             }
         }
         .buttonStyle(.plain)

@@ -7,38 +7,75 @@ import SwiftUI
 /// App-specific extensions for `PortalUpgrade` that depend on UI or app-only models.
 extension PortalUpgrade {
 
-    var image: Image? {
+    /// Primary symbol plus a bottom-right badge for tree nodes and other UI.
+    var layeredIcon: LayeredIcon {
         switch self {
         case .portalUnlocked:
-            return Image(systemName: "lock.open.fill")
+            return makeLayeredIcon(main: "lock.open.fill")
         case .portalAutomation:
-            return Image(systemName: "play.circle.fill")
+            return makeLayeredIcon(main: "play.circle.fill")
         case .researchLab:
-            return Image(systemName: "flask.fill")
+            return makeLayeredIcon(main: "flask.fill")
         case .researchLabLevel2:
-            return Image(systemName: "flask.fill")
-        case .sacrifices, .sacrificesLevel2, .sacrificesLevel3, .sacrificesLevel4, .sacrificesLevel5:
-            return Image(systemName: "flame.fill")
-        case .artifactSlot, .artifactSlotLevel2, .artifactSlotLevel3:
-            return Image(systemName: "square.stack.3d.up.fill")
-        case .knowledgeSiphon, .knowledgeSiphonLevel2, .knowledgeSiphonLevel3,
-                .knowledgeSiphonLevel4, .knowledgeSiphonLevel5:
-            return Image(systemName: "book.fill")
-        case .offlineProgress, .offlineProgressLevel2, .offlineProgressLevel3,
-                .offlineProgressLevel4, .offlineProgressLevel5:
-            return Image(systemName: "arrow.up.circle.badge.clock")
+            return makeLayeredIcon(main: "flask.fill", overlay: "2.circle.fill")
+        case .sacrifices:
+            return makeLayeredIcon(main: "flame.fill")
+        case .sacrificesLevel2:
+            return makeLayeredIcon(main: "flame.fill", overlay: "2.circle.fill")
+        case .sacrificesLevel3:
+            return makeLayeredIcon(main: "flame.fill", overlay: "3.circle.fill")
+        case .sacrificesLevel4:
+            return makeLayeredIcon(main: "flame.fill", overlay: "4.circle.fill")
+        case .sacrificesLevel5:
+            return makeLayeredIcon(main: "flame.fill", overlay: "5.circle.fill")
+        case .artifactSlot:
+            return makeLayeredIcon(main: "square.stack.3d.up.fill")
+        case .artifactSlotLevel2:
+            return makeLayeredIcon(main: "square.stack.3d.up.fill", overlay: "2.circle.fill")
+        case .artifactSlotLevel3:
+            return makeLayeredIcon(main: "square.stack.3d.up.fill", overlay: "3.circle.fill")
+        case .knowledgeSiphon:
+            return makeLayeredIcon(main: "book.fill")
+        case .knowledgeSiphonLevel2:
+            return makeLayeredIcon(main: "book.fill", overlay: "2.circle.fill")
+        case .knowledgeSiphonLevel3:
+            return makeLayeredIcon(main: "book.fill", overlay: "3.circle.fill")
+        case .knowledgeSiphonLevel4:
+            return makeLayeredIcon(main: "book.fill", overlay: "4.circle.fill")
+        case .knowledgeSiphonLevel5:
+            return makeLayeredIcon(main: "book.fill", overlay: "5.circle.fill")
+        case .offlineProgress:
+            return makeLayeredIcon(main: "arrow.up.circle.badge.clock")
+        case .offlineProgressLevel2:
+            return makeLayeredIcon(main: "arrow.up.circle.badge.clock", overlay: "2.circle.fill")
+        case .offlineProgressLevel3:
+            return makeLayeredIcon(main: "arrow.up.circle.badge.clock", overlay: "3.circle.fill")
+        case .offlineProgressLevel4:
+            return makeLayeredIcon(main: "arrow.up.circle.badge.clock", overlay: "4.circle.fill")
+        case .offlineProgressLevel5:
+            return makeLayeredIcon(main: "arrow.up.circle.badge.clock", overlay: "5.circle.fill")
         case .mapLocations:
-            return Image(systemName: "map.fill")
-        case .golems,
-                .golemMissionSlotsLevel2,
-                .golemMissionSlotsLevel3,
-                .golemMissionSlotsLevel4,
-                .golemMissionSlotsLevel5:
-            return Image(systemName: "person.3.fill")
+            return makeLayeredIcon(main: "map.fill", overlay: "mappin.circle.fill")
         case .tradingPost:
-            return Image(systemName: "storefront")
-        case .tradingPostLevel2, .tradingPostLevel3:
-            return Image(systemName: "storefront")
+            return makeLayeredIcon(main: "storefront")
+        case .tradingPostLevel2:
+            return makeLayeredIcon(main: "storefront", overlay: "2.circle.fill")
+        case .tradingPostLevel3:
+            return makeLayeredIcon(main: "storefront", overlay: "3.circle.fill")
+        case .golems:
+            return makeLayeredIcon(main: "person.3.fill")
+        case .golemMissionSlotsLevel2:
+            return makeLayeredIcon(main: "person.3.fill", overlay: "2.circle.fill")
+        case .golemMissionSlotsLevel3:
+            return makeLayeredIcon(main: "person.3.fill", overlay: "3.circle.fill")
+        case .golemMissionSlotsLevel4:
+            return makeLayeredIcon(main: "person.3.fill", overlay: "4.circle.fill")
+        case .golemMissionSlotsLevel5:
+            return makeLayeredIcon(main: "person.3.fill", overlay: "5.circle.fill")
         }
+    }
+
+    private func makeLayeredIcon(main: String, overlay: String? = nil) -> LayeredIcon {
+        LayeredIcon(main: Image(systemName: main), overlay: overlay.map { Image(systemName: $0) })
     }
 }
