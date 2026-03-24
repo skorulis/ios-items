@@ -23,34 +23,32 @@ enum PortalUpgradeTreeLayout {
         switch upgrade {
         case .portalUnlocked:
             return (0, 0)
-        // First ring: mix of negative and positive Y around the hub.
         case .portalAutomation:
-            return (-30, -5)
+            return (-10, 0)
         case .portalAutomationLevel2:
-            return (-30, 7)
+            return (-20, 10)
         case .portalAutomationLevel3:
-            return (-30, 19)
+            return (-30, 10)
         case .portalAutomationLevel4:
-            return (-30, 31)
+            return (-40, 10)
         case .portalAutomationLevel5:
-            return (-30, 43)
+            return (-50, 10)
         case .portalDuplication:
-            return (-44, -17)
+            return (-20, -10)
         case .portalDuplicationLevel2:
-            return (-58, -29)
+            return (-30, -10)
         case .portalDuplicationLevel3:
-            return (-72, -41)
+            return (-40, -10)
         case .portalDuplicationLevel4:
-            return (-86, -53)
+            return (-50, -10)
         case .portalDuplicationLevel5:
-            return (-100, -65)
+            return (-60, -10)
         case .researchLab:
             return (-12, -14)
         case .sacrifices:
             return (12, -14)
         case .artifactSlot:
-            return (30, -5)
-        // Knowledge siphon branches from researchLab (see `treeParent`).
+            return (10, 0)
         case .knowledgeSiphon:
             return (-26, -20)
         case .mapLocations:
@@ -84,9 +82,9 @@ enum PortalUpgradeTreeLayout {
         case .sacrificesPowerLevel5:
             return (20, -60)
         case .artifactSlotLevel2:
-            return (30, -17)
+            return (20, 0)
         case .artifactSlotLevel3:
-            return (30, -29)
+            return (30, 0)
         case .knowledgeSiphonLevel2:
             return (-34, -28)
         case .knowledgeSiphonLevel3:
@@ -96,15 +94,15 @@ enum PortalUpgradeTreeLayout {
         case .knowledgeSiphonLevel5:
             return (-58, -52)
         case .offlineProgress:
-            return (-44, -5)
+            return (-20, 0)
         case .offlineProgressLevel2:
-            return (-58, -5)
+            return (-30, 0)
         case .offlineProgressLevel3:
-            return (-72, -5)
+            return (-40, 0)
         case .offlineProgressLevel4:
-            return (-86, -5)
+            return (-50, 0)
         case .offlineProgressLevel5:
-            return (-100, -5)
+            return (-60, 0)
         case .tradingPost:
             return (12, 26)
         case .tradingPostLevel2:

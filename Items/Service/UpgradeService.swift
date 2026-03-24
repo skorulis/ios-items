@@ -15,18 +15,36 @@ final class UpgradeService: ObservableObject {
 
     @Published var purchasableUpgrades: [PortalUpgrade] = []
 
+    private var warehouse: Warehouse
+    private var achievements: Achievements
+    private var portalUpgrades: PortalUpgrades
+
     @Resolvable<BaseResolver>
     init(mainStore: MainStore, unlockRequirementService: UnlockRequirementService) {
         self.mainStore = mainStore
         self.unlockRequirementService = unlockRequirementService
 
-        mainStore.$portalUpgrades
-            .combineLatest(mainStore.$achievements)
-            .combineLatest(mainStore.$warehouse)
-            .delayedChange()
-            .sink { [unowned self] _ in self.updatePurchasableUpgrades() }
-            .store(in: &cancellables)
+        self.warehouse = mainStore.warehouse
+        self.achievements = mainStore.achievements
+        self.portalUpgrades = mainStore.portalUpgrades
 
+        mainStore.$portalUpgrades.sink { [unowned self] in
+            self.portalUpgrades = $0
+            self.updatePurchasableUpgrades()
+        }
+        .store(in: &cancellables)
+
+        mainStore.$achievements.sink { [unowned self] in
+            self.achievements = $0
+            self.updatePurchasableUpgrades()
+        }
+        .store(in: &cancellables)
+
+        mainStore.$warehouse.sink { [unowned self] in
+            self.warehouse = $0
+            self.updatePurchasableUpgrades()
+        }
+        .store(in: &cancellables)
     }
 }
 
@@ -36,7 +54,7 @@ extension UpgradeService {
 
     /// Number of upgrades that are not yet purchased and can be afforded with the current warehouse.
     private func updatePurchasableUpgrades() {
-        let purchased = mainStore.portalUpgrades.purchased
+        let purchased = portalUpgrades.purchased
         let newValue = PortalUpgrade.allCases.filter { upgrade in
             !purchased.contains(upgrade)
                 && isUnlocked(upgrade)
@@ -50,7 +68,7 @@ extension UpgradeService {
 
     func canPurchase(_ upgrade: PortalUpgrade) -> Bool {
         guard isUnlocked(upgrade) else { return false }
-        return upgrade.cost.allSatisfy { mainStore.warehouse.quantity($0.item) >= $0.quantity }
+        return upgrade.cost.allSatisfy { warehouse.quantity($0.item) >= $0.quantity }
     }
 }
 

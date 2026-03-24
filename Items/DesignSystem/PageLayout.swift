@@ -25,6 +25,8 @@ public struct PageLayout<TitleBar: View, Content: View, Footer: View>: View {
     public var body: some View {
         VStack(spacing: 0) {
             titleBar()
+                .background(Color.white)
+                .zIndex(1)
             if scrollEnabled {
                 ScrollView {
                     Spacer()
