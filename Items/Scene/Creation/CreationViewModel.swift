@@ -16,7 +16,7 @@ import SwiftUI
     var model = CreationView.Model()
     weak var coordinator: ASKCoordinator.Coordinator?
 
-    @ObservationIgnored var upgradeButtonFrame: CGRect = .zero
+    var upgradeButtonFrame: CGRect = .zero
     @ObservationIgnored var researchButtonFrame: CGRect = .zero
     @ObservationIgnored var sacrificesButtonFrame: CGRect = .zero
     @ObservationIgnored var mapLocationButtonFrame: CGRect = .zero
