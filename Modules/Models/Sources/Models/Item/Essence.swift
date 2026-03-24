@@ -6,16 +6,15 @@ import SwiftUI
 public nonisolated enum Essence: String, Identifiable, Hashable, Codable, CaseIterable {
     case dark
     case light
-    case earth
-    case life
+    
     case chaos
     case order
     
-    // LEGACY
-    case magic
-    case technology
-    case wealth
-    case knowledge
+    case earth
+    case life
+    
+    case covenant
+    case mind
 
     public var id: Self { self }
     public var name: String { String(describing: self).fromCaseName }
@@ -39,52 +38,26 @@ public extension Essence {
             return "Order essence is the drive to take hold of the universe to impose law, predictability, and command to the randomness. It is not a specific craft or device but the abstract force of mastery and arrangement: making the cosmos answer. Technology is a manifestation of order, applying knowledge to control the world."
         case .chaos:
             return "Chaos essence embodies the parts of the universe that resist prediction, pattern, and explanation. It is not mere disorder but the deep limit of what can be known or controlled: potential without structure, change that cannot be fully mapped. Magic is based in chaos, where it can be harnessed without rational explanation."
-            
-            
-        case .magic:
-            return "Magic essence is raw potential—the spark that bends rules and makes the impossible plausible. It infuses items with arcane affinity, enabling rituals, enchantments, and phenomena beyond ordinary cause and effect. Those who seek it walk the line between wonder and risk."
-        case .technology:
-            return "Technology essence represents ingenuity, mechanism, and the application of knowledge to matter. It lives in crafted devices, precise instruments, and the tools that extend human capability. In this world, technology is not opposed to magic but another channel through which order is imposed on chaos."
-        case .wealth:
-            return "Wealth essence captures the idea of value, exchange, and abundance. It clings to currency, trade goods, and objects that have gathered meaning through commerce or hoarding. It does not merely mean gold—it is the abstract force of worth that societies build upon."
-        case .knowledge:
-            return "Knowledge essence is the imprint of understanding: learning, memory, and the written or encoded word. Items that carry it—books, inscriptions, preserved lore—hold more than information; they hold the weight of what has been thought and passed down. To possess knowledge essence is to touch the continuity of minds across time."
+        case .covenant:
+            return "Covenant essence is the force of binding agreement: oaths, seals, trade, and currency that stands for a promise between people. It clings to minted coin, stamped wax, merchant marks, and anything whose power comes from mutual recognition rather than from the material alone."
+        case .mind:
+            return "Mind essence is the imprint of understanding: learning, memory, and the written or encoded word. Items that carry it—books, inscriptions, preserved lore—hold more than information; they hold the weight of what has been thought and passed down. To possess mind essence is to touch the continuity of minds across time."
         }
     }
 }
 
 public extension Essence {
     
-    // The essence that represents the opposite
-    var opposite: Essence {
-        switch self {
-        case .dark: return .light
-        case .earth: return .life
-        case .life: return .earth
-        case .light: return .dark
-        case .chaos: return .order
-        case .order: return .chaos
-            
-        // LEGACY
-        case .magic: fatalError()
-        case .technology: fatalError()
-        case .wealth: fatalError()
-        case .knowledge: fatalError()
-        }
-    }
-    
     var color: Color {
         switch self {
         case .life: return .green
-        case .wealth: return .orange
+        case .covenant: return .orange
         case .chaos: return .purple
         case .order: return .indigo
-        case .magic: return .blue
-        case .technology: return .gray
         case .light: return .yellow
         case .dark: return .black
         case .earth: return .brown
-        case .knowledge: return .cyan
+        case .mind: return .cyan
         }
     }
 
@@ -96,10 +69,9 @@ public extension Essence {
         case .light: return Image(systemName: "sun.max.fill")
         case .chaos: return Image(systemName: "hurricane")
         case .order: return Image(systemName: "square.grid.3x3.fill")
-        case .magic: return Image(systemName: "sparkles")
-        case .technology: return Image(systemName: "cpu")
-        case .wealth: return Image(systemName: "banknote.fill")
-        case .knowledge: return Image(systemName: "book.fill")
+        case .covenant: return Image(systemName: "checkmark.seal.fill")
+        case .mind: return Image(systemName: "brain.head.profile")
+        
         }
     }
     
@@ -115,13 +87,13 @@ public extension Essence {
         case .light:
             return ["truth", "warmth", "beauty"]
         case .chaos:
-            return ["magic", "confusion"]
+            return ["magic", "confusion", "freedom"]
         case .order:
-            return ["technology", "structure", "law"]
-            
-            // LEGACY
-        case .magic, .technology, .wealth, .knowledge:
-            return []
+            return ["technology", "structure", "control"]
+        case .covenant:
+            return ["binding", "trade", "oaths"]
+        case .mind:
+            return ["knowledge", "lore", "symbols"]
         }
     }
 }

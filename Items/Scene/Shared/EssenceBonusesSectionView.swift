@@ -56,8 +56,8 @@ struct EssenceBonusesSectionView: View {
     EssenceBonusesSectionView(
         title: "Essence bonuses",
         bonuses: [
-            (.wealth, 1.5),
-            (.knowledge, 1.1),
+            (.covenant, 1.5),
+            (.mind, 1.1),
             (.dark, 0),
             (.earth, 0),
         ]

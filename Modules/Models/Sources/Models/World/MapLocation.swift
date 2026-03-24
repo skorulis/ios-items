@@ -36,8 +36,8 @@ public enum MapLocation: String, CaseIterable, Identifiable, Hashable, Codable {
             return LocationDetails(
                 description: "A quaint trading post with a bustling marketplace surrounding a fountain of shimmering water.",
                 essenceMultipliers: [
-                    .wealth: 1.5,
-                    .knowledge: 1.1,
+                    .covenant: 1.5,
+                    .mind: 1.1,
                     .dark: 0,
                     .earth: 0,
                 ],
@@ -55,7 +55,6 @@ public enum MapLocation: String, CaseIterable, Identifiable, Hashable, Codable {
                     .life: 1.5,
                     .earth: 1.2,
                     .dark: 0,
-                    .technology: 0,
                 ],
                 uniqueItems: [],
                 cost: [
@@ -68,8 +67,9 @@ public enum MapLocation: String, CaseIterable, Identifiable, Hashable, Codable {
             return LocationDetails(
                 description: "A grand university where scholars study the workings of the nature.",
                 essenceMultipliers: [
-                    .knowledge: 1.6,
-                    .technology: 1.2,
+                    .mind: 1.5,
+                    .order: 1.5,
+                    .life: 1.5,
                 ],
                 uniqueItems: [],
                 cost: [
@@ -83,7 +83,7 @@ public enum MapLocation: String, CaseIterable, Identifiable, Hashable, Codable {
                 description: "A cavern mine where fractured crystals glow with captured lightning; the air hums with arcane resonance.",
                 essenceMultipliers: [
                     .earth: 1.6,
-                    .magic: 1.2,
+                    .chaos: 1.2,
                 ],
                 uniqueItems: [.quartzCrystal],
                 cost: [

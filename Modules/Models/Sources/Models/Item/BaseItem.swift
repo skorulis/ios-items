@@ -95,69 +95,69 @@ public enum BaseItem: String, Hashable, Equatable, CaseIterable, Identifiable, C
         case .rock:
             return [.earth]
         case .gear:
-            return [.technology]
+            return [.order]
         case .potionFlask:
-            return [.magic]
+            return [.chaos]
         case .copperFlorin:
-            return [.wealth]
+            return [.covenant]
         case .hourglass:
-            return [.knowledge]
+            return [.mind]
         case .lens:
-            return [.light, .technology]
+            return [.light, .order]
         case .humanSkull:
             return [.dark, .life]
             // Common
         case .silverFlorin:
-            return [.wealth]
+            return [.covenant]
         case .quartzCrystal:
             return [.earth, .light]
         case .steelArrowhead:
-            return [.dark, .technology]
+            return [.dark, .order]
         case .book:
-            return [.light, .knowledge]
+            return [.light, .mind]
         case .jadeFigurine:
-            return [.earth, .wealth]
+            return [.earth, .covenant]
         case .merchantSigil:
-            return [.wealth, .magic]
+            return [.covenant, .order]
 
         case .goldFlorin:
-            return [.wealth]
+            return [.covenant]
         case .platinumFlorin:
-            return [.wealth, .technology]
+            return [.covenant, .order]
         case .giantThorn:
             return [.life, .earth]
         case .portalShard:
-            return [.magic, .light]
+            return [.chaos, .light]
         case .whetstone:
-            return [.earth, .technology]
+            return [.earth, .order]
         case .embuedChalk:
-            return [.knowledge, .magic]
+            return [.mind, .chaos]
         case .metalBloom:
-            return [.life, .technology]
+            return [.life, .order, .chaos]
         case .mapFragment:
-            return [.knowledge, .earth]
+            return [.mind, .earth]
         case .soulEmber:
-            return [.dark, .magic]
+            return [.dark, .chaos]
         case .anchorStone:
-            return [.earth, .magic]
+            return [.earth, .chaos]
         case .waxSeal:
-            return [.knowledge]
+            return [.mind]
         case .memorySeed:
-            return [.life, .knowledge]
+            return [.life, .mind]
         case .nullLantern:
-            return [.dark, .technology]
+            return [.dark, .order]
         case .nullWeaveCloak:
-            return [.dark, .technology]
+            return [.dark, .order]
         case .axisHeart:
-            return [.magic, .earth]
+            return [.chaos, .earth]
         case .oathforgedChain:
-            return [.wealth, .technology]
+            return [.covenant, .order]
         case .sunwellPhial:
             return [.light, .life]
         case .heartgear:
-            return [.life, .technology]
+            return [.life, .order]
         case .astralFlorin:
-            return [.wealth, .magic, .light]
+            return [.covenant, .chaos, .light]
         }
     }
 

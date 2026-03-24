@@ -157,8 +157,8 @@ extension EncyclopediaEntry {
             childItems: Essence.allCases.map { Self.essenceEntry($0) },
             icon: {
                 HStack(spacing: -6) {
-                    EssenceView(essence: .knowledge)
-                    EssenceView(essence: .magic)
+                    EssenceView(essence: .mind)
+                    EssenceView(essence: .chaos)
                 }
             }
         )
