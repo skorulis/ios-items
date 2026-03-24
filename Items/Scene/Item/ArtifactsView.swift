@@ -1,7 +1,6 @@
 // Created by Alexander Skorulis on 11/2/2026.
-//
-// Split out artifacts UI from `WarehouseView`.
 
+import ASKCoordinator
 import Knit
 import Models
 import SwiftUI
@@ -50,6 +49,36 @@ struct ArtifactsView: View {
             .frame(height: 200)
             .padding(.horizontal, 16)
         }
+    }
+}
+
+@MainActor struct ArtifactsContainerView: View {
+    @State var viewModel: ArtifactsViewModel
+    @Environment(\.dismissCircularReveal) private var dismissCircularReveal
+
+    var body: some View {
+        PageLayout(
+            titleBar: { titleBar },
+            content: { content }
+        )
+    }
+
+    private var titleBar: some View {
+        TitleBar(
+            title: "Artifacts",
+            backAction: {
+                if let dismissCircularReveal {
+                    dismissCircularReveal()
+                } else {
+                    viewModel.coordinator?.pop()
+                }
+            },
+            leadingStyle: .close
+        )
+    }
+
+    private var content: some View {
+        ArtifactsView(viewModel: viewModel)
     }
 }
 

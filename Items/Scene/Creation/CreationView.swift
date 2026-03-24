@@ -147,7 +147,7 @@ extension CreationView: View {
         guard viewModel.model.artifactSlots.count > 0 else { return nil }
         return ArtifactSlotView(
             slots: viewModel.model.artifactSlots,
-            size: .large,
+            size: .small,
             onSlotPressed: { viewModel.artifactSlotPressed(index: $0) }
         )
     }
@@ -157,9 +157,10 @@ extension CreationView: View {
         if let artifactSlotView {
             VStack {
                 artifactSlotView
+                    .readFrame(frame: $viewModel.artifactsButtonFrame)
                 Spacer(minLength: 0)
             }
-            .padding(.top, 48)
+            .padding(.top, 72)
         }
     }
 

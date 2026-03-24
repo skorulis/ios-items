@@ -20,6 +20,7 @@ import SwiftUI
     @ObservationIgnored var researchButtonFrame: CGRect = .zero
     @ObservationIgnored var sacrificesButtonFrame: CGRect = .zero
     @ObservationIgnored var mapLocationButtonFrame: CGRect = .zero
+    @ObservationIgnored var artifactsButtonFrame: CGRect = .zero
 
     var automateCreation: Bool = false {
         didSet {
@@ -221,8 +222,7 @@ extension CreationViewModel {
     }
 
     func artifactSlotPressed(index: Int) {
-        let slotContents = mainStore.warehouse.equippedSlotsContents(upToSlotCount: model.maxArtifacts)
-        guard index < slotContents.count else { return }
-        coordinator?.custom(overlay: .card, MainPath.artifactPicker(slot: index))
+        let path = CircularAnimationPath(sourceRect: artifactsButtonFrame, mainPath: .artifacts)
+        coordinator?.custom(overlay: .circularReveal, path)
     }
 }

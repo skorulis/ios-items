@@ -10,7 +10,7 @@ import Models
 import SwiftUI
 
 @Observable
-final class ArtifactsViewModel {
+final class ArtifactsViewModel: CoordinatorViewModel {
 
     weak var coordinator: ASKCoordinator.Coordinator?
 

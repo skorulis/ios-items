@@ -26,6 +26,7 @@ enum MainPath: CoordinatorPath {
 
     case itemDetails(BaseItem)
     case artifactDetails(ArtifactInstance)
+    case artifacts
     case artifactPicker(slot: Int)
     case golemMissionGolemPicker(slotIndex: Int)
     case golemMissionLocationPicker(slotIndex: Int)
@@ -96,6 +97,8 @@ struct MainPathRenderer: CoordinatorPathRenderer {
             ItemDetailsView(viewModel: coordinator.apply(resolver.itemDetailsViewModel(item: item)))
         case let .artifactDetails(instance):
             ArtifactDetailView(viewModel: resolver.artifactDetailViewModel(artifact: instance))
+        case .artifacts:
+            ArtifactsContainerView(viewModel: coordinator.apply(resolver.artifactsViewModel()))
         case let .artifactPicker(slot):
             ArtifactPickerView(viewModel: resolver.artifactPickerViewModel(slot: slot))
         case let .golemMissionGolemPicker(slotIndex):
