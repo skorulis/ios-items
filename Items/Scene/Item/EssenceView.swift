@@ -32,9 +32,13 @@ extension EssenceView: View {
 // MARK: - Previews
 
 #Preview {
-    HStack {
+    VStack(alignment: .leading) {
         ForEach(Essence.allCases) { essence in
-            EssenceView(essence: essence)
+            HStack {
+                EssenceView(essence: essence)
+                Text(essence.name)
+            }
+            
         }
     }
 

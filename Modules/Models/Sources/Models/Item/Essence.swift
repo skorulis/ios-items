@@ -5,9 +5,13 @@ import SwiftUI
 
 public nonisolated enum Essence: String, Identifiable, Hashable, Codable, CaseIterable {
     case dark
+    case light
     case earth
     case life
-    case light
+    case chaos
+    case order
+    
+    // LEGACY
     case magic
     case technology
     case wealth
@@ -24,13 +28,19 @@ public extension Essence {
     var description: String {
         switch self {
         case .dark:
-            return "Dark essence embodies shadow, mystery, and the unseen. Items touched by it often carry connotations of night, secrecy, or the hidden aspects of reality. In the world's balance, dark stands opposite to light—not as evil, but as the necessary counterpart that gives depth and rest to creation."
+            return "Dark essence embodies shadow, mystery, and the unseen. Items touched by it often carry connotations of night, secrecy, or the hidden aspects of reality. Dark does not directly represent evil, but as functions as a counterpart when evil hides from view."
         case .earth:
-            return "Earth essence is the stuff of stone, soil, and the enduring physical world. It grounds items in permanence and substance, and is often found in minerals, tools, and anything that has weathered time. Those who work with earth understand stability, craft, and the slow patience of the land."
+            return "Earth essence is the stuff of stone, soil, and the enduring physical world. It defines the permanence of the natural order and the cycles of time."
         case .life:
-            return "Life essence flows through growing things, healing arts, and all that thrives. It represents vitality, growth, and the bond between living beings. Items rich in life essence are prized for restoration and renewal, and are deeply tied to nature and the cycle of birth and decay."
+            return "Life essence flows through growing things, healing arts, and all that thrives. It represents vitality, growth, and the bond between living beings. Death is also a part of life essence, as it is intertwined with the cycle of birth and rebirth. Life embodies change."
         case .light:
-            return "Light essence carries clarity, warmth, and revelation. It illuminates truth and drives back confusion; items imbued with it often serve guidance, protection, or the uncovering of what was hidden. In the world's cosmology, light is the active principle of day and awareness."
+            return "Light essence carries clarity, warmth, and revelation. It illuminates truth and drives back confusion. "
+        case .order:
+            return "Order essence is the drive to take hold of the universe to impose law, predictability, and command to the randomness. It is not a specific craft or device but the abstract force of mastery and arrangement: making the cosmos answer. Technology is a manifestation of order, applying knowledge to control the world."
+        case .chaos:
+            return "Chaos essence embodies the parts of the universe that resist prediction, pattern, and explanation. It is not mere disorder but the deep limit of what can be known or controlled: potential without structure, change that cannot be fully mapped. Magic is based in chaos, where it can be harnessed without rational explanation."
+            
+            
         case .magic:
             return "Magic essence is raw potential—the spark that bends rules and makes the impossible plausible. It infuses items with arcane affinity, enabling rituals, enchantments, and phenomena beyond ordinary cause and effect. Those who seek it walk the line between wonder and risk."
         case .technology:
@@ -44,10 +54,31 @@ public extension Essence {
 }
 
 public extension Essence {
+    
+    // The essence that represents the opposite
+    var opposite: Essence {
+        switch self {
+        case .dark: return .light
+        case .earth: return .life
+        case .life: return .earth
+        case .light: return .dark
+        case .chaos: return .order
+        case .order: return .chaos
+            
+        // LEGACY
+        case .magic: fatalError()
+        case .technology: fatalError()
+        case .wealth: fatalError()
+        case .knowledge: fatalError()
+        }
+    }
+    
     var color: Color {
         switch self {
         case .life: return .green
         case .wealth: return .orange
+        case .chaos: return .purple
+        case .order: return .indigo
         case .magic: return .blue
         case .technology: return .gray
         case .light: return .yellow
@@ -63,10 +94,34 @@ public extension Essence {
         case .earth: return Image(systemName: "mountain.2.fill")
         case .life: return Image(systemName: "heart.fill")
         case .light: return Image(systemName: "sun.max.fill")
+        case .chaos: return Image(systemName: "hurricane")
+        case .order: return Image(systemName: "square.grid.3x3.fill")
         case .magic: return Image(systemName: "sparkles")
         case .technology: return Image(systemName: "cpu")
         case .wealth: return Image(systemName: "banknote.fill")
         case .knowledge: return Image(systemName: "book.fill")
+        }
+    }
+    
+    // Terms and concepts associated with this essence
+    var associations: [String] {
+        switch self {
+        case .dark:
+            return ["night", "shadow", "lies", "obscurity", "evil"]
+        case .earth:
+            return ["memory", "permanence", "land", "soil", "stone", "metal", "equilibrium"]
+        case .life:
+            return ["growth", "change", "energy"]
+        case .light:
+            return ["truth", "warmth", "beauty"]
+        case .chaos:
+            return ["magic", "confusion"]
+        case .order:
+            return ["technology", "structure", "law"]
+            
+            // LEGACY
+        case .magic, .technology, .wealth, .knowledge:
+            return []
         }
     }
 }
