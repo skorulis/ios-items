@@ -13,7 +13,6 @@ public enum BaseItem: String, Hashable, Equatable, CaseIterable, Identifiable, C
     case hourglass
     case lens
     case humanSkull
-    case waxSeal
 
     // Common
     case whetstone
@@ -55,7 +54,7 @@ public enum BaseItem: String, Hashable, Equatable, CaseIterable, Identifiable, C
 
     public var quality: ItemQuality {
         switch self {
-        case .apple, .rock, .hourglass, .copperFlorin, .gear, .potionFlask, .lens, .humanSkull, .waxSeal:
+        case .apple, .rock, .hourglass, .copperFlorin, .gear, .potionFlask, .lens, .humanSkull:
             return .junk
         case .quartzCrystal, .silverFlorin, .steelArrowhead, .book, .merchantSigil, .giantThorn, .embuedChalk, .whetstone, .metalBloom, .mapFragment:
             return .common
@@ -103,7 +102,7 @@ public enum BaseItem: String, Hashable, Equatable, CaseIterable, Identifiable, C
         case .hourglass:
             return [.mind]
         case .lens:
-            return [.light, .order]
+            return [.light]
         case .humanSkull:
             return [.dark, .life]
             // Common
@@ -140,8 +139,6 @@ public enum BaseItem: String, Hashable, Equatable, CaseIterable, Identifiable, C
             return [.dark, .chaos]
         case .anchorStone:
             return [.earth, .chaos]
-        case .waxSeal:
-            return [.mind]
         case .memorySeed:
             return [.life, .mind]
         case .nullLantern:
@@ -295,10 +292,6 @@ public enum BaseItem: String, Hashable, Equatable, CaseIterable, Identifiable, C
             return [
                 "A small, smooth stone with a hole through the center.",
                 "Used to keep a steady position when dealing with portal forces",
-            ]
-        case .waxSeal:
-            return [
-                "A used seal from a letter or document. The message is gone; only the stamped wax remains."
             ]
         case .memorySeed:
             return [

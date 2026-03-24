@@ -47,7 +47,6 @@ internal enum Asset {
     internal static let rock = ImageAsset(name: "rock")
     internal static let silverCoin = ImageAsset(name: "silverCoin")
     internal static let steelArrowhead = ImageAsset(name: "steelArrowhead")
-    internal static let waxSeal = ImageAsset(name: "waxSeal")
     internal static let whetstone = ImageAsset(name: "whetstone")
   }
 }
