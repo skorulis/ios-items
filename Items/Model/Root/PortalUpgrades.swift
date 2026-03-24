@@ -5,7 +5,7 @@ import Models
 
 struct PortalUpgrades: Codable {
 
-    var purchased: Set<PortalUpgrade> = []
+    var purchased: Set<PortalUpgrade> = [.portalUnlocked]
 
     // All bonsues for purchased upgrades
     var bonuses: [Bonus] {
