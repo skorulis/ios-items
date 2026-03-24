@@ -14,10 +14,34 @@ extension PortalUpgrade {
             return makeLayeredIcon(main: "lock.open.fill")
         case .portalAutomation:
             return makeLayeredIcon(main: "play.circle.fill")
+        case .portalAutomationLevel2:
+            return makeLayeredIcon(main: "play.circle.fill", overlay: "2.circle.fill")
+        case .portalAutomationLevel3:
+            return makeLayeredIcon(main: "play.circle.fill", overlay: "3.circle.fill")
+        case .portalAutomationLevel4:
+            return makeLayeredIcon(main: "play.circle.fill", overlay: "4.circle.fill")
+        case .portalAutomationLevel5:
+            return makeLayeredIcon(main: "play.circle.fill", overlay: "5.circle.fill")
+        case .portalDuplication:
+            return makeLayeredIcon(main: "doc.on.doc.fill")
+        case .portalDuplicationLevel2:
+            return makeLayeredIcon(main: "doc.on.doc.fill", overlay: "2.circle.fill")
+        case .portalDuplicationLevel3:
+            return makeLayeredIcon(main: "doc.on.doc.fill", overlay: "3.circle.fill")
+        case .portalDuplicationLevel4:
+            return makeLayeredIcon(main: "doc.on.doc.fill", overlay: "4.circle.fill")
+        case .portalDuplicationLevel5:
+            return makeLayeredIcon(main: "doc.on.doc.fill", overlay: "5.circle.fill")
         case .researchLab:
             return makeLayeredIcon(main: "flask.fill")
         case .researchLabLevel2:
             return makeLayeredIcon(main: "flask.fill", overlay: "2.circle.fill")
+        case .researchLabLevel3:
+            return makeLayeredIcon(main: "flask.fill", overlay: "3.circle.fill")
+        case .researchLabLevel4:
+            return makeLayeredIcon(main: "flask.fill", overlay: "4.circle.fill")
+        case .researchLabLevel5:
+            return makeLayeredIcon(main: "flask.fill", overlay: "5.circle.fill")
         case .sacrifices:
             return makeLayeredIcon(main: "flame.fill")
         case .sacrificesLevel2:
@@ -28,6 +52,16 @@ extension PortalUpgrade {
             return makeLayeredIcon(main: "flame.fill", overlay: "4.circle.fill")
         case .sacrificesLevel5:
             return makeLayeredIcon(main: "flame.fill", overlay: "5.circle.fill")
+        case .sacrificesPower:
+            return makeLayeredIcon(main: "bolt.fill")
+        case .sacrificesPowerLevel2:
+            return makeLayeredIcon(main: "bolt.fill", overlay: "2.circle.fill")
+        case .sacrificesPowerLevel3:
+            return makeLayeredIcon(main: "bolt.fill", overlay: "3.circle.fill")
+        case .sacrificesPowerLevel4:
+            return makeLayeredIcon(main: "bolt.fill", overlay: "4.circle.fill")
+        case .sacrificesPowerLevel5:
+            return makeLayeredIcon(main: "bolt.fill", overlay: "5.circle.fill")
         case .artifactSlot:
             return makeLayeredIcon(main: "square.stack.3d.up.fill")
         case .artifactSlotLevel2:

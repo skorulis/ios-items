@@ -26,6 +26,24 @@ enum PortalUpgradeTreeLayout {
         // First ring: mix of negative and positive Y around the hub.
         case .portalAutomation:
             return (-30, -5)
+        case .portalAutomationLevel2:
+            return (-30, 7)
+        case .portalAutomationLevel3:
+            return (-30, 19)
+        case .portalAutomationLevel4:
+            return (-30, 31)
+        case .portalAutomationLevel5:
+            return (-30, 43)
+        case .portalDuplication:
+            return (-44, -17)
+        case .portalDuplicationLevel2:
+            return (-58, -29)
+        case .portalDuplicationLevel3:
+            return (-72, -41)
+        case .portalDuplicationLevel4:
+            return (-86, -53)
+        case .portalDuplicationLevel5:
+            return (-100, -65)
         case .researchLab:
             return (-12, -14)
         case .sacrifices:
@@ -41,6 +59,12 @@ enum PortalUpgradeTreeLayout {
             return (-12, 14)
         case .researchLabLevel2:
             return (-12, -26)
+        case .researchLabLevel3:
+            return (-12, -38)
+        case .researchLabLevel4:
+            return (-12, -50)
+        case .researchLabLevel5:
+            return (-12, -62)
         case .sacrificesLevel2:
             return (12, -26)
         case .sacrificesLevel3:
@@ -49,6 +73,16 @@ enum PortalUpgradeTreeLayout {
             return (12, -50)
         case .sacrificesLevel5:
             return (12, -62)
+        case .sacrificesPower:
+            return (20, -20)
+        case .sacrificesPowerLevel2:
+            return (20, -30)
+        case .sacrificesPowerLevel3:
+            return (20, -40)
+        case .sacrificesPowerLevel4:
+            return (20, -50)
+        case .sacrificesPowerLevel5:
+            return (20, -60)
         case .artifactSlotLevel2:
             return (30, -17)
         case .artifactSlotLevel3:

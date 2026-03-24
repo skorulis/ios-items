@@ -8,13 +8,30 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
     /// Root of the upgrade tree; all other upgrades require this (directly or via ancestors).
     case portalUnlocked
     case portalAutomation
+    case portalAutomationLevel2
+    case portalAutomationLevel3
+    case portalAutomationLevel4
+    case portalAutomationLevel5
+    case portalDuplication
+    case portalDuplicationLevel2
+    case portalDuplicationLevel3
+    case portalDuplicationLevel4
+    case portalDuplicationLevel5
     case researchLab
     case researchLabLevel2
+    case researchLabLevel3
+    case researchLabLevel4
+    case researchLabLevel5
     case sacrifices
     case sacrificesLevel2
     case sacrificesLevel3
     case sacrificesLevel4
     case sacrificesLevel5
+    case sacrificesPower
+    case sacrificesPowerLevel2
+    case sacrificesPowerLevel3
+    case sacrificesPowerLevel4
+    case sacrificesPowerLevel5
     case artifactSlot
     case artifactSlotLevel2
     case artifactSlotLevel3
@@ -44,13 +61,30 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
         switch self {
         case .portalUnlocked: return "Portal Unlocked"
         case .portalAutomation: return "Portal Automation"
+        case .portalAutomationLevel2: return "Portal Automation II"
+        case .portalAutomationLevel3: return "Portal Automation III"
+        case .portalAutomationLevel4: return "Portal Automation IV"
+        case .portalAutomationLevel5: return "Portal Automation V"
+        case .portalDuplication: return "Portal Duplication"
+        case .portalDuplicationLevel2: return "Portal Duplication II"
+        case .portalDuplicationLevel3: return "Portal Duplication III"
+        case .portalDuplicationLevel4: return "Portal Duplication IV"
+        case .portalDuplicationLevel5: return "Portal Duplication V"
         case .researchLab: return "Research Lab"
         case .researchLabLevel2: return "Research Lab II"
+        case .researchLabLevel3: return "Research Lab III"
+        case .researchLabLevel4: return "Research Lab IV"
+        case .researchLabLevel5: return "Research Lab V"
         case .sacrifices: return "Sacrifices"
         case .sacrificesLevel2: return "Sacrifices II"
         case .sacrificesLevel3: return "Sacrifices III"
         case .sacrificesLevel4: return "Sacrifices IV"
         case .sacrificesLevel5: return "Sacrifices V"
+        case .sacrificesPower: return "Sacrifice Power"
+        case .sacrificesPowerLevel2: return "Sacrifice Power II"
+        case .sacrificesPowerLevel3: return "Sacrifice Power III"
+        case .sacrificesPowerLevel4: return "Sacrifice Power IV"
+        case .sacrificesPowerLevel5: return "Sacrifice Power V"
         case .artifactSlot: return "Artifact Slot"
         case .artifactSlotLevel2: return "Artifact Slot II"
         case .artifactSlotLevel3: return "Artifact Slot III"
@@ -107,6 +141,42 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
             .init(item: .gear, quantity: 1),
             .init(item: .copperFlorin, quantity: 1),
         ]
+        case .portalAutomationLevel2: return [
+            .init(item: .gear, quantity: 2),
+            .init(item: .copperFlorin, quantity: 5),
+        ]
+        case .portalAutomationLevel3: return [
+            .init(item: .gear, quantity: 4),
+            .init(item: .silverFlorin, quantity: 2),
+        ]
+        case .portalAutomationLevel4: return [
+            .init(item: .gear, quantity: 6),
+            .init(item: .silverFlorin, quantity: 4),
+        ]
+        case .portalAutomationLevel5: return [
+            .init(item: .gear, quantity: 8),
+            .init(item: .goldFlorin, quantity: 2),
+        ]
+        case .portalDuplication: return [
+            .init(item: .gear, quantity: 2),
+            .init(item: .copperFlorin, quantity: 5),
+        ]
+        case .portalDuplicationLevel2: return [
+            .init(item: .gear, quantity: 4),
+            .init(item: .silverFlorin, quantity: 2),
+        ]
+        case .portalDuplicationLevel3: return [
+            .init(item: .gear, quantity: 6),
+            .init(item: .silverFlorin, quantity: 4),
+        ]
+        case .portalDuplicationLevel4: return [
+            .init(item: .gear, quantity: 8),
+            .init(item: .goldFlorin, quantity: 2),
+        ]
+        case .portalDuplicationLevel5: return [
+            .init(item: .gear, quantity: 10),
+            .init(item: .goldFlorin, quantity: 4),
+        ]
         case .researchLab: return [
             .init(item: .potionFlask, quantity: 1),
             .init(item: .copperFlorin, quantity: 1),
@@ -115,6 +185,21 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
             .init(item: .potionFlask, quantity: 2),
             .init(item: .lens, quantity: 2),
             .init(item: .silverFlorin, quantity: 2),
+        ]
+        case .researchLabLevel3: return [
+            .init(item: .potionFlask, quantity: 4),
+            .init(item: .lens, quantity: 3),
+            .init(item: .goldFlorin, quantity: 1),
+        ]
+        case .researchLabLevel4: return [
+            .init(item: .potionFlask, quantity: 6),
+            .init(item: .lens, quantity: 4),
+            .init(item: .goldFlorin, quantity: 2),
+        ]
+        case .researchLabLevel5: return [
+            .init(item: .potionFlask, quantity: 8),
+            .init(item: .lens, quantity: 5),
+            .init(item: .goldFlorin, quantity: 3),
         ]
         case .sacrifices: return [
             .init(item: .humanSkull, quantity: 1),
@@ -135,6 +220,26 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
         case .sacrificesLevel5: return [
             .init(item: .humanSkull, quantity: 4),
             .init(item: .goldFlorin, quantity: 2),
+        ]
+        case .sacrificesPower: return [
+            .init(item: .humanSkull, quantity: 1),
+            .init(item: .copperFlorin, quantity: 5),
+        ]
+        case .sacrificesPowerLevel2: return [
+            .init(item: .humanSkull, quantity: 2),
+            .init(item: .silverFlorin, quantity: 2),
+        ]
+        case .sacrificesPowerLevel3: return [
+            .init(item: .humanSkull, quantity: 3),
+            .init(item: .silverFlorin, quantity: 4),
+        ]
+        case .sacrificesPowerLevel4: return [
+            .init(item: .humanSkull, quantity: 4),
+            .init(item: .goldFlorin, quantity: 2),
+        ]
+        case .sacrificesPowerLevel5: return [
+            .init(item: .humanSkull, quantity: 5),
+            .init(item: .goldFlorin, quantity: 4),
         ]
         case .artifactSlot: return [
             .init(item: .lens, quantity: 1),
@@ -238,8 +343,12 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
     /// Optional gameplay bonus granted by this upgrade.
     public var bonus: Bonus? {
         switch self {
-        case .researchLabLevel2:
+        case .researchLabLevel2, .researchLabLevel3, .researchLabLevel4, .researchLabLevel5:
             return .researchSpeed(10)
+        case .portalAutomationLevel2, .portalAutomationLevel3, .portalAutomationLevel4, .portalAutomationLevel5:
+            return .automaticItemCreationTimeReduction(50)
+        case .portalDuplication, .portalDuplicationLevel2, .portalDuplicationLevel3, .portalDuplicationLevel4, .portalDuplicationLevel5:
+            return .duplicateItemChance(2)
         case .artifactSlot, .artifactSlotLevel2, .artifactSlotLevel3:
             return .artifactSlots(1)
         case .knowledgeSiphon:
@@ -254,6 +363,8 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
             return .booksForResearch(.exceptional)
         case .sacrifices, .sacrificesLevel2, .sacrificesLevel3, .sacrificesLevel4, .sacrificesLevel5:
             return .sacrificeSlot(1)
+        case .sacrificesPower, .sacrificesPowerLevel2, .sacrificesPowerLevel3, .sacrificesPowerLevel4, .sacrificesPowerLevel5:
+            return .sacrificePower(10)
         case .offlineProgress, .offlineProgressLevel2, .offlineProgressLevel3, .offlineProgressLevel4, .offlineProgressLevel5:
             return .offlineTimeMinutes(60)
         case .golemMissionSlotsLevel2, .golemMissionSlotsLevel3, .golemMissionSlotsLevel4, .golemMissionSlotsLevel5:
@@ -273,7 +384,33 @@ extension PortalUpgrade {
             return nil
         case .portalAutomation, .researchLab, .sacrifices, .golems, .mapLocations, .artifactSlot:
             return .portalUnlocked
-        case .researchLabLevel2, .knowledgeSiphon:
+        case .portalAutomationLevel2:
+            return .portalAutomation
+        case .portalAutomationLevel3:
+            return .portalAutomationLevel2
+        case .portalAutomationLevel4:
+            return .portalAutomationLevel3
+        case .portalAutomationLevel5:
+            return .portalAutomationLevel4
+        case .portalDuplication:
+            return .portalAutomation
+        case .portalDuplicationLevel2:
+            return .portalDuplication
+        case .portalDuplicationLevel3:
+            return .portalDuplicationLevel2
+        case .portalDuplicationLevel4:
+            return .portalDuplicationLevel3
+        case .portalDuplicationLevel5:
+            return .portalDuplicationLevel4
+        case .researchLabLevel2:
+            return .researchLab
+        case .researchLabLevel3:
+            return .researchLabLevel2
+        case .researchLabLevel4:
+            return .researchLabLevel3
+        case .researchLabLevel5:
+            return .researchLabLevel4
+        case .knowledgeSiphon:
             return .researchLab
         case .sacrificesLevel2:
             return .sacrifices
@@ -283,6 +420,16 @@ extension PortalUpgrade {
             return .sacrificesLevel3
         case .sacrificesLevel5:
             return .sacrificesLevel4
+        case .sacrificesPower:
+            return .sacrifices
+        case .sacrificesPowerLevel2:
+            return .sacrificesPower
+        case .sacrificesPowerLevel3:
+            return .sacrificesPowerLevel2
+        case .sacrificesPowerLevel4:
+            return .sacrificesPowerLevel3
+        case .sacrificesPowerLevel5:
+            return .sacrificesPowerLevel4
         case .artifactSlotLevel2:
             return .artifactSlot
         case .artifactSlotLevel3:

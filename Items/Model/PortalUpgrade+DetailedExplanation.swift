@@ -15,17 +15,33 @@ extension PortalUpgrade {
                 """,
                 title: "Portal Unlocked"
             )
-        case .portalAutomation:
+        case .portalAutomation, .portalAutomationLevel2, .portalAutomationLevel3, .portalAutomationLevel4, .portalAutomationLevel5:
             return .init(
                 bodyText: """
             Portal Automation automatically pulls items out of the portal so you don't have to tap each time. Items will move into your warehouse as they arrive.
             """,
                 title: "Automation"
             )
-        case .researchLab, .researchLabLevel2:
+        case .portalDuplication, .portalDuplicationLevel2, .portalDuplicationLevel3, .portalDuplicationLevel4, .portalDuplicationLevel5:
+            return .init(
+                bodyText: """
+                Portal Duplication gives a chance for created items to duplicate.
+                Each level adds 2% duplicate chance, increasing total output over time.
+                """,
+                title: "Duplication"
+            )
+        case .researchLab, .researchLabLevel2, .researchLabLevel3, .researchLabLevel4, .researchLabLevel5:
             return .init(bodyText: HelpStrings.research, title: "Research")
         case .sacrifices, .sacrificesLevel2, .sacrificesLevel3, .sacrificesLevel4, .sacrificesLevel5:
             return .init(bodyText: HelpStrings.sacrifices, title: "Sacrifices")
+        case .sacrificesPower, .sacrificesPowerLevel2, .sacrificesPowerLevel3, .sacrificesPowerLevel4, .sacrificesPowerLevel5:
+            return .init(
+                bodyText: """
+                Sacrifice Power increases the effectiveness of each sacrifice by 10% per level.
+                Higher levels multiply your sacrifice output and make each slot more impactful.
+                """,
+                title: "Sacrifice Power"
+            )
         case .artifactSlot, .artifactSlotLevel2, .artifactSlotLevel3:
             return .init(bodyText: HelpStrings.artifacts, title: "Artifacts")
         case .knowledgeSiphon, .knowledgeSiphonLevel2, .knowledgeSiphonLevel3, .knowledgeSiphonLevel4, .knowledgeSiphonLevel5:
