@@ -4,86 +4,96 @@ import CoreGraphics
 import Foundation
 import Models
 
-/// Manual layout in **logical** space: `portalUnlocked` at the origin; other nodes may use negative X and/or Y.
+/// Manual layout on an integer **grid**; render positions use `gridSpacing` points per step.
+/// `portalUnlocked` is at grid origin; other nodes may use negative X and/or Y.
 /// `center(for:)` applies a normalization offset at render time so the tree fits in a positive `ZStack` frame.
 enum PortalUpgradeTreeLayout {
 
     static let nodeSize: CGFloat = 54
 
+    /// Points per integer grid step when converting layout to render coordinates.
+    static let gridSpacing: CGFloat = 10
+
     /// Padding beyond the outermost node edges after normalization.
     private static let canvasMargin: CGFloat = 24
 
     // swiftlint:disable cyclomatic_complexity function_body_length
-    /// Logical center for each upgrade. `portalUnlocked` is always `(0, 0)`; peers may use negative X and/or Y (e.g. above the hub).
-    static func absoluteCenter(for upgrade: PortalUpgrade) -> CGPoint {
+    /// Integer grid cell for each upgrade. `portalUnlocked` is always `(0, 0)`; peers may use negative X and/or Y (e.g. above the hub).
+    private static func gridPosition(for upgrade: PortalUpgrade) -> (x: Int, y: Int) {
         switch upgrade {
         case .portalUnlocked:
-            return .zero
+            return (0, 0)
         // First ring: mix of negative and positive Y around the hub.
         case .portalAutomation:
-            return CGPoint(x: -300, y: -50)
+            return (-30, -5)
         case .researchLab:
-            return CGPoint(x: -120, y: -140)
+            return (-12, -14)
         case .sacrifices:
-            return CGPoint(x: 120, y: -140)
+            return (12, -14)
         case .artifactSlot:
-            return CGPoint(x: 300, y: -50)
+            return (30, -5)
         // Knowledge siphon branches from researchLab (see `treeParent`).
         case .knowledgeSiphon:
-            return CGPoint(x: -260, y: -200)
+            return (-26, -20)
         case .mapLocations:
-            return CGPoint(x: 120, y: 140)
+            return (12, 14)
         case .golems:
-            return CGPoint(x: -120, y: 140)
+            return (-12, 14)
         case .researchLabLevel2:
-            return CGPoint(x: -120, y: -260)
+            return (-12, -26)
         case .sacrificesLevel2:
-            return CGPoint(x: 120, y: -260)
+            return (12, -26)
         case .sacrificesLevel3:
-            return CGPoint(x: 120, y: -380)
+            return (12, -38)
         case .sacrificesLevel4:
-            return CGPoint(x: 120, y: -500)
+            return (12, -50)
         case .sacrificesLevel5:
-            return CGPoint(x: 120, y: -620)
+            return (12, -62)
         case .artifactSlotLevel2:
-            return CGPoint(x: 300, y: -170)
+            return (30, -17)
         case .artifactSlotLevel3:
-            return CGPoint(x: 300, y: -290)
+            return (30, -29)
         case .knowledgeSiphonLevel2:
-            return CGPoint(x: -340, y: -280)
+            return (-34, -28)
         case .knowledgeSiphonLevel3:
-            return CGPoint(x: -420, y: -360)
+            return (-42, -36)
         case .knowledgeSiphonLevel4:
-            return CGPoint(x: -500, y: -440)
+            return (-50, -44)
         case .knowledgeSiphonLevel5:
-            return CGPoint(x: -580, y: -520)
+            return (-58, -52)
         case .offlineProgress:
-            return CGPoint(x: -440, y: -50)
+            return (-44, -5)
         case .offlineProgressLevel2:
-            return CGPoint(x: -580, y: -50)
+            return (-58, -5)
         case .offlineProgressLevel3:
-            return CGPoint(x: -720, y: -50)
+            return (-72, -5)
         case .offlineProgressLevel4:
-            return CGPoint(x: -860, y: -50)
+            return (-86, -5)
         case .offlineProgressLevel5:
-            return CGPoint(x: -1000, y: -50)
+            return (-100, -5)
         case .tradingPost:
-            return CGPoint(x: 120, y: 260)
+            return (12, 26)
         case .tradingPostLevel2:
-            return CGPoint(x: 120, y: 380)
+            return (12, 38)
         case .tradingPostLevel3:
-            return CGPoint(x: 120, y: 500)
+            return (12, 50)
         case .golemMissionSlotsLevel2:
-            return CGPoint(x: -120, y: 260)
+            return (-12, 26)
         case .golemMissionSlotsLevel3:
-            return CGPoint(x: -120, y: 380)
+            return (-12, 38)
         case .golemMissionSlotsLevel4:
-            return CGPoint(x: -120, y: 500)
+            return (-12, 50)
         case .golemMissionSlotsLevel5:
-            return CGPoint(x: -120, y: 620)
+            return (-12, 62)
         }
     }
     // swiftlint:enable cyclomatic_complexity function_body_length
+
+    /// Logical center in points: grid position × `gridSpacing`.
+    static func absoluteCenter(for upgrade: PortalUpgrade) -> CGPoint {
+        let grid = gridPosition(for: upgrade)
+        return CGPoint(x: CGFloat(grid.x) * gridSpacing, y: CGFloat(grid.y) * gridSpacing)
+    }
 
     private static let renderingMetrics: (offset: CGPoint, size: CGSize) = {
         let half = nodeSize / 2
@@ -92,11 +102,11 @@ enum PortalUpgradeTreeLayout {
         var maxX = -CGFloat.greatestFiniteMagnitude
         var maxY = -CGFloat.greatestFiniteMagnitude
         for upgrade in PortalUpgrade.allCases {
-            let p = absoluteCenter(for: upgrade)
-            minX = min(minX, p.x - half)
-            minY = min(minY, p.y - half)
-            maxX = max(maxX, p.x + half)
-            maxY = max(maxY, p.y + half)
+            let point = absoluteCenter(for: upgrade)
+            minX = min(minX, point.x - half)
+            minY = min(minY, point.y - half)
+            maxX = max(maxX, point.x + half)
+            maxY = max(maxY, point.y + half)
         }
         let offset = CGPoint(x: canvasMargin - minX, y: canvasMargin - minY)
         let size = CGSize(
@@ -109,8 +119,8 @@ enum PortalUpgradeTreeLayout {
     /// Normalized position for SwiftUI `.position` in the scroll canvas.
     static func center(for upgrade: PortalUpgrade) -> CGPoint {
         let logical = absoluteCenter(for: upgrade)
-        let o = renderingMetrics.offset
-        return CGPoint(x: logical.x + o.x, y: logical.y + o.y)
+        let normOffset = renderingMetrics.offset
+        return CGPoint(x: logical.x + normOffset.x, y: logical.y + normOffset.y)
     }
 
     static var canvasSize: CGSize {
