@@ -62,6 +62,10 @@ struct Warehouse: Codable, Equatable {
         return artifacts[artifact]
     }
 
+    func hasArtifact(atLeast quality: ItemQuality) -> Bool {
+        artifacts.values.contains { $0 >= quality }
+    }
+
     func nextArtifactQuality(artifact: Artifact) -> ItemQuality? {
         guard let current = quality(artifact) else {
             return .junk

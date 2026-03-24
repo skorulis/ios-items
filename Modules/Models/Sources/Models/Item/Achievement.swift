@@ -8,6 +8,7 @@ public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable, 
 
     case artifact1
     case artifacts5
+    case exceptionalArtifact1
 
     case common1
 
@@ -55,6 +56,7 @@ public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable, 
         case .common1: return "Filthy Commoner"
         case .artifact1: return "First artifact"
         case .artifacts5: return "Artifact collector"
+        case .exceptionalArtifact1: return "Exceptional relic"
         case .upgrade5: return "Upgrade enthusiast"
         case .essence1: return "First essence"
         case .allEssences: return "Essence master"
@@ -96,6 +98,8 @@ public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable, 
             return Image(systemName: "sparkle")
         case .artifacts5:
             return Image(systemName: "sparkles.2")
+        case .exceptionalArtifact1:
+            return Image(systemName: "sparkles.tv")
         case .upgrade5:
             return Image(systemName: "arrow.up.circle.fill")
         case .essence1:
@@ -151,6 +155,8 @@ public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable, 
             return .artifactsUnlocked(1)
         case .artifacts5:
             return .artifactsUnlocked(5)
+        case .exceptionalArtifact1:
+            return .artifactQualityUnlocked(.exceptional)
         case .upgrade5:
             return .upgradesPurchased(5)
         case .essence1:
@@ -204,7 +210,7 @@ public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable, 
             return .junk
         case .items25, .items100, .artifacts5, .common1, .allEssences, .sacrificed1000, .upgrade5, .research100, .researchLevel10, .doubleItems100, .trades1:
             return .common
-        case .doubleItems1000, .trades10:
+        case .doubleItems1000, .trades10, .exceptionalArtifact1:
             return .good
         case .trades100:
             return .rare
@@ -244,6 +250,8 @@ public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable, 
             return "Unlocks artifact slot upgrade"
         case .artifacts5:
             return "Unlock second artifact slot"
+        case .exceptionalArtifact1:
+            return "A true rarity"
         case .essence1:
             return "Encyclopedia entry unlocked"
         case .items1_000_000:

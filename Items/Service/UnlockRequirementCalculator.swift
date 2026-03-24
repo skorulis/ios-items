@@ -70,6 +70,8 @@ final class UnlockRequirementCalculator {
             return Int64(Artifact.allCases.filter { warehouse.quality($0) != nil }.count)
         case let .artifactUnlocked(artifact):
             return warehouse.quality(artifact) != nil ? 1 : 0
+        case let .artifactQualityUnlocked(quality):
+            return warehouse.hasArtifact(atLeast: quality) ? 1 : 0
         case let .upgradePurchased(upgrade):
             return portalUpgrades.purchased.contains(upgrade) ? 1 : 0
         case .upgradesPurchased:
@@ -101,6 +103,7 @@ final class UnlockRequirementCalculator {
         case .itemDiscovered,
             .essenceUnlocked,
             .artifactUnlocked,
+            .artifactQualityUnlocked,
             .upgradePurchased,
             .achievementUnlocked,
             .locationUnlocked:
