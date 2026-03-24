@@ -44,40 +44,27 @@ extension PortalUpgradesView: View {
     }
 
     private var techTree: some View {
-        ScrollViewReader { scrollProxy in
-            ScrollView([.horizontal, .vertical]) {
-                ZStack(alignment: .topLeading) {
-                    PortalUpgradeTreeLinesView()
-                    Color.clear
-                        .frame(width: PortalUpgradeTreeLayout.nodeSize, height: PortalUpgradeTreeLayout.nodeSize)
-                        .position(PortalUpgradeTreeLayout.center(for: .portalUnlocked))
-                        .allowsHitTesting(false)
-                        .id(PortalUpgradeTreeLayout.scrollCenterViewID)
-                    ForEach(PortalUpgrade.allCases) { upgrade in
-                        portalNode(upgrade: upgrade)
-                            .position(PortalUpgradeTreeLayout.center(for: upgrade))
-                    }
+        let canvasSize = PortalUpgradeTreeLayout.canvasSize
+        let hub = PortalUpgradeTreeLayout.center(for: .portalUnlocked)
+        let restOffset = CGSize(
+            width: canvasSize.width / 2 - hub.x,
+            height: canvasSize.height / 2 - hub.y
+        )
+        return ZoomablePannableView(
+            minScale: 0.2,
+            maxScale: 3,
+            contentSize: canvasSize,
+            restScale: 1,
+            restOffset: restOffset
+        ) {
+            ZStack(alignment: .topLeading) {
+                PortalUpgradeTreeLinesView()
+                ForEach(PortalUpgrade.allCases) { upgrade in
+                    portalNode(upgrade: upgrade)
+                        .position(PortalUpgradeTreeLayout.center(for: upgrade))
                 }
-                .frame(
-                    width: PortalUpgradeTreeLayout.canvasSize.width,
-                    height: PortalUpgradeTreeLayout.canvasSize.height
-                )
             }
-            .onAppear {
-                scrollToHubIfNeeded(using: scrollProxy)
-            }
-        }
-    }
-
-    private func scrollToHubIfNeeded(using scrollProxy: ScrollViewProxy) {
-        if ProcessInfo.isRunningTests {
-            scrollProxy.scrollTo(PortalUpgradeTreeLayout.scrollCenterViewID, anchor: .center)
-            return
-        }
-        DispatchQueue.main.async {
-            withAnimation(.easeOut(duration: 0.2)) {
-                scrollProxy.scrollTo(PortalUpgradeTreeLayout.scrollCenterViewID, anchor: .center)
-            }
+            .frame(width: canvasSize.width, height: canvasSize.height)
         }
     }
 

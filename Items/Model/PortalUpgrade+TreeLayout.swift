@@ -127,9 +127,6 @@ enum PortalUpgradeTreeLayout {
         renderingMetrics.size
     }
 
-    /// Stable id for `ScrollViewReader` — scroll so this view’s bounds land at the viewport center.
-    static let scrollCenterViewID = "portalUpgradeTreeHub"
-
     /// Connection anchors along the line between parent and child (through circle edges), in **normalized** space.
     static func lineEndPoints(parent: PortalUpgrade, child: PortalUpgrade) -> (CGPoint, CGPoint) {
         let half = nodeSize / 2
