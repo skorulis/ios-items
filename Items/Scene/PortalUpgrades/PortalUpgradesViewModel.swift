@@ -67,7 +67,8 @@ extension PortalUpgradesViewModel {
         unlockRequirementService.isComplete(requirement: requirement)
     }
 
-    func purchase(_ upgrade: PortalUpgrade) {
+    @discardableResult
+    func purchase(_ upgrade: PortalUpgrade) -> Bool {
         upgradeService.purchase(upgrade)
     }
 

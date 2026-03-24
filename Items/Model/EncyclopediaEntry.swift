@@ -152,7 +152,10 @@ extension EncyclopediaEntry {
     static var essences: Self {
         .init(
             title: "Essence",
-            body: "All items contain essences that can be used to craft new items. Essences are discovered by researching items.",
+            body: """
+            All items contain essences that can be used to craft new items. Essences are discovered by researching items.
+            It's not correct to think that matter is made of essences. Essences imbue items and can change depending on how the item is used.
+            """,
             condition: .essencesUnlocked(1),
             childItems: Essence.allCases.map { Self.essenceEntry($0) },
             icon: {

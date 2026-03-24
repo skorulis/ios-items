@@ -7,6 +7,7 @@ import SwiftUI
 
     let upgrade: PortalUpgrade
     @Bindable private var viewModel: PortalUpgradesViewModel
+    @Environment(\.dismissCustomOverlay) private var dismissCustomOverlay
 
     init(upgrade: PortalUpgrade, viewModel: PortalUpgradesViewModel) {
         self.upgrade = upgrade
@@ -58,8 +59,12 @@ import SwiftUI
 
             if viewModel.isUnlocked(upgrade) && !purchased {
                 Button("Purchase") {
+                    var success = false
                     withAnimation(.easeOut(duration: 0.3)) {
-                        viewModel.purchase(upgrade)
+                        success = viewModel.purchase(upgrade)
+                    }
+                    if success {
+                        dismissCustomOverlay()
                     }
                 }
                 .buttonStyle(.borderedProminent)

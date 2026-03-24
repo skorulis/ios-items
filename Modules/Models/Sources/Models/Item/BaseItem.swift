@@ -104,7 +104,8 @@ public enum BaseItem: String, Hashable, Equatable, CaseIterable, Identifiable, C
         case .lens:
             return [.light]
         case .humanSkull:
-            return [.dark, .life]
+            // TODO: Replace this item
+            return [.dark]
             // Common
         case .silverFlorin:
             return [.covenant]

@@ -77,12 +77,14 @@ extension UpgradeService {
 extension UpgradeService {
 
     /// Deducts the upgrade's cost from the warehouse and adds the upgrade to purchased. No-op if not affordable.
-    func purchase(_ upgrade: PortalUpgrade) {
-        guard canPurchase(upgrade) else { return }
+    @discardableResult
+    func purchase(_ upgrade: PortalUpgrade) -> Bool {
+        guard canPurchase(upgrade) else { return false }
         for costItem in upgrade.cost {
             mainStore.warehouse.remove(item: costItem.item, quantity: costItem.quantity)
         }
         mainStore.portalUpgrades.purchased.insert(upgrade)
+        return true
     }
 
     /// Whether the given upgrade's unlock requirements have all been satisfied.
