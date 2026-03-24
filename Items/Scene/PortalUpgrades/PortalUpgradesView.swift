@@ -46,16 +46,9 @@ extension PortalUpgradesView: View {
     private var techTree: some View {
         let canvasSize = PortalUpgradeTreeLayout.canvasSize
         let hub = PortalUpgradeTreeLayout.center(for: .portalUnlocked)
-        let restOffset = CGSize(
-            width: canvasSize.width / 2 - hub.x,
-            height: canvasSize.height / 2 - hub.y
-        )
-        return ZoomablePannableView(
-            minScale: 0.2,
-            maxScale: 3,
+        return ZoomingScrollView(
             contentSize: canvasSize,
-            restScale: 1,
-            restOffset: restOffset
+            initialCenterPoint: hub
         ) {
             ZStack(alignment: .topLeading) {
                 PortalUpgradeTreeLinesView()
@@ -126,7 +119,7 @@ private struct PortalUpgradeTreeLinesView: View {
                 context.stroke(
                     path,
                     with: .color(.gray.opacity(0.4)),
-                    style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round)
+                    style: StrokeStyle(lineWidth: 4, lineCap: .round, lineJoin: .round)
                 )
             }
         }
