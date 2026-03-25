@@ -5,6 +5,7 @@ import SwiftUI
 
 public enum EquipmentMaterial: String, Codable, CaseIterable, Hashable, Identifiable, Sendable {
     case stone
+    case crystal
     case iron
     case leather
     case silver
@@ -20,6 +21,8 @@ public enum EquipmentMaterial: String, Codable, CaseIterable, Hashable, Identifi
         switch self {
         case .stone:
             return .junk
+        case .crystal:
+            return .common
         case .iron:
             return .common
         case .leather:
@@ -34,6 +37,8 @@ public enum EquipmentMaterial: String, Codable, CaseIterable, Hashable, Identifi
         switch self {
         case .stone:
             return .orange
+        case .crystal:
+            return .yellow
         case .iron:
             return .gray
         case .leather:

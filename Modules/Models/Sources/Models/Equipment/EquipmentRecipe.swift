@@ -6,11 +6,14 @@ import Foundation
 public enum EquipmentRecipe: Codable, CaseIterable {
 
     case stoneDagger
+    case crystalDagger
 
     public var cost: [UpgradeCostItem] {
         switch self {
         case .stoneDagger:
             return [.init(item: .rock, quantity: 50)]
+        case .crystalDagger:
+            return [.init(item: .quartzCrystal, quantity: 50)]
         }
     }
 
@@ -21,12 +24,14 @@ public enum EquipmentRecipe: Codable, CaseIterable {
     public var material: EquipmentMaterial {
         switch self {
         case .stoneDagger: return .stone
+        case .crystalDagger: return .crystal
         }
     }
 
     public var kind: EquipmentKind {
         switch self {
         case .stoneDagger: return .dagger
+        case .crystalDagger: return .dagger
         }
     }
 

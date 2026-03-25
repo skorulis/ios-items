@@ -31,8 +31,6 @@ extension Ingredient {
             return Asset.BaseItem.humanSkull.swiftUIImage
         case .quartzCrystal:
             return Asset.BaseItem.quartzCrystal.swiftUIImage
-        case .steelArrowhead:
-            return Asset.BaseItem.steelArrowhead.swiftUIImage
         case .book:
             return Asset.BaseItem.book.swiftUIImage
         case .jadeFigurine:

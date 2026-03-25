@@ -5,25 +5,23 @@ import Foundation
 /// Simple items that only have quantity
 public enum Ingredient: String, Hashable, Equatable, CaseIterable, Identifiable, Codable {
     // Junk
+    case copperFlorin
     case apple
     case rock
     case gear
     case potionFlask
-    case copperFlorin
     case hourglass
     case lens
-    case humanSkull
+    case humanSkull // TODO: Replace this item
 
     // Common
+    case silverFlorin
     case whetstone
     case quartzCrystal
-    case silverFlorin
-    case steelArrowhead
     case book
     case merchantSigil
     case giantThorn
     case embuedChalk
-    case metalBloom
     case mapFragment
 
     // Good
@@ -33,6 +31,8 @@ public enum Ingredient: String, Hashable, Equatable, CaseIterable, Identifiable,
     case soulEmber
     case anchorStone
     case memorySeed
+    case metalBloom
+    
     case nullLantern
 
     // Rare
@@ -56,9 +56,9 @@ public enum Ingredient: String, Hashable, Equatable, CaseIterable, Identifiable,
         switch self {
         case .apple, .rock, .hourglass, .copperFlorin, .gear, .potionFlask, .lens, .humanSkull:
             return .junk
-        case .quartzCrystal, .silverFlorin, .steelArrowhead, .book, .merchantSigil, .giantThorn, .embuedChalk, .whetstone, .metalBloom, .mapFragment:
+        case .quartzCrystal, .silverFlorin, .book, .merchantSigil, .giantThorn, .embuedChalk, .whetstone, .mapFragment:
             return .common
-        case .goldFlorin, .jadeFigurine, .portalShard, .soulEmber, .anchorStone, .memorySeed, .nullLantern:
+        case .goldFlorin, .jadeFigurine, .portalShard, .soulEmber, .anchorStone, .memorySeed, .nullLantern, .metalBloom:
             return .good
         case .platinumFlorin, .axisHeart, .nullWeaveCloak, .oathforgedChain, .sunwellPhial, .heartgear:
             return .rare
@@ -104,38 +104,37 @@ public enum Ingredient: String, Hashable, Equatable, CaseIterable, Identifiable,
         case .lens:
             return [.light]
         case .humanSkull:
-            // TODO: Replace this item
             return [.dark]
+            
             // Common
         case .silverFlorin:
-            return [.covenant]
+            return [.covenant, .order]
         case .quartzCrystal:
             return [.earth, .light]
-        case .steelArrowhead:
-            return [.dark, .order]
         case .book:
             return [.light, .mind]
-        case .jadeFigurine:
-            return [.earth, .covenant]
         case .merchantSigil:
             return [.covenant, .order]
-
+        case .giantThorn:
+            return [.life, .earth]
+        case .embuedChalk:
+            return [.mind, .chaos]
+        case .mapFragment:
+            return [.mind, .earth]
+        case .whetstone:
+            return [.earth, .order]
+            
+            // Good
         case .goldFlorin:
             return [.covenant]
         case .platinumFlorin:
             return [.covenant, .order]
-        case .giantThorn:
-            return [.life, .earth]
+        case .jadeFigurine:
+            return [.earth, .covenant]
         case .portalShard:
             return [.chaos, .light]
-        case .whetstone:
-            return [.earth, .order]
-        case .embuedChalk:
-            return [.mind, .chaos]
         case .metalBloom:
             return [.life, .order, .chaos]
-        case .mapFragment:
-            return [.mind, .earth]
         case .soulEmber:
             return [.dark, .chaos]
         case .anchorStone:
@@ -232,11 +231,6 @@ public enum Ingredient: String, Hashable, Equatable, CaseIterable, Identifiable,
             return [
                 "A clear crystal that catches and bends light",
                 "Formed deep in the earth, it holds both stone and radiance",
-            ]
-        case .steelArrowhead:
-            return [
-                "A plain but well constructed broadhead arrowhead.",
-                "The marks on the side show evidence of the forging",
             ]
         case .book:
             return [
