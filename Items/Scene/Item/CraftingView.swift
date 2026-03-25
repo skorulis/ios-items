@@ -35,10 +35,6 @@ struct CraftingView: View {
 
             if let recipe = viewModel.selectedRecipe {
                 selectedRecipeSection(recipe: recipe)
-            } else {
-                Text("Select a discovered recipe.")
-                    .font(.appCaption)
-                    .foregroundStyle(.secondary)
             }
 
             Spacer(minLength: 0)
@@ -84,27 +80,13 @@ struct CraftingView: View {
 
     private func selectedRecipeSection(recipe: EquipmentRecipe) -> some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text(recipe.name)
+            Text(recipe.productName)
                 .font(.appSectionTitle)
 
-            VStack(alignment: .leading, spacing: 4) {
-                Text("Equipment: \(recipe.kind.displayName)")
-                    .font(.appCaption)
-                    .foregroundStyle(.secondary)
-                Text("Material: \(recipe.material.nameAdjective)")
-                    .font(.appCaption)
-                    .foregroundStyle(.secondary)
-                Text("Base quality: \(recipe.quality.name)")
-                    .font(.appCaption)
-                    .foregroundStyle(.secondary)
-            }
+            Text("Materials required")
+                .font(.appSubheadline.weight(.semibold))
 
-            if !recipe.cost.isEmpty {
-                Text("Materials required")
-                    .font(.appSubheadline.weight(.semibold))
-
-                UpgradeCostRow(cost: recipe.cost, itemQuantity: { viewModel.warehouse.quantity($0) })
-            }
+            UpgradeCostRow(cost: recipe.cost, itemQuantity: { viewModel.warehouse.quantity($0) })
         }
     }
 

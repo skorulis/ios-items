@@ -62,9 +62,7 @@ final class CraftingViewModel: CoordinatorViewModel {
     }
 
     var craftDisabledReason: String? {
-        guard let recipe = selectedRecipe else { return "Select a recipe to craft." }
         guard hasInventorySpace else { return "No inventory space available." }
-        guard canAfford(recipe) else { return "Missing required materials." }
         return nil
     }
 
