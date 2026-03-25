@@ -32,6 +32,7 @@ final class UnlockRequirementCalculator {
         self.mapLocations = mapLocations
     }
 
+    // swiftlint:disable:next cyclomatic_complexity
     func progressValue(requirement: UnlockRequirement) -> Int64 {
         switch requirement {
         case .itemsCreated:
@@ -42,7 +43,7 @@ final class UnlockRequirementCalculator {
             return statistics.multipleItemCreations
         case .tradesCompleted:
             return statistics.tradesCompleted
-        case let .itemsDiscovered:
+        case .itemsDiscovered:
             return Int64(
                 Ingredient.allCases.filter { item in
                     warehouse.hasDiscovered(item)

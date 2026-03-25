@@ -16,11 +16,8 @@ final class CraftingViewModel: CoordinatorViewModel {
 
     private(set) var warehouse: Warehouse
 
-    /// Selected recipe index (into `discoveredRecipes`), stored in `MainStore` so the
-    /// coordinator-based picker overlay can update Crafting.
-    var selectedRecipeIndex: Int? {
-        mainStore.craftingSelectedRecipeIndex
-    }
+    /// Selected recipe index into `discoveredRecipes`, updated by this screen or the recipe picker overlay.
+    private(set) var selectedRecipeIndex: Int?
 
     @Resolvable<BaseResolver>
     init(
@@ -72,11 +69,19 @@ final class CraftingViewModel: CoordinatorViewModel {
     }
 
     func selectRecipe(at index: Int) {
-        mainStore.craftingSelectedRecipeIndex = index
+        selectedRecipeIndex = index
     }
 
     func showRecipePicker() {
-        coordinator?.custom(overlay: .card, MainPath.equipmentRecipePicker)
+        coordinator?.custom(
+            overlay: .card,
+            MainPath.equipmentRecipePicker(
+                presentationID: UUID(),
+                onRecipeSelected: { [weak self] index in
+                    self?.selectRecipe(at: index)
+                }
+            )
+        )
     }
 
     func craft() {

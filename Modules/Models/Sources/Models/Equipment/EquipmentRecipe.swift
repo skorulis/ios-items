@@ -57,7 +57,11 @@ public enum EquipmentRecipe: Codable, CaseIterable {
         return .init(kind: kind, material: material, quality: quality)
     }
 
+    public var productName: String {
+        String(describing: self).fromCaseName
+    }
+
     public var name: String {
-        return "\(String(describing: self).fromCaseName) Recipe"
+        return "\(productName) Recipe"
     }
 }

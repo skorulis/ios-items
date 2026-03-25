@@ -25,7 +25,7 @@ public struct EquipmentInstance: Codable, Hashable, Identifiable, Sendable {
     public var displayName: String {
         "\(material.nameAdjective) \(kind.displayName)"
     }
-    
+
     public var fullName: String {
         "\(quality.name)\(displayName)"
     }

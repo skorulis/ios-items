@@ -49,6 +49,7 @@ import SwiftUI
     private var cancellables: Set<AnyCancellable> = []
 
     @Resolvable<BaseResolver>
+    // swiftlint:disable:next function_body_length
     init(
         itemGeneratorService: ItemGeneratorService,
         mainStore: MainStore,

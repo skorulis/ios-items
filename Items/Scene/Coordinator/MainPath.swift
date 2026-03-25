@@ -38,7 +38,7 @@ enum MainPath: CoordinatorPath {
 
     case tradingPost
     case crafting
-    case equipmentRecipePicker
+    case equipmentRecipePicker(presentationID: UUID, onRecipeSelected: (Int) -> Void)
     case equipmentList
     case equipmentDetails(EquipmentInstance)
 
@@ -55,6 +55,8 @@ enum MainPath: CoordinatorPath {
         switch self {
         case let .toast(_, _, toastID):
             return toastID.uuidString
+        case let .equipmentRecipePicker(presentationID, _):
+            return "equipmentRecipePicker.\(presentationID.uuidString)"
         default:
             return String(describing: self)
         }
@@ -65,7 +67,7 @@ struct MainPathRenderer: CoordinatorPathRenderer {
 
     let resolver: BaseResolver
 
-    // swiftlint:disable:next cyclomatic_complexity
+    // swiftlint:disable:next cyclomatic_complexity function_body_length
     @ViewBuilder func render(path: MainPath, in coordinator: Coordinator) -> some View {
         switch path {
         case .content:
@@ -133,8 +135,13 @@ struct MainPathRenderer: CoordinatorPathRenderer {
             )
         case .tradingPost:
             TradingPostView(viewModel: coordinator.apply(resolver.tradingPostViewModel()))
-        case .equipmentRecipePicker:
-            EquipmentRecipePickerView(viewModel: resolver.equipmentRecipePickerViewModel())
+        case let .equipmentRecipePicker(_, onRecipeSelected):
+            EquipmentRecipePickerView(
+                viewModel: EquipmentRecipePickerViewModel(
+                    mainStore: resolver.mainStore(),
+                    onRecipeSelected: onRecipeSelected
+                )
+            )
         case .equipmentList:
             EquipmentListView(
                 viewModel: coordinator.apply(resolver.equipmentListViewModel()),

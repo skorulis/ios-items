@@ -1,3 +1,4 @@
+import Knit
 import Models
 import SwiftUI
 
@@ -39,48 +40,49 @@ struct EquipmentRecipePickerView: View {
     }
 
     private func recipeRow(index: Int, recipe: EquipmentRecipe) -> some View {
-        let selected = viewModel.selectedRecipeIndex == index
         return HStack(spacing: 12) {
             AvatarView(
-                text: recipe.material.nameAdjective,
-                image: nil,
+                text: recipe.name,
+                icon: recipe.icon,
                 border: recipe.quality.color,
                 size: .small
             )
 
             VStack(alignment: .leading, spacing: 2) {
-                Text(recipe.kind.displayName)
+                Text(recipe.name)
                     .font(.appSubheadline.weight(.semibold))
-
-                Text("\(recipe.material.nameAdjective) • Base \(recipe.quality.name)")
-                    .font(.appCaption)
-                    .foregroundStyle(.secondary)
-                    .lineLimit(1)
-                    .truncationMode(.tail)
             }
 
             Spacer(minLength: 0)
 
-            if selected {
-                Image(systemName: "checkmark.circle.fill")
-                    .foregroundStyle(Color.accentColor)
-            } else {
-                Image(systemName: "chevron.right")
-                    .foregroundStyle(.secondary)
-            }
+            Image(systemName: "chevron.right")
+                .foregroundStyle(.secondary)
         }
         .padding(12)
         .background(
             RoundedRectangle(cornerRadius: 12)
-                .fill(selected ? Color.accentColor.opacity(0.12) : Color.gray.opacity(0.06))
+                .fill(Color.gray.opacity(0.06))
         )
         .overlay(
             RoundedRectangle(cornerRadius: 12)
                 .stroke(
-                    selected ? Color.accentColor : recipe.quality.color.opacity(0.25),
-                    lineWidth: selected ? 2 : 1
+                    recipe.quality.color.opacity(0.25),
+                    lineWidth: 2
                 )
         )
         .accessibilityLabel("Recipe \(recipe.name)")
     }
+}
+
+#Preview {
+    let assembler = ItemsAssembly.testing()
+    var warehouse = assembler.resolver.mainStore().warehouse
+    warehouse.recipes = Set(EquipmentRecipe.allCases)
+    assembler.resolver.mainStore().warehouse = warehouse
+    return EquipmentRecipePickerView(
+        viewModel: EquipmentRecipePickerViewModel(
+            mainStore: assembler.resolver.mainStore(),
+            onRecipeSelected: { _ in }
+        )
+    )
 }

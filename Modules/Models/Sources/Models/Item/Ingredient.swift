@@ -99,7 +99,7 @@ public enum Ingredient: String, Hashable, Equatable, CaseIterable, Identifiable,
             return [.light]
         case .humanSkull:
             return [.dark]
-            
+
             // Common
         case .silverFlorin:
             return [.covenant, .order]
@@ -117,7 +117,7 @@ public enum Ingredient: String, Hashable, Equatable, CaseIterable, Identifiable,
             return [.mind, .earth]
         case .whetstone:
             return [.order, .dark]
-            
+
             // Good
         case .goldFlorin:
             return [.covenant]
@@ -135,7 +135,7 @@ public enum Ingredient: String, Hashable, Equatable, CaseIterable, Identifiable,
             return [.earth, .chaos]
         case .memorySeed:
             return [.life, .mind]
-            
+
             // Rare
         case .platinumFlorin:
             return [.covenant, .order]
@@ -143,7 +143,7 @@ public enum Ingredient: String, Hashable, Equatable, CaseIterable, Identifiable,
             return [.light, .life]
         case .lightningStone:
             return [.light, .order, .earth]
-            
+
             // Exceptional
         case .astralGem:
             return [.covenant, .chaos, .light]

@@ -70,7 +70,11 @@ struct CraftingView: View {
                 )
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)
-                        .stroke(viewModel.discoveredRecipes.isEmpty ? Color.gray.opacity(0.25) : Color.accentColor.opacity(0.6), lineWidth: 1)
+                        .stroke(
+                            viewModel.discoveredRecipes.isEmpty
+                                ? Color.gray.opacity(0.25)
+                                : Color.accentColor.opacity(0.6), lineWidth: 1
+                        )
                 )
             }
             .buttonStyle(.plain)
