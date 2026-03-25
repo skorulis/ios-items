@@ -8,8 +8,8 @@ import SwiftUI
 // MARK: - Memory footprint
 
 @MainActor
-struct RecipeDetailView {
-    @State var viewModel: RecipeDetailViewModel
+struct SacrificeDetailView {
+    @State var viewModel: SacrificeDetailViewModel
 
     struct Model {
         let plan: SacrificePlan
@@ -21,7 +21,7 @@ struct RecipeDetailView {
 
 // MARK: - Rendering
 
-extension RecipeDetailView: View {
+extension SacrificeDetailView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -38,14 +38,14 @@ extension RecipeDetailView: View {
             Text("Creation")
                 .font(.appTitle)
             if !viewModel.model.plan.consumedItems.isEmpty {
-                Text(recipeDescription)
+                Text(sacrificeDescription)
                     .font(.appSubheadline)
                     .foregroundStyle(.secondary)
             }
         }
     }
 
-    private var recipeDescription: String {
+    private var sacrificeDescription: String {
         let names = viewModel.model.plan.consumedItems.map(\.name)
         return names.joined(separator: " + ")
     }

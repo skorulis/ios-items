@@ -8,30 +8,30 @@ import SwiftUI
 import Testing
 
 @MainActor @Suite(.snapshots(record: .failed))
-struct RecipeDetailViewSnapshotTests {
+struct SacrificeDetailViewSnapshotTests {
 
     let assembler = ItemsAssembly.testing()
 
     @Test
-    func recipeDetail_simple_recipe() {
+    func sacrificeDetail_simple() {
         let mainStore = assembler.resolver.mainStore()
-        mainStore.recipes.sacrificeConfig = .init(
+        mainStore.sacrifices.sacrificeConfig = .init(
             slots: [0: .apple],
         )
         mainStore.warehouse.add(item: .apple)
         mainStore.lab.set(level: 5, item: .apple)
 
-        let viewModel = assembler.resolver.currentRecipeDetailViewModel()
-        let view = RecipeDetailView(viewModel: viewModel)
+        let viewModel = assembler.resolver.currentSacrificeDetailViewModel()
+        let view = SacrificeDetailView(viewModel: viewModel)
 
         assertSnapshot(of: view, as: .image(on: .iPhoneSe))
     }
 
     @Test
-    func recipeDetail_complex_recipe() {
+    func sacrificeDetail_complex() {
         let mainStore = assembler.resolver.mainStore()
 
-        mainStore.recipes.sacrificeConfig = .init(
+        mainStore.sacrifices.sacrificeConfig = .init(
             slots: [0: .apple, 1: .gear, 2: .copperFlorin, 3: .silverFlorin],
         )
 
@@ -45,18 +45,18 @@ struct RecipeDetailViewSnapshotTests {
         mainStore.lab.set(level: 5, item: .copperFlorin)
         mainStore.lab.set(level: 5, item: .silverFlorin)
 
-        let viewModel = assembler.resolver.currentRecipeDetailViewModel()
-        let view = RecipeDetailView(viewModel: viewModel)
+        let viewModel = assembler.resolver.currentSacrificeDetailViewModel()
+        let view = SacrificeDetailView(viewModel: viewModel)
 
         assertSnapshot(of: view, as: .image(on: .iPhoneSe))
     }
 
     @Test
-    func recipeDetail_location_blocks_some_essences() {
+    func sacrificeDetail_location_blocks_some_essences() {
         let mainStore = assembler.resolver.mainStore()
 
-        // Configure a recipe that would normally produce a mix of essences.
-        mainStore.recipes.sacrificeConfig = .init(
+        // Configure sacrifices that would normally produce a mix of essences.
+        mainStore.sacrifices.sacrificeConfig = .init(
             slots: [0: .apple, 1: .gear, 2: .copperFlorin],
         )
         mainStore.warehouse.add(item: .apple)
@@ -71,8 +71,8 @@ struct RecipeDetailViewSnapshotTests {
         // Choose a location that zeroes out some essences (e.g. dark and earth at Semil Trading Post).
         mainStore.mapLocations.selected = .semilTradingPost
 
-        let viewModel = assembler.resolver.currentRecipeDetailViewModel()
-        let view = RecipeDetailView(viewModel: viewModel)
+        let viewModel = assembler.resolver.currentSacrificeDetailViewModel()
+        let view = SacrificeDetailView(viewModel: viewModel)
 
         assertSnapshot(of: view, as: .image(on: .iPhoneSe))
     }

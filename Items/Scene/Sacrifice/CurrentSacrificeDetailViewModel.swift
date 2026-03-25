@@ -8,12 +8,12 @@ import Foundation
 import SwiftUI
 
 @Observable
-final class CurrentRecipeDetailViewModel: RecipeDetailViewModel {
+final class CurrentSacrificeDetailViewModel: SacrificeDetailViewModel {
 
-    private let recipeService: RecipeService
+    private let sacrificeService: SacrificeService
     private let itemGeneratorService: ItemGeneratorService
 
-    var model: RecipeDetailView.Model = .init(
+    var model: SacrificeDetailView.Model = .init(
         plan: .init(itemsInOrder: []),
         qualityChances: [],
         essenceBonuses: [],
@@ -24,11 +24,11 @@ final class CurrentRecipeDetailViewModel: RecipeDetailViewModel {
 
     @Resolvable<BaseResolver>
     init(
-        recipeService: RecipeService,
+        sacrificeService: SacrificeService,
         itemGeneratorService: ItemGeneratorService,
         mainStore: MainStore,
     ) {
-        self.recipeService = recipeService
+        self.sacrificeService = sacrificeService
         self.itemGeneratorService = itemGeneratorService
 
         self.model = makeModel()
@@ -39,13 +39,13 @@ final class CurrentRecipeDetailViewModel: RecipeDetailViewModel {
         .store(in: &cancellables)
     }
 
-    private func makeModel() -> RecipeDetailView.Model {
-        let plan = recipeService.sacrificeConsumptionPlan()
-        let info = itemGeneratorService.recipeInfo(plan: plan)
+    private func makeModel() -> SacrificeDetailView.Model {
+        let plan = sacrificeService.sacrificeConsumptionPlan()
+        let info = itemGeneratorService.sacrificeInfo(plan: plan)
         let qualityChances = Self.normalizedQualityChances(from: info.quality)
         let essenceBonuses = Self.sortedEssenceBonuses(from: info.essenceBoosts)
         let multipleItemsChancePercent = itemGeneratorService.multipleItemsChancePercent()
-        return RecipeDetailView.Model(
+        return SacrificeDetailView.Model(
             plan: plan,
             qualityChances: qualityChances,
             essenceBonuses: essenceBonuses,

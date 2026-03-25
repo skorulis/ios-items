@@ -24,7 +24,7 @@ A game about finding items from another dimension.
 | ------------- | ------------- |
 | ![Creation view](ItemsSnapshotTests/Scene/__Snapshots__/CreationViewSnapshotTests/creationView_default.1.png)  | ![Warehouse with items](ItemsSnapshotTests/Scene/__Snapshots__/WarehouseViewSnapshotTests/warehouse_with_items.1.png)  |
 | ![Research in progress](ItemsSnapshotTests/Scene/__Snapshots__/ResearchViewSnapshotTests/research_in_progress_low_level.1.png)  | ![Portal upgrades](ItemsSnapshotTests/Scene/__Snapshots__/PortalUpgradesViewSnapshotTests/portalUpgrades_purchase_segment_some_affordable.1.png)  |
-| ![Artifact detail](ItemsSnapshotTests/Scene/__Snapshots__/ArtifactDetailViewSnapshotTests/artifactDetail_with_description.1.png)  | ![Recipe detail](ItemsSnapshotTests/Scene/__Snapshots__/RecipeDetailViewSnapshotTests/recipeDetail_complex_recipe.1.png)  |
+| ![Artifact detail](ItemsSnapshotTests/Scene/__Snapshots__/ArtifactDetailViewSnapshotTests/artifactDetail_with_description.1.png)  | ![Sacrifice detail](ItemsSnapshotTests/Scene/__Snapshots__/SacrificeDetailViewSnapshotTests/sacrificeDetail_complex.1.png)  |
 
 
 

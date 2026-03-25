@@ -14,9 +14,9 @@ struct SacrificeViewSnapshotTests {
 
     private func setSacrificeConfig(_ config: SacrificeConfig) {
         let mainStore = assembler.resolver.mainStore()
-        var recipes = mainStore.recipes
-        recipes.sacrificeConfig = config
-        mainStore.recipes = recipes
+        var sacrifices = mainStore.sacrifices
+        sacrifices.sacrificeConfig = config
+        mainStore.sacrifices = sacrifices
     }
 
     /// Unlocks all pentagram slots in the UI (matches four sacrifice-slot upgrades after base sacrifices).
@@ -71,10 +71,10 @@ struct SacrificeViewSnapshotTests {
     func sacrificeView_sacrifices_disabled() {
         unlockAllSacrificeSlots()
         let mainStore = assembler.resolver.mainStore()
-        var recipes = mainStore.recipes
-        recipes.sacrificesEnabled = false
-        recipes.sacrificeConfig = SacrificeConfig(slots: [0: .apple])
-        mainStore.recipes = recipes
+        var sacrifices = mainStore.sacrifices
+        sacrifices.sacrificesEnabled = false
+        sacrifices.sacrificeConfig = SacrificeConfig(slots: [0: .apple])
+        mainStore.sacrifices = sacrifices
         assembler.resolver.warehouseService().add(item: .apple, count: 1)
 
         let viewModel = assembler.resolver.sacrificeViewModel()

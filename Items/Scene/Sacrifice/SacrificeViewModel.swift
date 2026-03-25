@@ -19,21 +19,21 @@ import SwiftUI
     var editingSlot: SacrificeSlotEdit?
 
     private let mainStore: MainStore
-    private let recipeService: RecipeService
+    private let sacrificeService: SacrificeService
     private var cancellables: Set<AnyCancellable> = []
 
     @Resolvable<BaseResolver>
-    init(mainStore: MainStore, recipeService: RecipeService) {
+    init(mainStore: MainStore, sacrificeService: SacrificeService) {
         self.mainStore = mainStore
-        self.recipeService = recipeService
-        self.model = .init(sacrificesEnabled: mainStore.recipes.sacrificesEnabled, warehouse: mainStore.warehouse)
+        self.sacrificeService = sacrificeService
+        self.model = .init(sacrificesEnabled: mainStore.sacrifices.sacrificesEnabled, warehouse: mainStore.warehouse)
 
         mainStore.$warehouse.sink { [unowned self] in
             self.model.warehouse = $0
         }
         .store(in: &cancellables)
 
-        mainStore.$recipes.sink { [unowned self] in
+        mainStore.$sacrifices.sink { [unowned self] in
             self.model.sacrificesEnabled = $0.sacrificesEnabled
             self.model.slotItems = $0.sacrificeConfig.slots
         }
@@ -46,7 +46,7 @@ import SwiftUI
         }
         .store(in: &cancellables)
 
-        recipeService.$sacrificePlan.sink { [unowned self] in
+        sacrificeService.$sacrificePlan.sink { [unowned self] in
             model.consumptionPlan = $0
         }
         .store(in: &cancellables)
@@ -58,7 +58,7 @@ import SwiftUI
 extension SacrificeViewModel {
 
     func setSacrificesEnabled(_ enabled: Bool) {
-        mainStore.recipes.sacrificesEnabled = enabled
+        mainStore.sacrifices.sacrificesEnabled = enabled
     }
 
     func openPicker(forSlot index: Int) {
@@ -68,21 +68,21 @@ extension SacrificeViewModel {
 
     func clearSlot(index: Int) {
         guard index < model.unlockedSlotCount else { return }
-        var config = mainStore.recipes.sacrificeConfig
+        var config = mainStore.sacrifices.sacrificeConfig
         config.setSlot(index: index, item: nil)
-        mainStore.recipes.sacrificeConfig = config
+        mainStore.sacrifices.sacrificeConfig = config
     }
 
     func assignItem(at index: Int, item: BaseItem) {
         guard index < model.unlockedSlotCount else { return }
-        var config = mainStore.recipes.sacrificeConfig
+        var config = mainStore.sacrifices.sacrificeConfig
         config.setSlot(index: index, item: item)
-        mainStore.recipes.sacrificeConfig = config
+        mainStore.sacrifices.sacrificeConfig = config
         editingSlot = nil
     }
 
-    func showCurrentRecipeDetail() {
-        coordinator?.custom(overlay: .card, MainPath.currentRecipeDetail)
+    func showCurrentSacrificeDetail() {
+        coordinator?.custom(overlay: .card, MainPath.currentSacrificeDetail)
     }
 
     func showHelp() {

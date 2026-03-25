@@ -22,9 +22,9 @@ final class ItemGeneratorService {
 
     /// Quality/essence weights derived from the items that would be consumed for this plan.
     /// Essence boosts use only the plan’s essences (those unlocked by research).
-    func recipeInfo(plan: SacrificePlan) -> RecipeInfo {
+    func sacrificeInfo(plan: SacrificePlan) -> SacrificeInfo {
         let sacrificeMultiplier = 1 + Double(activeBonuses.sacrificePowerPercent) / 100
-        return RecipeInfo(
+        return SacrificeInfo(
             quality: qualityBonuses(plan: plan, sacrificeMultiplier: sacrificeMultiplier),
             essenceBoosts: plan.essenceMultipliers.mapValues { $0 * sacrificeMultiplier },
         )
@@ -64,7 +64,7 @@ final class ItemGeneratorService {
     }
 
     func make(plan: SacrificePlan, allowArtifacts: Bool = true) -> MakeItemResult {
-        let info = recipeInfo(plan: plan)
+        let info = sacrificeInfo(plan: plan)
         let quality = info.randomQuality()
 
         let options = BaseItem.allCases.filter { item in
@@ -162,7 +162,7 @@ final class ItemGeneratorService {
 
 extension ItemGeneratorService {
 
-    struct RecipeInfo {
+    struct SacrificeInfo {
         let quality: [ItemQuality: Double]
         let essenceBoosts: [Essence: Double]
 

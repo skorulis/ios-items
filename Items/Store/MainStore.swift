@@ -27,9 +27,9 @@ final class MainStore: ObservableObject {
         }
     }
 
-    @Published var recipes: Recipes {
+    @Published var sacrifices: Sacrifices {
         didSet {
-            try! self.store.set(codable: recipes, forKey: Self.recipesKey)
+            try! self.store.set(codable: sacrifices, forKey: Self.sacrificesPersistenceKey)
         }
     }
     @Published var lab = Laboratory() {
@@ -94,7 +94,8 @@ final class MainStore: ObservableObject {
     private static let conceptsKey = "MainStore.concepts"
     private static let labKey = "MainStore.lab"
     private static let notificationsKey = "MainStore.notifications"
-    private static let recipesKey = "MainStore.recipes"
+    /// UserDefaults key kept as `MainStore.recipes` for existing installs.
+    private static let sacrificesPersistenceKey = "MainStore.recipes"
     private static let statisticsKey = "MainStore.statistics"
     private static let warehouseKey = "MainStore.warehouse"
     private static let tradingPostKey = "MainStore.tradingPost"
@@ -116,7 +117,7 @@ final class MainStore: ObservableObject {
         }
         self.portalUpgrades = loadedPortalUpgrades
         self.golems = (try? store.codable(forKey: Self.golemsKey)) ?? Golems()
-        self.recipes = (try? store.codable(forKey: Self.recipesKey)) ?? Recipes()
+        self.sacrifices = (try? store.codable(forKey: Self.sacrificesPersistenceKey)) ?? Sacrifices()
         self.concepts = (try? store.codable(forKey: Self.conceptsKey)) ?? Concepts()
         self.notifications = (try? store.codable(forKey: Self.notificationsKey)) ?? Notifications()
         self.offlineState = (try? store.codable(forKey: Self.offlineStateKey)) ?? OfflineState()

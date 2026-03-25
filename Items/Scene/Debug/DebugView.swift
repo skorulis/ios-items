@@ -73,7 +73,7 @@ extension DebugView: View {
             ) {
                 resetChip("Warehouse") { viewModel.resetWarehouse() }
                 resetChip("Stats") { viewModel.resetStatistics() }
-                resetChip("Sacrifices") { viewModel.resetRecipes() }
+                resetChip("Sacrifices") { viewModel.resetSacrifices() }
                 resetChip("Lab") { viewModel.resetLab() }
                 resetChip("Ach") { viewModel.resetAchievements() }
                 resetChip("Portal") { viewModel.resetUpgrades() }

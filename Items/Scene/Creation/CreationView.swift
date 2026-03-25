@@ -37,7 +37,7 @@ import SwiftUI
         var warehouse: Warehouse = Warehouse()
         var achievements: Achievements = Achievements()
 
-        var recipesAvailable: Bool { achievements.unlocked.contains(.items10) }
+        var sacrificesAvailable: Bool { achievements.unlocked.contains(.items10) }
         var upgradesAvailable: Bool { achievements.unlocked.contains(.items10) }
 
         /// Items created count; used for upgrades-corner progress toward `.items10` when the button is locked.
@@ -171,7 +171,7 @@ extension CreationView: View {
         return SacrificesButton.Model(
             config: viewModel.model.sacrificeConfig,
             plan: viewModel.model.sacrificePlan,
-            action: viewModel.showRecipes,
+            action: viewModel.showSacrifices,
         )
     }
 
@@ -228,7 +228,7 @@ extension CreationView: View {
     }
 
     private var planButton: some View {
-        Button(action: viewModel.showCurrentRecipeDetail) {
+        Button(action: viewModel.showCurrentSacrificeDetail) {
             Image(systemName: "info.circle")
                 .font(.title2)
         }

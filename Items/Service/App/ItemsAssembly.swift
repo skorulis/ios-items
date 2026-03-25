@@ -48,7 +48,7 @@ final class ItemsAssembly: AutoInitModuleAssembly {
         container.register(AchievementService.self) { AchievementService.make(resolver: $0) }
             .inObjectScope(.container)
 
-        container.register(RecipeService.self) { RecipeService.make(resolver: $0) }
+        container.register(SacrificeService.self) { SacrificeService.make(resolver: $0) }
             .inObjectScope(.container)
         container.register(OfflineCreationService.self) { OfflineCreationService.make(resolver: $0) }
             .inObjectScope(.container)
@@ -114,7 +114,7 @@ final class ItemsAssembly: AutoInitModuleAssembly {
             AchievementDetailsViewModel.make(resolver: resolver, achievement: achievement)
         }
 
-        container.register(CurrentRecipeDetailViewModel.self) { CurrentRecipeDetailViewModel.make(resolver: $0) }
+        container.register(CurrentSacrificeDetailViewModel.self) { CurrentSacrificeDetailViewModel.make(resolver: $0) }
 
         container.register(ArtifactDetailViewModel.self) { (resolver: BaseResolver, artifact: ArtifactInstance) in
             ArtifactDetailViewModel.make(resolver: resolver, artifact: artifact)

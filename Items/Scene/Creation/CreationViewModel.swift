@@ -43,7 +43,7 @@ import SwiftUI
     private let calculations: CalculationsService
     private let mainStore: MainStore
     private let upgradeService: UpgradeService
-    private let recipeService: RecipeService
+    private let sacrificeService: SacrificeService
     private let warehouseService: WarehouseService
     private let analytics: AnalyticsService
     private var cancellables: Set<AnyCancellable> = []
@@ -52,7 +52,7 @@ import SwiftUI
     init(
         itemGeneratorService: ItemGeneratorService,
         mainStore: MainStore,
-        recipeService: RecipeService,
+        sacrificeService: SacrificeService,
         calculations: CalculationsService,
         upgradeService: UpgradeService,
         warehouseService: WarehouseService,
@@ -60,7 +60,7 @@ import SwiftUI
     ) {
         self.itemGeneratorService = itemGeneratorService
         self.mainStore = mainStore
-        self.recipeService = recipeService
+        self.sacrificeService = sacrificeService
         self.calculations = calculations
         self.upgradeService = upgradeService
         self.warehouseService = warehouseService
@@ -78,7 +78,7 @@ import SwiftUI
         }
         .store(in: &cancellables)
 
-        recipeService.$sacrificePlan.sink { [unowned self] plan in
+        sacrificeService.$sacrificePlan.sink { [unowned self] plan in
             self.model.sacrificePlan = plan
         }
         .store(in: &cancellables)
@@ -121,7 +121,7 @@ import SwiftUI
         }
         .store(in: &cancellables)
 
-        mainStore.$recipes.sink { [unowned self] in
+        mainStore.$sacrifices.sink { [unowned self] in
             self.model.sacrificeConfig = $0.sacrificeConfig
         }
         .store(in: &cancellables)
@@ -164,7 +164,7 @@ extension CreationViewModel {
 
     func make() async {
         if model.creationInProgress != nil { return }
-        let plan = recipeService.sacrificePlan
+        let plan = sacrificeService.sacrificePlan
         let consumed = plan.consumedItems
         let duration = TimeInterval(calculations.itemCreationMilliseconds) / 1000
         self.model.creationInProgress = CreationView.CreationInProgress(
@@ -173,7 +173,7 @@ extension CreationViewModel {
             sacrificedItems: consumed,
         )
         self.model.createdItems = []
-        recipeService.consumePlan(plan)
+        sacrificeService.consumePlan(plan)
         mainStore.statistics.itemsSacrificed += Int64(consumed.count)
 
         try? await Task.sleep(for: .milliseconds(calculations.itemCreationMilliseconds))
@@ -183,13 +183,13 @@ extension CreationViewModel {
         mainStore.offlineState.updateBackgroundedTime()
     }
 
-    func showRecipes() {
+    func showSacrifices() {
         let path = CircularAnimationPath(sourceRect: sacrificesButtonFrame, mainPath: .sacrifices)
         coordinator?.custom(overlay: .circularReveal, path)
     }
 
-    func showCurrentRecipeDetail() {
-        coordinator?.custom(overlay: .card, MainPath.currentRecipeDetail)
+    func showCurrentSacrificeDetail() {
+        coordinator?.custom(overlay: .card, MainPath.currentSacrificeDetail)
     }
 
     func showPortalUpgrades() {

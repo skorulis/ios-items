@@ -11,7 +11,7 @@ final class ClientRequestHandler {
     private let achievementService: AchievementService
     private let unlockRequirementService: UnlockRequirementService
     private let itemGeneratorService: ItemGeneratorService
-    private let recipeService: RecipeService
+    private let sacrificeService: SacrificeService
     private let warehouseService: WarehouseService
     private let upgradeService: UpgradeService
     private let researchService: ResearchService
@@ -22,7 +22,7 @@ final class ClientRequestHandler {
         achievementService: AchievementService,
         unlockRequirementService: UnlockRequirementService,
         itemGeneratorService: ItemGeneratorService,
-        recipeService: RecipeService,
+        sacrificeService: SacrificeService,
         warehouseService: WarehouseService,
         upgradeService: UpgradeService,
         researchService: ResearchService
@@ -31,7 +31,7 @@ final class ClientRequestHandler {
         self.achievementService = achievementService
         self.unlockRequirementService = unlockRequirementService
         self.itemGeneratorService = itemGeneratorService
-        self.recipeService = recipeService
+        self.sacrificeService = sacrificeService
         self.warehouseService = warehouseService
         self.upgradeService = upgradeService
         self.researchService = researchService
@@ -57,8 +57,8 @@ final class ClientRequestHandler {
             return .items(itemsWithDetails)
 
         case .makeItem:
-            let plan = recipeService.sacrificeConsumptionPlan()
-            recipeService.consumePlan(plan)
+            let plan = sacrificeService.sacrificeConsumptionPlan()
+            sacrificeService.consumePlan(plan)
             let results = itemGeneratorService.makeAndStore(plan: plan)
             return .makeItemResult(results.first!)
         case .getActions:

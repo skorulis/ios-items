@@ -32,7 +32,7 @@ enum MainPath: CoordinatorPath {
     case golemMissionLocationPicker(slotIndex: Int)
     case golemCancelMissionConfirm(slotIndex: Int)
     case achievementDetails(Achievement)
-    case currentRecipeDetail
+    case currentSacrificeDetail
 
     case portalUpgradeDetail(PortalUpgrade)
 
@@ -118,8 +118,8 @@ struct MainPathRenderer: CoordinatorPathRenderer {
             )
         case let .achievementDetails(achievement):
             AchievementDetailsView(viewModel: resolver.achievementDetailsViewModel(achievement: achievement))
-        case .currentRecipeDetail:
-            RecipeDetailView(viewModel: resolver.currentRecipeDetailViewModel())
+        case .currentSacrificeDetail:
+            SacrificeDetailView(viewModel: resolver.currentSacrificeDetailViewModel())
         case let .portalUpgradeDetail(upgrade):
             PortalUpgradeDetailView(
                 upgrade: upgrade,

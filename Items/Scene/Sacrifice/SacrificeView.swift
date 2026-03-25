@@ -115,7 +115,7 @@ extension SacrificeView: View {
                         .position(PentagramLayout.vertexPoint(index: index, center: center, radius: radius))
                 }
 
-                Button(action: viewModel.showCurrentRecipeDetail) {
+                Button(action: viewModel.showCurrentSacrificeDetail) {
                     Image(systemName: "info.circle")
                         .font(.title2)
                 }

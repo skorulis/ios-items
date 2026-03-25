@@ -2,7 +2,7 @@
 
 import Foundation
 
-struct Recipes: Codable, Equatable {
+struct Sacrifices: Codable, Equatable {
     var sacrificesEnabled: Bool = true
 
     // A single config with 5 slots

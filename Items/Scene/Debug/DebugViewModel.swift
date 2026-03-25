@@ -44,8 +44,8 @@ extension DebugViewModel {
         mainStore.statistics = Statistics()
     }
 
-    func resetRecipes() {
-        mainStore.recipes = Recipes()
+    func resetSacrifices() {
+        mainStore.sacrifices = Sacrifices()
     }
 
     func resetLab() {
@@ -68,7 +68,7 @@ extension DebugViewModel {
     func resetAllMainStore() {
         resetWarehouse()
         resetStatistics()
-        resetRecipes()
+        resetSacrifices()
         resetLab()
         resetAchievements()
         resetUpgrades()

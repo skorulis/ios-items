@@ -5,11 +5,11 @@ import Knit
 import KnitMacros
 import Models
 
-@MainActor protocol RecipeDetailViewModel {
-    var model: RecipeDetailView.Model { get }
+@MainActor protocol SacrificeDetailViewModel {
+    var model: SacrificeDetailView.Model { get }
 }
 
-extension RecipeDetailViewModel {
+extension SacrificeDetailViewModel {
     static func normalizedQualityChances(
         from weights: [ItemQuality: Double]
     ) -> [(ItemQuality, Double)] {

@@ -18,8 +18,6 @@ enum HelpStrings {
     Place items on the pentagram slots and turn "Sacrifices enabled" on. When you create an item, it will consume any available items set in the pentagram. Unlock more slots in the pentagram by upgrading the sacrifices feature.
     """
 
-    static let recipeList = sacrifices
-
     static let research = """
     Research unlocks knowledge about items over time. Select an item from your warehouse to start researching it.
 

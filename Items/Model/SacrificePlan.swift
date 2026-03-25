@@ -25,7 +25,7 @@ struct SacrificePlan: Equatable {
         self.essenceMultipliers = essenceMultipliers
     }
 
-    /// Builds a plan from an ordered list (e.g. legacy recipe items). Indices are 0, 1, 2, …
+    /// Builds a plan from an ordered list of consumed items. Indices are 0, 1, 2, …
     init(
         itemsInOrder items: [BaseItem],
         essences: [Essence] = [],

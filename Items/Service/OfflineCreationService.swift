@@ -8,19 +8,19 @@ import Models
 final class OfflineCreationService {
 
     private let mainStore: MainStore
-    private let recipeService: RecipeService
+    private let sacrificeService: SacrificeService
     private let itemGeneratorService: ItemGeneratorService
     private let calculations: CalculationsService
 
     @Resolvable<BaseResolver>
     init(
         mainStore: MainStore,
-        recipeService: RecipeService,
+        sacrificeService: SacrificeService,
         itemGeneratorService: ItemGeneratorService,
         calculations: CalculationsService
     ) {
         self.mainStore = mainStore
-        self.recipeService = recipeService
+        self.sacrificeService = sacrificeService
         self.itemGeneratorService = itemGeneratorService
         self.calculations = calculations
     }
@@ -57,8 +57,8 @@ final class OfflineCreationService {
         }
 
         for _ in 0 ..< maxCreations {
-            let plan = recipeService.sacrificeConsumptionPlan()
-            recipeService.consumePlan(plan)
+            let plan = sacrificeService.sacrificeConsumptionPlan()
+            sacrificeService.consumePlan(plan)
             mainStore.statistics.itemsSacrificed += Int64(plan.consumedItems.count)
             _ = itemGeneratorService.makeAndStore(plan: plan, allowArtifacts: false)
         }

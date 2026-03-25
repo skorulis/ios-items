@@ -6,7 +6,7 @@ import Knit
 import KnitMacros
 import Models
 
-final class RecipeService: ObservableObject {
+final class SacrificeService: ObservableObject {
 
     private let mainStore: MainStore
     private var cancellables: Set<AnyCancellable> = []
@@ -17,7 +17,7 @@ final class RecipeService: ObservableObject {
     init(mainStore: MainStore) {
         self.mainStore = mainStore
         self.sacrificePlan = Self.computeSacrificePlan(
-            recipes: mainStore.recipes,
+            sacrifices: mainStore.sacrifices,
             warehouse: mainStore.warehouse,
             lab: mainStore.lab,
             location: mainStore.mapLocations.selected
@@ -26,7 +26,7 @@ final class RecipeService: ObservableObject {
         mainStore.$warehouse
             .sink { [unowned self] in
                 self.sacrificePlan = Self.computeSacrificePlan(
-                    recipes: self.mainStore.recipes,
+                    sacrifices: self.mainStore.sacrifices,
                     warehouse: $0,
                     lab: self.mainStore.lab,
                     location: self.mainStore.mapLocations.selected
@@ -34,10 +34,10 @@ final class RecipeService: ObservableObject {
             }
             .store(in: &cancellables)
 
-        mainStore.$recipes
+        mainStore.$sacrifices
             .sink { [unowned self] in
                 self.sacrificePlan = Self.computeSacrificePlan(
-                    recipes: $0,
+                    sacrifices: $0,
                     warehouse: self.mainStore.warehouse,
                     lab: self.mainStore.lab,
                     location: self.mainStore.mapLocations.selected
@@ -48,7 +48,7 @@ final class RecipeService: ObservableObject {
         mainStore.$lab
             .sink { [unowned self] in
                 self.sacrificePlan = Self.computeSacrificePlan(
-                    recipes: self.mainStore.recipes,
+                    sacrifices: self.mainStore.sacrifices,
                     warehouse: self.mainStore.warehouse,
                     lab: $0,
                     location: self.mainStore.mapLocations.selected
@@ -58,10 +58,10 @@ final class RecipeService: ObservableObject {
     }
 
     /// Resolves which item (if any) would be consumed from each sacrifice slot, in slot order.
-    /// Uses `mainStore.recipes.sacrificeConfig` and current warehouse quantities.
+    /// Uses `mainStore.sacrifices.sacrificeConfig` and current warehouse quantities.
     func sacrificeConsumptionPlan() -> SacrificePlan {
         Self.computeSacrificePlan(
-            recipes: mainStore.recipes,
+            sacrifices: mainStore.sacrifices,
             warehouse: mainStore.warehouse,
             lab: mainStore.lab,
             location: mainStore.mapLocations.selected
@@ -76,15 +76,15 @@ final class RecipeService: ObservableObject {
     }
 
     private static func computeSacrificePlan(
-        recipes: Recipes,
+        sacrifices: Sacrifices,
         warehouse: Warehouse,
         lab: Laboratory,
         location: MapLocation
     ) -> SacrificePlan {
-        if !recipes.sacrificesEnabled {
+        if !sacrifices.sacrificesEnabled {
             return .init(itemsInOrder: [], essences: [])
         }
-        let config = recipes.sacrificeConfig
+        let config = sacrifices.sacrificeConfig
         var available: [BaseItem: Int] = [:]
         for item in BaseItem.allCases {
             available[item] = warehouse.quantity(item)
