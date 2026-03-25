@@ -3,7 +3,7 @@
 import Foundation
 import SwiftUI
 
-public enum ItemQuality: Codable, CaseIterable, Comparable {
+public enum ItemQuality: Codable, CaseIterable, Comparable, Sendable {
     case junk
     case common
     case good
