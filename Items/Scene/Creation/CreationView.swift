@@ -121,8 +121,22 @@ extension CreationView: View {
             .padding()
 
         }
+        .background(creationLocationBackground)
         .coordinateSpace(name: "creation")
         .onAppear { viewModel.onAppear() }
+    }
+
+    @ViewBuilder
+    private var creationLocationBackground: some View {
+        if let image = viewModel.model.mapLocations.selected.creationBackgroundImage {
+            image
+                .resizable()
+                .scaledToFill()
+                .ignoresSafeArea()
+        } else {
+            Color(.systemBackground)
+                .ignoresSafeArea()
+        }
     }
 
     private var upgradesButton: PortalView.ButtonOrProgress? {
@@ -208,10 +222,32 @@ extension CreationView: View {
     }
 
     private var makeButtonRow: some View {
-        HStack(spacing: 12) {
+        HStack(spacing: 14) {
             autoCreationButton
             createButton
             planButton
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 8)
+        .background {
+            ZStack {
+                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                    .fill(.ultraThinMaterial)
+                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                    .strokeBorder(
+                        LinearGradient(
+                            colors: [
+                                Color.white.opacity(0.55),
+                                Color.white.opacity(0.12),
+                                Color.cyan.opacity(0.35),
+                            ],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        ),
+                        lineWidth: 1.5
+                    )
+            }
+            .shadow(color: .black.opacity(0.4), radius: 18, x: 0, y: 10)
         }
     }
 
@@ -222,6 +258,15 @@ extension CreationView: View {
             Image(systemName: "gearshape.arrow.trianglehead.2.clockwise.rotate.90")
                 .font(.title2)
                 .foregroundStyle(viewModel.automateCreation ? Color.green : Color.primary)
+                .frame(width: 44, height: 44)
+                .background {
+                    Circle()
+                        .fill(Color.primary.opacity(0.1))
+                }
+                .overlay {
+                    Circle()
+                        .strokeBorder(Color.white.opacity(0.25), lineWidth: 1)
+                }
         }
         .buttonStyle(.plain)
         .opacity(viewModel.model.automationUnlocked ? 1 : 0)
@@ -231,6 +276,16 @@ extension CreationView: View {
         Button(action: viewModel.showCurrentSacrificeDetail) {
             Image(systemName: "info.circle")
                 .font(.title2)
+                .foregroundStyle(Color.primary)
+                .frame(width: 44, height: 44)
+                .background {
+                    Circle()
+                        .fill(Color.primary.opacity(0.1))
+                }
+                .overlay {
+                    Circle()
+                        .strokeBorder(Color.white.opacity(0.25), lineWidth: 1)
+                }
         }
         .buttonStyle(.plain)
         .opacity(viewModel.model.firstItem ? 0 : 1)

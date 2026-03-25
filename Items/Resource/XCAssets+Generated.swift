@@ -28,6 +28,13 @@ internal enum Asset {
   internal enum Creation {
     internal static let dimensionalPortal = ImageAsset(name: "dimensionalPortal")
   }
+  internal enum MapLocation {
+    internal static let crystalMine = ImageAsset(name: "crystalMine")
+    internal static let palaceGardens = ImageAsset(name: "palaceGardens")
+    internal static let semilTradingPost = ImageAsset(name: "semilTradingPost")
+    internal static let university = ImageAsset(name: "university")
+    internal static let vesprium = ImageAsset(name: "vesprium")
+  }
   internal enum BaseItem {
     internal static let apple = ImageAsset(name: "apple")
     internal static let book = ImageAsset(name: "book")
@@ -35,7 +42,6 @@ internal enum Asset {
     internal static let embuedChalk = ImageAsset(name: "embuedChalk")
     internal static let flask = ImageAsset(name: "flask")
     internal static let gear = ImageAsset(name: "gear")
-    internal static let giantThorn = ImageAsset(name: "giantThorn")
     internal static let goldCoin = ImageAsset(name: "goldCoin")
     internal static let hourglass = ImageAsset(name: "hourglass")
     internal static let humanSkull = ImageAsset(name: "humanSkull")
@@ -47,7 +53,6 @@ internal enum Asset {
     internal static let quartzCrystal = ImageAsset(name: "quartzCrystal")
     internal static let rock = ImageAsset(name: "rock")
     internal static let silverCoin = ImageAsset(name: "silverCoin")
-    internal static let steelArrowhead = ImageAsset(name: "steelArrowhead")
     internal static let whetstone = ImageAsset(name: "whetstone")
   }
   internal enum Equipment {

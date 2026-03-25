@@ -85,7 +85,7 @@ extension ArtifactSlotView: View {
                 }
             }
             .frame(width: geo.size.width, height: geo.size.height)
-            .background(Circle().fill(Color.white))
+            .background(Circle().fill(.ultraThinMaterial))
         }
         .aspectRatio(1, contentMode: .fit)
         .frame(width: ringRadius * 2, height: ringRadius * 2)
