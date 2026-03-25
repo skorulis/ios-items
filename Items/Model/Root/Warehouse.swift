@@ -18,6 +18,8 @@ struct Warehouse: Codable, Equatable {
 
     // Available recipes
     var recipes: Set<EquipmentRecipe> = []
+    
+    var equipmentUnlocked: Bool = false
 
     /// Owned compositional gear (each entry is a unique instance).
     var equipment: [EquipmentInstance] = []

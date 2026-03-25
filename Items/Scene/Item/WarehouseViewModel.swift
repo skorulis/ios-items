@@ -21,6 +21,7 @@ import SwiftUI
     private(set) var warehouse: Warehouse
     private(set) var lab: Laboratory
     var artifactsViewModel: ArtifactsViewModel
+    var equipmentListViewModel: EquipmentListViewModel
 
     var page: Page = .items {
         didSet {
@@ -37,6 +38,7 @@ import SwiftUI
         warehouseService: WarehouseService,
         calculationService: CalculationsService,
         artifactsViewModel: ArtifactsViewModel,
+        equipmentListViewModel: EquipmentListViewModel,
         analytics: AnalyticsService,
     ) {
         self.mainStore = mainStore
@@ -45,6 +47,7 @@ import SwiftUI
         warehouse = mainStore.warehouse
         lab = mainStore.lab
         self.artifactsViewModel = artifactsViewModel
+        self.equipmentListViewModel = equipmentListViewModel
         self.model.showTradingPostButton = mainStore.portalUpgrades.purchased.contains(.tradingPost)
 
         mainStore.$warehouse.sink { [unowned self] in
@@ -73,7 +76,7 @@ import SwiftUI
 
 extension WarehouseViewModel {
     enum Page {
-        case items, artifacts
+        case items, artifacts, equipment
     }
 }
 
@@ -87,6 +90,14 @@ extension WarehouseViewModel {
         model.newItemsToShow = mainStore.notifications.newItems
         artifactsViewModel.onAppear()
 
+        // If a segment becomes unavailable, fall back to ingredients.
+        if page == .artifacts && !model.showArtifactsTab {
+            page = .items
+        }
+        if page == .equipment && !hasEquipment {
+            page = .items
+        }
+
         clearNew()
     }
 
@@ -96,6 +107,8 @@ extension WarehouseViewModel {
             artifactsViewModel.clearNewArtifacts()
         case .items:
             warehouseService.clearNewItems()
+        case .equipment:
+            break
         }
     }
 
@@ -124,6 +137,14 @@ extension WarehouseViewModel {
 
     func showCrafting() {
         coordinator?.push(MainPath.crafting)
+    }
+
+    var hasEquipment: Bool {
+        !warehouse.equipment.isEmpty || warehouse.equipmentUnlocked
+    }
+
+    func showEquipmentList() {
+        coordinator?.push(MainPath.equipmentList)
     }
 
     func pressed(item: Ingredient) {

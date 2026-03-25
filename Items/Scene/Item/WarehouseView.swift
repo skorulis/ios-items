@@ -33,18 +33,29 @@ struct WarehouseView: View {
                 items
             case .artifacts:
                 artifacts
+            case .equipment:
+                EquipmentListView(
+                    viewModel: viewModel.equipmentListViewModel,
+                    contentOnly: true
+                )
             }
         }
     }
 
     @ViewBuilder
     private var maybePicker: some View {
-        if viewModel.model.showArtifactsTab {
+        if viewModel.model.showArtifactsTab || viewModel.hasEquipment {
             Picker("Page", selection: $viewModel.page) {
                 Text("Ingredients")
                     .tag(WarehouseViewModel.Page.items)
-                Text("Artifacts")
-                    .tag(WarehouseViewModel.Page.artifacts)
+                if viewModel.model.showArtifactsTab {
+                    Text("Artifacts")
+                        .tag(WarehouseViewModel.Page.artifacts)
+                }
+                if viewModel.hasEquipment {
+                    Text("Equipment")
+                        .tag(WarehouseViewModel.Page.equipment)
+                }
             }
             .pickerStyle(.segmented)
             .padding(.horizontal, 16)
@@ -112,6 +123,9 @@ struct WarehouseView: View {
                     if viewModel.model.showTradingPostButton {
                         tradingPostButton
                     }
+                    if viewModel.hasEquipment {
+                        equipmentButton
+                    }
                     if viewModel.hasDiscoveredRecipes {
                         craftingButton
                     }
@@ -147,6 +161,16 @@ struct WarehouseView: View {
     private var craftingButton: some View {
         Button(action: viewModel.showCrafting) {
             Image(systemName: "hammer")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 24, height: 24)
+                .foregroundStyle(Color.black)
+        }
+    }
+
+    private var equipmentButton: some View {
+        Button(action: viewModel.showEquipmentList) {
+            Image(systemName: "backpack")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 24, height: 24)

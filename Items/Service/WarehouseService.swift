@@ -78,6 +78,7 @@ extension WarehouseService {
     func add(equipment: EquipmentInstance) {
         // Maximum 100 items in the inventory
         if mainStore.warehouse.equipment.count < 100 {
+            mainStore.warehouse.equipmentUnlocked = true
             mainStore.warehouse.equipment.append(equipment)
         }
     }
