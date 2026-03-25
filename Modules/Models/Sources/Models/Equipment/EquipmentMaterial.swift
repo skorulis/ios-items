@@ -7,6 +7,7 @@ public enum EquipmentMaterial: String, Codable, CaseIterable, Hashable, Identifi
     case stone
     case crystal
     case steelvine
+    case thunderscale
     case astral
 
     public var id: Self { self }
@@ -25,6 +26,8 @@ public enum EquipmentMaterial: String, Codable, CaseIterable, Hashable, Identifi
             return .common
         case .steelvine:
             return .good
+        case .thunderscale:
+            return .rare
         case .astral:
             return .exceptional
         }
@@ -39,6 +42,8 @@ public enum EquipmentMaterial: String, Codable, CaseIterable, Hashable, Identifi
             return .yellow
         case .steelvine:
             return .green
+        case .thunderscale:
+            return .blue
         case .astral:
             return .orange
         }

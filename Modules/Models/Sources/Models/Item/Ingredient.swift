@@ -37,6 +37,7 @@ public enum Ingredient: String, Hashable, Equatable, CaseIterable, Identifiable,
     // Rare
     case platinumFlorin
     case sunwellPhial
+    case lightningStone
 
     // Exceptional
     case astralGem
@@ -55,7 +56,7 @@ public enum Ingredient: String, Hashable, Equatable, CaseIterable, Identifiable,
             return .common
         case .goldFlorin, .jadeFigurine, .portalShard, .soulEmber, .anchorStone, .memorySeed, .metalBloom, .cipherRibbon:
             return .good
-        case .platinumFlorin, .sunwellPhial:
+        case .platinumFlorin, .sunwellPhial, .lightningStone:
             return .rare
         case .astralGem:
             return .exceptional
@@ -140,6 +141,8 @@ public enum Ingredient: String, Hashable, Equatable, CaseIterable, Identifiable,
             return [.covenant, .order]
         case .sunwellPhial:
             return [.light, .life]
+        case .lightningStone:
+            return [.light, .order, .earth]
             
             // Exceptional
         case .astralGem:
@@ -291,6 +294,11 @@ public enum Ingredient: String, Hashable, Equatable, CaseIterable, Identifiable,
             return [
                 "A sealed vial of liquid light drawn from a long lost spring.",
                 "A few drops can revive withered plants make them grow.",
+            ]
+        case .lightningStone:
+            return [
+                "A dense stone threaded with bright veins; storm has been caught and held inside.",
+                "Artificers can tap it like a battery or forge it into weapons",
             ]
         }
     }

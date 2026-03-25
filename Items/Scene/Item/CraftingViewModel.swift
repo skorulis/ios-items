@@ -10,7 +10,7 @@ final class CraftingViewModel: CoordinatorViewModel {
     weak var coordinator: ASKCoordinator.Coordinator?
 
     private let mainStore: MainStore
-    private let warehouseService: WarehouseService
+    private let craftingService: CraftingService
 
     private var cancellables: Set<AnyCancellable> = []
 
@@ -25,10 +25,10 @@ final class CraftingViewModel: CoordinatorViewModel {
     @Resolvable<BaseResolver>
     init(
         mainStore: MainStore,
-        warehouseService: WarehouseService
+        craftingService: CraftingService
     ) {
         self.mainStore = mainStore
-        self.warehouseService = warehouseService
+        self.craftingService = craftingService
         self.warehouse = mainStore.warehouse
 
         mainStore.$warehouse
@@ -81,27 +81,11 @@ final class CraftingViewModel: CoordinatorViewModel {
 
     func craft() {
         guard canCraft, let recipe = selectedRecipe else { return }
-
-        // Spend required materials.
-        for line in recipe.cost {
-            warehouseService.remove(item: line.item, quantity: line.quantity)
-        }
-
-        let quality = randomQualityWeightedTowardJunk()
-        let instance = recipe.item(quality: quality)
-        warehouseService.add(equipment: instance)
+        guard let instance = craftingService.craft(recipe: recipe) else { return }
 
         coordinator?.custom(
             overlay: .card,
             MainPath.dialog("Crafted \(instance.displayName)")
         )
-    }
-
-    private func randomQualityWeightedTowardJunk() -> ItemQuality {
-        let qualityArray = RandomArray(items: ItemQuality.allCases) { quality in
-            // `artifactChanceMultiplier` is already strongly biased toward `.junk`.
-            quality.artifactChanceMultiplier
-        }
-        return qualityArray.random ?? .junk
     }
 }

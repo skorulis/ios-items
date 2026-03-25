@@ -71,7 +71,19 @@ extension WarehouseService {
     }
 
     func add(recipe: EquipmentRecipe) {
+        let wasNewDiscovery = !mainStore.warehouse.recipes.contains(recipe)
         mainStore.warehouse.recipes.insert(recipe)
+        if wasNewDiscovery {
+            let icon = AnyView(
+                AvatarView(
+                    text: recipe.name,
+                    image: Image(systemName: "list.bullet.clipboard"),
+                    border: recipe.quality.color,
+                    size: .small,
+                ),
+            )
+            toastService.showToast("Discovered \(recipe.name)", icon: icon)
+        }
     }
 
     /// Add a unique gear instance to the warehouse.

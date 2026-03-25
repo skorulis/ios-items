@@ -8,6 +8,7 @@ public enum EquipmentRecipe: Codable, CaseIterable {
     case stoneDagger
     case crystalDagger
     case steelvineDagger
+    case thunderscaleDagger
 
     public var cost: [UpgradeCostItem] {
         switch self {
@@ -20,8 +21,14 @@ public enum EquipmentRecipe: Codable, CaseIterable {
             ]
         case .steelvineDagger:
             return [
-                .init(item: .giantThorn, quantity: 25),
                 .init(item: .metalBloom, quantity: 25),
+                .init(item: .giantThorn, quantity: 25),
+            ]
+        case .thunderscaleDagger:
+            return [
+                .init(item: .lightningStone, quantity: 25),
+                .init(item: .metalBloom, quantity: 25),
+                .init(item: .silverFlorin, quantity: 25),
             ]
         }
     }
@@ -35,12 +42,13 @@ public enum EquipmentRecipe: Codable, CaseIterable {
         case .stoneDagger: return .stone
         case .crystalDagger: return .crystal
         case .steelvineDagger: return .steelvine
+        case .thunderscaleDagger: return .thunderscale
         }
     }
 
     public var kind: EquipmentKind {
         switch self {
-        case .stoneDagger, .crystalDagger, .steelvineDagger:
+        case .stoneDagger, .crystalDagger, .steelvineDagger, .thunderscaleDagger:
             return .dagger
         }
     }

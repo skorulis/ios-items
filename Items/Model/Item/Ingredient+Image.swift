@@ -59,6 +59,8 @@ extension Ingredient {
             return nil
         case .sunwellPhial:
             return nil
+        case .lightningStone:
+            return nil
         case .astralGem:
             return nil
         }
