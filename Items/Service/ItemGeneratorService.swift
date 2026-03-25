@@ -47,6 +47,8 @@ final class ItemGeneratorService {
                 }
             case let .artifact(artifact):
                 warehouseService.add(artifact: artifact)
+            case let .recipe(recipe):
+                warehouseService.add(recipe: recipe)
             }
             mainStore.mapLocations.incrementPullCount()
         }

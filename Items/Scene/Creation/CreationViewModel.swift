@@ -203,6 +203,8 @@ extension CreationViewModel {
             coordinator?.custom(overlay: .card, MainPath.itemDetails(item))
         case let .artifact(artifact):
             coordinator?.custom(overlay: .card, MainPath.artifactDetails(artifact))
+        case let .recipe(recipe):
+            break
         }
     }
 

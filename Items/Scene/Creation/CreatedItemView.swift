@@ -43,6 +43,12 @@ import SwiftUI
             )
         case let .artifact(instance):
             ArtifactView(artifact: instance, size: avatarSize)
+        case let .recipe(recipe):
+            AvatarView(
+                text: recipe.name,
+                image: Image(systemName: "list.bullet.clipboard"),
+                border: recipe.quality.color,
+            )
         }
     }
 

@@ -5,4 +5,5 @@ import Foundation
 public enum MakeItemResult: Codable, Equatable {
     case base(Ingredient, Int)
     case artifact(ArtifactInstance)
+    case recipe(EquipmentRecipe)
 }

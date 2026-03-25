@@ -69,6 +69,10 @@ extension WarehouseService {
             mainStore.notifications.recordNewArtifactDiscovery(artifact.type)
         }
     }
+    
+    func add(recipe: EquipmentRecipe) {
+        mainStore.warehouse.recipes.insert(recipe)
+    }
 
     /// Mark an item as viewed so it no longer appears as new.
     func markItemViewed(_ item: Ingredient) {

@@ -167,7 +167,7 @@ final class GolemMissionService {
             switch result {
             case let .base(item, count):
                 return "\(item.name) ×\(count)"
-            case .artifact:
+            case .artifact, .recipe:
                 return nil
             }
         }

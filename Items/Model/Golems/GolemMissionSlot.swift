@@ -87,8 +87,8 @@ struct GolemMissionSlot: Codable {
             case let .base(baseItem, count):
                 let oldCount = gainedItems[baseItem, default: 0]
                 gainedItems[baseItem] = oldCount + count
-            case .artifact:
-                print("Unexpected. Golems should not find artifacts")
+            case .artifact, .recipe:
+                print("Unexpected. Golems should not find artifacts or recipes")
             }
         }
     }
