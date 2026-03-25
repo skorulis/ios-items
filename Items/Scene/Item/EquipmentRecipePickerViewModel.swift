@@ -24,4 +24,3 @@ final class EquipmentRecipePickerViewModel {
         mainStore.craftingSelectedRecipeIndex = index
     }
 }
-

@@ -17,7 +17,7 @@ final class MainStore: ObservableObject {
 
     /// Ephemeral Crafting UI state (not persisted).
     /// Used to communicate selection between the Crafting screen and the recipe picker overlay.
-    @Published var craftingSelectedRecipeIndex: Int? = nil
+    @Published var craftingSelectedRecipeIndex: Int?
 
     @Published var tradingPost: TradingPost {
         didSet {

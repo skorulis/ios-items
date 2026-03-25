@@ -55,4 +55,3 @@ struct EquipmentDetailView: View {
     let instance = EquipmentInstance(kind: .dagger, material: .stone, quality: .junk)
     EquipmentDetailView(equipment: instance)
 }
-

@@ -6,6 +6,7 @@ import SwiftUI
 public struct LayeredIcon: View {
 
     private let main: Image
+    private let tintColor: Color?
     private let overlay: Image?
     private let diameter: CGFloat
 
@@ -15,10 +16,12 @@ public struct LayeredIcon: View {
     ///   - diameter: Overall square size for layout.
     public init(
         main: Image,
+        tintColor: Color? = nil,
         overlay: Image? = nil,
         diameter: CGFloat = 40
     ) {
         self.main = main
+        self.tintColor = tintColor
         self.overlay = overlay
         self.diameter = diameter
     }
@@ -31,11 +34,12 @@ public struct LayeredIcon: View {
 
     public var body: some View {
         ZStack(alignment: .topTrailing) {
-            main
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: diameter * 0.70, height: diameter * 0.70)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+            if let tintColor {
+                mainImage
+                    .colorMultiply(tintColor)
+            } else {
+                mainImage
+            }
 
             if let overlay {
                 overlay
@@ -45,6 +49,14 @@ public struct LayeredIcon: View {
             }
         }
         .frame(width: diameter, height: diameter)
+    }
+
+    private var mainImage: some View {
+        main
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .frame(width: diameter * 0.70, height: diameter * 0.70)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
     }
 }
 
@@ -65,6 +77,13 @@ public struct LayeredIcon: View {
                 main: Image(systemName: "person.3.fill"),
                 overlay: Image(systemName: "5.circle.fill"),
                 diameter: 40
+            )
+        }
+        HStack {
+            LayeredIcon(
+                main: Asset.Equipment.dagger.swiftUIImage,
+                tintColor: Color.orange,
+                diameter: 60
             )
         }
     }

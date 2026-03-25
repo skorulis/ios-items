@@ -12,9 +12,14 @@ import SwiftUI
         var id: Self { self }
     }
 
+    enum ImageType {
+        case image(Image)
+        case icon(LayeredIcon)
+    }
+
     private let size: Size
     private let text: String
-    private let image: Image?
+    private let image: ImageType?
     private let border: Color
 
     private let badge: String?
@@ -29,7 +34,23 @@ import SwiftUI
         size: Size = .medium,
     ) {
         self.text = text
-        self.image = image
+        self.image = image.map { .image($0) }
+        self.border = border
+        self.badge = badge
+        self.showNewBadge = showNewBadge
+        self.size = size
+    }
+
+    init(
+        text: String,
+        icon: LayeredIcon?,
+        border: Color,
+        badge: String? = nil,
+        showNewBadge: Bool = false,
+        size: Size = .medium,
+    ) {
+        self.text = text
+        self.image = icon.map { .icon($0) }
         self.border = border
         self.badge = badge
         self.showNewBadge = showNewBadge
@@ -84,16 +105,26 @@ extension AvatarView: View {
     @ViewBuilder
     private var content: some View {
         if let image {
-            image
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .foregroundStyle(Color.white)
-                .frame(width: size.imageSize, height: size.imageSize)
+            imageContent(image)
         } else {
             Text(text.acronym())
                 .font(size.font)
                 .bold()
                 .foregroundStyle(Color.white)
+        }
+    }
+
+    @ViewBuilder
+    private func imageContent(_ image: ImageType) -> some View {
+        switch image {
+        case let .image(image):
+            image
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .foregroundStyle(Color.white)
+                .frame(width: size.imageSize, height: size.imageSize)
+        case let .icon(layeredIcon):
+            layeredIcon.size(size.imageSize)
         }
     }
 

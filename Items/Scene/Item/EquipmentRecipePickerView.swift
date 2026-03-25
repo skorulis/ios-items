@@ -84,4 +84,3 @@ struct EquipmentRecipePickerView: View {
         .accessibilityLabel("Recipe \(recipe.name)")
     }
 }
-

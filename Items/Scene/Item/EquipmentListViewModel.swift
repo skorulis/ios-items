@@ -38,4 +38,3 @@ final class EquipmentListViewModel: CoordinatorViewModel {
         coordinator?.pop()
     }
 }
-

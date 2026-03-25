@@ -128,4 +128,3 @@ struct CraftingView: View {
     let assembler = ItemsAssembly.testing()
     return CraftingView(viewModel: assembler.resolver.craftingViewModel())
 }
-

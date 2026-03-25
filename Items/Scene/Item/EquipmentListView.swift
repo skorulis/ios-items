@@ -63,8 +63,8 @@ struct EquipmentListView: View {
                             viewModel.showDetails(for: instance)
                         } label: {
                             AvatarView(
-                                text: instance.displayName,
-                                image: nil,
+                                text: instance.fullName,
+                                icon: instance.image,
                                 border: instance.quality.color,
                                 size: .medium
                             )
