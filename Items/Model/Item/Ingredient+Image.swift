@@ -55,19 +55,9 @@ extension Ingredient {
             return nil
         case .memorySeed:
             return nil
-        case .nullLantern:
-            return nil
-        case .heartgear:
-            return nil
-        case .nullWeaveCloak:
-            return nil
-        case .axisHeart:
-            return nil
-        case .oathforgedChain:
-            return nil
         case .sunwellPhial:
             return nil
-        case .astralFlorin:
+        case .astralGem:
             return nil
         }
     }

@@ -122,6 +122,8 @@ struct EquipmentListView: View {
     var warehouse = assembler.resolver.mainStore().warehouse
     warehouse.equipment = [
         EquipmentInstance(kind: .dagger, material: .stone, quality: .junk),
+        EquipmentInstance(kind: .dagger, material: .crystal, quality: .junk),
+        EquipmentInstance(kind: .dagger, material: .steelvine, quality: .junk),
         EquipmentInstance(kind: .dagger, material: .astral, quality: .good),
     ]
     assembler.resolver.mainStore().warehouse = warehouse

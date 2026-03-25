@@ -6,6 +6,7 @@ import SwiftUI
 public enum EquipmentMaterial: String, Codable, CaseIterable, Hashable, Identifiable, Sendable {
     case stone
     case crystal
+    case steelvine
     case astral
 
     public var id: Self { self }
@@ -22,6 +23,8 @@ public enum EquipmentMaterial: String, Codable, CaseIterable, Hashable, Identifi
             return .junk
         case .crystal:
             return .common
+        case .steelvine:
+            return .good
         case .astral:
             return .exceptional
         }
@@ -34,8 +37,10 @@ public enum EquipmentMaterial: String, Codable, CaseIterable, Hashable, Identifi
             return .gray
         case .crystal:
             return .yellow
-        case .astral:
+        case .steelvine:
             return .green
+        case .astral:
+            return .orange
         }
     }
 }

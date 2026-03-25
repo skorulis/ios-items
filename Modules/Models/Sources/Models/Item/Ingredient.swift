@@ -32,19 +32,13 @@ public enum Ingredient: String, Hashable, Equatable, CaseIterable, Identifiable,
     case anchorStone
     case memorySeed
     case metalBloom
-    
-    case nullLantern
 
     // Rare
     case platinumFlorin
-    case axisHeart
-    case nullWeaveCloak
-    case oathforgedChain
     case sunwellPhial
-    case heartgear
 
     // Exceptional
-    case astralFlorin
+    case astralGem
 
     public var id: Self { self }
 
@@ -58,11 +52,11 @@ public enum Ingredient: String, Hashable, Equatable, CaseIterable, Identifiable,
             return .junk
         case .quartzCrystal, .silverFlorin, .book, .merchantSigil, .giantThorn, .embuedChalk, .whetstone, .mapFragment:
             return .common
-        case .goldFlorin, .jadeFigurine, .portalShard, .soulEmber, .anchorStone, .memorySeed, .nullLantern, .metalBloom:
+        case .goldFlorin, .jadeFigurine, .portalShard, .soulEmber, .anchorStone, .memorySeed, .metalBloom:
             return .good
-        case .platinumFlorin, .axisHeart, .nullWeaveCloak, .oathforgedChain, .sunwellPhial, .heartgear:
+        case .platinumFlorin, .sunwellPhial:
             return .rare
-        case .astralFlorin:
+        case .astralGem:
             return .exceptional
         }
     }
@@ -79,8 +73,6 @@ public enum Ingredient: String, Hashable, Equatable, CaseIterable, Identifiable,
             return 1.25
         case .platinumFlorin:
             return 1.1
-        case .astralFlorin:
-            return 0.8
         default:
             return 1.0
         }
@@ -116,13 +108,13 @@ public enum Ingredient: String, Hashable, Equatable, CaseIterable, Identifiable,
         case .merchantSigil:
             return [.covenant, .order]
         case .giantThorn:
-            return [.life, .earth]
+            return [.life, .chaos]
         case .embuedChalk:
             return [.mind, .chaos]
         case .mapFragment:
             return [.mind, .earth]
         case .whetstone:
-            return [.earth, .order]
+            return [.order, .dark]
             
             // Good
         case .goldFlorin:
@@ -141,19 +133,9 @@ public enum Ingredient: String, Hashable, Equatable, CaseIterable, Identifiable,
             return [.earth, .chaos]
         case .memorySeed:
             return [.life, .mind]
-        case .nullLantern:
-            return [.dark, .order]
-        case .nullWeaveCloak:
-            return [.dark, .order]
-        case .axisHeart:
-            return [.chaos, .earth]
-        case .oathforgedChain:
-            return [.covenant, .order]
         case .sunwellPhial:
             return [.light, .life]
-        case .heartgear:
-            return [.life, .order]
-        case .astralFlorin:
+        case .astralGem:
             return [.covenant, .chaos, .light]
         }
     }
@@ -179,8 +161,8 @@ public enum Ingredient: String, Hashable, Equatable, CaseIterable, Identifiable,
             return ["Tastes good and keeps doctors away"]
         case .rock:
             return [
-                    "Looks like an ordinary rock",
-                    "Even this simple rock has a connection back to its home dimension",
+                "Looks like an ordinary rock",
+                "Even this simple rock has a connection back to its home dimension",
             ]
         case .copperFlorin:
             return [
@@ -208,10 +190,9 @@ public enum Ingredient: String, Hashable, Equatable, CaseIterable, Identifiable,
                 "Worth 100 gold Florins",
                 "Minted in tiny batches for the largest guild contracts and cross-city levies.",
             ]
-        case .astralFlorin:
+        case .astralGem:
             return [
-                "Worth 100 platinum Florins",
-                "A coin made of condensed astral light.",
+                "A gem made of condensed astral light.",
             ]
         case .potionFlask:
             return [
@@ -294,36 +275,10 @@ public enum Ingredient: String, Hashable, Equatable, CaseIterable, Identifiable,
                 "Those who nurture it to bloom are said to receive the memory as a vision.",
                 "Once the plant has grown more seeds can be harvested to be either sold or grown again to revist the memory",
             ]
-        case .nullLantern:
-            return [
-                "A lantern whose workings erase light instead of casting it, swallowing reflections and magical glows in a small radius.",
-                "Can be used to hide runes and wards from those trying to search for magical items.",
-            ]
-        case .axisHeart:
-            return [
-                "A faceted gemstone formed where multiple ley lines cross. An star shaped asterism is visible when looking at the gem",
-                "Touching the gemstone gives a feeling of the landscape where it was formed.",
-            ]
-        case .nullWeaveCloak:
-            return [
-                "A dark cloak threaded with fine metallic strands that disrupt detection sigils and sensors, creating a dead zone around the wearer.",
-                "It conceals both magic and machinery from scrutiny, but also interferes with the operation of some items.",
-            ]
-        case .oathforgedChain:
-            return [
-                "A short length of chain forged where each link is forced by an oath.",
-                "It tightens and rattles when a pact is broken, no matter how carefully the words were twisted.",
-            ]
         case .sunwellPhial:
             return [
                 "A sealed vial of liquid light drawn from a long lost spring.",
                 "A few drops can revive withered plants make them grow.",
-            ]
-        case .heartgear:
-            return [
-                "A small, ticking implant of brass and living root worn over the chest to steady a failing heart",
-                "Its roots wind around flesh and bone, turning every pulse into a precise mechanical rhythm.",
-                "Can be used to keep someone alive long past when their body should have given out",
             ]
         }
     }
