@@ -77,7 +77,7 @@ final class ConnectedClient: @unchecked Sendable {
         let addedLinks = newLinks.filter { !oldLinks.contains($0) }
         let newlyUnlocked = newUnlocked.subtracting(oldUnlocked)
         let newlyVisible = newVisibleIncomplete.subtracting(oldVisibleIncomplete)
-        let changedItems: [BaseItem: ItemWithDetails] = newItems.reduce(into: [:]) { partialResult, entry in
+        let changedItems: [Ingredient: ItemWithDetails] = newItems.reduce(into: [:]) { partialResult, entry in
             let (item, newValue) = entry
             if let oldValue = oldItems[item] {
                 if oldValue.count != newValue.count || oldValue.details != newValue.details {
@@ -169,12 +169,12 @@ struct ConnectedClientCache: Sendable {
     var links: [Link] = []
     var achievementsUnlocked: Set<Achievement> = []
     var achievementsVisibleIncomplete: Set<Achievement> = []
-    var items: [BaseItem: ItemWithDetails] = [:]
+    var items: [Ingredient: ItemWithDetails] = [:]
 }
 
 struct CacheDiff: Codable {
     var links: [Link]?
     var achievementsUnlocked: [HTTPAchievement]?
     var achievementsNewlyVisible: [HTTPAchievement]?
-    var items: [BaseItem: ItemWithDetails]?
+    var items: [Ingredient: ItemWithDetails]?
 }

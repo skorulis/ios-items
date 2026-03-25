@@ -44,7 +44,7 @@ final class UnlockRequirementCalculator {
             return statistics.tradesCompleted
         case let .itemsDiscovered:
             return Int64(
-                BaseItem.allCases.filter { item in
+                Ingredient.allCases.filter { item in
                     warehouse.hasDiscovered(item)
                 }.count
             )
@@ -56,7 +56,7 @@ final class UnlockRequirementCalculator {
             return Int64(warehouse.totalItemsCollected { $0.quality == .common })
         case .locationSpecificItemsDiscovered:
             return Int64(
-                BaseItem.locationSpecificItems.filter { item in
+                Ingredient.locationSpecificItems.filter { item in
                     warehouse.hasDiscovered(item)
                 }.count
             )

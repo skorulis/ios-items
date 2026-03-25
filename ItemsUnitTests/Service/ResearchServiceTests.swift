@@ -22,7 +22,7 @@ struct ResearchServiceTests {
         let assembly = makeAssembly()
         let researchService = assembly.resolver.researchService()
         let mainStore = assembly.resolver.mainStore()
-        let item: BaseItem = .apple
+        let item: Ingredient = .apple
         let start = Date(timeIntervalSince1970: 1_000)
 
         researchService.startResearch(to: item, now: start)
@@ -38,7 +38,7 @@ struct ResearchServiceTests {
         let assembly = makeAssembly()
         let researchService = assembly.resolver.researchService()
         let mainStore = assembly.resolver.mainStore()
-        let item: BaseItem = .apple
+        let item: Ingredient = .apple
         let start = Date(timeIntervalSince1970: 2_000)
 
         researchService.startResearch(to: item, now: start)
@@ -61,7 +61,7 @@ struct ResearchServiceTests {
         let assembly = makeAssembly()
         let researchService = assembly.resolver.researchService()
         let mainStore = assembly.resolver.mainStore()
-        let item: BaseItem = .apple
+        let item: Ingredient = .apple
         let start = Date(timeIntervalSince1970: 3_000)
 
         researchService.startResearch(to: item, now: start)
@@ -96,7 +96,7 @@ struct ResearchServiceTests {
     func rushCost_fullDuration_returnsItemsPerMinute() {
         let assembly = makeAssembly()
         let researchService = assembly.resolver.researchService()
-        let item: BaseItem = .apple
+        let item: Ingredient = .apple
         let start = Date(timeIntervalSince1970: 5_000)
 
         researchService.startResearch(to: item, now: start)
@@ -110,7 +110,7 @@ struct ResearchServiceTests {
     func rushCost_afterPartialProgress_reducesCost() {
         let assembly = makeAssembly()
         let researchService = assembly.resolver.researchService()
-        let item: BaseItem = .apple
+        let item: Ingredient = .apple
         let start = Date(timeIntervalSince1970: 6_000)
 
         researchService.startResearch(to: item, now: start)
@@ -125,7 +125,7 @@ struct ResearchServiceTests {
     func rushCost_partialMinuteRemaining_roundsUp() {
         let assembly = makeAssembly()
         let researchService = assembly.resolver.researchService()
-        let item: BaseItem = .apple
+        let item: Ingredient = .apple
         let start = Date(timeIntervalSince1970: 7_000)
 
         researchService.startResearch(to: item, now: start)
@@ -140,7 +140,7 @@ struct ResearchServiceTests {
     func rushCost_whenNoRemaining_returnsZero() {
         let assembly = makeAssembly()
         let researchService = assembly.resolver.researchService()
-        let item: BaseItem = .apple
+        let item: Ingredient = .apple
         let start = Date(timeIntervalSince1970: 8_000)
 
         researchService.startResearch(to: item, now: start)
@@ -155,7 +155,7 @@ struct ResearchServiceTests {
     func rushCost_noCurrentResearchForItem_usesStoredProgress() {
         let assembly = makeAssembly()
         let researchService = assembly.resolver.researchService()
-        let item: BaseItem = .apple
+        let item: Ingredient = .apple
         let start = Date(timeIntervalSince1970: 9_000)
 
         researchService.startResearch(to: item, now: start)
@@ -177,7 +177,7 @@ struct ResearchServiceTests {
         let assembly = makeAssembly()
         let researchService = assembly.resolver.researchService()
         let mainStore = assembly.resolver.mainStore()
-        let item: BaseItem = .apple
+        let item: Ingredient = .apple
         let start = Date(timeIntervalSince1970: 10_000)
 
         mainStore.warehouse.add(item: item, count: 5)
@@ -195,7 +195,7 @@ struct ResearchServiceTests {
         let assembly = makeAssembly()
         let researchService = assembly.resolver.researchService()
         let mainStore = assembly.resolver.mainStore()
-        let item: BaseItem = .apple
+        let item: Ingredient = .apple
         let start = Date(timeIntervalSince1970: 11_000)
 
         mainStore.warehouse.add(item: item, count: 5)
@@ -214,7 +214,7 @@ struct ResearchServiceTests {
         let assembly = makeAssembly()
         let researchService = assembly.resolver.researchService()
         let mainStore = assembly.resolver.mainStore()
-        let item: BaseItem = .apple
+        let item: Ingredient = .apple
         let start = Date(timeIntervalSince1970: 12_000)
 
         mainStore.warehouse.add(item: item, count: 1) // need 2 to rush level 0
@@ -233,7 +233,7 @@ struct ResearchServiceTests {
         let assembly = makeAssembly()
         let researchService = assembly.resolver.researchService()
         let mainStore = assembly.resolver.mainStore()
-        let item: BaseItem = .apple
+        let item: Ingredient = .apple
         let start = Date(timeIntervalSince1970: 13_000)
 
         mainStore.warehouse.add(item: item, count: 5)
@@ -252,7 +252,7 @@ struct ResearchServiceTests {
         let assembly = makeAssembly()
         let researchService = assembly.resolver.researchService()
         let mainStore = assembly.resolver.mainStore()
-        let item: BaseItem = .apple
+        let item: Ingredient = .apple
         let start = Date(timeIntervalSince1970: 14_000)
 
         mainStore.warehouse.add(item: item, count: 3)

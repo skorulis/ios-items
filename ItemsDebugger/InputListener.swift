@@ -64,9 +64,9 @@ final class InputListener {
         }
     }
 
-    private func baseItem(from input: String) -> BaseItem? {
+    private func baseItem(from input: String) -> Ingredient? {
         let normalized = input.trimmingCharacters(in: .whitespacesAndNewlines)
-        return BaseItem.allCases.first { item in
+        return Ingredient.allCases.first { item in
             String(describing: item) == normalized
                 || item.name.lowercased() == normalized.lowercased()
         }

@@ -47,7 +47,7 @@ final class ClientRequestHandler {
     func handle(request: ItemsClientRequest.Payload) -> ItemsClientResponse.Payload {
         switch request {
         case .getItems:
-            let itemsWithDetails = BaseItem.allCases.reduce(into: [BaseItem: ItemWithDetails]()) { dict, item in
+            let itemsWithDetails = Ingredient.allCases.reduce(into: [Ingredient: ItemWithDetails]()) { dict, item in
                 let quantity = mainStore.warehouse.quantity(item)
                 if mainStore.warehouse.hasDiscovered(item) {
                     let details = warehouseService.details(item: item)

@@ -99,7 +99,7 @@ extension WarehouseViewModel {
         }
     }
 
-    func isNew(item: BaseItem) -> Bool {
+    func isNew(item: Ingredient) -> Bool {
         model.newItemsToShow.contains(item)
     }
 
@@ -118,7 +118,7 @@ extension WarehouseViewModel {
         coordinator?.push(MainPath.tradingPost)
     }
 
-    func pressed(item: BaseItem) {
+    func pressed(item: Ingredient) {
         model.newItemsToShow.remove(item)
         coordinator?.custom(overlay: .card, MainPath.itemDetails(item))
     }

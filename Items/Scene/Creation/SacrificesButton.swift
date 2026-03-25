@@ -50,7 +50,7 @@ extension SacrificesButton: View {
     }
 
     private var strokeColor: Color {
-        var configuredSlots: [(Int, BaseItem)] = []
+        var configuredSlots: [(Int, Ingredient)] = []
         for index in 0..<SacrificeConfig.slotCount {
             if let item = model.config.item(at: index) {
                 configuredSlots.append((index, item))

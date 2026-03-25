@@ -4,10 +4,10 @@ import Foundation
 import Models
 
 struct Laboratory: Codable {
-    private var items: [BaseItem: ItemState] = [:]
+    private var items: [Ingredient: ItemState] = [:]
     var currentResearch: CurrentResearch?
 
-    func currentLevel(item: BaseItem) -> Int {
+    func currentLevel(item: Ingredient) -> Int {
         items[item]?.level ?? 0
     }
 
@@ -20,24 +20,24 @@ struct Laboratory: Codable {
         items.values.map(\.level).reduce(0, +)
     }
 
-    mutating func set(level: Int, item: BaseItem) {
+    mutating func set(level: Int, item: Ingredient) {
         items[item] = ItemState(level: level, accumulatedSeconds: 0)
     }
 
-    func accumulatedSeconds(for item: BaseItem) -> TimeInterval {
+    func accumulatedSeconds(for item: Ingredient) -> TimeInterval {
         items[item]?.accumulatedSeconds ?? 0
     }
 
-    mutating func setAccumulatedSeconds(_ seconds: TimeInterval, for item: BaseItem) {
+    mutating func setAccumulatedSeconds(_ seconds: TimeInterval, for item: Ingredient) {
         let level = items[item]?.level ?? 0
         items[item] = ItemState(level: level, accumulatedSeconds: seconds)
     }
 
-    mutating func setState(level: Int, accumulatedSeconds: TimeInterval, for item: BaseItem) {
+    mutating func setState(level: Int, accumulatedSeconds: TimeInterval, for item: Ingredient) {
         items[item] = ItemState(level: level, accumulatedSeconds: accumulatedSeconds)
     }
 
-    mutating func setCurrentResearch(item: BaseItem?, startDate: Date?) {
+    mutating func setCurrentResearch(item: Ingredient?, startDate: Date?) {
         if let item, let startDate {
             currentResearch = CurrentResearch(item: item, startDate: startDate)
         } else {
@@ -55,7 +55,7 @@ extension Laboratory {
     }
 
     struct CurrentResearch: Codable {
-        var item: BaseItem
+        var item: Ingredient
         var startDate: Date
     }
 }

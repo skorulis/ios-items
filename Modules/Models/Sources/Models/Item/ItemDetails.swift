@@ -3,7 +3,7 @@
 import Foundation
 
 public struct ItemDetails: Codable, Equatable {
-    public let item: BaseItem
+    public let item: Ingredient
     public let doubleChance: String
     public let researchLevel: Int?
 
@@ -14,7 +14,7 @@ public struct ItemDetails: Codable, Equatable {
     public let researchCost: Int?
 
     public init(
-        item: BaseItem,
+        item: Ingredient,
         doubleChance: String,
         researchLevel: Int?,
         researchCost: Int?,

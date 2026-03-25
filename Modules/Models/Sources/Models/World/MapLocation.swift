@@ -119,14 +119,14 @@ public extension MapLocation {
 public struct LocationDetails: Codable, Hashable {
     public let description: String
     public let essenceMultipliers: [Essence: Double]
-    public let uniqueItems: [BaseItem]
+    public let uniqueItems: [Ingredient]
     /// Cost to unlock or travel to this location (item and quantity per line).
     public let cost: [UpgradeCostItem]
 
     public init(
         description: String,
         essenceMultipliers: [Essence: Double],
-        uniqueItems: [BaseItem] = [],
+        uniqueItems: [Ingredient] = [],
         cost: [UpgradeCostItem] = []
     ) {
         self.description = description

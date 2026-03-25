@@ -90,7 +90,7 @@ final class TradingPostService {
 
     func generateTrades() -> [TradingPostTrade] {
         let tradeCount = tradeCountForCurrentUpgrades()
-        let discovered = BaseItem.allCases.filter { mainStore.warehouse.hasDiscovered($0) }
+        let discovered = Ingredient.allCases.filter { mainStore.warehouse.hasDiscovered($0) }
         let itemsByQuality = Dictionary(grouping: discovered, by: \.quality)
         let qualitiesWithPairs = ItemQuality.allCases.filter {
             (itemsByQuality[$0]?.count ?? 0) >= 2

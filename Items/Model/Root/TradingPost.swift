@@ -27,8 +27,8 @@ public struct TradingPostTrade: Codable, Identifiable, Hashable, Equatable {
     public static let maxExecutionsPerTrade = 5
 
     public var id: UUID
-    public let fromItem: BaseItem
-    public let toItem: BaseItem
+    public let fromItem: Ingredient
+    public let toItem: Ingredient
 
     /// Remaining executions for this trade offer (decrements each time the trade is made).
     public var quantity: Int
@@ -38,8 +38,8 @@ public struct TradingPostTrade: Codable, Identifiable, Hashable, Equatable {
 
     public init(
         id: UUID = UUID(),
-        fromItem: BaseItem,
-        toItem: BaseItem,
+        fromItem: Ingredient,
+        toItem: Ingredient,
         quantity: Int = TradingPostTrade.maxExecutionsPerTrade,
         fromQuantity: Int,
         toQuantity: Int,

@@ -21,7 +21,7 @@ import SwiftUI
 
     @Resolvable<BaseResolver>
     init(
-        @Argument item: BaseItem,
+        @Argument item: Ingredient,
         mainStore: MainStore,
         calculations: CalculationsService,
         warehouseService: WarehouseService,

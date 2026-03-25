@@ -15,7 +15,7 @@ import SwiftUI
 
 extension ItemDetailsView: View {
 
-    var item: BaseItem { viewModel.model.item }
+    var item: Ingredient { viewModel.model.item }
 
     var body: some View {
         VStack {
@@ -115,7 +115,7 @@ extension ItemDetailsView: View {
 
 extension ItemDetailsView {
     struct Model {
-        let item: BaseItem
+        let item: Ingredient
         var lab: Laboratory
         var warehouse: Warehouse
         var details: ItemDetails
@@ -131,6 +131,6 @@ extension ItemDetailsView {
 #Preview {
     let assembler = ItemsAssembly.testing()
     ItemDetailsView(
-        viewModel: assembler.resolver.itemDetailsViewModel(item: BaseItem.gear),
+        viewModel: assembler.resolver.itemDetailsViewModel(item: Ingredient.gear),
     )
 }

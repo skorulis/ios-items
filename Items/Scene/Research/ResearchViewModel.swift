@@ -55,7 +55,7 @@ import SwiftUI
 
 extension ResearchViewModel {
 
-    func selectAndBeginResearch(item: BaseItem) {
+    func selectAndBeginResearch(item: Ingredient) {
         researchService.startResearch(to: item, now: Date())
     }
 
@@ -75,7 +75,7 @@ extension ResearchViewModel {
         coordinator?.custom(overlay: .card, MainPath.dialog(HelpStrings.research))
     }
 
-    func showResearchLevelExplanation(item: BaseItem, index: Int) {
+    func showResearchLevelExplanation(item: Ingredient, index: Int) {
         let sections = item.availableResearch.sections
         guard sections.indices.contains(index) else { return }
         let level = lab.currentLevel(item: item)

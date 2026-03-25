@@ -67,7 +67,7 @@ final class ItemGeneratorService {
         let info = sacrificeInfo(plan: plan)
         let quality = info.randomQuality()
 
-        let options = BaseItem.allCases.filter { item in
+        let options = Ingredient.allCases.filter { item in
             guard item.quality == quality else { return false }
 
             // If the item is location-specific, only allow it when the current map location
@@ -86,7 +86,7 @@ final class ItemGeneratorService {
             for essence in item.essences {
                 chance *= info.essenceBoosts[essence, default: 1]
             }
-            // Higher BaseItem.rarity => larger weight => more likely to be rolled.
+            // Higher Ingredient.rarity => larger weight => more likely to be rolled.
             chance *= item.rarity
             return chance
         }
@@ -110,7 +110,7 @@ final class ItemGeneratorService {
 
     // MARK: - Private Functions
 
-    private func maybeConvertToArtifact(baseItem: BaseItem) -> ArtifactInstance? {
+    private func maybeConvertToArtifact(baseItem: Ingredient) -> ArtifactInstance? {
         let itemLevel = mainStore.lab.currentLevel(item: baseItem)
 
         guard let type = baseItem.associatedArtifact,

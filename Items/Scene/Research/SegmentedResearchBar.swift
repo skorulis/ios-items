@@ -80,13 +80,13 @@ extension SegmentedResearchBar: View {
 #Preview {
     VStack {
         SegmentedResearchBar(
-            research: BaseItem.apple.availableResearch,
+            research: Ingredient.apple.availableResearch,
             level: 0,
             onTapLevel: { _ in }
         )
 
         SegmentedResearchBar(
-            research: BaseItem.apple.availableResearch,
+            research: Ingredient.apple.availableResearch,
             level: 2,
             onTapLevel: { _ in }
         )

@@ -85,11 +85,11 @@ final class SacrificeService: ObservableObject {
             return .init(itemsInOrder: [], essences: [])
         }
         let config = sacrifices.sacrificeConfig
-        var available: [BaseItem: Int] = [:]
-        for item in BaseItem.allCases {
+        var available: [Ingredient: Int] = [:]
+        for item in Ingredient.allCases {
             available[item] = warehouse.quantity(item)
         }
-        var result: [Int: BaseItem?] = [:]
+        var result: [Int: Ingredient?] = [:]
         for index in 0..<SacrificeConfig.slotCount {
             guard let item = config.item(at: index) else {
                 result[index] = nil

@@ -7,7 +7,7 @@ import SwiftUI
 @MainActor
 struct ResearchRushButton: View {
 
-    let item: BaseItem
+    let item: Ingredient
     let cost: Int
     let isEnabled: Bool
     let action: () -> Void

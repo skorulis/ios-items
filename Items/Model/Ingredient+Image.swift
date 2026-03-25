@@ -1,10 +1,10 @@
-// App-specific: maps BaseItem to Asset images.
+// App-specific: maps Ingredient to Asset images.
 
 import Foundation
 import Models
 import SwiftUI
 
-extension BaseItem {
+extension Ingredient {
     public var image: Image? {
         switch self {
         case .apple:

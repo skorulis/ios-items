@@ -19,7 +19,7 @@ import SwiftUI
     private let description: String
     private let extraCaption: String?
     private let cost: [UpgradeCostItem]
-    private let itemQuantity: (BaseItem) -> Int
+    private let itemQuantity: (Ingredient) -> Int
     private let actionStyle: ActionStyle
     private let purchaseTitle: String
     private let canPurchase: Bool
@@ -32,7 +32,7 @@ import SwiftUI
         description: String,
         extraCaption: String? = nil,
         cost: [UpgradeCostItem],
-        itemQuantity: @escaping (BaseItem) -> Int,
+        itemQuantity: @escaping (Ingredient) -> Int,
         actionStyle: ActionStyle,
         canPurchase: Bool,
         purchaseTitle: String,

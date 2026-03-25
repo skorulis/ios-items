@@ -77,7 +77,7 @@ extension DebugViewModel {
     }
 
     func addItems() {
-        for item in BaseItem.allCases {
+        for item in Ingredient.allCases {
             mainStore.warehouse.add(item: item, count: 1)
         }
     }

@@ -36,7 +36,7 @@ import SwiftUI
         self.size = size
     }
 
-    /// Reusable empty/undiscovered state (e.g. for BaseItem or artifact slots).
+    /// Reusable empty/undiscovered state (e.g. for Ingredient or artifact slots).
     static func emptyState(size: Size = .medium) -> AvatarView {
         AvatarView(
             text: "",

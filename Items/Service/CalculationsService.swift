@@ -26,12 +26,12 @@ final class CalculationsService: ObservableObject {
     }
 
     /// Seconds required to complete the current research level (2 min base, doubles per level).
-    func researchDurationSeconds(for item: BaseItem) -> TimeInterval {
+    func researchDurationSeconds(for item: Ingredient) -> TimeInterval {
         let level = mainStore.lab.currentLevel(item: item)
         return researchDurationSeconds(for: item, level: level)
     }
 
-    func researchDurationSeconds(for item: BaseItem, level: Int) -> TimeInterval {
+    func researchDurationSeconds(for item: Ingredient, level: Int) -> TimeInterval {
         let baseDuration: TimeInterval = 120
         return baseDuration * pow(1.5, Double(level))
     }
@@ -54,7 +54,7 @@ final class CalculationsService: ObservableObject {
 
     /// Raw duplicate-item chance as a fraction (e.g. 1.5 = 150% = 1 guaranteed extra + 50% for another).
     /// Use this for determining how many items to create; can exceed 1.
-    func multipleItemChanceFraction(item: BaseItem) -> Double {
+    func multipleItemChanceFraction(item: Ingredient) -> Double {
         let level = Double(mainStore.lab.currentLevel(item: item))
         var fraction = (1 + level) * 0.05
         if let coin = mainStore.warehouse.equippedArtifact(.luckyCoin) {

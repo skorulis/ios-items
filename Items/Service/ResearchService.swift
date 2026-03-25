@@ -35,7 +35,7 @@ final class ResearchService {
 extension ResearchService {
 
     /// Start or switch research to the given item. Pauses any other item's current progress.
-    func startResearch(to item: BaseItem, now: Date = Date()) {
+    func startResearch(to item: Ingredient, now: Date = Date()) {
         // Apply any level-ups for the currently active item before pausing
         updateResearchProgress(now: now)
 
@@ -72,7 +72,7 @@ extension ResearchService {
     }
 
     /// The number of items required to rush the current research level (1 item per minute of remaining time).
-    func rushCost(for item: BaseItem, now: Date = Date()) -> Int {
+    func rushCost(for item: Ingredient, now: Date = Date()) -> Int {
         let (completed, total) = progressFor(item: item, now: now)
         let remainingSeconds = max(total - completed, 0)
         guard remainingSeconds > 0 else { return 0 }
@@ -81,12 +81,12 @@ extension ResearchService {
     }
 
     /// Instantly completes the current research level for the given item by consuming items and applying unlocks.
-    func rushResearch(to item: BaseItem, useBooks: Bool, now: Date = Date()) throws {
+    func rushResearch(to item: Ingredient, useBooks: Bool, now: Date = Date()) throws {
         var lab = mainStore.lab
         var warehouse = mainStore.warehouse
 
         let cost = rushCost(for: item, now: now)
-        let consumedItem: BaseItem = useBooks ? .book : item
+        let consumedItem: Ingredient = useBooks ? .book : item
         guard cost > 0, warehouse.quantity(consumedItem) >= cost else {
             throw ItemsError(message: "Insufficient item count")
         }
@@ -103,7 +103,7 @@ extension ResearchService {
         mainStore.warehouse = warehouse
     }
 
-    private func applyUnlocks(for item: BaseItem, newLevel: Int) {
+    private func applyUnlocks(for item: Ingredient, newLevel: Int) {
         mainStore.notifications.recordNewResearchLevel()
         toastService.showToast("Researched \(item.name) to level \(newLevel)")
         let essences = item.availableResearch.unlockedEssences(level: newLevel)
@@ -113,7 +113,7 @@ extension ResearchService {
     }
 
     /// Progress toward the next research level for the given item (completed seconds, total seconds for current level).
-    func progressFor(item: BaseItem, now: Date = Date()) -> (completed: TimeInterval, total: TimeInterval) {
+    func progressFor(item: Ingredient, now: Date = Date()) -> (completed: TimeInterval, total: TimeInterval) {
         let lab = mainStore.lab
         let total = calculations.researchDurationSeconds(for: item)
 
@@ -142,7 +142,7 @@ private enum ResearchType {
     case essence, lore
 }
 
-extension BaseItem {
+extension Ingredient {
 
     var availableResearch: Research {
         return .init(essences: self.essences, lore: lore)

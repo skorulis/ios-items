@@ -54,7 +54,7 @@ struct GolemMissionSlot: Codable {
     // The last time the activity changed
     private(set) var activityStartDate: Date
     private(set) var missionActivityState: MissionActivityState
-    var gainedItems: [BaseItem: Int]
+    var gainedItems: [Ingredient: Int]
     /// Timeline of notable mission events (started, activity changes, gathering results, completion).
     var activityLog: [GolemMissionLogEntry]
     /// Meters travelled while in the exploring activity (this mission run).

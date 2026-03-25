@@ -24,7 +24,7 @@ enum MainPath: CoordinatorPath {
     case mapLocations
     case mapLocationBonuses(MapLocation)
 
-    case itemDetails(BaseItem)
+    case itemDetails(Ingredient)
     case artifactDetails(ArtifactInstance)
     case artifacts
     case artifactPicker(slot: Int)

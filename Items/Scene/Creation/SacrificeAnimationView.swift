@@ -6,7 +6,7 @@ import SwiftUI
 // MARK: - Memory footprint
 
 @MainActor struct SacrificeAnimationView {
-    private let items: [BaseItem]
+    private let items: [Ingredient]
     private let startPosition: CGPoint
     private let endPosition: CGPoint
     private let duration: TimeInterval
@@ -16,7 +16,7 @@ import SwiftUI
     @State private var curveControlPoints: [CGPoint]?
 
     init(
-        items: [BaseItem],
+        items: [Ingredient],
         startPosition: CGPoint,
         endPosition: CGPoint,
         duration: TimeInterval,
@@ -33,7 +33,7 @@ import SwiftUI
 // MARK: - Animatable avatar on curve
 
 private struct CurvedPathAvatar: View, Animatable {
-    let item: BaseItem
+    let item: Ingredient
     let start: CGPoint
     let control: CGPoint
     let end: CGPoint
@@ -137,7 +137,7 @@ extension SacrificeAnimationView: View {
 #Preview {
     struct PreviewWrapper: View {
         @State private var animationId = UUID()
-        private let items: [BaseItem] = [.apple, .rock, .gear]
+        private let items: [Ingredient] = [.apple, .rock, .gear]
 
         var body: some View {
             GeometryReader { geo in

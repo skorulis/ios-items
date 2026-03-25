@@ -3,7 +3,7 @@
 import Foundation
 
 /// Simple items that only have quantity
-public enum BaseItem: String, Hashable, Equatable, CaseIterable, Identifiable, Codable {
+public enum Ingredient: String, Hashable, Equatable, CaseIterable, Identifiable, Codable {
     // Junk
     case apple
     case rock
@@ -170,7 +170,7 @@ public enum BaseItem: String, Hashable, Equatable, CaseIterable, Identifiable, C
         }
     }
 
-    public static var locationSpecificItems: [BaseItem] {
+    public static var locationSpecificItems: [Ingredient] {
         allCases.filter { $0.locationSpecific }
     }
 

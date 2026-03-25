@@ -8,15 +8,15 @@ import SwiftUI
 
 @MainActor struct ItemPicker {
     let title: String
-    let predicate: (BaseItem) -> Bool
-    let quantity: (BaseItem) -> Int?
-    let onSelect: (BaseItem) -> Void
+    let predicate: (Ingredient) -> Bool
+    let quantity: (Ingredient) -> Int?
+    let onSelect: (Ingredient) -> Void
 
     init(
         title: String = "Choose item",
-        predicate: @escaping (BaseItem) -> Bool = { _ in true },
-        quantity: @escaping (BaseItem) -> Int? = { _ in nil },
-        onSelect: @escaping (BaseItem) -> Void
+        predicate: @escaping (Ingredient) -> Bool = { _ in true },
+        quantity: @escaping (Ingredient) -> Int? = { _ in nil },
+        onSelect: @escaping (Ingredient) -> Void
     ) {
         self.title = title
         self.predicate = predicate
@@ -65,8 +65,8 @@ extension ItemPicker: View {
         }
     }
 
-    private var visibleItems: [BaseItem] {
-        BaseItem.allCases.filter(predicate)
+    private var visibleItems: [Ingredient] {
+        Ingredient.allCases.filter(predicate)
     }
 }
 

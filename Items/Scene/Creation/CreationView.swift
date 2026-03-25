@@ -13,7 +13,7 @@ import SwiftUI
     struct CreationInProgress {
         let id: UUID
         let duration: TimeInterval
-        let sacrificedItems: [BaseItem]
+        let sacrificedItems: [Ingredient]
 
         var creationColors: [Color] {
             let fromSacrfice = sacrificedItems

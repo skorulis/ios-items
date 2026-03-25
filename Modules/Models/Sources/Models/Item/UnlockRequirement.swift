@@ -27,7 +27,7 @@ public enum UnlockRequirement: Codable {
     case locationSpecificItemsDiscovered(Int64)
 
     /// A specific base item has been discovered.
-    case itemDiscovered(BaseItem)
+    case itemDiscovered(Ingredient)
 
     // How many essences have been unlocked
     case essencesUnlocked(Int64)

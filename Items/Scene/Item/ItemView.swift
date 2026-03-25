@@ -7,13 +7,13 @@ import SwiftUI
 // MARK: - Memory footprint
 
 @MainActor struct ItemView {
-    let item: BaseItem
+    let item: Ingredient
     let quantity: Int?
     let showNewBadge: Bool
     let size: AvatarView.Size
 
     init(
-        item: BaseItem,
+        item: Ingredient,
         quantity: Int? = nil,
         showNewBadge: Bool = false,
         size: AvatarView.Size = .medium

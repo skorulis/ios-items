@@ -12,7 +12,7 @@ import SwiftUI
     let cost: [UpgradeCostItem]
 
     /// Returns the current quantity for a given item.
-    let itemQuantity: (BaseItem) -> Int
+    let itemQuantity: (Ingredient) -> Int
 
     var body: some View {
         HStack(spacing: 8) {

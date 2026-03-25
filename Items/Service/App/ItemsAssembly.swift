@@ -106,7 +106,7 @@ final class ItemsAssembly: AutoInitModuleAssembly {
             EncyclopediaViewModel.make(resolver: resolver, entry: entry)
         }
 
-        container.register(ItemDetailsViewModel.self) { (resolver: BaseResolver, item: BaseItem) in
+        container.register(ItemDetailsViewModel.self) { (resolver: BaseResolver, item: Ingredient) in
             ItemDetailsViewModel.make(resolver: resolver, item: item)
         }
 

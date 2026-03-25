@@ -62,7 +62,7 @@ final class ItemsHTTPServer {
                 throw Abort(.badRequest, reason: "Missing query parameter: id")
             }
             print("Buy research: \(id)")
-            guard let item = BaseItem(rawValue: id) else {
+            guard let item = Ingredient(rawValue: id) else {
                 throw Abort(.badRequest, reason: "Unknown item id: \(id)")
             }
             let payload = try await self.getResponse(request: .buyResearch(item))

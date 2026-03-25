@@ -18,7 +18,7 @@ public struct ItemsClientRequest: Codable {
         // Actions
         case makeItem
         case purchaseUpgrade(PortalUpgrade)
-        case buyResearch(BaseItem)
+        case buyResearch(Ingredient)
 
         // Data
         case getItems

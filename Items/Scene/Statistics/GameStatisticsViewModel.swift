@@ -68,7 +68,7 @@ final class GameStatisticsViewModel: ObservableObject, CoordinatorViewModel {
     }
 
     private var itemsDiscoveredCount: Int {
-        BaseItem.allCases.filter { warehouse.hasDiscovered($0) }.count
+        Ingredient.allCases.filter { warehouse.hasDiscovered($0) }.count
     }
 
     private var achievementsUnlockedCount: Int {

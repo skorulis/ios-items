@@ -20,11 +20,11 @@ import SwiftUI
 
 extension EssenceBreakdownViewModel {
 
-    var itemsInScope: [BaseItem] {
+    var itemsInScope: [Ingredient] {
         if let quality = selectedQualityFilter {
-            return BaseItem.allCases.filter { $0.quality == quality }
+            return Ingredient.allCases.filter { $0.quality == quality }
         }
-        return Array(BaseItem.allCases)
+        return Array(Ingredient.allCases)
     }
 
     /// Essence counts in stable order (Essence.allCases), 0 for missing.

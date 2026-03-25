@@ -38,7 +38,7 @@ final class WarehouseService {
 extension WarehouseService {
 
     /// Add items to the warehouse.
-    func add(item: BaseItem, count: Int = 1) {
+    func add(item: Ingredient, count: Int = 1) {
         let wasNewDiscovery = !mainStore.warehouse.hasDiscovered(item)
         mainStore.warehouse.add(item: item, count: count)
         if wasNewDiscovery {
@@ -51,7 +51,7 @@ extension WarehouseService {
     }
 
     /// Remove items from the warehouse.
-    func remove(item: BaseItem, quantity: Int = 1) {
+    func remove(item: Ingredient, quantity: Int = 1) {
         mainStore.warehouse.remove(item: item, quantity: quantity)
     }
 
@@ -71,7 +71,7 @@ extension WarehouseService {
     }
 
     /// Mark an item as viewed so it no longer appears as new.
-    func markItemViewed(_ item: BaseItem) {
+    func markItemViewed(_ item: Ingredient) {
         mainStore.notifications.markItemViewed(item)
     }
 
@@ -115,7 +115,7 @@ extension WarehouseService {
         mainStore.warehouse.unequip(artifact)
     }
 
-    func details(item: BaseItem) -> ItemDetails {
+    func details(item: Ingredient) -> ItemDetails {
         let fraction = calculationService.multipleItemChanceFraction(item: item)
         let multipleItemChance = String(format: "%.1f%%", fraction * 100)
 

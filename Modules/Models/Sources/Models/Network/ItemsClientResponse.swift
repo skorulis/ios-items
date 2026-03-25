@@ -16,7 +16,7 @@ public struct ItemsClientResponse: Codable {
 
     // The actual response type sent over the wire
     public enum Payload: Codable {
-        case items([BaseItem: ItemWithDetails])
+        case items([Ingredient: ItemWithDetails])
         case makeItemResult(MakeItemResult)
         case actions([GameAction], [GameData])
         case artifacts([Artifact: ItemQuality])

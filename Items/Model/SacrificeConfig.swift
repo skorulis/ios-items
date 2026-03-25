@@ -9,22 +9,22 @@ struct SacrificeConfig: Codable, Equatable {
     static let slotCount: Int = 5
 
     /// Exactly `slotCount` elements; `nil` means empty slot.
-    var slots: [Int: BaseItem]
+    var slots: [Int: Ingredient]
 
-    init(slots: [Int: BaseItem] = [:]) {
+    init(slots: [Int: Ingredient] = [:]) {
         self.slots = slots
     }
 
-    func item(at index: Int) -> BaseItem? {
+    func item(at index: Int) -> Ingredient? {
         return slots[index]
     }
 
     /// Ordered list of assigned items (no nils); order follows slot index 0...4.
-    var assignedItems: [BaseItem] {
+    var assignedItems: [Ingredient] {
         return (0..<Self.slotCount).compactMap { slots[$0] }
     }
 
-    mutating func setSlot(index: Int, item: BaseItem?) {
+    mutating func setSlot(index: Int, item: Ingredient?) {
         guard index >= 0, index < Self.slotCount else { return }
         slots[index] = item
     }

@@ -2,7 +2,7 @@
 
 import Foundation
 
-public extension BaseItem {
+public extension Ingredient {
     var associatedArtifact: Artifact? {
         switch self {
         case .gear:
@@ -26,7 +26,7 @@ public extension BaseItem {
 }
 
 public extension Artifact {
-    var baseItem: BaseItem {
+    var ingredient: Ingredient {
         switch self {
         case .frictionlessGear: return .gear
         case .eternalHourglass: return .hourglass

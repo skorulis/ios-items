@@ -7,7 +7,7 @@ import Models
 /// Values are written by MainStore (from warehouse discoveries, achievements, research) and persisted.
 struct Notifications: Codable, Equatable {
     /// New warehouse items to show as "new" in the UI.
-    var newItems: Set<BaseItem> = []
+    var newItems: Set<Ingredient> = []
     /// New warehouse artifacts to show as "new" in the UI.
     var newArtifacts: Set<Artifact> = []
     /// New achievements to show as "new" in the UI.
@@ -27,7 +27,7 @@ struct Notifications: Codable, Equatable {
 
     // MARK: - Mutations (used by MainStore)
 
-    mutating func recordNewItemDiscovery(_ item: BaseItem) {
+    mutating func recordNewItemDiscovery(_ item: Ingredient) {
         newItems.insert(item)
     }
 
@@ -51,7 +51,7 @@ struct Notifications: Codable, Equatable {
         newResearchLevels = 0
     }
 
-    mutating func markItemViewed(_ item: BaseItem) {
+    mutating func markItemViewed(_ item: Ingredient) {
         newItems.remove(item)
     }
 

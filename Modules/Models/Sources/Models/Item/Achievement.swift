@@ -144,7 +144,7 @@ public enum Achievement: String, Codable, Hashable, CaseIterable, Identifiable, 
         case .items1_000_000:
             return .itemsCreated(1_000_000)
         case .allItems:
-            return .itemsDiscovered(Int64(BaseItem.allCases.count))
+            return .itemsDiscovered(Int64(Ingredient.allCases.count))
         case .sacrificed1:
             return .itemsSacrificed(1)
         case .sacrificed1000:

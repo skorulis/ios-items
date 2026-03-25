@@ -66,7 +66,7 @@ extension ResearchView: View {
         }
     }
 
-    private func textBlock(item: BaseItem) -> some View {
+    private func textBlock(item: Ingredient) -> some View {
         VStack {
             Text("Level: \(viewModel.currentLevel)")
             if viewModel.researchBoostPercent > 0 {
@@ -75,7 +75,7 @@ extension ResearchView: View {
         }
     }
 
-    private func progressBar(item: BaseItem) -> some View {
+    private func progressBar(item: Ingredient) -> some View {
         VStack(alignment: .leading, spacing: 12) {
             SegmentedResearchBar(
                 research: item.availableResearch,

@@ -122,7 +122,7 @@ final class TradingPostViewModel: CoordinatorViewModel {
         )
     }
 
-    func showItemDetails(_ item: BaseItem) {
+    func showItemDetails(_ item: Ingredient) {
         coordinator?.custom(overlay: .card, MainPath.itemDetails(item))
     }
 

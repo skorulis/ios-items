@@ -144,10 +144,10 @@ import SnapshotTesting
             {
                 VStack {
                     SegmentedResearchBar(
-                        research: BaseItem.apple.availableResearch, level: 0
+                        research: Ingredient.apple.availableResearch, level: 0
                     )
                     SegmentedResearchBar(
-                        research: BaseItem.apple.availableResearch, level: 2
+                        research: Ingredient.apple.availableResearch, level: 2
                     )
                 }
                 .padding(16)
@@ -307,7 +307,7 @@ import SnapshotTesting
             {
                 let assembler = ItemsAssembly.testing()
             ItemDetailsView(
-                    viewModel: assembler.resolver.itemDetailsViewModel(item: BaseItem.gear),
+                    viewModel: assembler.resolver.itemDetailsViewModel(item: Ingredient.gear),
                 )
             },
             name: "ItemDetailsView_0",

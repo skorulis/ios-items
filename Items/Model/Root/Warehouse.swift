@@ -5,18 +5,18 @@ import Models
 
 struct Warehouse: Codable, Equatable {
     // Current item storage
-    private var current: [BaseItem: Int] = [:]
+    private var current: [Ingredient: Int] = [:]
 
     // Discovered artifacts
     private var artifacts: [Artifact: ItemQuality] = [:]
 
     // Total items that have been found
-    private var total: [BaseItem: Int] = [:]
+    private var total: [Ingredient: Int] = [:]
 
     // Equipped artifacts
     var equippedSlots: [Int: Artifact] = [:]
 
-    func isNewDiscovery(item: BaseItem) -> Bool {
+    func isNewDiscovery(item: Ingredient) -> Bool {
         return (total[item] ?? 0) == 0
     }
 
@@ -28,7 +28,7 @@ struct Warehouse: Codable, Equatable {
         }
     }
 
-    mutating func add(item: BaseItem, count: Int = 1) {
+    mutating func add(item: Ingredient, count: Int = 1) {
         current[item, default: 0] += count
         total[item, default: 0] += count
     }
@@ -38,12 +38,12 @@ struct Warehouse: Codable, Equatable {
         artifacts[artifact.type] = max(quality, artifact.quality)
     }
 
-    mutating func remove(item: BaseItem, quantity: Int = 1) {
+    mutating func remove(item: Ingredient, quantity: Int = 1) {
         let count = current[item] ?? 0
         current[item] = count - quantity
     }
 
-    func quantity(_ item: BaseItem) -> Int {
+    func quantity(_ item: Ingredient) -> Int {
         return current[item] ?? 0
     }
 
@@ -73,7 +73,7 @@ struct Warehouse: Codable, Equatable {
         return current.next
     }
 
-    func hasDiscovered(_ item: BaseItem) -> Bool {
+    func hasDiscovered(_ item: Ingredient) -> Bool {
         return total[item] != nil
     }
 
@@ -81,7 +81,7 @@ struct Warehouse: Codable, Equatable {
         return total.reduce(0) { $0 + $1.value }
     }
 
-    func totalItemsCollected(_ predicate: (BaseItem) -> Bool) -> Int {
+    func totalItemsCollected(_ predicate: (Ingredient) -> Bool) -> Int {
         return total
             .filter { predicate($0.key) }
             .reduce(0) { $0 + $1.value }

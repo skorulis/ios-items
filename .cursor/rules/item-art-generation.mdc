@@ -73,7 +73,7 @@ Framing: item centered, fully visible, on a transparent background, square canva
 
 ## Mapping From Code to Art
 
-When `BaseItem` is mentioned, use the following as guidance:
+When `Ingredient` is mentioned, use the following as guidance:
 
 - `apple`: bright red apple similar to existing icon.
 - `rock`: small, chunky gray stone with simple facets.
@@ -90,5 +90,5 @@ When creating new items, derive their look from:
 - Their `name` and any mention of essences (e.g. wealth, technology, magic, life, dark, earth, light).
 - Their rarity/quality (junk, common, good) if provided: higher quality can have slightly more ornamentation and subtle glow.
 
-Create an Xcode `.imageset` under `Items/Resource/Assets.xcassets` (typically `baseItem/` for `BaseItem` art).  
+Create an Xcode `.imageset` under `Items/Resource/Assets.xcassets` (typically `baseItem/` for `Ingredient` art).  
 After generation, **post-process** (above), place the final PNG in the imageset, then run `swiftgen`.

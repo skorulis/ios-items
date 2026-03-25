@@ -18,7 +18,7 @@ import SwiftUI
     struct Model {
         var sacrificesEnabled: Bool
         var warehouse: Warehouse
-        var slotItems: [Int: BaseItem] = [:]
+        var slotItems: [Int: Ingredient] = [:]
         var consumptionPlan: SacrificePlan = SacrificePlan(
             slotsByIndex: [:],
             essenceMultipliers: [:],
@@ -188,7 +188,7 @@ extension SacrificeView: View {
         }
     }
 
-    private func filledSlot(item: BaseItem, index: Int, borderColor: Color) -> some View {
+    private func filledSlot(item: Ingredient, index: Int, borderColor: Color) -> some View {
         let diameter = Self.slotDiameter
         let quantity = viewModel.model.warehouse.quantity(item)
         return ZStack(alignment: .topTrailing) {

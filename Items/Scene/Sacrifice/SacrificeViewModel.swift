@@ -73,7 +73,7 @@ extension SacrificeViewModel {
         mainStore.sacrifices.sacrificeConfig = config
     }
 
-    func assignItem(at index: Int, item: BaseItem) {
+    func assignItem(at index: Int, item: Ingredient) {
         guard index < model.unlockedSlotCount else { return }
         var config = mainStore.sacrifices.sacrificeConfig
         config.setSlot(index: index, item: item)

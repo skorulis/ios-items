@@ -10,7 +10,7 @@ struct WarehouseView: View {
     @State var viewModel: WarehouseViewModel
 
     struct Model {
-        var newItemsToShow: Set<BaseItem> = []
+        var newItemsToShow: Set<Ingredient> = []
         var showArtifactsTab: Bool = false
         var showTradingPostButton: Bool = false
     }
@@ -41,7 +41,7 @@ struct WarehouseView: View {
     private var maybePicker: some View {
         if viewModel.model.showArtifactsTab {
             Picker("Page", selection: $viewModel.page) {
-                Text("Items")
+                Text("Ingredients")
                     .tag(WarehouseViewModel.Page.items)
                 Text("Artifacts")
                     .tag(WarehouseViewModel.Page.artifacts)
@@ -59,7 +59,7 @@ struct WarehouseView: View {
         let columns = [
             GridItem(.adaptive(minimum: 80))
         ]
-        let grouped = Dictionary(grouping: BaseItem.allCases, by: { $0.quality })
+        let grouped = Dictionary(grouping: Ingredient.allCases, by: { $0.quality })
 
         return LazyVStack(alignment: .leading, spacing: 16) {
             ForEach(ItemQuality.allCases, id: \.self) { quality in
@@ -85,7 +85,7 @@ struct WarehouseView: View {
     }
 
     @ViewBuilder
-    private func cell(item: BaseItem) -> some View {
+    private func cell(item: Ingredient) -> some View {
         if viewModel.warehouse.hasDiscovered(item) {
             Button(
                 action: {viewModel.pressed(item: item)},

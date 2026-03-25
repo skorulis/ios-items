@@ -7,7 +7,7 @@ import SwiftUI
 // MARK: - Memory footprint
 
 @MainActor struct ItemGridCell {
-    let item: BaseItem
+    let item: Ingredient
     let quantity: Int?
     var showNewBadge: Bool = false
 }

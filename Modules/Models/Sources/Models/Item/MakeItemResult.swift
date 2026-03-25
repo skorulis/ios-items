@@ -3,6 +3,6 @@
 import Foundation
 
 public enum MakeItemResult: Codable, Equatable {
-    case base(BaseItem, Int)
+    case base(Ingredient, Int)
     case artifact(ArtifactInstance)
 }

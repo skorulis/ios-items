@@ -8,7 +8,7 @@ import Models
 struct SacrificePlan: Equatable {
 
     /// Slot index → item that would be consumed, or `nil` if the slot is empty or insufficient stock.
-    private let slotsByIndex: [Int: BaseItem?]
+    private let slotsByIndex: [Int: Ingredient?]
 
     /// Essences that will be included in the sacrifice from consumed items, counting only essences unlocked by research.
     let essences: [Essence]
@@ -16,7 +16,7 @@ struct SacrificePlan: Equatable {
     let essenceMultipliers: [Essence: Double]
 
     init(
-        slotsByIndex: [Int: BaseItem?],
+        slotsByIndex: [Int: Ingredient?],
         essences: [Essence] = [],
         essenceMultipliers: [Essence: Double] = [:],
     ) {
@@ -27,11 +27,11 @@ struct SacrificePlan: Equatable {
 
     /// Builds a plan from an ordered list of consumed items. Indices are 0, 1, 2, …
     init(
-        itemsInOrder items: [BaseItem],
+        itemsInOrder items: [Ingredient],
         essences: [Essence] = [],
         essenceMultipliers: [Essence: Double] = [:],
     ) {
-        var slots: [Int: BaseItem?] = [:]
+        var slots: [Int: Ingredient?] = [:]
         for (i, item) in items.enumerated() {
             slots[i] = item
         }
@@ -41,8 +41,8 @@ struct SacrificePlan: Equatable {
     }
 
     /// Items that would be consumed, in ascending slot index order (skips unsatisfied / empty slots).
-    var consumedItems: [BaseItem] {
-        var out: [BaseItem] = []
+    var consumedItems: [Ingredient] {
+        var out: [Ingredient] = []
         for k in slotsByIndex.keys.sorted() {
             if let wrapped = slotsByIndex[k], let item = wrapped {
                 out.append(item)
@@ -52,7 +52,7 @@ struct SacrificePlan: Equatable {
     }
 
     /// Item consumable from this slot after accounting for earlier slots, or `nil`.
-    func item(at index: Int) -> BaseItem? {
+    func item(at index: Int) -> Ingredient? {
         slotsByIndex[index] ?? nil
     }
 
