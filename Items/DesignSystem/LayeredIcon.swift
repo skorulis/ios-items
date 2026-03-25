@@ -27,7 +27,12 @@ public struct LayeredIcon: View {
     }
 
     func size(_ diameter: CGFloat) -> Self {
-        .init(main: main, overlay: overlay, diameter: diameter)
+        .init(
+            main: main,
+            tintColor: tintColor,
+            overlay: overlay,
+            diameter: diameter,
+        )
     }
 
     private var overlayDiameter: CGFloat { diameter * 0.3 }

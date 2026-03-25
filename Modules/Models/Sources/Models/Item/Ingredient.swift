@@ -211,7 +211,7 @@ public enum Ingredient: String, Hashable, Equatable, CaseIterable, Identifiable,
         case .astralFlorin:
             return [
                 "Worth 100 platinum Florins",
-                "An exceptional coin infused with astral light, accepted as collateral by portal keepers.",
+                "A coin made of condensed astral light.",
             ]
         case .potionFlask:
             return [

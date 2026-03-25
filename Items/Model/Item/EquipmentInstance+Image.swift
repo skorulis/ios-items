@@ -4,7 +4,7 @@ import Foundation
 import Models
 
 extension EquipmentInstance {
-    
+
     var image: LayeredIcon {
         return .init(
             main: self.kind.image,

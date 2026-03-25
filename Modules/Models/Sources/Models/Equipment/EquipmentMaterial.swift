@@ -6,29 +6,24 @@ import SwiftUI
 public enum EquipmentMaterial: String, Codable, CaseIterable, Hashable, Identifiable, Sendable {
     case stone
     case crystal
-    case iron
-    case leather
-    case silver
+    case astral
 
     public var id: Self { self }
 
-    /// Leading adjective for composed names (e.g. "Iron", "Leather").
+    /// Leading adjective for composed name
     public var nameAdjective: String {
         String(describing: self).fromCaseName
     }
 
+    /// Quality tier this material corresponds to
     public var quality: ItemQuality {
         switch self {
         case .stone:
             return .junk
         case .crystal:
             return .common
-        case .iron:
-            return .common
-        case .leather:
-            return .common
-        case .silver:
-            return .good
+        case .astral:
+            return .exceptional
         }
     }
 
@@ -36,15 +31,11 @@ public enum EquipmentMaterial: String, Codable, CaseIterable, Hashable, Identifi
     public var color: Color {
         switch self {
         case .stone:
-            return .orange
+            return .gray
         case .crystal:
             return .yellow
-        case .iron:
-            return .gray
-        case .leather:
-            return .brown
-        case .silver:
-            return .cyan
+        case .astral:
+            return .green
         }
     }
 }

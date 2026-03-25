@@ -13,7 +13,10 @@ public enum EquipmentRecipe: Codable, CaseIterable {
         case .stoneDagger:
             return [.init(item: .rock, quantity: 50)]
         case .crystalDagger:
-            return [.init(item: .quartzCrystal, quantity: 50)]
+            return [
+                .init(item: .quartzCrystal, quantity: 25),
+                .init(item: .whetstone, quantity: 25),
+            ]
         }
     }
 
