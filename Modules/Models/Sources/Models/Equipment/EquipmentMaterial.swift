@@ -14,7 +14,7 @@ public enum EquipmentMaterial: String, Codable, CaseIterable, Hashable, Identifi
     public var nameAdjective: String {
         String(describing: self).fromCaseName
     }
-    
+
     public var quality: ItemQuality {
         switch self {
         case .stone:

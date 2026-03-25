@@ -6,13 +6,13 @@ import SwiftUI
 public nonisolated enum Essence: String, Identifiable, Hashable, Codable, CaseIterable {
     case dark
     case light
-    
+
     case chaos
     case order
-    
+
     case earth
     case life
-    
+
     case covenant
     case mind
 
@@ -47,7 +47,7 @@ public extension Essence {
 }
 
 public extension Essence {
-    
+
     var color: Color {
         switch self {
         case .life: return .green
@@ -71,10 +71,10 @@ public extension Essence {
         case .order: return Image(systemName: "square.grid.3x3.fill")
         case .covenant: return Image(systemName: "checkmark.seal.fill")
         case .mind: return Image(systemName: "brain.head.profile")
-        
+
         }
     }
-    
+
     // Terms and concepts associated with this essence
     var associations: [String] {
         switch self {

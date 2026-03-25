@@ -15,9 +15,12 @@ struct Warehouse: Codable, Equatable {
 
     // Equipped artifacts
     var equippedSlots: [Int: Artifact] = [:]
-    
+
     // Available recipes
     var recipes: Set<EquipmentRecipe> = []
+    
+    /// Owned compositional gear (each entry is a unique instance).
+    var equipment: [EquipmentInstance] = []
 
     func isNewDiscovery(item: Ingredient) -> Bool {
         return (total[item] ?? 0) == 0

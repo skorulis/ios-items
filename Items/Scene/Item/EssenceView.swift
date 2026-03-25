@@ -38,7 +38,7 @@ extension EssenceView: View {
                 EssenceView(essence: essence)
                 Text(essence.name)
             }
-            
+
         }
     }
 

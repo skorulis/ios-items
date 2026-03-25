@@ -69,6 +69,10 @@ final class ItemGeneratorService {
         let info = sacrificeInfo(plan: plan)
         let quality = info.randomQuality()
 
+        if let recipe = maybeMakeRecipe(quality: quality) {
+            return .recipe(recipe)
+        }
+
         let options = Ingredient.allCases.filter { item in
             guard item.quality == quality else { return false }
 
@@ -111,6 +115,22 @@ final class ItemGeneratorService {
     }
 
     // MARK: - Private Functions
+
+    private func maybeMakeRecipe(quality: ItemQuality) -> EquipmentRecipe? {
+        // Small base chance to find recipes
+        guard Chance(percent: 1).check() else {
+            return nil
+        }
+        let recipe = EquipmentRecipe.allCases
+            .filter { $0.quality == quality }
+            .randomElement()
+
+        guard let recipe else { return nil }
+        if mainStore.warehouse.recipes.contains(recipe) {
+            return nil
+        }
+        return recipe
+    }
 
     private func maybeConvertToArtifact(baseItem: Ingredient) -> ArtifactInstance? {
         let itemLevel = mainStore.lab.currentLevel(item: baseItem)

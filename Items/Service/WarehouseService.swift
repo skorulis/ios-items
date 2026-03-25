@@ -69,10 +69,19 @@ extension WarehouseService {
             mainStore.notifications.recordNewArtifactDiscovery(artifact.type)
         }
     }
-    
+
     func add(recipe: EquipmentRecipe) {
         mainStore.warehouse.recipes.insert(recipe)
     }
+    
+    /// Add a unique gear instance to the warehouse.
+    func add(equipment: EquipmentInstance) {
+        // Maximum 100 items in the inventory
+        if mainStore.warehouse.equipment.count < 100 {
+            mainStore.warehouse.equipment.append(equipment)
+        }
+    }
+
 
     /// Mark an item as viewed so it no longer appears as new.
     func markItemViewed(_ item: Ingredient) {

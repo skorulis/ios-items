@@ -204,8 +204,20 @@ extension CreationViewModel {
         case let .artifact(artifact):
             coordinator?.custom(overlay: .card, MainPath.artifactDetails(artifact))
         case let .recipe(recipe):
-            break
+            coordinator?.custom(overlay: .card, MainPath.fullDialog(recipeDetailsDialogModel(for: recipe)))
         }
+    }
+
+    private func recipeDetailsDialogModel(for recipe: EquipmentRecipe) -> DefaultDialogContent.Model {
+        var lines: [String] = [
+            "Equipment: \(recipe.kind.displayName)",
+            "Material: \(recipe.material.nameAdjective)",
+            "Base quality: \(recipe.quality.name)",
+            "",
+            "Materials required:",
+        ]
+        lines.append(contentsOf: recipe.cost.map { "• \($0.quantity) \($0.item.name)" })
+        return .init(bodyText: lines.joined(separator: "\n"), title: recipe.name)
     }
 
     func showResearch() {
