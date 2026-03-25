@@ -37,6 +37,8 @@ enum MainPath: CoordinatorPath {
     case portalUpgradeDetail(PortalUpgrade)
 
     case tradingPost
+    case crafting
+    case equipmentRecipePicker
 
     // Present a block of text
     case dialog(String)
@@ -73,6 +75,8 @@ struct MainPathRenderer: CoordinatorPathRenderer {
             GolemsView(viewModel: coordinator.apply(resolver.golemsViewModel()))
         case .warehouse:
             WarehouseView(viewModel: coordinator.apply(resolver.warehouseViewModel()))
+        case .crafting:
+            CraftingView(viewModel: coordinator.apply(resolver.craftingViewModel()))
         case .sacrifices:
             SacrificeView(viewModel: coordinator.apply(resolver.sacrificeViewModel()))
         case .research:
@@ -127,6 +131,8 @@ struct MainPathRenderer: CoordinatorPathRenderer {
             )
         case .tradingPost:
             TradingPostView(viewModel: coordinator.apply(resolver.tradingPostViewModel()))
+        case .equipmentRecipePicker:
+            EquipmentRecipePickerView(viewModel: resolver.equipmentRecipePickerViewModel())
         case let .dialog(text):
             DefaultDialogContent(model: .init(bodyText: text))
         case let .fullDialog(model):

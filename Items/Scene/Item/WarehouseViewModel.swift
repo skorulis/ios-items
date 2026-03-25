@@ -118,6 +118,14 @@ extension WarehouseViewModel {
         coordinator?.push(MainPath.tradingPost)
     }
 
+    var hasDiscoveredRecipes: Bool {
+        !warehouse.recipes.isEmpty
+    }
+
+    func showCrafting() {
+        coordinator?.push(MainPath.crafting)
+    }
+
     func pressed(item: Ingredient) {
         model.newItemsToShow.remove(item)
         coordinator?.custom(overlay: .card, MainPath.itemDetails(item))

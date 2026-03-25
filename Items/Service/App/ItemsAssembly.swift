@@ -91,6 +91,7 @@ final class ItemsAssembly: AutoInitModuleAssembly {
             .inObjectScope(.weak) // Not sure why this one is having problems, this is a hack to fix
         container.register(GolemsViewModel.self) { GolemsViewModel.make(resolver: $0) }
         container.register(WarehouseViewModel.self) { WarehouseViewModel.make(resolver: $0) }
+        container.register(CraftingViewModel.self) { CraftingViewModel.make(resolver: $0) }
         container.register(DebugViewModel.self) { DebugViewModel.make(resolver: $0) }
         container.register(SacrificeViewModel.self) { SacrificeViewModel.make(resolver: $0) }
         container.register(ResearchViewModel.self) { ResearchViewModel.make(resolver: $0) }
@@ -101,6 +102,7 @@ final class ItemsAssembly: AutoInitModuleAssembly {
         container.register(MapLocationViewModel.self) { MapLocationViewModel.make(resolver: $0) }
         container.register(ArtifactsViewModel.self) { ArtifactsViewModel.make(resolver: $0) }
         container.register(TradingPostViewModel.self) { TradingPostViewModel.make(resolver: $0) }
+        container.register(EquipmentRecipePickerViewModel.self) { EquipmentRecipePickerViewModel.make(resolver: $0) }
 
         container.register(EncyclopediaViewModel.self) { (resolver: BaseResolver, entry: EncyclopediaEntry) in
             EncyclopediaViewModel.make(resolver: resolver, entry: entry)

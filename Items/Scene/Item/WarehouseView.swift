@@ -112,6 +112,9 @@ struct WarehouseView: View {
                     if viewModel.model.showTradingPostButton {
                         tradingPostButton
                     }
+                    if viewModel.hasDiscoveredRecipes {
+                        craftingButton
+                    }
                     helpButton
                 }
             }
@@ -134,6 +137,16 @@ struct WarehouseView: View {
     private var tradingPostButton: some View {
         Button(action: viewModel.showTradingPost) {
             Image(systemName: "storefront")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 24, height: 24)
+                .foregroundStyle(Color.black)
+        }
+    }
+
+    private var craftingButton: some View {
+        Button(action: viewModel.showCrafting) {
+            Image(systemName: "hammer")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 24, height: 24)

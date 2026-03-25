@@ -73,7 +73,7 @@ extension WarehouseService {
     func add(recipe: EquipmentRecipe) {
         mainStore.warehouse.recipes.insert(recipe)
     }
-    
+
     /// Add a unique gear instance to the warehouse.
     func add(equipment: EquipmentInstance) {
         // Maximum 100 items in the inventory
@@ -81,7 +81,6 @@ extension WarehouseService {
             mainStore.warehouse.equipment.append(equipment)
         }
     }
-
 
     /// Mark an item as viewed so it no longer appears as new.
     func markItemViewed(_ item: Ingredient) {
