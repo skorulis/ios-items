@@ -61,6 +61,8 @@ extension Ingredient {
             return nil
         case .lightningStone:
             return nil
+        case .abyssalGeode:
+            return nil
         case .astralGem:
             return nil
         }

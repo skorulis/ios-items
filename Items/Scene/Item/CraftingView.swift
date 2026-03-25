@@ -3,6 +3,10 @@ import Knit
 import Models
 import SwiftUI
 
+private enum CraftingViewMetrics {
+    static let outputSlotSize: CGFloat = 168
+}
+
 @MainActor
 struct CraftingView: View {
     @State var viewModel: CraftingViewModel
@@ -74,7 +78,7 @@ struct CraftingView: View {
                 )
             }
             .buttonStyle(.plain)
-            .disabled(viewModel.discoveredRecipes.isEmpty)
+            .disabled(viewModel.discoveredRecipes.isEmpty || viewModel.isCrafting)
         }
     }
 
@@ -83,11 +87,64 @@ struct CraftingView: View {
             Text(recipe.productName)
                 .font(.appSectionTitle)
 
+            recipeOutputSlot(recipe: recipe)
+
             Text("Materials required")
                 .font(.appSubheadline.weight(.semibold))
 
             UpgradeCostRow(cost: recipe.cost, itemQuantity: { viewModel.warehouse.quantity($0) })
         }
+    }
+
+    private func craftingParticleColors(for recipe: EquipmentRecipe) -> [Color] {
+        let fromMaterials = recipe.cost.flatMap(\.item.essences).map(\.color)
+        if fromMaterials.isEmpty {
+            return Essence.allCases.map(\.color)
+        }
+        return fromMaterials
+    }
+
+    private func recipeOutputSlot(recipe: EquipmentRecipe) -> some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color.gray.opacity(0.08))
+            RoundedRectangle(cornerRadius: 16)
+                .strokeBorder(Color.accentColor.opacity(0.4), lineWidth: 1.5)
+
+            if let progress = viewModel.craftingInProgress, progress.recipe == recipe {
+                ParticleCanvasView(
+                    movementDuration: progress.duration,
+                    colors: craftingParticleColors(for: recipe),
+                )
+                .id(progress.id)
+                .allowsHitTesting(false)
+            } else if let crafted = viewModel.lastCraftedEquipment {
+                Button {
+                    viewModel.showEquipmentDetails(for: crafted)
+                } label: {
+                    AvatarView(
+                        text: crafted.fullName,
+                        icon: crafted.image,
+                        border: crafted.quality.color,
+                        size: .medium,
+                    )
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("\(crafted.displayName), \(crafted.quality.name)")
+            } else {
+                VStack(spacing: 8) {
+                    Image(systemName: "cube.transparent")
+                        .font(.system(size: 36))
+                        .foregroundStyle(.tertiary)
+                    Text("Output")
+                        .font(.appCaption)
+                        .foregroundStyle(.secondary)
+                }
+            }
+        }
+        .frame(width: CraftingViewMetrics.outputSlotSize, height: CraftingViewMetrics.outputSlotSize)
+        .frame(maxWidth: .infinity)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
     }
 
     private var craftSection: some View {
@@ -101,8 +158,14 @@ struct CraftingView: View {
             Button(action: {
                 viewModel.craft()
             }) {
-                Text("Craft")
-                    .frame(maxWidth: .infinity)
+                ZStack {
+                    if viewModel.isCrafting {
+                        ProgressView()
+                    }
+                    Text("Craft")
+                        .opacity(viewModel.isCrafting ? 0 : 1)
+                }
+                .frame(maxWidth: .infinity)
             }
             .buttonStyle(.borderedProminent)
             .disabled(!viewModel.canCraft)

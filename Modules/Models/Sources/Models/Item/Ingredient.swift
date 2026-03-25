@@ -38,6 +38,7 @@ public enum Ingredient: String, Hashable, Equatable, CaseIterable, Identifiable,
     case platinumFlorin
     case sunwellPhial
     case lightningStone
+    case abyssalGeode
 
     // Exceptional
     case astralGem
@@ -56,7 +57,7 @@ public enum Ingredient: String, Hashable, Equatable, CaseIterable, Identifiable,
             return .common
         case .goldFlorin, .jadeFigurine, .portalShard, .soulEmber, .anchorStone, .memorySeed, .metalBloom, .cipherRibbon:
             return .good
-        case .platinumFlorin, .sunwellPhial, .lightningStone:
+        case .platinumFlorin, .sunwellPhial, .lightningStone, .abyssalGeode:
             return .rare
         case .astralGem:
             return .exceptional
@@ -143,6 +144,8 @@ public enum Ingredient: String, Hashable, Equatable, CaseIterable, Identifiable,
             return [.light, .life]
         case .lightningStone:
             return [.light, .order, .earth]
+        case .abyssalGeode:
+            return [.dark, .earth, .chaos]
 
             // Exceptional
         case .astralGem:
@@ -299,6 +302,11 @@ public enum Ingredient: String, Hashable, Equatable, CaseIterable, Identifiable,
             return [
                 "A dense stone threaded with bright veins; storm has been caught and held inside.",
                 "Artificers can tap it like a battery or forge it into weapons",
+            ]
+        case .abyssalGeode:
+            return [
+                "A hollow stone lined with black crystals that seem to shift when you're not looking directly at them.",
+                "Formed in the deepest seams of the world, the level of pressure and exposure to chaos has created a stone with impossible internal angles.",
             ]
         }
     }

@@ -11,6 +11,7 @@ final class CraftingViewModel: CoordinatorViewModel {
 
     private let mainStore: MainStore
     private let craftingService: CraftingService
+    private let calculations: CalculationsService
 
     private var cancellables: Set<AnyCancellable> = []
 
@@ -19,13 +20,21 @@ final class CraftingViewModel: CoordinatorViewModel {
     /// Selected recipe index into `discoveredRecipes`, updated by this screen or the recipe picker overlay.
     private(set) var selectedRecipeIndex: Int?
 
+    /// Active craft animation (portal-style particle timing).
+    private(set) var craftingInProgress: CraftingInProgress?
+
+    /// Last successfully crafted piece, shown in the output slot until the recipe changes.
+    private(set) var lastCraftedEquipment: EquipmentInstance?
+
     @Resolvable<BaseResolver>
     init(
         mainStore: MainStore,
-        craftingService: CraftingService
+        craftingService: CraftingService,
+        calculations: CalculationsService
     ) {
         self.mainStore = mainStore
         self.craftingService = craftingService
+        self.calculations = calculations
         self.warehouse = mainStore.warehouse
 
         mainStore.$warehouse
@@ -56,9 +65,11 @@ final class CraftingViewModel: CoordinatorViewModel {
         }
     }
 
+    var isCrafting: Bool { craftingInProgress != nil }
+
     var canCraft: Bool {
         guard let recipe = selectedRecipe else { return false }
-        return hasInventorySpace && canAfford(recipe)
+        return !isCrafting && hasInventorySpace && canAfford(recipe)
     }
 
     var craftDisabledReason: String? {
@@ -68,6 +79,7 @@ final class CraftingViewModel: CoordinatorViewModel {
 
     func selectRecipe(at index: Int) {
         selectedRecipeIndex = index
+        lastCraftedEquipment = nil
     }
 
     func showRecipePicker() {
@@ -83,12 +95,41 @@ final class CraftingViewModel: CoordinatorViewModel {
     }
 
     func craft() {
-        guard canCraft, let recipe = selectedRecipe else { return }
-        guard let instance = craftingService.craft(recipe: recipe) else { return }
-
-        coordinator?.custom(
-            overlay: .card,
-            MainPath.dialog("Crafted \(instance.displayName)")
-        )
+        Task { await craftAsync() }
     }
+
+    private func craftAsync() async {
+        guard !isCrafting, let recipe = selectedRecipe else { return }
+        guard hasInventorySpace, canAfford(recipe) else { return }
+
+        let duration = TimeInterval(calculations.itemCreationMilliseconds) / 1000
+        craftingInProgress = CraftingInProgress(id: UUID(), duration: duration, recipe: recipe)
+
+        let ms = Int(calculations.itemCreationMilliseconds)
+        try? await Task.sleep(for: .milliseconds(ms))
+
+        craftingInProgress = nil
+
+        guard let instance = craftingService.craft(recipe: recipe) else {
+            coordinator?.custom(
+                overlay: .card,
+                MainPath.dialog("Could not complete crafting. Check materials and inventory space.")
+            )
+            return
+        }
+
+        lastCraftedEquipment = instance
+    }
+
+    func showEquipmentDetails(for instance: EquipmentInstance) {
+        coordinator?.custom(overlay: .card, MainPath.equipmentDetails(instance))
+    }
+}
+
+// MARK: - Crafting animation state
+
+struct CraftingInProgress: Equatable {
+    let id: UUID
+    let duration: TimeInterval
+    let recipe: EquipmentRecipe
 }
