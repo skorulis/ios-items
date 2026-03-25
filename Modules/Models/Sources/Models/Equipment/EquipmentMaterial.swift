@@ -1,6 +1,7 @@
 //  Created by Alexander Skorulis on 25/3/2026.
 
 import Foundation
+import SwiftUI
 
 public enum EquipmentMaterial: String, Codable, CaseIterable, Hashable, Identifiable, Sendable {
     case stone
@@ -25,6 +26,20 @@ public enum EquipmentMaterial: String, Codable, CaseIterable, Hashable, Identifi
             return .common
         case .silver:
             return .good
+        }
+    }
+
+    /// UI color for this material (derived from its quality tier).
+    public var color: Color {
+        switch self {
+        case .stone:
+            return .orange
+        case .iron:
+            return .gray
+        case .leather:
+            return .brown
+        case .silver:
+            return .cyan
         }
     }
 }

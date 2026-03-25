@@ -35,6 +35,7 @@ internal enum Asset {
     internal static let embuedChalk = ImageAsset(name: "embuedChalk")
     internal static let flask = ImageAsset(name: "flask")
     internal static let gear = ImageAsset(name: "gear")
+    internal static let giantThorn = ImageAsset(name: "giantThorn")
     internal static let goldCoin = ImageAsset(name: "goldCoin")
     internal static let hourglass = ImageAsset(name: "hourglass")
     internal static let humanSkull = ImageAsset(name: "humanSkull")
@@ -48,6 +49,10 @@ internal enum Asset {
     internal static let silverCoin = ImageAsset(name: "silverCoin")
     internal static let steelArrowhead = ImageAsset(name: "steelArrowhead")
     internal static let whetstone = ImageAsset(name: "whetstone")
+  }
+  internal enum Equipment {
+    internal static let dagger = ImageAsset(name: "dagger")
+    internal static let shortSword = ImageAsset(name: "shortSword")
   }
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name
