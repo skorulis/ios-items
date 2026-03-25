@@ -9,6 +9,15 @@ struct EquipmentListView: View {
     let contentOnly: Bool
     @Environment(\.dismissCircularReveal) private var dismissCircularReveal
 
+    enum SortOption: String, CaseIterable, Identifiable {
+        case name
+        case quality
+
+        var id: String { rawValue }
+    }
+
+    @State private var sortOption: SortOption = .quality
+
     var body: some View {
         if contentOnly {
             content
@@ -37,6 +46,7 @@ struct EquipmentListView: View {
     private var content: some View {
         VStack(alignment: .leading, spacing: 16) {
             headerRow
+            sortPickerRow
 
             if viewModel.equipment.isEmpty {
                 Text("No equipment crafted yet.")
@@ -44,9 +54,23 @@ struct EquipmentListView: View {
                     .foregroundStyle(.secondary)
                     .padding(.top, 12)
             } else {
-                VStack(spacing: 10) {
-                    ForEach(viewModel.equipment) { instance in
-                        equipmentRow(instance: instance)
+                LazyVGrid(
+                    columns: [GridItem(.adaptive(minimum: 80))],
+                    spacing: 12
+                ) {
+                    ForEach(displayedEquipment) { instance in
+                        Button {
+                            viewModel.showDetails(for: instance)
+                        } label: {
+                            AvatarView(
+                                text: instance.displayName,
+                                image: nil,
+                                border: instance.quality.color,
+                                size: .medium
+                            )
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityLabel("\(instance.displayName), \(instance.quality.name)")
                     }
                 }
             }
@@ -64,39 +88,33 @@ struct EquipmentListView: View {
         }
     }
 
-    private func equipmentRow(instance: EquipmentInstance) -> some View {
-        HStack(spacing: 12) {
-            AvatarView(
-                text: instance.displayName,
-                image: nil,
-                border: instance.quality.color,
-                size: .small
-            )
-
-            VStack(alignment: .leading, spacing: 2) {
-                Text(instance.displayName)
-                    .font(.appSubheadline.weight(.semibold))
-                    .foregroundStyle(.primary)
-                    .lineLimit(1)
-                    .truncationMode(.tail)
-
-                Text("\(instance.quality.name) • \(instance.material.nameAdjective) • \(instance.kind.displayName)")
-                    .font(.appCaption)
-                    .foregroundStyle(.secondary)
-                    .lineLimit(1)
-                    .truncationMode(.tail)
+    private var sortPickerRow: some View {
+        HStack {
+            Text("Sort: ")
+            Picker("Sort", selection: $sortOption) {
+                Text("Name").tag(SortOption.name)
+                Text("Quality").tag(SortOption.quality)
             }
-
-            Spacer(minLength: 0)
+            .pickerStyle(.menu)
         }
-        .padding(12)
-        .background(Color.gray.opacity(0.06), in: RoundedRectangle(cornerRadius: 12))
-        .overlay(
-            RoundedRectangle(cornerRadius: 12)
-                .stroke(instance.quality.color.opacity(0.35), lineWidth: 1)
-        )
-        .accessibilityLabel("\(instance.displayName), \(instance.quality.name)")
     }
+
+    private var displayedEquipment: [EquipmentInstance] {
+        switch sortOption {
+        case .name:
+            return viewModel.equipment
+                .sorted { $0.displayName.localizedStandardCompare($1.displayName) == .orderedAscending }
+        case .quality:
+            return viewModel.equipment
+                .sorted { lhs, rhs in
+                    if lhs.quality != rhs.quality {
+                        return lhs.quality > rhs.quality
+                    }
+                    return lhs.displayName.localizedStandardCompare(rhs.displayName) == .orderedAscending
+                }
+        }
+    }
+
 }
 
 #Preview {

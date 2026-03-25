@@ -30,6 +30,10 @@ final class EquipmentListViewModel: CoordinatorViewModel {
         warehouse.equipment
     }
 
+    func showDetails(for instance: EquipmentInstance) {
+        coordinator?.custom(overlay: .card, MainPath.equipmentDetails(instance))
+    }
+
     func pop() {
         coordinator?.pop()
     }

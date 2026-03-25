@@ -40,6 +40,7 @@ enum MainPath: CoordinatorPath {
     case crafting
     case equipmentRecipePicker
     case equipmentList
+    case equipmentDetails(EquipmentInstance)
 
     // Present a block of text
     case dialog(String)
@@ -139,6 +140,8 @@ struct MainPathRenderer: CoordinatorPathRenderer {
                 viewModel: coordinator.apply(resolver.equipmentListViewModel()),
                 contentOnly: false,
             )
+        case let .equipmentDetails(instance):
+            EquipmentDetailView(equipment: instance)
         case let .dialog(text):
             DefaultDialogContent(model: .init(bodyText: text))
         case let .fullDialog(model):

@@ -12,6 +12,7 @@ import SwiftUI
     weak var coordinator: ASKCoordinator.Coordinator? {
         didSet {
             artifactsViewModel.coordinator = coordinator
+            equipmentListViewModel.coordinator = coordinator
         }
     }
 
@@ -141,10 +142,6 @@ extension WarehouseViewModel {
 
     var hasEquipment: Bool {
         !warehouse.equipment.isEmpty || warehouse.equipmentUnlocked
-    }
-
-    func showEquipmentList() {
-        coordinator?.push(MainPath.equipmentList)
     }
 
     func pressed(item: Ingredient) {
