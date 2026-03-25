@@ -33,6 +33,8 @@ extension Ingredient {
             return Asset.BaseItem.quartzCrystal.swiftUIImage
         case .book:
             return Asset.BaseItem.book.swiftUIImage
+        case .cipherRibbon:
+            return nil
         case .jadeFigurine:
             return Asset.BaseItem.jadeFiguring.swiftUIImage
         case .merchantSigil:

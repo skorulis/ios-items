@@ -32,6 +32,7 @@ public enum Ingredient: String, Hashable, Equatable, CaseIterable, Identifiable,
     case anchorStone
     case memorySeed
     case metalBloom
+    case cipherRibbon
 
     // Rare
     case platinumFlorin
@@ -52,7 +53,7 @@ public enum Ingredient: String, Hashable, Equatable, CaseIterable, Identifiable,
             return .junk
         case .quartzCrystal, .silverFlorin, .book, .merchantSigil, .giantThorn, .embuedChalk, .whetstone, .mapFragment:
             return .common
-        case .goldFlorin, .jadeFigurine, .portalShard, .soulEmber, .anchorStone, .memorySeed, .metalBloom:
+        case .goldFlorin, .jadeFigurine, .portalShard, .soulEmber, .anchorStone, .memorySeed, .metalBloom, .cipherRibbon:
             return .good
         case .platinumFlorin, .sunwellPhial:
             return .rare
@@ -119,8 +120,8 @@ public enum Ingredient: String, Hashable, Equatable, CaseIterable, Identifiable,
             // Good
         case .goldFlorin:
             return [.covenant]
-        case .platinumFlorin:
-            return [.covenant, .order]
+        case .cipherRibbon:
+            return [.dark, .mind]
         case .jadeFigurine:
             return [.earth, .covenant]
         case .portalShard:
@@ -133,8 +134,14 @@ public enum Ingredient: String, Hashable, Equatable, CaseIterable, Identifiable,
             return [.earth, .chaos]
         case .memorySeed:
             return [.life, .mind]
+            
+            // Rare
+        case .platinumFlorin:
+            return [.covenant, .order]
         case .sunwellPhial:
             return [.light, .life]
+            
+            // Exceptional
         case .astralGem:
             return [.covenant, .chaos, .light]
         }
@@ -258,6 +265,11 @@ public enum Ingredient: String, Hashable, Equatable, CaseIterable, Identifiable,
             return [
                 "A torn piece of parchment or vellum showing part of a landscape or route.",
                 "Several fragments from the same map could be pieced together to reveal a path or location.",
+            ]
+        case .cipherRibbon:
+            return [
+                "A narrow ribbon woven with faint sigils. When tied around a document, the writing refuses to be read until the owner speaks the binding word.",
+                "Without the codeword, pages show only as a blur.",
             ]
         case .soulEmber:
             return [
