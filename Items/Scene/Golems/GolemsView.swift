@@ -39,6 +39,7 @@ extension GolemsView {
         var golems: Golems = .init()
         var portalUpgrades: PortalUpgrades = PortalUpgrades()
         var warehouse: Warehouse = Warehouse()
+        var mapLocations: MapLocations = MapLocations()
 
         var golemCount: Int {
             PortalUpgrade.allCases.filter {
@@ -53,7 +54,9 @@ extension GolemsView {
                 return GolemMissionSlotView.Model(
                     index: $0,
                     slot: slot,
-                    canStart: warehouse.quantity(.portalShard) > 0 && slot.phase != .running,
+                    canStart: warehouse.quantity(.portalShard) > 0
+                        && slot.phase != .running
+                        && mapLocations.isUnlocked(slot.location),
                 )
             }
         }

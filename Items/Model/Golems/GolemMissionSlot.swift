@@ -21,14 +21,10 @@ struct GolemMissionSlot: Codable {
     var phase: Phase
     var location: MapLocation
 
-    // When the mission started (only relevant for the runnin phase)
     private(set) var startedAt: Date
-    /// Health remaining while running or zero when complete; nil in setup.
     var remainingHealth: Int?
     var gainedItems: [Ingredient: Int]
-    /// Enemies killed during this mission run.
     var enemiesDefeated: Int = 0
-    /// Meters travelled while in the exploring activity (this mission run).
     var exploringDistanceMeters: Int = 0
 
     struct Enemy: Codable, Identifiable, Equatable {

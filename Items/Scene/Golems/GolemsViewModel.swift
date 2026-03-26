@@ -22,6 +22,7 @@ import SwiftUI
         self.mainStore = mainStore
         self.golemService = golemService
         self.mapLocations = mainStore.mapLocations
+        self.model.mapLocations = mainStore.mapLocations
         mainStore.$warehouse.sink { [unowned self] in
             self.model.warehouse = $0
         }
@@ -31,7 +32,9 @@ import SwiftUI
         }
         .store(in: &cancellables)
         mainStore.$mapLocations.sink { [weak self] in
-            self?.mapLocations = $0
+            guard let self else { return }
+            self.mapLocations = $0
+            self.model.mapLocations = $0
         }
         .store(in: &cancellables)
         mainStore.$portalUpgrades.sink { [unowned self] in
@@ -83,8 +86,8 @@ extension GolemsViewModel {
         golemService.setMissionLocation(slotIndex: slotIndex, location: location)
     }
 
-    func startMission(slotIndex: Int) {
-        golemService.startMission(slotIndex: slotIndex)
+    func beginMission(slotIndex: Int) {
+        golemService.beginMission(slotIndex: slotIndex)
     }
 
     func presentCancelMissionConfirmation(slotIndex: Int) {
@@ -93,14 +96,6 @@ extension GolemsViewModel {
 
     func confirmCancelMission(slotIndex: Int) {
         golemService.cancelMission(slotIndex: slotIndex)
-    }
-
-    func canRestartCompletedMission(slotIndex: Int) -> Bool {
-        golemService.canRestartCompletedMission(slotIndex: slotIndex)
-    }
-
-    func restartCompletedMission(slotIndex: Int) {
-        golemService.restartCompletedMission(slotIndex: slotIndex)
     }
 
     func showMissionGainedItems(slotIndex: Int) {

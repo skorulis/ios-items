@@ -79,6 +79,7 @@ extension DebugView: View {
                 resetChip("Portal") { viewModel.resetUpgrades() }
                 resetChip("Cncpt") { viewModel.resetConcepts() }
                 resetChip("Notifications") { viewModel.resetNotifications() }
+                resetChip("Golems") { viewModel.resetGolems() }
             }
 
             Button("All") {

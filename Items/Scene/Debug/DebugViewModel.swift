@@ -63,6 +63,10 @@ extension DebugViewModel {
     func resetNotifications() {
         mainStore.notifications = Notifications()
     }
+    
+    func resetGolems() {
+        mainStore.golems = .init()
+    }
 
     /// Resets every persisted slice of `MainStore` to its initial empty state.
     func resetAllMainStore() {
@@ -74,6 +78,7 @@ extension DebugViewModel {
         resetUpgrades()
         resetConcepts()
         resetNotifications()
+        resetGolems()
     }
 
     func addItems() {

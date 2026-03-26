@@ -50,11 +50,14 @@ extension GolemService {
         mainStore.golems = golems
     }
 
-    func startMission(slotIndex: Int) {
+    /// Starts a mission from setup or restarts after completion. Consumes 1 portal shard.
+    func beginMission(slotIndex: Int) {
         var golems = mainStore.golems
         var slot = golems.slots[slotIndex] ?? .empty()
         guard slot.phase != .running else { return }
+        guard mainStore.warehouse.quantity(.portalShard) >= 1 else { return }
 
+        mainStore.warehouse.remove(item: .portalShard, quantity: 1)
         slot.start(date: Date())
         golems.slots[slotIndex] = slot
         mainStore.golems = golems
@@ -77,24 +80,4 @@ extension GolemService {
         mainStore.golems = golems
     }
 
-    func canRestartCompletedMission(slotIndex: Int) -> Bool {
-        guard let slot = mainStore.golems.slots[slotIndex],
-              slot.phase == .complete
-        else { return false }
-        return mainStore.warehouse.quantity(.portalShard) >= 1
-    }
-
-    func restartCompletedMission(slotIndex: Int) {
-        var golems = mainStore.golems
-        guard var slot = golems.slots[slotIndex] else { return }
-        guard slot.phase == .complete else { return }
-        guard mainStore.mapLocations.isUnlocked(slot.location),
-              mainStore.warehouse.quantity(.portalShard) >= 1
-        else { return }
-
-        mainStore.warehouse.remove(item: .portalShard, quantity: 1)
-        slot.start(date: Date())
-        golems.slots[slotIndex] = slot
-        mainStore.golems = golems
-    }
 }

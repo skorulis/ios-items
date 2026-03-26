@@ -61,6 +61,21 @@ extension GolemMissionSlotView: View {
         .accessibilityLabel("Mission statistics")
     }
 
+    private static let portalShardButtonIconSize: CGFloat = 22
+
+    private func missionCostLabel(title: String) -> some View {
+        HStack(spacing: 6) {
+            Text(title)
+            if let portalShard = Ingredient.portalShard.image {
+                portalShard
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: Self.portalShardButtonIconSize, height: Self.portalShardButtonIconSize)
+                    .accessibilityHidden(true)
+            }
+        }
+    }
+
     private var gainedItemsIconButton: some View {
         Button {
             viewModel.showMissionGainedItems(slotIndex: model.index)
@@ -81,11 +96,14 @@ extension GolemMissionSlotView: View {
 
             HStack {
                 Spacer(minLength: 0)
-                Button("Start mission") {
-                    viewModel.startMission(slotIndex: model.index)
+                Button {
+                    viewModel.beginMission(slotIndex: model.index)
+                } label: {
+                    missionCostLabel(title: "Start mission")
                 }
                 .buttonStyle(CapsuleButtonStyle())
                 .disabled(!model.canStart)
+                .accessibilityLabel("Start mission, costs 1 portal shard")
             }
         }
     }
@@ -130,11 +148,14 @@ extension GolemMissionSlotView: View {
 
             HStack {
                 Spacer(minLength: 0)
-                Button("Restart (1 Portal Shard)") {
-                    viewModel.restartCompletedMission(slotIndex: model.index)
+                Button {
+                    viewModel.beginMission(slotIndex: model.index)
+                } label: {
+                    missionCostLabel(title: "Restart mission")
                 }
                 .buttonStyle(CapsuleButtonStyle())
                 .disabled(!model.canStart)
+                .accessibilityLabel("Restart mission, costs 1 portal shard")
             }
         }
     }
