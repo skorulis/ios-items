@@ -4,16 +4,12 @@ import SwiftUI
 struct GolemMissionSideScrollerView: View {
     let enemies: [GolemMissionSlot.Enemy]
 
+    private static let enemyHealthBarRowHeight: CGFloat = 22
+
     var body: some View {
         TimelineView(.animation(minimumInterval: 1.0 / 30.0, paused: false)) { context in
             VStack(alignment: .leading, spacing: 8) {
                 ZStack(alignment: .bottomLeading) {
-                    RoundedRectangle(cornerRadius: 10)
-                        .fill(Color(.systemGray6))
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 10)
-                                .stroke(Color.gray.opacity(0.35), lineWidth: 1)
-                        )
 
                     GeometryReader { geometry in
                         let width = max(geometry.size.width, 1)
@@ -54,20 +50,39 @@ struct GolemMissionSideScrollerView: View {
                 }
                 .frame(height: 112)
 
-                if !enemies.isEmpty {
-                    VStack(alignment: .leading, spacing: 4) {
-                        ForEach(enemies.prefix(GolemMissionSlot.maxEnemies)) { enemy in
-                            HStack(spacing: 8) {
-                                Circle()
-                                    .fill(enemyColor(for: enemy.type))
-                                    .frame(width: 8, height: 8)
-                                ProgressView(value: enemy.remainingFraction)
-                                    .tint(enemyColor(for: enemy.type))
+                HStack(spacing: 8) {
+                    ForEach(0..<GolemMissionSlot.maxEnemies, id: \.self) { index in
+                        Group {
+                            if index < enemies.count {
+                                enemyHealthBar(for: enemies[index])
+                            } else {
+                                Color.clear
                             }
                         }
+                        .frame(maxWidth: .infinity)
                     }
                 }
+                .frame(height: Self.enemyHealthBarRowHeight)
             }
+        }
+    }
+    
+    private var border: some View {
+        RoundedRectangle(cornerRadius: 10)
+            .fill(Color(.systemGray6))
+            .overlay(
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(Color.gray.opacity(0.35), lineWidth: 1)
+            )
+    }
+
+    private func enemyHealthBar(for enemy: GolemMissionSlot.Enemy) -> some View {
+        HStack(spacing: 8) {
+            Circle()
+                .fill(enemyColor(for: enemy.type))
+                .frame(width: 8, height: 8)
+            ProgressView(value: enemy.remainingFraction)
+                .tint(enemyColor(for: enemy.type))
         }
     }
 
@@ -120,14 +135,15 @@ struct GolemMissionSideScrollerView: View {
 
 #Preview {
     VStack {
+        GolemMissionSideScrollerView(enemies: [])
         GolemMissionSideScrollerView(
             enemies: [
                 .init(
                     type: .raider,
                     maxHealth: 12,
                     remainingHealth: 12,
-                    distanceToGolemMeters: 5.0
-                )
+                    distanceToGolemMeters: 5.0,
+                ),
             ]
         )
         GolemMissionSideScrollerView(
@@ -136,8 +152,8 @@ struct GolemMissionSideScrollerView: View {
                     type: .stoneBeast,
                     maxHealth: 16,
                     remainingHealth: 5,
-                    distanceToGolemMeters: GolemMissionSlot.enemyAttackRangeMeters
-                )
+                    distanceToGolemMeters: GolemMissionSlot.enemyAttackRangeMeters,
+                ),
             ]
         )
     }
