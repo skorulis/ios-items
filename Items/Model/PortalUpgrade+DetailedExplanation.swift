@@ -34,6 +34,14 @@ extension PortalUpgrade {
             return .init(bodyText: HelpStrings.research, title: "Research")
         case .sacrifices, .sacrificesLevel2, .sacrificesLevel3, .sacrificesLevel4, .sacrificesLevel5:
             return .init(bodyText: HelpStrings.sacrifices, title: "Sacrifices")
+        case .crafting:
+            return .init(
+                bodyText: """
+                Crafting unlocks the Equipment tab in the Warehouse so you can create equipment.
+                New recipes may be discovered when summoning items from the portal.
+                """,
+                title: "Crafting"
+            )
         case .sacrificesPower, .sacrificesPowerLevel2, .sacrificesPowerLevel3, .sacrificesPowerLevel4, .sacrificesPowerLevel5:
             return .init(
                 bodyText: """

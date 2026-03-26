@@ -141,7 +141,9 @@ extension WarehouseViewModel {
     }
 
     var hasEquipment: Bool {
-        !warehouse.equipment.isEmpty || warehouse.equipmentUnlocked
+        mainStore.portalUpgrades.purchased.contains(.crafting)
+            || !warehouse.equipment.isEmpty
+            || warehouse.equipmentUnlocked
     }
 
     func pressed(item: Ingredient) {

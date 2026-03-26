@@ -117,6 +117,9 @@ final class ItemGeneratorService {
     // MARK: - Private Functions
 
     private func maybeMakeRecipe(quality: ItemQuality) -> EquipmentRecipe? {
+        guard mainStore.portalUpgrades.purchased.contains(.crafting) else {
+            return nil
+        }
         // Small base chance to find recipes
         guard Chance(percent: 1).check() else {
             return nil

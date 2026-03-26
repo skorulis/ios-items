@@ -54,6 +54,8 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
     case golemMissionSlotsLevel3
     case golemMissionSlotsLevel4
     case golemMissionSlotsLevel5
+    /// Unlocks the Warehouse equipment tab and the chance to discover equipment recipes from sacrifices.
+    case crafting
 
     public var id: Self { self }
 
@@ -107,6 +109,7 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
         case .golemMissionSlotsLevel3: return "Golem Missions III"
         case .golemMissionSlotsLevel4: return "Golem Missions IV"
         case .golemMissionSlotsLevel5: return "Golem Missions V"
+        case .crafting: return "Crafting"
         }
     }
 
@@ -128,6 +131,8 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
         case .golemMissionSlotsLevel3: return "Adds a third concurrent golem mission."
         case .golemMissionSlotsLevel4: return "Adds a fourth concurrent golem mission."
         case .golemMissionSlotsLevel5: return "Adds a fifth concurrent golem mission."
+        case .crafting:
+            return "Unlocks the Equipment tab in the warehouse and the chance to find recipes when sacrificing."
         default:
             return self.bonus?.text ?? "TODO: Set manual description or add bonus"
         }
@@ -337,6 +342,11 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
             .init(item: .lens, quantity: 3),
             .init(item: .goldFlorin, quantity: 5),
         ]
+        case .crafting: return [
+            .init(item: .gear, quantity: 3),
+            .init(item: .potionFlask, quantity: 2),
+            .init(item: .silverFlorin, quantity: 4),
+        ]
         }
     }
 
@@ -466,6 +476,8 @@ extension PortalUpgrade {
             return .golemMissionSlotsLevel3
         case .golemMissionSlotsLevel5:
             return .golemMissionSlotsLevel4
+        case .crafting:
+            return .portalUnlocked
         }
     }
 

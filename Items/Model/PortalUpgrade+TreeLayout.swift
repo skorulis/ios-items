@@ -47,6 +47,8 @@ enum PortalUpgradeTreeLayout {
             return (-12, -14)
         case .sacrifices:
             return (12, -14)
+        case .crafting:
+            return (0, -10)
         case .artifactSlot:
             return (10, 0)
         case .knowledgeSiphon:

@@ -44,6 +44,8 @@ extension PortalUpgrade {
             return makeLayeredIcon(main: "flask.fill", overlay: "5.circle.fill")
         case .sacrifices:
             return makeLayeredIcon(main: "flame.fill")
+        case .crafting:
+            return makeLayeredIcon(main: "hammer.fill")
         case .sacrificesLevel2:
             return makeLayeredIcon(main: "flame.fill", overlay: "2.circle.fill")
         case .sacrificesLevel3:
