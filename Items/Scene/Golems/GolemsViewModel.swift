@@ -10,6 +10,8 @@ import SwiftUI
 
     weak var coordinator: ASKCoordinator.Coordinator?
 
+    var model: GolemsView.Model = .init()
+
     var warehouse: Warehouse = Warehouse()
     var golems: Golems = Golems()
     var mapLocations: MapLocations = MapLocations()
@@ -31,8 +33,11 @@ import SwiftUI
             self?.warehouse = $0
         }
         .store(in: &cancellables)
-        mainStore.$golems.sink { [weak self] in
-            self?.golems = $0
+        mainStore.$golems.sink { [unowned self] in
+            self.golems = $0
+            self.model.slots = (0..<$0.slots.count).map { index in
+                .init(index: index)
+            }
         }
         .store(in: &cancellables)
         mainStore.$mapLocations.sink { [weak self] in
@@ -59,7 +64,7 @@ private extension PortalUpgrade {
 
 extension GolemsViewModel {
 
-    var missionSlotCount: Int {
+    var golemCount: Int {
         PortalUpgrade.allCases.filter {
             $0.grantsGolemMission && portalUpgrades.purchased.contains($0)
         }
@@ -67,27 +72,15 @@ extension GolemsViewModel {
     }
 
     var missionSlotIndices: Range<Int> {
-        0..<missionSlotCount
+        0..<golemCount
     }
 
     func missionSlot(at index: Int) -> GolemMissionSlot {
         golems.slots[index] ?? .empty()
     }
 
-    func showGolemInfo(_ type: GolemType) {
-        coordinator?.custom(overlay: .card, MainPath.dialog(type.detailedExplanation))
-    }
-
-    func openMissionGolemPicker(slotIndex: Int) {
-        coordinator?.custom(overlay: .card, MainPath.golemMissionGolemPicker(slotIndex: slotIndex))
-    }
-
     func openMissionLocationPicker(slotIndex: Int) {
         coordinator?.custom(overlay: .card, MainPath.golemMissionLocationPicker(slotIndex: slotIndex))
-    }
-
-    func selectableGolemTypes(for slotIndex: Int) -> [GolemType] {
-        GolemType.allCases.sorted { $0.name < $1.name }
     }
 
     func unlockedMissionLocations() -> [MapLocation] {
@@ -100,18 +93,11 @@ extension GolemsViewModel {
 
     func canStartMission(slotIndex: Int) -> Bool {
         let slot = missionSlot(at: slotIndex)
-        guard slot.phase == .setup,
-              slot.golemType != nil,
-              let location = slot.location
-        else { return false }
-        return mapLocations.isUnlocked(location)
+        guard slot.phase == .setup else { return false }
+        return mapLocations.isUnlocked(slot.location)
     }
 
-    func setReservedGolem(slotIndex: Int, newType: GolemType?) {
-        golemService.setReservedGolem(slotIndex: slotIndex, newType: newType)
-    }
-
-    func setMissionLocation(slotIndex: Int, location: MapLocation?) {
+    func setMissionLocation(slotIndex: Int, location: MapLocation) {
         golemService.setMissionLocation(slotIndex: slotIndex, location: location)
     }
 

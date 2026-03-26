@@ -23,12 +23,19 @@ struct GolemsView: View {
 
     private var missionsList: some View {
         LazyVStack(alignment: .leading, spacing: 12) {
-            ForEach(Array(viewModel.missionSlotIndices), id: \.self) { index in
-                GolemMissionSlotView(slotIndex: index, viewModel: viewModel)
+            ForEach(viewModel.model.slots) {
+                GolemMissionSlotView(model: $0, viewModel: viewModel)
             }
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 8)
+    }
+
+}
+
+extension GolemsView {
+    struct Model {
+        var slots: [GolemMissionSlotView.Model] = []
     }
 
 }

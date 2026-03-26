@@ -35,24 +35,13 @@ extension GolemService {
         guard let slot = missionSlot(at: slotIndex) else { return 0 }
         if slot.phase == .complete { return 0 }
         guard slot.phase == .running,
-              let type = slot.golemType,
               let remaining = slot.remainingHealth,
-              type.missionMaxHealth > 0
+              GolemMissionSlot.missionMaxHealth > 0
         else { return 0 }
-        return min(1, max(0, Double(remaining) / Double(type.missionMaxHealth)))
+        return min(1, max(0, Double(remaining) / Double(GolemMissionSlot.missionMaxHealth)))
     }
 
-    func setReservedGolem(slotIndex: Int, newType: GolemType?) {
-        var golems = mainStore.golems
-        var slot = golems.slots[slotIndex] ?? .empty()
-        guard slot.phase == .setup else { return }
-        if slot.golemType == newType { return }
-        slot.golemType = newType
-        golems.slots[slotIndex] = slot
-        mainStore.golems = golems
-    }
-
-    func setMissionLocation(slotIndex: Int, location: MapLocation?) {
+    func setMissionLocation(slotIndex: Int, location: MapLocation) {
         var golems = mainStore.golems
         var slot = golems.slots[slotIndex] ?? .empty()
         guard slot.phase == .setup else { return }
@@ -65,13 +54,10 @@ extension GolemService {
         var golems = mainStore.golems
         guard var slot = golems.slots[slotIndex] else { return }
         guard slot.phase == .setup,
-              slot.golemType != nil,
-              let location = slot.location,
-              mainStore.mapLocations.isUnlocked(location)
+              mainStore.mapLocations.isUnlocked(slot.location)
         else { return }
 
-        guard let golemType = slot.golemType else { return }
-        slot.start(date: Date(), initialHealth: golemType.missionMaxHealth)
+        slot.start(date: Date())
         golems.slots[slotIndex] = slot
         mainStore.golems = golems
     }
@@ -91,21 +77,19 @@ extension GolemService {
         guard let slot = mainStore.golems.slots[slotIndex],
               slot.phase == .complete
         else { return false }
-        return mainStore.warehouse.quantity(.portalShard) >= 1 && slot.golemType != nil && slot.location != nil
+        return mainStore.warehouse.quantity(.portalShard) >= 1
     }
 
     func restartCompletedMission(slotIndex: Int) {
         var golems = mainStore.golems
         guard var slot = golems.slots[slotIndex] else { return }
         guard slot.phase == .complete else { return }
-        guard let golemType = slot.golemType,
-              let location = slot.location,
-              mainStore.mapLocations.isUnlocked(location),
+        guard mainStore.mapLocations.isUnlocked(slot.location),
               mainStore.warehouse.quantity(.portalShard) >= 1
         else { return }
 
         mainStore.warehouse.remove(item: .portalShard, quantity: 1)
-        slot.start(date: Date(), initialHealth: golemType.missionMaxHealth)
+        slot.start(date: Date())
         golems.slots[slotIndex] = slot
         mainStore.golems = golems
     }

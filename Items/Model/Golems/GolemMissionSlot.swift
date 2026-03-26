@@ -43,9 +43,10 @@ struct GolemMissionSlot: Codable {
         case accident(AccidentType)
     }
 
+    static let missionMaxHealth: Int = 60
+
     var phase: Phase
-    var golemType: GolemType?
-    var location: MapLocation?
+    var location: MapLocation
 
     // When the mission started (only relevant for the runnin phase)
     private(set) var startedAt: Date
@@ -69,10 +70,10 @@ struct GolemMissionSlot: Codable {
         activityLog.append(GolemMissionLogEntry(date: date, message: message))
     }
 
-    mutating func start(date: Date, initialHealth: Int) {
+    mutating func start(date: Date) {
         self.phase = .running
         self.startedAt = date
-        self.remainingHealth = initialHealth
+        self.remainingHealth = Self.missionMaxHealth
         self.missionActivityState = .exploring
         self.activityStartDate = date
         self.gainedItems = [:]
@@ -100,15 +101,13 @@ struct GolemMissionSlot: Codable {
 
     init(
         phase: Phase,
-        golemType: GolemType?,
-        location: MapLocation?,
+        location: MapLocation = .vesprium,
         remainingHealth: Int? = nil,
         missionActivityState: MissionActivityState = .exploring,
         activityLog: [GolemMissionLogEntry] = [],
         exploringDistanceMeters: Int = 0,
     ) {
         self.phase = phase
-        self.golemType = golemType
         self.location = location
         self.startedAt = Date()
         self.activityStartDate = Date()
@@ -122,8 +121,7 @@ struct GolemMissionSlot: Codable {
     static func empty() -> GolemMissionSlot {
         GolemMissionSlot(
             phase: .setup,
-            golemType: nil,
-            location: nil,
+            location: .vesprium,
             remainingHealth: nil
         )
     }

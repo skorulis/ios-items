@@ -105,24 +105,18 @@ final class GolemMissionService {
             return false
         }
 
-        let hadMissionLocation = slot.location != nil
         let previousSelected = mainStore.mapLocations.selected
-        if let missionLocation = slot.location {
-            var mapLocations = mainStore.mapLocations
-            mapLocations.selected = missionLocation
-            mainStore.mapLocations = mapLocations
-        }
+        var mapLocations = mainStore.mapLocations
+        mapLocations.selected = slot.location
+        mainStore.mapLocations = mapLocations
 
         let results = itemGeneratorService.makeAndStore(
             plan: SacrificePlan(slotsByIndex: [:]),
             allowArtifacts: false,
         )
 
-        if hadMissionLocation {
-            var mapLocations = mainStore.mapLocations
-            mapLocations.selected = previousSelected
-            mainStore.mapLocations = mapLocations
-        }
+        mapLocations.selected = previousSelected
+        mainStore.mapLocations = mapLocations
 
         slot.add(results: results)
         if let message = Self.gatheringLogMessage(results: results) {
@@ -151,13 +145,11 @@ final class GolemMissionService {
     }
 
     private func recordCompletedMissionExploredDistance(slot: GolemMissionSlot) {
-        guard slot.phase == .complete,
-              let location = slot.location
-        else { return }
+        guard slot.phase == .complete else { return }
         let meters = slot.exploringDistanceMeters
         guard meters > 0 else { return }
         var mapLocations = mainStore.mapLocations
-        mapLocations.addGolemExploredDistance(meters, for: location)
+        mapLocations.addGolemExploredDistance(meters, for: slot.location)
         mainStore.mapLocations = mapLocations
         mainStore.statistics.golemDistanceTraveledMeters += Int64(meters)
     }

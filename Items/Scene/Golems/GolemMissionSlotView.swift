@@ -5,17 +5,23 @@ import Models
 import SwiftUI
 
 @MainActor struct GolemMissionSlotView {
-    let slotIndex: Int
+    let model: Model
     var viewModel: GolemsViewModel
+
+    struct Model: Identifiable {
+        let index: Int
+
+        var id: Int { index }
+    }
 }
 
 extension GolemMissionSlotView: View {
 
     var body: some View {
-        let slot = viewModel.missionSlot(at: slotIndex)
+        let slot = viewModel.missionSlot(at: model.index)
         VStack(alignment: .leading, spacing: 12) {
             HStack(alignment: .center, spacing: 8) {
-                Text("Mission \(slotIndex + 1)")
+                Text("Golem \(model.index + 1)")
                     .font(.appSectionTitle)
                 Spacer(minLength: 0)
                 if slot.phase == .running || slot.phase == .complete {
@@ -41,7 +47,7 @@ extension GolemMissionSlotView: View {
 
     private var missionActivityLogIconButton: some View {
         Button {
-            viewModel.showMissionActivityLog(slotIndex: slotIndex)
+            viewModel.showMissionActivityLog(slotIndex: model.index)
         } label: {
             Image(systemName: "list.bullet.rectangle")
                 .font(.body.weight(.semibold))
@@ -55,7 +61,7 @@ extension GolemMissionSlotView: View {
 
     private var gainedItemsIconButton: some View {
         Button {
-            viewModel.showMissionGainedItems(slotIndex: slotIndex)
+            viewModel.showMissionGainedItems(slotIndex: model.index)
         } label: {
             Image(systemName: "archivebox")
                 .font(.body.weight(.semibold))
@@ -69,52 +75,26 @@ extension GolemMissionSlotView: View {
 
     private func setupBody(slot: GolemMissionSlot) -> some View {
         VStack(alignment: .leading, spacing: 10) {
-            HStack(alignment: .top, spacing: 20) {
-                missionSlotColumn(
-                    title: "Golem",
-                    accessibilityLabel: "Choose golem",
-                    action: { viewModel.openMissionGolemPicker(slotIndex: slotIndex) },
-                    content: {
-                        if let type = slot.golemType, let image = type.image {
-                            image
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .padding(8)
-                        } else {
-                            Image(systemName: "plus")
-                                .font(.title2.weight(.semibold))
-                                .foregroundStyle(.secondary)
-                        }
-                    }
-                )
-
-                missionSlotColumn(
-                    title: "Location",
-                    accessibilityLabel: "Choose location",
-                    action: { viewModel.openMissionLocationPicker(slotIndex: slotIndex) },
-                    content: {
-                        if let location = slot.location {
-                            location.icon
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .padding(8)
-                                .symbolRenderingMode(.hierarchical)
-                        } else {
-                            Image(systemName: "plus")
-                                .font(.title2.weight(.semibold))
-                                .foregroundStyle(.secondary)
-                        }
-                    }
-                )
-            }
+            missionSlotColumn(
+                title: "Location",
+                accessibilityLabel: "Choose location",
+                action: { viewModel.openMissionLocationPicker(slotIndex: model.index) },
+                content: {
+                    slot.location.icon
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .padding(8)
+                        .symbolRenderingMode(.hierarchical)
+                }
+            )
 
             HStack {
                 Spacer(minLength: 0)
                 Button("Start mission") {
-                    viewModel.startMission(slotIndex: slotIndex)
+                    viewModel.startMission(slotIndex: model.index)
                 }
                 .buttonStyle(CapsuleButtonStyle())
-                .disabled(!viewModel.canStartMission(slotIndex: slotIndex))
+                .disabled(!viewModel.canStartMission(slotIndex: model.index))
             }
         }
     }
@@ -127,18 +107,18 @@ extension GolemMissionSlotView: View {
                 .font(.appCaption)
                 .foregroundStyle(.secondary)
 
-            if let type = slot.golemType, let remaining = slot.remainingHealth {
-                Text("Health: \(remaining) / \(type.missionMaxHealth)")
+            if let remaining = slot.remainingHealth {
+                Text("Health: \(remaining) / \(GolemMissionSlot.missionMaxHealth)")
                     .font(.appCaption.weight(.semibold))
             }
 
-            ProgressView(value: viewModel.missionHealthRemainingFraction(slotIndex: slotIndex))
+            ProgressView(value: viewModel.missionHealthRemainingFraction(slotIndex: model.index))
                 .tint(.accentColor)
 
             HStack {
                 Spacer(minLength: 0)
                 Button("Cancel") {
-                    viewModel.presentCancelMissionConfirmation(slotIndex: slotIndex)
+                    viewModel.presentCancelMissionConfirmation(slotIndex: model.index)
                 }
                 .buttonStyle(CapsuleButtonStyle())
             }
@@ -156,45 +136,28 @@ extension GolemMissionSlotView: View {
             HStack {
                 Spacer(minLength: 0)
                 Button("Restart (1 Portal Shard)") {
-                    viewModel.restartCompletedMission(slotIndex: slotIndex)
+                    viewModel.restartCompletedMission(slotIndex: model.index)
                 }
                 .buttonStyle(CapsuleButtonStyle())
-                .disabled(!viewModel.canRestartCompletedMission(slotIndex: slotIndex))
+                .disabled(!viewModel.canRestartCompletedMission(slotIndex: model.index))
             }
         }
     }
 
     @ViewBuilder
     private func missionSlotReadOnlyRow(slot: GolemMissionSlot) -> some View {
-        HStack(alignment: .top, spacing: 20) {
-            missionSlotColumn(
-                title: "Golem",
-                accessibilityLabel: "Golem",
-                action: nil,
-                content: {
-                    if let type = slot.golemType, let image = type.image {
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .padding(8)
-                    }
-                }
-            )
-            missionSlotColumn(
-                title: "Location",
-                accessibilityLabel: "Location",
-                action: nil,
-                content: {
-                    if let location = slot.location {
-                        location.icon
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .padding(8)
-                            .symbolRenderingMode(.hierarchical)
-                    }
-                }
-            )
-        }
+        missionSlotColumn(
+            title: "Location",
+            accessibilityLabel: "Location",
+            action: nil,
+            content: {
+                slot.location.icon
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .padding(8)
+                    .symbolRenderingMode(.hierarchical)
+            }
+        )
     }
 
     private static let slotSize: CGFloat = 64
@@ -255,6 +218,6 @@ private extension GolemMissionSlot.MissionActivityState {
 
 #Preview {
     let assembler = ItemsAssembly.testing()
-    GolemMissionSlotView(slotIndex: 0, viewModel: assembler.resolver.golemsViewModel())
+    GolemMissionSlotView(model: .init(index: 0), viewModel: assembler.resolver.golemsViewModel())
         .padding()
 }
