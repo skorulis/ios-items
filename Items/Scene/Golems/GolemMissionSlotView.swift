@@ -10,6 +10,8 @@ import SwiftUI
 
     struct Model: Identifiable {
         let index: Int
+        let slot: GolemMissionSlot
+        let canStart: Bool
 
         var id: Int { index }
     }
@@ -18,7 +20,7 @@ import SwiftUI
 extension GolemMissionSlotView: View {
 
     var body: some View {
-        let slot = viewModel.missionSlot(at: model.index)
+        let slot = model.slot
         VStack(alignment: .leading, spacing: 12) {
             HStack(alignment: .center, spacing: 8) {
                 Text("Golem \(model.index + 1)")
@@ -75,18 +77,7 @@ extension GolemMissionSlotView: View {
 
     private func setupBody(slot: GolemMissionSlot) -> some View {
         VStack(alignment: .leading, spacing: 10) {
-            missionSlotColumn(
-                title: "Location",
-                accessibilityLabel: "Choose location",
-                action: { viewModel.openMissionLocationPicker(slotIndex: model.index) },
-                content: {
-                    slot.location.icon
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .padding(8)
-                        .symbolRenderingMode(.hierarchical)
-                }
-            )
+            locationSlot(slot: slot)
 
             HStack {
                 Spacer(minLength: 0)
@@ -94,17 +85,19 @@ extension GolemMissionSlotView: View {
                     viewModel.startMission(slotIndex: model.index)
                 }
                 .buttonStyle(CapsuleButtonStyle())
-                .disabled(!viewModel.canStartMission(slotIndex: model.index))
+                .disabled(!model.canStart)
             }
         }
     }
 
     private func runningBody(slot: GolemMissionSlot) -> some View {
         VStack(alignment: .leading, spacing: 10) {
-            missionSlotReadOnlyRow(slot: slot)
+            locationSlot(slot: slot)
+
+            GolemMissionSideScrollerView(activityState: slot.missionActivityState)
 
             Text(slot.missionActivityState.displayTitle)
-                .font(.appCaption)
+                .font(.appCaption.weight(.semibold))
                 .foregroundStyle(.secondary)
 
             if let remaining = slot.remainingHealth {
@@ -127,7 +120,7 @@ extension GolemMissionSlotView: View {
 
     private func completeBody(slot: GolemMissionSlot) -> some View {
         VStack(alignment: .leading, spacing: 10) {
-            missionSlotReadOnlyRow(slot: slot)
+            locationSlot(slot: slot)
 
             Text("Mission complete")
                 .font(.appCaption)
@@ -139,17 +132,17 @@ extension GolemMissionSlotView: View {
                     viewModel.restartCompletedMission(slotIndex: model.index)
                 }
                 .buttonStyle(CapsuleButtonStyle())
-                .disabled(!viewModel.canRestartCompletedMission(slotIndex: model.index))
+                .disabled(!model.canStart)
             }
         }
     }
 
     @ViewBuilder
-    private func missionSlotReadOnlyRow(slot: GolemMissionSlot) -> some View {
+    private func locationSlot(slot: GolemMissionSlot) -> some View {
         missionSlotColumn(
             title: "Location",
             accessibilityLabel: "Location",
-            action: nil,
+            action: { viewModel.openMissionLocationPicker(slotIndex: model.index) },
             content: {
                 slot.location.icon
                     .resizable()
@@ -167,7 +160,7 @@ extension GolemMissionSlotView: View {
     private func missionSlotColumn(
         title: String,
         accessibilityLabel: String,
-        action: (() -> Void)?,
+        action: @escaping () -> Void,
         @ViewBuilder content: () -> some View
     ) -> some View {
         VStack(alignment: .leading, spacing: 6) {
@@ -175,19 +168,11 @@ extension GolemMissionSlotView: View {
                 .font(.appCaption.weight(.semibold))
                 .foregroundStyle(.secondary)
 
-            Group {
-                if let action {
-                    Button(action: action) {
-                        slotSquare { content() }
-                    }
-                    .buttonStyle(.plain)
-                    .accessibilityLabel(accessibilityLabel)
-                } else {
-                    slotSquare { content() }
-                        .accessibilityElement(children: .combine)
-                        .accessibilityLabel(accessibilityLabel)
-                }
+            Button(action: action) {
+                slotSquare { content() }
             }
+            .buttonStyle(.plain)
+            .accessibilityLabel(accessibilityLabel)
         }
     }
 
@@ -212,12 +197,19 @@ private extension GolemMissionSlot.MissionActivityState {
         case .gathering: return "Gathering"
         case .accident:
             return "Having an accident"
+        case let .approachingEnemy(type, _, _, _, _):
+            return "Encountering \(type.displayName)"
+        case let .combat(type, _, _):
+            return "Fighting \(type.displayName)"
         }
     }
 }
 
 #Preview {
     let assembler = ItemsAssembly.testing()
-    GolemMissionSlotView(model: .init(index: 0), viewModel: assembler.resolver.golemsViewModel())
-        .padding()
+    GolemMissionSlotView(
+        model: .init(index: 0, slot: .empty(), canStart: true),
+        viewModel: assembler.resolver.golemsViewModel()
+    )
+    .padding()
 }

@@ -1,5 +1,6 @@
 import Foundation
 import Knit
+import Models
 import SwiftUI
 
 @MainActor
@@ -35,7 +36,27 @@ struct GolemsView: View {
 
 extension GolemsView {
     struct Model {
-        var slots: [GolemMissionSlotView.Model] = []
+        var golems: Golems = .init()
+        var portalUpgrades: PortalUpgrades = PortalUpgrades()
+        var warehouse: Warehouse = Warehouse()
+
+        var golemCount: Int {
+            PortalUpgrade.allCases.filter {
+                $0.grantsGolemMission && portalUpgrades.purchased.contains($0)
+            }
+            .count
+        }
+
+        var slots: [GolemMissionSlotView.Model] {
+            (0..<golems.slots.count).map {
+                let slot = golems.slots[$0]!
+                return GolemMissionSlotView.Model(
+                    index: $0,
+                    slot: slot,
+                    canStart: warehouse.quantity(.portalShard) > 0 && slot.phase != .running,
+                )
+            }
+        }
     }
 
 }

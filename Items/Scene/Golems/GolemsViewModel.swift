@@ -11,11 +11,7 @@ import SwiftUI
     weak var coordinator: ASKCoordinator.Coordinator?
 
     var model: GolemsView.Model = .init()
-
-    var warehouse: Warehouse = Warehouse()
-    var golems: Golems = Golems()
     var mapLocations: MapLocations = MapLocations()
-    private(set) var portalUpgrades: PortalUpgrades = PortalUpgrades()
 
     private let mainStore: MainStore
     private let golemService: GolemService
@@ -25,36 +21,34 @@ import SwiftUI
     init(mainStore: MainStore, golemService: GolemService) {
         self.mainStore = mainStore
         self.golemService = golemService
-        self.warehouse = mainStore.warehouse
-        self.golems = mainStore.golems
         self.mapLocations = mainStore.mapLocations
-        self.portalUpgrades = mainStore.portalUpgrades
-        mainStore.$warehouse.sink { [weak self] in
-            self?.warehouse = $0
+        mainStore.$warehouse.sink { [unowned self] in
+            self.model.warehouse = $0
         }
         .store(in: &cancellables)
-        mainStore.$golems.sink { [unowned self] in
-            self.golems = $0
-            self.model.slots = (0..<$0.slots.count).map { index in
-                .init(index: index)
-            }
+        mainStore.$golems.sink { [unowned self] golems in
+            self.model.golems = golems
         }
         .store(in: &cancellables)
         mainStore.$mapLocations.sink { [weak self] in
             self?.mapLocations = $0
         }
         .store(in: &cancellables)
-        mainStore.$portalUpgrades.sink { [weak self] in
-            self?.portalUpgrades = $0
+        mainStore.$portalUpgrades.sink { [unowned self] in
+            self.model.portalUpgrades = $0
         }
         .store(in: &cancellables)
     }
 }
 
-private extension PortalUpgrade {
+extension PortalUpgrade {
     var grantsGolemMission: Bool {
         switch self {
-        case .golems, .golemMissionSlotsLevel2, .golemMissionSlotsLevel3, .golemMissionSlotsLevel4, .golemMissionSlotsLevel5:
+        case .golems,
+             .golemMissionSlotsLevel2,
+             .golemMissionSlotsLevel3,
+             .golemMissionSlotsLevel4,
+             .golemMissionSlotsLevel5:
             return true
         default:
             return false
@@ -64,23 +58,17 @@ private extension PortalUpgrade {
 
 extension GolemsViewModel {
 
-    var golemCount: Int {
-        PortalUpgrade.allCases.filter {
-            $0.grantsGolemMission && portalUpgrades.purchased.contains($0)
-        }
-        .count
-    }
-
-    var missionSlotIndices: Range<Int> {
-        0..<golemCount
-    }
-
-    func missionSlot(at index: Int) -> GolemMissionSlot {
-        golems.slots[index] ?? .empty()
+    private func missionSlot(at index: Int) -> GolemMissionSlot {
+        model.golems.slots[index] ?? .empty()
     }
 
     func openMissionLocationPicker(slotIndex: Int) {
-        coordinator?.custom(overlay: .card, MainPath.golemMissionLocationPicker(slotIndex: slotIndex))
+        let slot = model.golems.slots[slotIndex] ?? .empty()
+        guard slot.phase != .running else { return }
+        coordinator?.custom(
+            overlay: .card,
+            MainPath.golemMissionLocationPicker(slotIndex: slotIndex),
+        )
     }
 
     func unlockedMissionLocations() -> [MapLocation] {
@@ -89,12 +77,6 @@ extension GolemsViewModel {
 
     func missionHealthRemainingFraction(slotIndex: Int) -> Double {
         golemService.missionHealthRemainingFraction(slotIndex: slotIndex)
-    }
-
-    func canStartMission(slotIndex: Int) -> Bool {
-        let slot = missionSlot(at: slotIndex)
-        guard slot.phase == .setup else { return false }
-        return mapLocations.isUnlocked(slot.location)
     }
 
     func setMissionLocation(slotIndex: Int, location: MapLocation) {

@@ -41,6 +41,18 @@ struct GolemMissionSlot: Codable {
         case exploring
         case gathering
         case accident(AccidentType)
+        case approachingEnemy(
+            type: EnemyType,
+            enemyMaxHealth: Int,
+            enemyRemainingHealth: Int,
+            approachStartedAt: Date,
+            contactAt: Date
+        )
+        case combat(
+            type: EnemyType,
+            enemyMaxHealth: Int,
+            enemyRemainingHealth: Int
+        )
     }
 
     static let missionMaxHealth: Int = 60

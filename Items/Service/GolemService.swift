@@ -44,7 +44,7 @@ extension GolemService {
     func setMissionLocation(slotIndex: Int, location: MapLocation) {
         var golems = mainStore.golems
         var slot = golems.slots[slotIndex] ?? .empty()
-        guard slot.phase == .setup else { return }
+        guard slot.phase != .running else { return }
         slot.location = location
         golems.slots[slotIndex] = slot
         mainStore.golems = golems

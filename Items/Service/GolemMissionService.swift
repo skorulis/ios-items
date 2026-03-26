@@ -13,8 +13,10 @@ final class GolemMissionService {
 
     /// Wall time spent in gathering before generating items.
     private static let gatheringDuration: TimeInterval = 3
+    private static let enemyApproachDuration: TimeInterval = 2.4
     private static let exploringToGatheringChance = Chance(percent: 10)
     private static let exploringMetersPerTick = 1
+    private static let golemAttackDamagePerTick = 4
 
     @Resolvable<BaseResolver>
     init(mainStore: MainStore, itemGeneratorService: ItemGeneratorService) {
@@ -51,14 +53,46 @@ final class GolemMissionService {
             case .exploring:
                 slot.exploringDistanceMeters += Self.exploringMetersPerTick
                 slotMutated = true
-                if let newState = checkForNewState() {
+                if let newState = checkForNewState(now: now) {
                     slot.setActivity(state: newState, date: now)
+                    if case let .approachingEnemy(type, _, _, _, _) = newState {
+                        slot.appendActivityLog("Encountered a \(type.displayName).", date: now)
+                    }
                 }
             case .gathering:
                 if completeGatheringPhase(slot: &slot, now: now) {
                     slotMutated = true
                 }
+            case let .approachingEnemy(type, enemyMaxHealth, enemyRemainingHealth, _, contactAt):
+                slot.exploringDistanceMeters += Self.exploringMetersPerTick
+                slotMutated = true
+                guard now >= contactAt else { break }
+                slot.setActivity(
+                    state: .combat(
+                        type: type,
+                        enemyMaxHealth: enemyMaxHealth,
+                        enemyRemainingHealth: enemyRemainingHealth
+                    ),
+                    date: now
+                )
 
+            case let .combat(type, enemyMaxHealth, enemyRemainingHealth):
+                let updatedEnemyHealth = max(0, enemyRemainingHealth - Self.golemAttackDamagePerTick)
+                slot.takeDamage(type.damagePerTick)
+                if updatedEnemyHealth == 0 {
+                    slot.appendActivityLog("Defeated \(type.displayName).", date: now)
+                    slot.setActivity(state: .exploring, date: now)
+                } else {
+                    slot.setActivity(
+                        state: .combat(
+                            type: type,
+                            enemyMaxHealth: enemyMaxHealth,
+                            enemyRemainingHealth: updatedEnemyHealth
+                        ),
+                        date: now
+                    )
+                }
+                slotMutated = true
             case let .accident(kind):
                 let damage = Int.random(in: kind.damageRange)
                 slot.takeDamage(damage)
@@ -87,15 +121,21 @@ final class GolemMissionService {
         }
     }
 
-    private func checkForNewState() -> GolemMissionSlot.MissionActivityState? {
+    private func checkForNewState(now: Date) -> GolemMissionSlot.MissionActivityState? {
         guard Self.exploringToGatheringChance.check() else {
             return nil
         }
         if Bool.random() {
             return .gathering
         } else {
-            let accidentKind = GolemMissionSlot.AccidentType.allCases.randomElement() ?? .toeStub
-            return .accident(accidentKind)
+            let enemyType = EnemyType.allCases.randomElement() ?? .slime
+            return .approachingEnemy(
+                type: enemyType,
+                enemyMaxHealth: enemyType.maxHealth,
+                enemyRemainingHealth: enemyType.maxHealth,
+                approachStartedAt: now,
+                contactAt: now.addingTimeInterval(Self.enemyApproachDuration)
+            )
         }
     }
 
