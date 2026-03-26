@@ -53,6 +53,7 @@ import SwiftUI
 
         mainStore.$warehouse.sink { [unowned self] in
             self.warehouse = $0
+            self.model.hasDiscoveredRecipes = $0.recipes.count > 0
         }
         .store(in: &cancellables)
 
@@ -68,6 +69,7 @@ import SwiftUI
 
         mainStore.$portalUpgrades.sink { [unowned self] in
             self.model.showTradingPostButton = $0.purchased.contains(.tradingPost)
+            self.model.hasUnlockedCrafting = $0.purchased.contains(.crafting)
         }
         .store(in: &cancellables)
     }
@@ -132,12 +134,15 @@ extension WarehouseViewModel {
         coordinator?.push(MainPath.tradingPost)
     }
 
-    var hasDiscoveredRecipes: Bool {
-        !warehouse.recipes.isEmpty
-    }
-
     func showCrafting() {
-        coordinator?.push(MainPath.crafting)
+        if model.hasDiscoveredRecipes {
+            coordinator?.push(MainPath.crafting)
+        } else {
+            coordinator?.custom(
+                overlay: .toast,
+                MainPath.toast(nil, "No recipes available. Find recipes from the portal.", UUID())
+            )
+        }   
     }
 
     var hasEquipment: Bool {

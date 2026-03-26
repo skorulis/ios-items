@@ -40,17 +40,23 @@ struct EquipmentRecipePickerView: View {
     }
 
     private func recipeRow(index: Int, recipe: EquipmentRecipe) -> some View {
+        let allIngredientsAvailable = viewModel.areAllIngredientsAvailable(for: recipe)
         return HStack(spacing: 12) {
             AvatarView(
                 text: recipe.name,
                 icon: recipe.icon,
                 border: recipe.quality.color,
-                size: .small
+                size: .medium,
             )
 
-            VStack(alignment: .leading, spacing: 2) {
+            VStack(alignment: .leading, spacing: 6) {
                 Text(recipe.name)
                     .font(.appSubheadline.weight(.semibold))
+
+                UpgradeCostRow(
+                    cost: recipe.cost,
+                    itemQuantity: { viewModel.itemQuantity($0) }
+                )
             }
 
             Spacer(minLength: 0)
@@ -66,11 +72,10 @@ struct EquipmentRecipePickerView: View {
         .overlay(
             RoundedRectangle(cornerRadius: 12)
                 .stroke(
-                    recipe.quality.color.opacity(0.25),
+                    allIngredientsAvailable ? Color.green.opacity(0.9) : recipe.quality.color.opacity(0.25),
                     lineWidth: 2
                 )
         )
-        .accessibilityLabel("Recipe \(recipe.name)")
     }
 }
 

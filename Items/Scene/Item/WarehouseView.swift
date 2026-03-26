@@ -13,6 +13,8 @@ struct WarehouseView: View {
         var newItemsToShow: Set<Ingredient> = []
         var showArtifactsTab: Bool = false
         var showTradingPostButton: Bool = false
+        var hasDiscoveredRecipes: Bool = false
+        var hasUnlockedCrafting: Bool = false
     }
 
     var body: some View {
@@ -123,7 +125,7 @@ struct WarehouseView: View {
                     if viewModel.model.showTradingPostButton {
                         tradingPostButton
                     }
-                    if viewModel.hasDiscoveredRecipes {
+                    if viewModel.model.hasUnlockedCrafting {
                         craftingButton
                     }
                     helpButton
@@ -156,13 +158,18 @@ struct WarehouseView: View {
     }
 
     private var craftingButton: some View {
-        Button(action: viewModel.showCrafting) {
-            Image(systemName: "hammer")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 24, height: 24)
-                .foregroundStyle(Color.black)
-        }
+        Button(
+            action: {
+                viewModel.showCrafting()
+            },
+            label: {
+                Image(systemName: "hammer")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 24, height: 24)
+                    .foregroundStyle(Color.black)
+            }
+        )
     }
 
     private var helpButton: some View {
