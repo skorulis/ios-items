@@ -56,6 +56,12 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
     case golemMissionSlotsLevel5
     /// Unlocks the Warehouse equipment tab and the chance to discover equipment recipes from sacrifices.
     case crafting
+    /// Increases the chance that crafting succeeds without consuming the recipe cost.
+    case recycling
+    case recyclingLevel2
+    case recyclingLevel3
+    case recyclingLevel4
+    case recyclingLevel5
 
     public var id: Self { self }
 
@@ -110,6 +116,11 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
         case .golemMissionSlotsLevel4: return "Golem Missions IV"
         case .golemMissionSlotsLevel5: return "Golem Missions V"
         case .crafting: return "Crafting"
+        case .recycling: return "Recycling"
+        case .recyclingLevel2: return "Recycling II"
+        case .recyclingLevel3: return "Recycling III"
+        case .recyclingLevel4: return "Recycling IV"
+        case .recyclingLevel5: return "Recycling V"
         }
     }
 
@@ -347,6 +358,26 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
             .init(item: .potionFlask, quantity: 2),
             .init(item: .silverFlorin, quantity: 4),
         ]
+        case .recycling: return [
+            .init(item: .gear, quantity: 2),
+            .init(item: .copperFlorin, quantity: 3),
+        ]
+        case .recyclingLevel2: return [
+            .init(item: .gear, quantity: 4),
+            .init(item: .copperFlorin, quantity: 6),
+        ]
+        case .recyclingLevel3: return [
+            .init(item: .gear, quantity: 6),
+            .init(item: .silverFlorin, quantity: 3),
+        ]
+        case .recyclingLevel4: return [
+            .init(item: .gear, quantity: 8),
+            .init(item: .silverFlorin, quantity: 6),
+        ]
+        case .recyclingLevel5: return [
+            .init(item: .gear, quantity: 10),
+            .init(item: .goldFlorin, quantity: 3),
+        ]
         }
     }
 
@@ -379,6 +410,8 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
             return .offlineTimeMinutes(60)
         case .golemMissionSlotsLevel2, .golemMissionSlotsLevel3, .golemMissionSlotsLevel4, .golemMissionSlotsLevel5:
             return .golemMissionSlots(1)
+        case .recycling, .recyclingLevel2, .recyclingLevel3, .recyclingLevel4, .recyclingLevel5:
+            return .recyclingNoConsumeChance(1)
         default:
             return nil
         }
@@ -478,6 +511,16 @@ extension PortalUpgrade {
             return .golemMissionSlotsLevel4
         case .crafting:
             return .portalUnlocked
+        case .recycling:
+            return .crafting
+        case .recyclingLevel2:
+            return .recycling
+        case .recyclingLevel3:
+            return .recyclingLevel2
+        case .recyclingLevel4:
+            return .recyclingLevel3
+        case .recyclingLevel5:
+            return .recyclingLevel4
         }
     }
 

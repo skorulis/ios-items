@@ -42,6 +42,14 @@ extension PortalUpgrade {
                 """,
                 title: "Crafting"
             )
+        case .recycling, .recyclingLevel2, .recyclingLevel3, .recyclingLevel4, .recyclingLevel5:
+            return .init(
+                bodyText: """
+                Recycling gives a chance for crafting to succeed without consuming the recipe materials.
+                Each level adds +1% to the no-consume chance.
+                """,
+                title: "Recycling"
+            )
         case .sacrificesPower, .sacrificesPowerLevel2, .sacrificesPowerLevel3, .sacrificesPowerLevel4, .sacrificesPowerLevel5:
             return .init(
                 bodyText: """

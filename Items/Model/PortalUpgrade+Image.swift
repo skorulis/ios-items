@@ -46,6 +46,16 @@ extension PortalUpgrade {
             return makeLayeredIcon(main: "flame.fill")
         case .crafting:
             return makeLayeredIcon(main: "hammer.fill")
+        case .recycling:
+            return makeLayeredIcon(main: "arrow.3.trianglepath")
+        case .recyclingLevel2:
+            return makeLayeredIcon(main: "arrow.3.trianglepath", overlay: "2.circle.fill")
+        case .recyclingLevel3:
+            return makeLayeredIcon(main: "arrow.3.trianglepath", overlay: "3.circle.fill")
+        case .recyclingLevel4:
+            return makeLayeredIcon(main: "arrow.3.trianglepath", overlay: "4.circle.fill")
+        case .recyclingLevel5:
+            return makeLayeredIcon(main: "arrow.3.trianglepath", overlay: "5.circle.fill")
         case .sacrificesLevel2:
             return makeLayeredIcon(main: "flame.fill", overlay: "2.circle.fill")
         case .sacrificesLevel3:

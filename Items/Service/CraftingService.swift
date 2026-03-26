@@ -26,8 +26,13 @@ final class CraftingService {
             warehouse.quantity(line.item) >= line.quantity
         }) else { return nil }
 
-        for line in recipe.cost {
-            warehouseService.remove(item: line.item, quantity: line.quantity)
+        // Recycling may let the craft succeed without consuming the recipe cost.
+        let noConsumePercent = mainStore.activeBonuses.recyclingNoConsumeChancePercent
+        let skipConsumption = Chance(percent: noConsumePercent).check()
+        if !skipConsumption {
+            for line in recipe.cost {
+                warehouseService.remove(item: line.item, quantity: line.quantity)
+            }
         }
 
         let quality = randomQualityWeightedTowardJunk()

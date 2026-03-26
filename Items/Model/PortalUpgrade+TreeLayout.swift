@@ -49,6 +49,16 @@ enum PortalUpgradeTreeLayout {
             return (12, -14)
         case .crafting:
             return (0, -10)
+        case .recycling:
+            return (0, -20)
+        case .recyclingLevel2:
+            return (0, -30)
+        case .recyclingLevel3:
+            return (0, -40)
+        case .recyclingLevel4:
+            return (0, -50)
+        case .recyclingLevel5:
+            return (0, -60)
         case .artifactSlot:
             return (10, 0)
         case .knowledgeSiphon:

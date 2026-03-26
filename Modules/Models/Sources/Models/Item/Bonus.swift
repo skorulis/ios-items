@@ -22,6 +22,9 @@ public enum Bonus {
     case multipleItems(Int)
 
     case sacrificePower(Int)
+    /// Percent chance to craft items without consuming the recipe cost.
+    /// Applied once per crafting attempt (not per cost line).
+    case recyclingNoConsumeChance(Int)
 
     public var text: String {
         switch self {
@@ -49,6 +52,8 @@ public enum Bonus {
             return "Boost additional item chance by \(percent)%"
         case let .sacrificePower(percent):
             return "Increase sacrifice bonuses by \(percent)%"
+        case let .recyclingNoConsumeChance(percent):
+            return "Chance to not consume items when crafting: \(percent)%"
         }
     }
 
@@ -135,6 +140,12 @@ public enum Bonus {
         if case let .multipleItems(int) = self { return int }
         return 0
     }
+
+    /// Percent chance to craft without consuming the recipe cost.
+    public var recyclingNoConsumeChancePercent: Int {
+        if case let .recyclingNoConsumeChance(int) = self { return int }
+        return 0
+    }
 }
 
 public extension Array where Element == Bonus {
@@ -172,6 +183,12 @@ public extension Array where Element == Bonus {
     /// Total percent chance to generate another item result from all bonuses.
     var multipleItemsChancePercent: Int {
         return self.map(\.multipleItemsChancePercent).reduce(0, +)
+    }
+
+    /// Total percent chance to craft without consuming the recipe cost.
+    /// Stacks additively across purchased upgrades.
+    var recyclingNoConsumeChancePercent: Int {
+        return self.map(\.recyclingNoConsumeChancePercent).reduce(0, +)
     }
 
     /// Total percent increase applied to sacrifice-derived bonuses.
