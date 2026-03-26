@@ -11,36 +11,9 @@ struct GolemMissionSlot: Codable {
         case complete
     }
 
-    enum AccidentType: String, Codable, CaseIterable {
-        case toeStub
-        case tripped
-        case fellInAHole
-
-        var damageRange: ClosedRange<Int> {
-            switch self {
-            case .toeStub: 1 ... 2
-            case .tripped: 2 ... 4
-            case .fellInAHole: 4 ... 7
-            }
-        }
-
-        func activityLogMessage(damage: Int) -> String {
-            switch self {
-            case .toeStub:
-                return "Stubbed their toe for \(damage) damage."
-            case .tripped:
-                return "Tripped on a rock for \(damage) damage."
-            case .fellInAHole:
-                return "Fell in a hole for \(damage) damage."
-            }
-        }
-    }
-
     /// Persisted mission activity while running.
     enum MissionActivityState: Codable {
         case exploring
-        case gathering
-        case accident(AccidentType)
         case approachingEnemy(
             type: EnemyType,
             enemyMaxHealth: Int,

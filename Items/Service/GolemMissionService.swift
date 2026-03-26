@@ -11,8 +11,6 @@ final class GolemMissionService {
     private let itemGeneratorService: ItemGeneratorService
     private var progressCheckTimer: Timer?
 
-    /// Wall time spent in gathering before generating items.
-    private static let gatheringDuration: TimeInterval = 3
     private static let enemyApproachDuration: TimeInterval = 2.4
     private static let exploringToGatheringChance = Chance(percent: 10)
     private static let exploringMetersPerTick = 1
@@ -59,10 +57,6 @@ final class GolemMissionService {
                         slot.appendActivityLog("Encountered a \(type.displayName).", date: now)
                     }
                 }
-            case .gathering:
-                if completeGatheringPhase(slot: &slot, now: now) {
-                    slotMutated = true
-                }
             case let .approachingEnemy(type, enemyMaxHealth, enemyRemainingHealth, _, contactAt):
                 slot.exploringDistanceMeters += Self.exploringMetersPerTick
                 slotMutated = true
@@ -93,18 +87,8 @@ final class GolemMissionService {
                     )
                 }
                 slotMutated = true
-            case let .accident(kind):
-                let damage = Int.random(in: kind.damageRange)
-                slot.takeDamage(damage)
-                slot.appendActivityLog(kind.activityLogMessage(damage: damage), date: now)
-                slot.setActivity(state: .exploring, date: now)
-                slotMutated = true
             }
 
-            // Not sure if this should be how it works
-//            if applyMissionHealthTick(slot: &slot, now: now) {
-//                slotMutated = true
-//            }
             if checkDeath(slot: &slot, now: now) {
                 slotMutated = true
                 recordCompletedMissionExploredDistance(slot: slot)
@@ -125,54 +109,14 @@ final class GolemMissionService {
         guard Self.exploringToGatheringChance.check() else {
             return nil
         }
-        if Bool.random() {
-            return .gathering
-        } else {
-            let enemyType = EnemyType.allCases.randomElement() ?? .slime
-            return .approachingEnemy(
-                type: enemyType,
-                enemyMaxHealth: enemyType.maxHealth,
-                enemyRemainingHealth: enemyType.maxHealth,
-                approachStartedAt: now,
-                contactAt: now.addingTimeInterval(Self.enemyApproachDuration)
-            )
-        }
-    }
-
-    /// Returns `true` if gathering finished and the slot was updated.
-    private func completeGatheringPhase(slot: inout GolemMissionSlot, now: Date) -> Bool {
-        guard now.timeIntervalSince(slot.activityStartDate) >= Self.gatheringDuration else {
-            return false
-        }
-
-        let previousSelected = mainStore.mapLocations.selected
-        var mapLocations = mainStore.mapLocations
-        mapLocations.selected = slot.location
-        mainStore.mapLocations = mapLocations
-
-        let results = itemGeneratorService.makeAndStore(
-            plan: SacrificePlan(slotsByIndex: [:]),
-            allowArtifacts: false,
+        let enemyType = EnemyType.allCases.randomElement() ?? .slime
+        return .approachingEnemy(
+            type: enemyType,
+            enemyMaxHealth: enemyType.maxHealth,
+            enemyRemainingHealth: enemyType.maxHealth,
+            approachStartedAt: now,
+            contactAt: now.addingTimeInterval(Self.enemyApproachDuration)
         )
-
-        mapLocations.selected = previousSelected
-        mainStore.mapLocations = mapLocations
-
-        slot.add(results: results)
-        if let message = Self.gatheringLogMessage(results: results) {
-            slot.appendActivityLog(message, date: now)
-        }
-        slot.setActivity(state: .exploring, date: now)
-        return true
-    }
-
-    /// Returns `true` if health was decremented or the mission completed.
-    private func applyMissionHealthTick(slot: inout GolemMissionSlot, now: Date) -> Bool {
-        guard slot.phase == .running, let health = slot.remainingHealth, health > 0 else {
-            return false
-        }
-        slot.remainingHealth = health - 1
-        return true
     }
 
     private func checkDeath(slot: inout GolemMissionSlot, now: Date) -> Bool {
@@ -192,20 +136,5 @@ final class GolemMissionService {
         mapLocations.addGolemExploredDistance(meters, for: slot.location)
         mainStore.mapLocations = mapLocations
         mainStore.statistics.golemDistanceTraveledMeters += Int64(meters)
-    }
-
-    private static func gatheringLogMessage(results: [MakeItemResult]) -> String? {
-        let parts = results.compactMap { result -> String? in
-            switch result {
-            case let .base(item, count):
-                return "\(item.name) ×\(count)"
-            case .artifact, .recipe:
-                return nil
-            }
-        }
-        if parts.isEmpty {
-            return nil
-        }
-        return "Found — " + parts.joined(separator: ", ") + "."
     }
 }

@@ -194,9 +194,6 @@ private extension GolemMissionSlot.MissionActivityState {
     var displayTitle: String {
         switch self {
         case .exploring: return "Exploring"
-        case .gathering: return "Gathering"
-        case .accident:
-            return "Having an accident"
         case let .approachingEnemy(type, _, _, _, _):
             return "Encountering \(type.displayName)"
         case let .combat(type, _, _):
