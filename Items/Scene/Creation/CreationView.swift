@@ -252,23 +252,24 @@ extension CreationView: View {
     }
 
     private var autoCreationButton: some View {
-        Button {
-            viewModel.automateCreation.toggle()
-        } label: {
-            Image(systemName: "gearshape.arrow.trianglehead.2.clockwise.rotate.90")
-                .font(.title2)
-                .foregroundStyle(viewModel.automateCreation ? Color.green : Color.primary)
-                .frame(width: 44, height: 44)
-                .background {
-                    Circle()
-                        .fill(Color.primary.opacity(0.1))
-                }
-                .overlay {
-                    Circle()
-                        .strokeBorder(Color.white.opacity(0.25), lineWidth: 1)
-                }
-        }
-        .buttonStyle(.plain)
+        AutoCreationButtonWithTimerBorder(
+            timer: autoCreationTimer,
+            action: { viewModel.automateCreation.toggle() },
+            label: {
+                Image(systemName: "gearshape.arrow.trianglehead.2.clockwise.rotate.90")
+                    .font(.title2)
+                    .foregroundStyle(viewModel.automateCreation ? Color.green : Color.primary)
+                    .frame(width: 44, height: 44)
+                    .background {
+                        Circle()
+                            .fill(Color.primary.opacity(0.1))
+                    }
+                    .overlay {
+                        Circle()
+                            .strokeBorder(Color.white.opacity(0.25), lineWidth: 1)
+                    }
+            }
+        )
         .opacity(viewModel.model.automationUnlocked ? 1 : 0)
     }
 
@@ -292,12 +293,11 @@ extension CreationView: View {
     }
 
     private var createButton: some View {
-        CreateButtonWithTimerBorder(
-            timer: viewModel.model.automationUnlocked && viewModel.automateCreation
-                ? viewModel.autoTimerProgress
-                : nil,
-            action: viewModel.make
-        ) {
+        Button {
+            Task {
+                await viewModel.make()
+            }
+        } label: {
             ZStack {
                 if viewModel.model.isCreating {
                     ProgressView()
@@ -306,7 +306,14 @@ extension CreationView: View {
                     .opacity(viewModel.model.isCreating ? 0 : 1)
             }
         }
+        .buttonStyle(CapsuleButtonStyle())
         .disabled(viewModel.model.isCreating)
+    }
+
+    private var autoCreationTimer: TimerProgressView.Model? {
+        viewModel.model.automationUnlocked && viewModel.automateCreation
+            ? viewModel.autoTimerProgress
+            : nil
     }
 }
 
