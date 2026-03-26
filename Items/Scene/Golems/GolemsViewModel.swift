@@ -10,12 +10,6 @@ import SwiftUI
 
     weak var coordinator: ASKCoordinator.Coordinator?
 
-    enum Segment: String, CaseIterable {
-        case construction = "Construction"
-        case missions = "Missions"
-    }
-
-    var segment: Segment = .construction
     var warehouse: Warehouse = Warehouse()
     var golems: Golems = Golems()
     var mapLocations: MapLocations = MapLocations()
@@ -52,14 +46,24 @@ import SwiftUI
     }
 }
 
+private extension PortalUpgrade {
+    var grantsGolemMission: Bool {
+        switch self {
+        case .golems, .golemMissionSlotsLevel2, .golemMissionSlotsLevel3, .golemMissionSlotsLevel4, .golemMissionSlotsLevel5:
+            return true
+        default:
+            return false
+        }
+    }
+}
+
 extension GolemsViewModel {
 
-    var allGolemTypes: [GolemType] {
-        GolemType.allCases.sorted { $0.name < $1.name }
-    }
-
     var missionSlotCount: Int {
-        Golems.baseMissionSlotCount + portalUpgrades.bonuses.golemMissionSlots
+        PortalUpgrade.allCases.filter {
+            $0.grantsGolemMission && portalUpgrades.purchased.contains($0)
+        }
+        .count
     }
 
     var missionSlotIndices: Range<Int> {
@@ -68,18 +72,6 @@ extension GolemsViewModel {
 
     func missionSlot(at index: Int) -> GolemMissionSlot {
         golems.slots[index] ?? .empty()
-    }
-
-    func owned(_ type: GolemType) -> Int {
-        golems.owned(type)
-    }
-
-    func canPurchase(_ type: GolemType) -> Bool {
-        golemService.canPurchase(type)
-    }
-
-    func purchase(_ type: GolemType) {
-        golemService.purchase(type)
     }
 
     func showGolemInfo(_ type: GolemType) {
@@ -95,11 +87,7 @@ extension GolemsViewModel {
     }
 
     func selectableGolemTypes(for slotIndex: Int) -> [GolemType] {
-        let reserved = missionSlot(at: slotIndex).golemType
-        return GolemType.allCases.filter { type in
-            owned(type) > 0 || type == reserved
-        }
-        .sorted { $0.name < $1.name }
+        GolemType.allCases.sorted { $0.name < $1.name }
     }
 
     func unlockedMissionLocations() -> [MapLocation] {
@@ -139,8 +127,12 @@ extension GolemsViewModel {
         golemService.cancelMission(slotIndex: slotIndex)
     }
 
-    func clearCompletedMission(slotIndex: Int) {
-        golemService.clearCompletedMission(slotIndex: slotIndex)
+    func canRestartCompletedMission(slotIndex: Int) -> Bool {
+        golemService.canRestartCompletedMission(slotIndex: slotIndex)
+    }
+
+    func restartCompletedMission(slotIndex: Int) {
+        golemService.restartCompletedMission(slotIndex: slotIndex)
     }
 
     func showMissionGainedItems(slotIndex: Int) {

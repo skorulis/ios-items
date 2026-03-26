@@ -155,10 +155,11 @@ extension GolemMissionSlotView: View {
 
             HStack {
                 Spacer(minLength: 0)
-                Button("Clear") {
-                    viewModel.clearCompletedMission(slotIndex: slotIndex)
+                Button("Restart (1 Portal Shard)") {
+                    viewModel.restartCompletedMission(slotIndex: slotIndex)
                 }
                 .buttonStyle(CapsuleButtonStyle())
+                .disabled(!viewModel.canRestartCompletedMission(slotIndex: slotIndex))
             }
         }
     }

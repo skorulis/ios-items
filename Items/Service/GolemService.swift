@@ -16,18 +16,6 @@ final class GolemService {
 }
 
 extension GolemService {
-
-    func canPurchase(_ type: GolemType) -> Bool {
-        type.cost.allSatisfy { mainStore.warehouse.quantity($0.item) >= $0.quantity }
-    }
-
-    func purchase(_ type: GolemType) {
-        guard canPurchase(type) else { return }
-        for costItem in type.cost {
-            mainStore.warehouse.remove(item: costItem.item, quantity: costItem.quantity)
-        }
-        mainStore.golems.addOne(type)
-    }
 }
 
 // MARK: - Missions
@@ -59,20 +47,7 @@ extension GolemService {
         var slot = golems.slots[slotIndex] ?? .empty()
         guard slot.phase == .setup else { return }
         if slot.golemType == newType { return }
-
-        if let previous = slot.golemType {
-            golems.addOne(previous)
-        }
-        slot.golemType = nil
-        golems.slots[slotIndex] = slot
-        mainStore.golems = golems
-
-        guard let desired = newType else { return }
-
-        guard golems.removeOne(desired) else {
-            return
-        }
-        slot.golemType = desired
+        slot.golemType = newType
         golems.slots[slotIndex] = slot
         mainStore.golems = golems
     }
@@ -106,17 +81,31 @@ extension GolemService {
         guard var slot = golems.slots[slotIndex] else { return }
         guard slot.phase == .running else { return }
 
-        slot = .empty()
+        slot.phase = .setup
+        slot.remainingHealth = nil
         golems.slots[slotIndex] = slot
         mainStore.golems = golems
     }
 
-    func clearCompletedMission(slotIndex: Int) {
+    func canRestartCompletedMission(slotIndex: Int) -> Bool {
+        guard let slot = mainStore.golems.slots[slotIndex],
+              slot.phase == .complete
+        else { return false }
+        return mainStore.warehouse.quantity(.portalShard) >= 1 && slot.golemType != nil && slot.location != nil
+    }
+
+    func restartCompletedMission(slotIndex: Int) {
         var golems = mainStore.golems
         guard var slot = golems.slots[slotIndex] else { return }
         guard slot.phase == .complete else { return }
+        guard let golemType = slot.golemType,
+              let location = slot.location,
+              mainStore.mapLocations.isUnlocked(location),
+              mainStore.warehouse.quantity(.portalShard) >= 1
+        else { return }
 
-        slot = .empty()
+        mainStore.warehouse.remove(item: .portalShard, quantity: 1)
+        slot.start(date: Date(), initialHealth: golemType.missionMaxHealth)
         golems.slots[slotIndex] = slot
         mainStore.golems = golems
     }

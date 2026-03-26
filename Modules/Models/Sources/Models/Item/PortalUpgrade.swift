@@ -138,10 +138,10 @@ public enum PortalUpgrade: String, Codable, Hashable, CaseIterable, Identifiable
         case .tradingPostLevel2: return "Adds 1 extra trade offer and improves conversion rates."
         case .tradingPostLevel3: return "Adds 1 extra trade offer and improves conversion rates."
         case .golems: return "Unlocks the Golems tab."
-        case .golemMissionSlotsLevel2: return "Adds a second concurrent golem mission."
-        case .golemMissionSlotsLevel3: return "Adds a third concurrent golem mission."
-        case .golemMissionSlotsLevel4: return "Adds a fourth concurrent golem mission."
-        case .golemMissionSlotsLevel5: return "Adds a fifth concurrent golem mission."
+        case .golemMissionSlotsLevel2: return "Adds a second golem."
+        case .golemMissionSlotsLevel3: return "Adds a third golem."
+        case .golemMissionSlotsLevel4: return "Adds a fourth golem."
+        case .golemMissionSlotsLevel5: return "Adds a fifth golem."
         case .crafting:
             return "Unlocks the Equipment tab in the warehouse and the chance to find recipes when sacrificing."
         default:

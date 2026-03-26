@@ -160,8 +160,7 @@ struct GolemCancelMissionConfirmView: View {
                 .font(.appTitle)
 
             Text(
-                "The golem cannot be recovered once a mission has started. "
-                    + "Cancelling will end the mission and you will lose this golem."
+                "Cancelling will stop this mission and return the golem to setup."
             )
             .font(.appBody)
             .fixedSize(horizontal: false, vertical: true)
