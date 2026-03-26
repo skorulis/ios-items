@@ -127,6 +127,10 @@ final class ItemsAssembly: AutoInitModuleAssembly {
             ArtifactPickerViewModel.make(resolver: resolver, slot: slot)
         }
 
+        container.register(EquipmentDetailViewModel.self) { (resolver: BaseResolver, equipment: EquipmentInstance) in
+            EquipmentDetailViewModel.make(resolver: resolver, equipment: equipment)
+        }
+
         container.register(MainPathRenderer.self) { MainPathRenderer(resolver: $0) }
     }
 

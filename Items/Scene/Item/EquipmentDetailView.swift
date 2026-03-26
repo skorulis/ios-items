@@ -1,38 +1,50 @@
 import Models
+import Knit
 import SwiftUI
 
 @MainActor
 struct EquipmentDetailView: View {
-    let equipment: EquipmentInstance
+    @State var viewModel: EquipmentDetailViewModel
 
     var body: some View {
         VStack(spacing: 16) {
             HStack(spacing: 12) {
                 AvatarView(
-                    text: equipment.displayName,
+                    text: viewModel.equipment.displayName,
                     image: nil,
-                    border: equipment.quality.color,
+                    border: viewModel.equipment.quality.color,
                     size: .medium
                 )
-                Text(equipment.displayName)
+                Text(viewModel.equipment.displayName)
                     .font(.appTitle)
                     .lineLimit(2)
                     .truncationMode(.tail)
                 Spacer()
+
+                Button(action: viewModel.trash) {
+                    Image(systemName: "trash")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 20, height: 20)
+                        .foregroundStyle(.red)
+                        .padding(8)
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("Remove equipment from warehouse")
             }
 
             VStack(alignment: .leading, spacing: 8) {
                 detailRow(
                     title: "Quality",
-                    value: equipment.quality.name,
-                    color: equipment.quality.color
+                    value: viewModel.equipment.quality.name,
+                    color: viewModel.equipment.quality.color
                 )
                 detailRow(
                     title: "Material",
-                    value: equipment.material.nameAdjective,
+                    value: viewModel.equipment.material.nameAdjective,
                     color: .black,
                 )
-                detailRow(title: "Type", value: equipment.kind.displayName, color: .black)
+                detailRow(title: "Type", value: viewModel.equipment.kind.displayName, color: .black)
             }
         }
         .padding(16)
@@ -53,5 +65,8 @@ struct EquipmentDetailView: View {
 
 #Preview {
     let instance = EquipmentInstance(kind: .dagger, material: .stone, quality: .junk)
-    EquipmentDetailView(equipment: instance)
+    let assembler = ItemsAssembly.testing()
+    EquipmentDetailView(
+        viewModel: assembler.resolver.equipmentDetailViewModel(equipment: instance)
+    )
 }

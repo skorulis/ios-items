@@ -33,7 +33,7 @@ public enum Ingredient: String, Hashable, Equatable, CaseIterable, Identifiable,
     case memorySeed
     case metalBloom
     case cipherRibbon
-    
+
     // Rare
     case platinumFlorin
     case sunwellPhial
@@ -286,7 +286,7 @@ public enum Ingredient: String, Hashable, Equatable, CaseIterable, Identifiable,
         case .dreamSporeMushroom:
             return [
                 "A black and white mushroom that when squeezed emits pale spores",
-                "If the spores are breathed in while sleeping, scraps of that sleeper's dreams will begin to show above them as they slumber."
+                "If the spores are breathed in while sleeping, scraps of that sleeper's dreams will begin to show above them as they slumber.",
             ]
         case .soulEmber:
             return [

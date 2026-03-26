@@ -55,6 +55,20 @@ extension WarehouseService {
         mainStore.warehouse.remove(item: item, quantity: quantity)
     }
 
+    /// Remove a unique equipment instance from the warehouse.
+    func remove(equipment: EquipmentInstance) {
+        mainStore.warehouse.equipment.removeAll { $0.id == equipment.id }
+        let icon = AnyView(
+            AvatarView(
+                text: equipment.displayName,
+                image: nil,
+                border: equipment.quality.color,
+                size: .small
+            )
+        )
+        toastService.showToast("Trashed \(equipment.displayName)", icon: icon)
+    }
+
     /// Add / upgrade an artifact in the warehouse.
     func add(artifact: ArtifactInstance) {
         let wasNewDiscovery = mainStore.warehouse.isNewDiscovery(artifact: artifact)

@@ -148,7 +148,9 @@ struct MainPathRenderer: CoordinatorPathRenderer {
                 contentOnly: false,
             )
         case let .equipmentDetails(instance):
-            EquipmentDetailView(equipment: instance)
+            EquipmentDetailView(
+                viewModel: coordinator.apply(resolver.equipmentDetailViewModel(equipment: instance))
+            )
         case let .dialog(text):
             DefaultDialogContent(model: .init(bodyText: text))
         case let .fullDialog(model):

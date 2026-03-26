@@ -48,7 +48,7 @@ public enum EquipmentRecipe: Codable, CaseIterable {
 // MARK: - Cost
 
 extension EquipmentRecipe {
-    
+
     public var cost: [UpgradeCostItem] {
         switch self {
         case .stoneDagger:

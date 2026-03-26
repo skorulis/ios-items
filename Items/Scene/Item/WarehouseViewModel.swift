@@ -142,7 +142,7 @@ extension WarehouseViewModel {
                 overlay: .toast,
                 MainPath.toast(nil, "No recipes available. Find recipes from the portal.", UUID())
             )
-        }   
+        }
     }
 
     var hasEquipment: Bool {
