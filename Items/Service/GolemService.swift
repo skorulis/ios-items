@@ -52,10 +52,8 @@ extension GolemService {
 
     func startMission(slotIndex: Int) {
         var golems = mainStore.golems
-        guard var slot = golems.slots[slotIndex] else { return }
-        guard slot.phase == .setup,
-              mainStore.mapLocations.isUnlocked(slot.location)
-        else { return }
+        var slot = golems.slots[slotIndex] ?? .empty()
+        guard slot.phase != .running else { return }
 
         slot.start(date: Date())
         golems.slots[slotIndex] = slot
@@ -74,7 +72,7 @@ extension GolemService {
         slot.lastSimulatedAt = Date()
         slot.exploringDistanceMeters = 0
         slot.gainedItems = [:]
-        slot.activityLog = []
+        slot.enemiesDefeated = 0
         golems.slots[slotIndex] = slot
         mainStore.golems = golems
     }

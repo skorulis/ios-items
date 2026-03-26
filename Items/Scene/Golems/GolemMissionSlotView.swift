@@ -28,7 +28,7 @@ extension GolemMissionSlotView: View {
                 Spacer(minLength: 0)
                 if slot.phase == .running || slot.phase == .complete {
                     HStack(spacing: 8) {
-                        missionActivityLogIconButton
+                        missionStatisticsIconButton
                         gainedItemsIconButton
                     }
                 }
@@ -47,18 +47,18 @@ extension GolemMissionSlotView: View {
         .background(Color.gray.opacity(0.1), in: RoundedRectangle(cornerRadius: 8))
     }
 
-    private var missionActivityLogIconButton: some View {
+    private var missionStatisticsIconButton: some View {
         Button {
-            viewModel.showMissionActivityLog(slotIndex: model.index)
+            viewModel.showMissionStatistics(slotIndex: model.index)
         } label: {
-            Image(systemName: "list.bullet.rectangle")
+            Image(systemName: "chart.bar")
                 .font(.body.weight(.semibold))
                 .foregroundStyle(.primary)
                 .frame(minWidth: 44, minHeight: 44)
                 .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("Mission activity log")
+        .accessibilityLabel("Mission statistics")
     }
 
     private var gainedItemsIconButton: some View {

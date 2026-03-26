@@ -117,20 +117,25 @@ extension GolemsViewModel {
         coordinator?.custom(overlay: .card, MainPath.dialog(text))
     }
 
-    func showMissionActivityLog(slotIndex: Int) {
+    func showMissionStatistics(slotIndex: Int) {
         let slot = missionSlot(at: slotIndex)
-        let entries = slot.activityLog
-        guard !entries.isEmpty else {
-            coordinator?.custom(overlay: .card, MainPath.dialog("No activity recorded yet."))
-            return
+        let missionTimeInterval: TimeInterval
+        switch slot.phase {
+        case .running:
+            missionTimeInterval = Date().timeIntervalSince(slot.startedAt)
+        case .complete:
+            missionTimeInterval = slot.lastSimulatedAt.timeIntervalSince(slot.startedAt)
+        case .setup:
+            missionTimeInterval = 0
         }
-        let missionStart = slot.startedAt
-        let lines = entries.map { entry in
-            let elapsed = entry.date.timeIntervalSince(missionStart)
-            let stamp = CompactDurationFormat.string(fromInterval: elapsed, roundingRule: .towardZero)
-            return "\(stamp): \(entry.message)"
-        }
-        .joined(separator: "\n")
-        coordinator?.custom(overlay: .card, MainPath.dialog("Mission log\n\n\(lines)"))
+        let timeText = CompactDurationFormat.string(fromInterval: missionTimeInterval, roundingRule: .towardZero)
+        let text = """
+        Mission statistics
+
+        Distance walked: \(slot.exploringDistanceMeters) m
+        Enemies defeated: \(slot.enemiesDefeated)
+        Mission time: \(timeText)
+        """
+        coordinator?.custom(overlay: .card, MainPath.dialog(text))
     }
 }

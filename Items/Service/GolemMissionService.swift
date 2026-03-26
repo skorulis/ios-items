@@ -98,30 +98,15 @@ final class GolemMissionService {
                 slot.takeDamage(totalDamageToGolem)
                 slotMutated = true
 
-                // Remove defeated enemies + log.
+                // Remove defeated enemies and roll loot.
                 let defeated = slot.enemies.filter {
                     $0.remainingHealth <= 0 && $0.distanceToGolemMeters <= GolemMissionSlot.enemyAttackRangeMeters
                 }
                 if !defeated.isEmpty {
-                    let enemyWord = defeated.count == 1 ? "enemy" : "enemies"
-                    slot.appendActivityLog(
-                        "Defeated \(defeated.count) \(enemyWord).",
-                        date: now
-                    )
-
-                    // Create a drop per defeated enemy and add it to the mission loot.
-                    var drops: [Ingredient: Int] = [:]
+                    slot.enemiesDefeated += defeated.count
                     for enemy in defeated {
                         let drop = enemy.type.rollDrop()
-                        drops[drop, default: 0] += 1
                         slot.gainedItems[drop, default: 0] += 1
-                    }
-                    if !drops.isEmpty {
-                        let dropLines = drops
-                            .sorted { $0.key.name < $1.key.name }
-                            .map { "\($0.key.name) x\($0.value)" }
-                            .joined(separator: ", ")
-                        slot.appendActivityLog("Loot: \(dropLines)", date: now)
                     }
                     slotMutated = true
                 }
@@ -165,7 +150,6 @@ final class GolemMissionService {
                 distanceToGolemMeters: GolemMissionSlot.enemySpawnDistanceMeters
             )
         )
-        slot.appendActivityLog("An enemy appeared: \(enemyType.displayName).", date: now)
         slot.scheduleNextEnemySpawn(from: now)
         return true
     }
@@ -173,7 +157,6 @@ final class GolemMissionService {
     private func checkDeath(slot: inout GolemMissionSlot, now: Date) -> Bool {
         if slot.remainingHealth == 0 {
             slot.phase = .complete
-            slot.appendActivityLog("golem died after travelling \(slot.exploringDistanceMeters)m", date: now)
             return true
         }
         return false

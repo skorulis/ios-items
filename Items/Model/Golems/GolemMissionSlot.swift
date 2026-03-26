@@ -26,8 +26,8 @@ struct GolemMissionSlot: Codable {
     /// Health remaining while running or zero when complete; nil in setup.
     var remainingHealth: Int?
     var gainedItems: [Ingredient: Int]
-    /// Timeline of notable mission events (started, activity changes, gathering results, completion).
-    var activityLog: [GolemMissionLogEntry]
+    /// Enemies killed during this mission run.
+    var enemiesDefeated: Int = 0
     /// Meters travelled while in the exploring activity (this mission run).
     var exploringDistanceMeters: Int = 0
 
@@ -77,10 +77,6 @@ struct GolemMissionSlot: Codable {
         nextEnemySpawnAt = now.addingTimeInterval(interval)
     }
 
-    mutating func appendActivityLog(_ message: String, date: Date) {
-        activityLog.append(GolemMissionLogEntry(date: date, message: message))
-    }
-
     mutating func start(date: Date) {
         self.phase = .running
         self.startedAt = date
@@ -89,9 +85,8 @@ struct GolemMissionSlot: Codable {
         self.nextEnemySpawnAt = date.addingTimeInterval(Double.random(in: 1.0 ... 2.5))
         self.lastSimulatedAt = date
         self.gainedItems = [:]
-        self.activityLog = []
+        self.enemiesDefeated = 0
         self.exploringDistanceMeters = 0
-        appendActivityLog("Mission started.", date: date)
     }
 
     mutating func add(results: [MakeItemResult]) {
@@ -115,7 +110,7 @@ struct GolemMissionSlot: Codable {
         phase: Phase,
         location: MapLocation = .vesprium,
         remainingHealth: Int? = nil,
-        activityLog: [GolemMissionLogEntry] = [],
+        enemiesDefeated: Int = 0,
         exploringDistanceMeters: Int = 0,
         enemies: [Enemy] = [],
         nextEnemySpawnAt: Date? = nil,
@@ -126,7 +121,7 @@ struct GolemMissionSlot: Codable {
         self.startedAt = Date()
         self.remainingHealth = remainingHealth
         self.gainedItems = [:]
-        self.activityLog = activityLog
+        self.enemiesDefeated = enemiesDefeated
         self.exploringDistanceMeters = exploringDistanceMeters
         self.enemies = enemies
         self.nextEnemySpawnAt = nextEnemySpawnAt
@@ -140,9 +135,4 @@ struct GolemMissionSlot: Codable {
             remainingHealth: nil
         )
     }
-}
-
-struct GolemMissionLogEntry: Codable, Equatable, Hashable {
-    var date: Date
-    var message: String
 }

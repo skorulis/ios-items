@@ -2,7 +2,7 @@
 
 import Foundation
 
-/// Shared formatting for short, human-readable durations (research timers, mission log offsets, etc.).
+/// Shared formatting for short, human-readable durations (research timers, mission time, etc.).
 enum CompactDurationFormat {
 
     /// Formats a non-negative duration after rounding the interval to whole seconds.
