@@ -2,7 +2,7 @@ import SwiftUI
 
 @MainActor
 struct GolemMissionSideScrollerView: View {
-    let activityState: GolemMissionSlot.MissionActivityState
+    let enemies: [GolemMissionSlot.Enemy]
 
     var body: some View {
         TimelineView(.animation(minimumInterval: 1.0 / 30.0, paused: false)) { context in
@@ -20,38 +20,51 @@ struct GolemMissionSideScrollerView: View {
                         let laneY = geometry.size.height * 0.72
                         let golemX = width * 0.22
                         let contactX = width * 0.55
-                        let enemyX = enemyXPosition(
-                            state: activityState,
-                            date: context.date,
-                            laneWidth: width,
-                            contactX: contactX
-                        )
+                        let isFighting = enemies.contains { enemy in
+                            enemy.distanceToGolemMeters <= GolemMissionSlot.enemyAttackRangeMeters
+                        }
 
                         lanePath(y: laneY, width: width)
                             .stroke(Color.gray.opacity(0.5), style: StrokeStyle(lineWidth: 2, dash: [7, 6]))
 
-                        golemShape(isWalking: isWalking(state: activityState))
+                        let t = context.date.timeIntervalSinceReferenceDate
+                        let bob = isFighting ? 0 : sin(t * 6) * 1.8
+
+                        golemShape(isWalking: !isFighting)
                             .fill(Color.accentColor)
                             .frame(width: 28, height: 36)
-                            .offset(x: golemX, y: laneY - 36)
+                            .offset(x: golemX, y: laneY - 36 + bob)
 
-                        if let enemy = enemyDetails(state: activityState) {
+                        ForEach(
+                            Array(enemies.prefix(GolemMissionSlot.maxEnemies)).enumerated(),
+                            id: \.element.id
+                        ) { idx, enemy in
+                            let enemyX = enemyXPosition(
+                                distanceToGolemMeters: enemy.distanceToGolemMeters,
+                                laneWidth: width,
+                                contactX: contactX
+                            )
+                            let yOffset = CGFloat(idx) * 4
                             enemyShape(for: enemy.type)
                                 .foregroundStyle(enemyColor(for: enemy.type))
                                 .frame(width: 28, height: 30)
-                                .offset(x: enemyX, y: laneY - 30)
+                                .offset(x: enemyX, y: laneY - 30 + yOffset)
                         }
                     }
                 }
                 .frame(height: 112)
 
-                if let enemy = enemyDetails(state: activityState) {
+                if !enemies.isEmpty {
                     VStack(alignment: .leading, spacing: 4) {
-                        Text(enemy.type.displayName)
-                            .font(.appCaption.weight(.semibold))
-                            .foregroundStyle(.secondary)
-                        ProgressView(value: enemy.remainingFraction)
-                            .tint(.red)
+                        ForEach(enemies.prefix(GolemMissionSlot.maxEnemies)) { enemy in
+                            HStack(spacing: 8) {
+                                Circle()
+                                    .fill(enemyColor(for: enemy.type))
+                                    .frame(width: 8, height: 8)
+                                ProgressView(value: enemy.remainingFraction)
+                                    .tint(enemyColor(for: enemy.type))
+                            }
+                        }
                     }
                 }
             }
@@ -66,43 +79,18 @@ struct GolemMissionSideScrollerView: View {
     }
 
     private func enemyXPosition(
-        state: GolemMissionSlot.MissionActivityState,
-        date: Date,
+        distanceToGolemMeters: Double,
         laneWidth: CGFloat,
         contactX: CGFloat
     ) -> CGFloat {
         let rightSpawnX = laneWidth * 0.88
-        switch state {
-        case let .approachingEnemy(_, _, _, approachStartedAt, contactAt):
-            let total = max(contactAt.timeIntervalSince(approachStartedAt), 0.001)
-            let elapsed = max(0, min(total, date.timeIntervalSince(approachStartedAt)))
-            let progress = elapsed / total
-            return rightSpawnX - CGFloat(progress) * (rightSpawnX - contactX)
-        case .combat:
-            return contactX
-        default:
-            return rightSpawnX
-        }
-    }
 
-    private func isWalking(state: GolemMissionSlot.MissionActivityState) -> Bool {
-        switch state {
-        case .combat:
-            return false
-        default:
-            return true
-        }
-    }
-
-    private func enemyDetails(state: GolemMissionSlot.MissionActivityState) -> EnemyDisplayDetails? {
-        switch state {
-        case let .approachingEnemy(type, enemyMaxHealth, enemyRemainingHealth, _, _):
-            return .init(type: type, maxHealth: enemyMaxHealth, remainingHealth: enemyRemainingHealth)
-        case let .combat(type, enemyMaxHealth, enemyRemainingHealth):
-            return .init(type: type, maxHealth: enemyMaxHealth, remainingHealth: enemyRemainingHealth)
-        default:
-            return nil
-        }
+        let minDist = GolemMissionSlot.enemyAttackRangeMeters
+        let maxDist = GolemMissionSlot.enemySpawnDistanceMeters
+        let clamped = min(max(distanceToGolemMeters, minDist), maxDist)
+        let fractionFromClose = (clamped - minDist) / max(maxDist - minDist, 0.0001)
+        // fraction 0 => contactX (close), fraction 1 => rightSpawnX (far)
+        return contactX + CGFloat(fractionFromClose) * (rightSpawnX - contactX)
     }
 
     private func enemyColor(for type: EnemyType) -> Color {
@@ -130,34 +118,27 @@ struct GolemMissionSideScrollerView: View {
     }
 }
 
-private struct EnemyDisplayDetails {
-    let type: EnemyType
-    let maxHealth: Int
-    let remainingHealth: Int
-
-    var remainingFraction: Double {
-        guard maxHealth > 0 else { return 0 }
-        return min(1, max(0, Double(remainingHealth) / Double(maxHealth)))
-    }
-}
-
 #Preview {
     VStack {
         GolemMissionSideScrollerView(
-            activityState: .approachingEnemy(
-                type: .raider,
-                enemyMaxHealth: 12,
-                enemyRemainingHealth: 12,
-                approachStartedAt: Date(),
-                contactAt: Date().addingTimeInterval(2.5)
-            )
+            enemies: [
+                .init(
+                    type: .raider,
+                    maxHealth: 12,
+                    remainingHealth: 12,
+                    distanceToGolemMeters: 5.0
+                )
+            ]
         )
         GolemMissionSideScrollerView(
-            activityState: .combat(
-                type: .stoneBeast,
-                enemyMaxHealth: 16,
-                enemyRemainingHealth: 5
-            )
+            enemies: [
+                .init(
+                    type: .stoneBeast,
+                    maxHealth: 16,
+                    remainingHealth: 5,
+                    distanceToGolemMeters: GolemMissionSlot.enemyAttackRangeMeters
+                )
+            ]
         )
     }
     .padding()

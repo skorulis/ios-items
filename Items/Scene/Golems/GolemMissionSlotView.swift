@@ -94,9 +94,11 @@ extension GolemMissionSlotView: View {
         VStack(alignment: .leading, spacing: 10) {
             locationSlot(slot: slot)
 
-            GolemMissionSideScrollerView(activityState: slot.missionActivityState)
+            let isFighting = slot.enemies.contains { $0.distanceToGolemMeters <= GolemMissionSlot.enemyAttackRangeMeters }
 
-            Text(slot.missionActivityState.displayTitle)
+            GolemMissionSideScrollerView(enemies: slot.enemies)
+
+            Text(isFighting ? "Fighting" : "Walking")
                 .font(.appCaption.weight(.semibold))
                 .foregroundStyle(.secondary)
 
@@ -187,18 +189,6 @@ extension GolemMissionSlotView: View {
                 .stroke(Color.gray.opacity(0.55), lineWidth: Self.slotStrokeWidth)
         }
         .clipShape(RoundedRectangle(cornerRadius: 8))
-    }
-}
-
-private extension GolemMissionSlot.MissionActivityState {
-    var displayTitle: String {
-        switch self {
-        case .exploring: return "Exploring"
-        case let .approachingEnemy(type, _, _, _, _):
-            return "Encountering \(type.displayName)"
-        case let .combat(type, _, _):
-            return "Fighting \(type.displayName)"
-        }
     }
 }
 

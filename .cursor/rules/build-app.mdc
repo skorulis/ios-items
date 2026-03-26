@@ -14,3 +14,9 @@ From the project root (`Items/`):
 ```bash
 xcodebuild -scheme Items -configuration Debug build
 ```
+
+#Linting 
+
+```bash
+swiftlint --fix --strict
+```

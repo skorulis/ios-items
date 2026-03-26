@@ -48,8 +48,8 @@ extension GolemsView {
         }
 
         var slots: [GolemMissionSlotView.Model] {
-            (0..<golems.slots.count).map {
-                let slot = golems.slots[$0]!
+            (0..<golemCount).map {
+                let slot = golems.slots[$0] ?? .empty()
                 return GolemMissionSlotView.Model(
                     index: $0,
                     slot: slot,

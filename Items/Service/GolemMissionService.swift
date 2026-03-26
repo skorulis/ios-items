@@ -11,10 +11,8 @@ final class GolemMissionService {
     private let itemGeneratorService: ItemGeneratorService
     private var progressCheckTimer: Timer?
 
-    private static let enemyApproachDuration: TimeInterval = 2.4
-    private static let exploringToGatheringChance = Chance(percent: 10)
-    private static let exploringMetersPerTick = 1
     private static let golemAttackDamagePerTick = 4
+    private static let tickInterval: TimeInterval = 1.0
 
     @Resolvable<BaseResolver>
     init(mainStore: MainStore, itemGeneratorService: ItemGeneratorService) {
@@ -22,10 +20,10 @@ final class GolemMissionService {
         self.itemGeneratorService = itemGeneratorService
     }
 
-    /// Start a 1s timer to advance running missions (exploring / gathering). Call once from app launch.
+    /// Start a fixed-time simulation timer for running missions. Call once from app launch.
     func startProgressCheckTimer() {
         guard progressCheckTimer == nil else { return }
-        progressCheckTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+        progressCheckTimer = Timer.scheduledTimer(withTimeInterval: Self.tickInterval, repeats: true) { [weak self] _ in
             guard let self else { return }
             self.tickMissions(now: Date())
         }
@@ -47,52 +45,78 @@ final class GolemMissionService {
             else { continue }
 
             var slotMutated = false
-            switch slot.missionActivityState {
-            case .exploring:
-                slot.exploringDistanceMeters += Self.exploringMetersPerTick
+            // 1) Spawn enemy if due (up to 3 total).
+            if spawnEnemyIfDue(now: now, slot: &slot) {
                 slotMutated = true
-                if let newState = checkForNewState(now: now) {
-                    slot.setActivity(state: newState, date: now)
-                    if case let .approachingEnemy(type, _, _, _, _) = newState {
-                        slot.appendActivityLog("Encountered a \(type.displayName).", date: now)
-                    }
-                }
-            case let .approachingEnemy(type, enemyMaxHealth, enemyRemainingHealth, _, contactAt):
-                slot.exploringDistanceMeters += Self.exploringMetersPerTick
-                slotMutated = true
-                guard now >= contactAt else { break }
-                slot.setActivity(
-                    state: .combat(
-                        type: type,
-                        enemyMaxHealth: enemyMaxHealth,
-                        enemyRemainingHealth: enemyRemainingHealth
-                    ),
-                    date: now
-                )
+            }
 
-            case let .combat(type, enemyMaxHealth, enemyRemainingHealth):
-                let updatedEnemyHealth = max(0, enemyRemainingHealth - Self.golemAttackDamagePerTick)
-                slot.takeDamage(type.damagePerTick)
-                if updatedEnemyHealth == 0 {
-                    slot.appendActivityLog("Defeated \(type.displayName).", date: now)
-                    slot.setActivity(state: .exploring, date: now)
-                } else {
-                    slot.setActivity(
-                        state: .combat(
-                            type: type,
-                            enemyMaxHealth: enemyMaxHealth,
-                            enemyRemainingHealth: updatedEnemyHealth
-                        ),
-                        date: now
+            // 2) Move golem until an enemy reaches attack range.
+            let anyEnemyInRange = slot.enemies.contains { $0.distanceToGolemMeters <= GolemMissionSlot.enemyAttackRangeMeters }
+            if !anyEnemyInRange {
+                slot.exploringDistanceMeters += Int(GolemMissionSlot.golemMetersPerTick.rounded())
+                slotMutated = true
+            }
+
+            // 3) Move enemies closer (enemy runs towards the golem even while golem is fighting).
+            if !slot.enemies.isEmpty {
+                for i in slot.enemies.indices {
+                    guard slot.enemies[i].remainingHealth > 0 else { continue }
+                    let golemSpeed = anyEnemyInRange ? 0.0 : GolemMissionSlot.golemMetersPerTick
+                    let closingSpeed = GolemMissionSlot.enemyMetersPerTick + golemSpeed
+                    let newDistance = slot.enemies[i].distanceToGolemMeters - closingSpeed
+                    slot.enemies[i].distanceToGolemMeters = max(
+                        GolemMissionSlot.enemyAttackRangeMeters,
+                        newDistance
                     )
                 }
                 slotMutated = true
+            }
+
+            // 4) Combat: any enemy in range fights back; golem attacks all in range.
+            var enemiesInRangeIndices: [Int] = []
+            for (index, enemy) in slot.enemies.enumerated() {
+                guard enemy.remainingHealth > 0 else { continue }
+                guard enemy.distanceToGolemMeters <= GolemMissionSlot.enemyAttackRangeMeters else { continue }
+                enemiesInRangeIndices.append(index)
+            }
+
+            if !enemiesInRangeIndices.isEmpty {
+                var totalDamageToGolem = 0
+                for enemyIndex in enemiesInRangeIndices {
+                    totalDamageToGolem += slot.enemies[enemyIndex].type.damagePerTick
+                }
+
+                // Apply golem damage.
+                for enemyIndex in enemiesInRangeIndices {
+                    let enemy = slot.enemies[enemyIndex]
+                    slot.enemies[enemyIndex].remainingHealth = max(
+                        0,
+                        enemy.remainingHealth - Self.golemAttackDamagePerTick
+                    )
+                }
+
+                slot.takeDamage(totalDamageToGolem)
+                slotMutated = true
+
+                // Remove defeated enemies + log.
+                let defeated = slot.enemies.filter { $0.remainingHealth <= 0 && $0.distanceToGolemMeters <= GolemMissionSlot.enemyAttackRangeMeters }
+                if !defeated.isEmpty {
+                    let enemyWord = defeated.count == 1 ? "enemy" : "enemies"
+                    slot.appendActivityLog(
+                        "Defeated \(defeated.count) \(enemyWord).",
+                        date: now
+                    )
+                    slotMutated = true
+                }
+                slot.enemies.removeAll { $0.remainingHealth <= 0 }
             }
 
             if checkDeath(slot: &slot, now: now) {
                 slotMutated = true
                 recordCompletedMissionExploredDistance(slot: slot)
             }
+
+            slot.lastSimulatedAt = now
 
             if slotMutated {
                 golems.slots[index] = slot
@@ -105,18 +129,28 @@ final class GolemMissionService {
         }
     }
 
-    private func checkForNewState(now: Date) -> GolemMissionSlot.MissionActivityState? {
-        guard Self.exploringToGatheringChance.check() else {
-            return nil
+    private func spawnEnemyIfDue(now: Date, slot: inout GolemMissionSlot) -> Bool {
+        guard slot.enemies.count < GolemMissionSlot.maxEnemies else { return false }
+
+        guard let nextAt = slot.nextEnemySpawnAt else {
+            slot.nextEnemySpawnAt = now.addingTimeInterval(Double.random(in: 1.0 ... 2.5))
+            return true
         }
+
+        guard now >= nextAt else { return false }
+
         let enemyType = EnemyType.allCases.randomElement() ?? .slime
-        return .approachingEnemy(
-            type: enemyType,
-            enemyMaxHealth: enemyType.maxHealth,
-            enemyRemainingHealth: enemyType.maxHealth,
-            approachStartedAt: now,
-            contactAt: now.addingTimeInterval(Self.enemyApproachDuration)
+        slot.enemies.append(
+            GolemMissionSlot.Enemy(
+                type: enemyType,
+                maxHealth: enemyType.maxHealth,
+                remainingHealth: enemyType.maxHealth,
+                distanceToGolemMeters: GolemMissionSlot.enemySpawnDistanceMeters
+            )
         )
+        slot.appendActivityLog("An enemy appeared: \(enemyType.displayName).", date: now)
+        slot.scheduleNextEnemySpawn(from: now)
+        return true
     }
 
     private func checkDeath(slot: inout GolemMissionSlot, now: Date) -> Bool {

@@ -69,6 +69,12 @@ extension GolemService {
 
         slot.phase = .setup
         slot.remainingHealth = nil
+        slot.enemies = []
+        slot.nextEnemySpawnAt = nil
+        slot.lastSimulatedAt = Date()
+        slot.exploringDistanceMeters = 0
+        slot.gainedItems = [:]
+        slot.activityLog = []
         golems.slots[slotIndex] = slot
         mainStore.golems = golems
     }
