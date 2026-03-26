@@ -33,12 +33,14 @@ public enum Ingredient: String, Hashable, Equatable, CaseIterable, Identifiable,
     case memorySeed
     case metalBloom
     case cipherRibbon
-
+    
     // Rare
     case platinumFlorin
     case sunwellPhial
     case lightningStone
     case abyssalGeode
+    case entangledSaltLattice
+    case dreamSporeMushroom
 
     // Exceptional
     case astralGem
@@ -57,7 +59,7 @@ public enum Ingredient: String, Hashable, Equatable, CaseIterable, Identifiable,
             return .common
         case .goldFlorin, .jadeFigurine, .portalShard, .soulEmber, .anchorStone, .memorySeed, .metalBloom, .cipherRibbon:
             return .good
-        case .platinumFlorin, .sunwellPhial, .lightningStone, .abyssalGeode:
+        case .platinumFlorin, .sunwellPhial, .lightningStone, .abyssalGeode, .entangledSaltLattice, .dreamSporeMushroom:
             return .rare
         case .astralGem:
             return .exceptional
@@ -136,6 +138,8 @@ public enum Ingredient: String, Hashable, Equatable, CaseIterable, Identifiable,
             return [.earth, .chaos]
         case .memorySeed:
             return [.life, .mind]
+        case .dreamSporeMushroom:
+            return [.mind, .life, .dark]
 
             // Rare
         case .platinumFlorin:
@@ -146,6 +150,8 @@ public enum Ingredient: String, Hashable, Equatable, CaseIterable, Identifiable,
             return [.light, .order, .earth]
         case .abyssalGeode:
             return [.dark, .earth, .chaos]
+        case .entangledSaltLattice:
+            return [.earth, .chaos, .mind]
 
             // Exceptional
         case .astralGem:
@@ -277,6 +283,11 @@ public enum Ingredient: String, Hashable, Equatable, CaseIterable, Identifiable,
                 "A narrow ribbon woven with faint sigils. When tied around a document, the writing refuses to be read until the owner speaks the binding word.",
                 "Without the codeword, pages show only as a blur.",
             ]
+        case .dreamSporeMushroom:
+            return [
+                "A black and white mushroom that when squeezed emits pale spores",
+                "If the spores are breathed in while sleeping, scraps of that sleeper's dreams will begin to show above them as they slumber."
+            ]
         case .soulEmber:
             return [
                 "A dull ember that never goes out. Uncomfortable to hold.",
@@ -307,6 +318,11 @@ public enum Ingredient: String, Hashable, Equatable, CaseIterable, Identifiable,
             return [
                 "A hollow stone lined with black crystals that seem to shift when you're not looking directly at them.",
                 "Formed in the deepest seams of the world, the level of pressure and exposure to chaos has created a stone with impossible internal angles.",
+            ]
+        case .entangledSaltLattice:
+            return [
+                "Salt crystals from a flooded mine, grown in matched pairs: split one from its twin and each half still remembers the other.",
+                "Trace embued chalk across one lattice and the message appears on the other briefly before fading",
             ]
         }
     }

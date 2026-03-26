@@ -35,6 +35,8 @@ extension Ingredient {
             return Asset.BaseItem.book.swiftUIImage
         case .cipherRibbon:
             return nil
+        case .dreamSporeMushroom:
+            return nil
         case .jadeFigurine:
             return Asset.BaseItem.jadeFiguring.swiftUIImage
         case .merchantSigil:
@@ -62,6 +64,8 @@ extension Ingredient {
         case .lightningStone:
             return nil
         case .abyssalGeode:
+            return nil
+        case .entangledSaltLattice:
             return nil
         case .astralGem:
             return nil
