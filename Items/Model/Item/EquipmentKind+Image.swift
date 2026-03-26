@@ -9,8 +9,6 @@ extension EquipmentKind {
         switch self {
         case .shortSword:
             return Asset.Equipment.shortSword.swiftUIImage
-        case .gloves:
-            return Asset.Equipment.dagger.swiftUIImage
         case .dagger:
             return Asset.Equipment.dagger.swiftUIImage
         }
