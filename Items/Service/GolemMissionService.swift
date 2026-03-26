@@ -99,7 +99,9 @@ final class GolemMissionService {
                 slotMutated = true
 
                 // Remove defeated enemies + log.
-                let defeated = slot.enemies.filter { $0.remainingHealth <= 0 && $0.distanceToGolemMeters <= GolemMissionSlot.enemyAttackRangeMeters }
+                let defeated = slot.enemies.filter {
+                    $0.remainingHealth <= 0 && $0.distanceToGolemMeters <= GolemMissionSlot.enemyAttackRangeMeters
+                }
                 if !defeated.isEmpty {
                     let enemyWord = defeated.count == 1 ? "enemy" : "enemies"
                     slot.appendActivityLog(

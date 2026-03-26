@@ -46,7 +46,7 @@ extension EncyclopediaView: View {
 
     @ViewBuilder
     private var rootRows: some View {
-        if viewModel.coordinator?.canPop == false {
+        if viewModel.entry.isRoot {
             achievementsRow
             statisticsRow
         }

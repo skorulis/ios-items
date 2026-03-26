@@ -5,6 +5,7 @@ import Models
 import SwiftUI
 
 struct EncyclopediaEntry {
+    let isRoot: Bool
     let title: String
     let body: String
     let condition: UnlockRequirement?
@@ -13,12 +14,14 @@ struct EncyclopediaEntry {
     let icon: AnyView?
 
     init(
+        isRoot: Bool = false,
         title: String,
         body: String,
         condition: UnlockRequirement? = nil,
         childItems: [EncyclopediaEntry] = [],
         icon: AnyView? = nil
     ) {
+        self.isRoot = isRoot
         self.title = title
         self.body = body
         self.condition = condition
@@ -78,6 +81,7 @@ extension EncyclopediaEntry {
 extension EncyclopediaEntry {
     static var root: Self {
         .init(
+            isRoot: true,
             title: "Encyclopedia",
             body: "",
             childItems: [
