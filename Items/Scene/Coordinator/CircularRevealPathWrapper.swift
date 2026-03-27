@@ -18,7 +18,7 @@ extension EnvironmentValues {
 
 // MARK: - Circular mask modifier
 
-private struct CircularRevealMaskModifier: ViewModifier, Animatable {
+struct CircularRevealMaskModifier: ViewModifier, Animatable {
     var progress: CGFloat
     let center: CGPoint
 

@@ -128,11 +128,15 @@ extension CreationView: View {
 
     @ViewBuilder
     private var creationLocationBackground: some View {
+        let revealProgress: CGFloat = viewModel.model.firstItem ? 0 : 1
+        let center = CGPoint(x: UIScreen.main.bounds.midX, y: UIScreen.main.bounds.midY)
         if let image = viewModel.model.mapLocations.selected.creationBackgroundImage {
             image
                 .resizable()
                 .scaledToFill()
                 .ignoresSafeArea()
+                .modifier(CircularRevealMaskModifier(progress: revealProgress, center: center))
+                .animation(.easeOut(duration: 0.5), value: viewModel.model.firstItem)
         } else {
             Color(.systemBackground)
                 .ignoresSafeArea()
