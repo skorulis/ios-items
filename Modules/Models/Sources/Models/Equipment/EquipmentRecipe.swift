@@ -29,7 +29,7 @@ extension EquipmentRecipe {
             EquipmentRecipe(kind: .dagger, material: $0, cost: bladeWeaponCost(material: $0, multiplier: 1))
         }
         let shortSwords = EquipmentMaterial.weaponMaterials.map {
-            EquipmentRecipe(kind: .dagger, material: $0, cost: bladeWeaponCost(material: $0, multiplier: 2))
+            EquipmentRecipe(kind: .shortSword, material: $0, cost: bladeWeaponCost(material: $0, multiplier: 2))
         }
         
         return [

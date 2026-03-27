@@ -306,7 +306,7 @@ extension CreationView: View {
                 if viewModel.model.isCreating {
                     ProgressView()
                 }
-                Text(viewModel.model.firstItem ? "Unlock the portal" : "Summon item")
+                Text(viewModel.model.firstItem ? "Unlock" : "Summon")
                     .opacity(viewModel.model.isCreating ? 0 : 1)
             }
         }

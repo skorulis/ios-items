@@ -23,7 +23,7 @@ struct ItemDetailsViewSnapshotTests {
     @Test
     func itemDetails_rare_item() {
         assembler.resolver.mainStore().portalUpgrades.purchased.formUnion([.portalUnlocked, .researchLab])
-        let viewModel = assembler.resolver.itemDetailsViewModel(item: .axisHeart)
+        let viewModel = assembler.resolver.itemDetailsViewModel(item: .astralGem)
         let view = ItemDetailsView(viewModel: viewModel)
 
         assertSnapshot(of: view, as: .image(on: .iPhoneSe))
