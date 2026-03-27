@@ -8,4 +8,7 @@ struct Golems: Codable {
     /// Mission setup
     var slots: [Int: GolemMissionSlot] = [:]
 
+    /// Cosmetic gear per golem mission slot index.
+    var equipmentByGolem: [Int: GolemEquipmentLoadout] = [:]
+
 }

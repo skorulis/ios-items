@@ -26,6 +26,7 @@ extension GolemMissionSlotView: View {
                 Text("Golem \(model.index + 1)")
                     .font(.appSectionTitle)
                 Spacer(minLength: 0)
+                golemEquipmentButton
                 if slot.phase == .running || slot.phase == .complete {
                     HStack(spacing: 8) {
                         missionStatisticsIconButton
@@ -45,6 +46,20 @@ extension GolemMissionSlotView: View {
         }
         .padding(12)
         .background(Color.gray.opacity(0.1), in: RoundedRectangle(cornerRadius: 8))
+    }
+
+    private var golemEquipmentButton: some View {
+        Button {
+            viewModel.openGolemEquipment(slotIndex: model.index)
+        } label: {
+            Image(systemName: "figure.arms.open")
+                .font(.body.weight(.semibold))
+                .foregroundStyle(.primary)
+                .frame(minWidth: 44, minHeight: 44)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("Golem equipment")
     }
 
     private var missionStatisticsIconButton: some View {

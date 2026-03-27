@@ -112,6 +112,26 @@ extension GolemsViewModel {
         coordinator?.custom(overlay: .card, MainPath.dialog(text))
     }
 
+    func openGolemEquipment(slotIndex: Int) {
+        coordinator?.custom(overlay: .card, MainPath.golemEquipment(slotIndex: slotIndex))
+    }
+
+    func golemEquipmentLoadout(slotIndex: Int) -> [EquipmentSlot: EquipmentInstance] {
+        golemService.equipment(forGolem: slotIndex)
+    }
+
+    func warehouseEquipmentMatching(slot: EquipmentSlot) -> [EquipmentInstance] {
+        model.warehouse.equipment.filter { $0.kind.slot == slot }
+    }
+
+    func equipGolem(slotIndex: Int, instance: EquipmentInstance, to slot: EquipmentSlot) {
+        golemService.equip(slotIndex: slotIndex, instance: instance, to: slot)
+    }
+
+    func unequipGolem(slotIndex: Int, slot: EquipmentSlot) {
+        golemService.unequip(slotIndex: slotIndex, slot: slot)
+    }
+
     func showMissionStatistics(slotIndex: Int) {
         let slot = missionSlot(at: slotIndex)
         let missionTimeInterval: TimeInterval

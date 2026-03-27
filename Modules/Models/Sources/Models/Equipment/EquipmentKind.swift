@@ -14,7 +14,7 @@ public enum EquipmentKind: String, Codable, CaseIterable, Hashable, Identifiable
         String(describing: self).fromCaseName
     }
     
-    var slot: EquipmentSlot {
+    public var slot: EquipmentSlot {
         switch self {
         case .shortSword, .dagger:
             return .mainHand

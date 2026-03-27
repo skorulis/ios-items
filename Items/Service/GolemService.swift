@@ -81,3 +81,54 @@ extension GolemService {
     }
 
 }
+
+// MARK: - Cosmetic equipment
+
+extension GolemService {
+
+    func equipment(forGolem slotIndex: Int) -> [EquipmentSlot: EquipmentInstance] {
+        mainStore.golems.equipmentByGolem[slotIndex]?.slots ?? [:]
+    }
+
+    /// Moves `instance` from the warehouse into the golem slot. Any previously equipped item returns to the warehouse.
+    func equip(slotIndex: Int, instance: EquipmentInstance, to slot: EquipmentSlot) {
+        guard instance.kind.slot == slot else { return }
+        guard mainStore.warehouse.equipment.contains(where: { $0.id == instance.id }) else { return }
+
+        var golems = mainStore.golems
+        var loadout = golems.equipmentByGolem[slotIndex] ?? GolemEquipmentLoadout()
+        let previous = loadout.slots[slot]
+
+        mainStore.warehouse.equipment.removeAll { $0.id == instance.id }
+
+        if let previous {
+            appendToWarehouseIfRoom(previous)
+        }
+
+        loadout.slots[slot] = instance
+        golems.equipmentByGolem[slotIndex] = loadout
+        mainStore.golems = golems
+    }
+
+    func unequip(slotIndex: Int, slot: EquipmentSlot) {
+        var golems = mainStore.golems
+        guard var loadout = golems.equipmentByGolem[slotIndex] else { return }
+        guard let instance = loadout.slots.removeValue(forKey: slot) else { return }
+
+        appendToWarehouseIfRoom(instance)
+
+        if loadout.slots.isEmpty {
+            golems.equipmentByGolem.removeValue(forKey: slotIndex)
+        } else {
+            golems.equipmentByGolem[slotIndex] = loadout
+        }
+        mainStore.golems = golems
+    }
+
+    private func appendToWarehouseIfRoom(_ instance: EquipmentInstance) {
+        guard mainStore.warehouse.equipment.count < 100 else { return }
+        mainStore.warehouse.equipmentUnlocked = true
+        mainStore.warehouse.equipment.append(instance)
+    }
+
+}
