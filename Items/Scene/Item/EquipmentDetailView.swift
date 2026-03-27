@@ -45,6 +45,20 @@ struct EquipmentDetailView: View {
                     color: .black,
                 )
                 detailRow(title: "Type", value: viewModel.equipment.kind.displayName, color: .black)
+                if viewModel.equipment.stats.attack != 0 {
+                    detailRow(
+                        title: "Attack",
+                        value: statString(viewModel.equipment.stats.attack),
+                        color: .black
+                    )
+                }
+                if viewModel.equipment.stats.defence != 0 {
+                    detailRow(
+                        title: "Defence",
+                        value: statString(viewModel.equipment.stats.defence),
+                        color: .black
+                    )
+                }
             }
         }
         .padding(16)
@@ -59,6 +73,14 @@ struct EquipmentDetailView: View {
                 .font(.appSubheadline.weight(.semibold))
                 .foregroundStyle(color)
             Spacer()
+        }
+    }
+    
+    private func statString(_ value: Double) -> String {
+        if value.rounded() == value {
+            return String(Int(value))
+        } else {
+            return String(format: "%.1f", value)
         }
     }
 }

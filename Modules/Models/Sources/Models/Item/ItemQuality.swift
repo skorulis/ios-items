@@ -53,6 +53,16 @@ public enum ItemQuality: Codable, CaseIterable, Comparable, Sendable {
             return 0.001
         }
     }
+    
+    public var statMultiplier: Double {
+        switch self {
+        case .junk: return 1
+        case .common: return 2
+        case .good: return 3
+        case .rare: return 4
+        case .exceptional: return 5
+        }
+    }
 
     public static func < (lhs: ItemQuality, rhs: ItemQuality) -> Bool {
         let order = ItemQuality.allCases

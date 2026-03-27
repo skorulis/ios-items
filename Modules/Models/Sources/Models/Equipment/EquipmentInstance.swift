@@ -29,5 +29,9 @@ public struct EquipmentInstance: Codable, Hashable, Identifiable, Sendable {
     public var fullName: String {
         "\(quality.name)\(displayName)"
     }
+    
+    public var stats: EquipmentStats {
+        return kind.baseStats.multiplied(value: quality.statMultiplier * material.statMultiplier)
+    }
 
 }

@@ -59,4 +59,8 @@ public enum EquipmentMaterial: String, Codable, CaseIterable, Hashable, Identifi
             return .orange
         }
     }
+    
+    public var statMultiplier: Double {
+        return quality.statMultiplier
+    }
 }

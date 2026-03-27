@@ -20,4 +20,13 @@ public enum EquipmentKind: String, Codable, CaseIterable, Hashable, Identifiable
             return .mainHand
         }
     }
+    
+    public var baseStats: EquipmentStats {
+        switch self {
+        case .shortSword:
+            return EquipmentStats(attack: 1)
+        case .dagger:
+            return EquipmentStats(attack: 1.5)
+        }
+    }
 }
