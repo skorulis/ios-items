@@ -34,11 +34,12 @@ extension GolemService {
     func missionHealthRemainingFraction(slotIndex: Int) -> Double {
         guard let slot = missionSlot(at: slotIndex) else { return 0 }
         if slot.phase == .complete { return 0 }
+        let maxHealth = slot.stats.health
         guard slot.phase == .running,
               let remaining = slot.remainingHealth,
-              GolemMissionSlot.missionMaxHealth > 0
+              maxHealth > 0
         else { return 0 }
-        return min(1, max(0, Double(remaining) / Double(GolemMissionSlot.missionMaxHealth)))
+        return min(1, max(0, Double(remaining) / Double(maxHealth)))
     }
 
     func setMissionLocation(slotIndex: Int, location: MapLocation) {

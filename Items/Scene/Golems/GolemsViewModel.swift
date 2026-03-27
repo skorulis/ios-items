@@ -132,6 +132,19 @@ extension GolemsViewModel {
         golemService.unequip(slotIndex: slotIndex, slot: slot)
     }
 
+    func showGolemStats(slotIndex: Int) {
+        let stats = missionSlot(at: slotIndex).stats
+        let text = """
+        Golem stats
+
+        Health: \(stats.health)
+        Attack: \(stats.attack)
+        Defence: \(stats.defence)
+        Speed: \(String(format: "%.1f", stats.speed))
+        """
+        coordinator?.custom(overlay: .card, MainPath.dialog(text))
+    }
+
     func showMissionStatistics(slotIndex: Int) {
         let slot = missionSlot(at: slotIndex)
         let missionTimeInterval: TimeInterval

@@ -26,6 +26,7 @@ extension GolemMissionSlotView: View {
                 Text("Golem \(model.index + 1)")
                     .font(.appSectionTitle)
                 Spacer(minLength: 0)
+                golemStatsButton
                 golemEquipmentButton
                 if slot.phase == .running || slot.phase == .complete {
                     HStack(spacing: 8) {
@@ -60,6 +61,20 @@ extension GolemMissionSlotView: View {
         }
         .buttonStyle(.plain)
         .accessibilityLabel("Golem equipment")
+    }
+
+    private var golemStatsButton: some View {
+        Button {
+            viewModel.showGolemStats(slotIndex: model.index)
+        } label: {
+            Image(systemName: "list.bullet.rectangle.portrait")
+                .font(.body.weight(.semibold))
+                .foregroundStyle(.primary)
+                .frame(minWidth: 44, minHeight: 44)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("Golem stats")
     }
 
     private var missionStatisticsIconButton: some View {
@@ -136,7 +151,7 @@ extension GolemMissionSlotView: View {
                 .foregroundStyle(.secondary)
 
             if let remaining = slot.remainingHealth {
-                Text("Health: \(remaining) / \(GolemMissionSlot.missionMaxHealth)")
+                Text("Health: \(remaining) / \(slot.stats.health)")
                     .font(.appCaption.weight(.semibold))
             }
 

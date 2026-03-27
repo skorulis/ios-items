@@ -11,15 +11,14 @@ struct GolemMissionSlot: Codable {
         case complete
     }
 
-    static let missionMaxHealth: Int = 60
     static let maxEnemies: Int = 3
     static let enemyAttackRangeMeters: Double = 0.5
     static let enemySpawnDistanceMeters: Double = 6.0
-    static let golemMetersPerTick: Double = 1.0
     static let enemyMetersPerTick: Double = 1.0
 
     var phase: Phase
     var location: MapLocation
+    var stats: GolemStats = .basic
 
     private(set) var startedAt: Date
     var remainingHealth: Int?
@@ -76,7 +75,7 @@ struct GolemMissionSlot: Codable {
     mutating func start(date: Date) {
         self.phase = .running
         self.startedAt = date
-        self.remainingHealth = Self.missionMaxHealth
+        self.remainingHealth = stats.health
         self.enemies = []
         self.nextEnemySpawnAt = date.addingTimeInterval(Double.random(in: 1.0 ... 2.5))
         self.lastSimulatedAt = date
@@ -105,6 +104,7 @@ struct GolemMissionSlot: Codable {
     init(
         phase: Phase,
         location: MapLocation = .vesprium,
+        stats: GolemStats = .basic,
         remainingHealth: Int? = nil,
         enemiesDefeated: Int = 0,
         exploringDistanceMeters: Int = 0,
@@ -114,6 +114,7 @@ struct GolemMissionSlot: Codable {
     ) {
         self.phase = phase
         self.location = location
+        self.stats = stats
         self.startedAt = Date()
         self.remainingHealth = remainingHealth
         self.gainedItems = [:]

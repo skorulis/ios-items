@@ -11,7 +11,6 @@ final class GolemMissionService {
     private let itemGeneratorService: ItemGeneratorService
     private var progressCheckTimer: Timer?
 
-    private static let golemAttackDamagePerTick = 4
     private static let tickInterval: TimeInterval = 1.0
 
     @Resolvable<BaseResolver>
@@ -53,7 +52,7 @@ final class GolemMissionService {
             // 2) Move golem until an enemy reaches attack range.
             let anyEnemyInRange = slot.enemies.contains { $0.distanceToGolemMeters <= GolemMissionSlot.enemyAttackRangeMeters }
             if !anyEnemyInRange {
-                slot.exploringDistanceMeters += Int(GolemMissionSlot.golemMetersPerTick.rounded())
+                slot.exploringDistanceMeters += Int(slot.stats.speed.rounded())
                 slotMutated = true
             }
 
@@ -61,7 +60,7 @@ final class GolemMissionService {
             if !slot.enemies.isEmpty {
                 for i in slot.enemies.indices {
                     guard slot.enemies[i].remainingHealth > 0 else { continue }
-                    let golemSpeed = anyEnemyInRange ? 0.0 : GolemMissionSlot.golemMetersPerTick
+                    let golemSpeed = anyEnemyInRange ? 0.0 : slot.stats.speed
                     let closingSpeed = GolemMissionSlot.enemyMetersPerTick + golemSpeed
                     let newDistance = slot.enemies[i].distanceToGolemMeters - closingSpeed
                     slot.enemies[i].distanceToGolemMeters = max(
@@ -91,11 +90,12 @@ final class GolemMissionService {
                     let enemy = slot.enemies[enemyIndex]
                     slot.enemies[enemyIndex].remainingHealth = max(
                         0,
-                        enemy.remainingHealth - Self.golemAttackDamagePerTick
+                        enemy.remainingHealth - slot.stats.attack
                     )
                 }
 
-                slot.takeDamage(totalDamageToGolem)
+                let mitigatedDamage = max(1, totalDamageToGolem - slot.stats.defence)
+                slot.takeDamage(mitigatedDamage)
                 slotMutated = true
 
                 // Remove defeated enemies and roll loot.
