@@ -17,11 +17,11 @@ public enum EquipmentMaterial: String, Codable, CaseIterable, Hashable, Identifi
     public var nameAdjective: String {
         String(describing: self).fromCaseName
     }
-    
+
     static var weaponMaterials: [EquipmentMaterial] {
         [.stone, .crystal, .steelvine, .thunderscale, .astral]
     }
-    
+
     static var armorMaterials: [EquipmentMaterial] {
         [.wovenReed, .crystal, .steelvine, .thunderscale, .astral]
     }
@@ -59,7 +59,7 @@ public enum EquipmentMaterial: String, Codable, CaseIterable, Hashable, Identifi
             return .orange
         }
     }
-    
+
     public var statMultiplier: Double {
         return quality.statMultiplier
     }

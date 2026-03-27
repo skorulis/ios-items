@@ -14,7 +14,7 @@ public struct EquipmentStats: Codable, Equatable, Hashable, Sendable {
         self.attack = attack
         self.defence = defence
     }
-    
+
     public func multiplied(value: Double) -> EquipmentStats {
         return EquipmentStats(
             attack: attack * value,

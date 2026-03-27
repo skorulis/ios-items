@@ -53,7 +53,7 @@ public enum ItemQuality: Codable, CaseIterable, Comparable, Sendable {
             return 0.001
         }
     }
-    
+
     public var statMultiplier: Double {
         switch self {
         case .junk: return 1

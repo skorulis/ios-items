@@ -50,7 +50,9 @@ final class GolemMissionService {
             }
 
             // 2) Move golem until an enemy reaches attack range.
-            let anyEnemyInRange = slot.enemies.contains { $0.distanceToGolemMeters <= GolemMissionSlot.enemyAttackRangeMeters }
+            let anyEnemyInRange = slot.enemies.contains {
+                $0.distanceToGolemMeters <= GolemMissionSlot.enemyAttackRangeMeters
+            }
             if !anyEnemyInRange {
                 slot.exploringDistanceMeters += Int(slot.stats.speed.rounded())
                 slotMutated = true

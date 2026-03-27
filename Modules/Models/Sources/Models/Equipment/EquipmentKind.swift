@@ -13,14 +13,14 @@ public enum EquipmentKind: String, Codable, CaseIterable, Hashable, Identifiable
     public var displayName: String {
         String(describing: self).fromCaseName
     }
-    
+
     public var slot: EquipmentSlot {
         switch self {
         case .shortSword, .dagger:
             return .mainHand
         }
     }
-    
+
     public var baseStats: EquipmentStats {
         switch self {
         case .shortSword:

@@ -63,7 +63,7 @@ extension DebugViewModel {
     func resetNotifications() {
         mainStore.notifications = Notifications()
     }
-    
+
     func resetGolems() {
         mainStore.golems = .init()
     }

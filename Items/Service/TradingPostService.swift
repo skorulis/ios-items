@@ -88,6 +88,7 @@ final class TradingPostService {
         return cal.date(from: comps) ?? date
     }
 
+    // swiftlint:disable:next function_body_length
     func generateTrades() -> [TradingPostTrade] {
         let tradeCount = tradeCountForCurrentUpgrades()
         let discovered = Ingredient.allCases.filter { mainStore.warehouse.hasDiscovered($0) }

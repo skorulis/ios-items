@@ -142,7 +142,9 @@ extension GolemMissionSlotView: View {
         VStack(alignment: .leading, spacing: 10) {
             locationSlot(slot: slot)
 
-            let isFighting = slot.enemies.contains { $0.distanceToGolemMeters <= GolemMissionSlot.enemyAttackRangeMeters }
+            let isFighting = slot.enemies.contains {
+                $0.distanceToGolemMeters <= GolemMissionSlot.enemyAttackRangeMeters
+            }
 
             GolemMissionSideScrollerView(enemies: slot.enemies)
 

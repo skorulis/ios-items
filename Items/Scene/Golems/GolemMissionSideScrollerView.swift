@@ -66,7 +66,7 @@ struct GolemMissionSideScrollerView: View {
             }
         }
     }
-    
+
     private var border: some View {
         RoundedRectangle(cornerRadius: 10)
             .fill(Color(.systemGray6))

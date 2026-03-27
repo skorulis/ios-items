@@ -75,7 +75,7 @@ struct EquipmentDetailView: View {
             Spacer()
         }
     }
-    
+
     private func statString(_ value: Double) -> String {
         if value.rounded() == value {
             return String(Int(value))

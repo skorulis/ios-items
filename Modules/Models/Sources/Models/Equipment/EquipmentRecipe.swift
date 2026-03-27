@@ -6,11 +6,11 @@ public struct EquipmentRecipe: Codable, Equatable, Sendable, Hashable {
     public let kind: EquipmentKind
     public let material: EquipmentMaterial
     public let cost: [UpgradeCostItem]
-    
+
     public func item(quality: ItemQuality) -> EquipmentInstance {
         return .init(kind: kind, material: material, quality: quality)
     }
-    
+
     public var productName: String {
         return "\(material.nameAdjective) \(kind.displayName)"
     }
@@ -18,9 +18,9 @@ public struct EquipmentRecipe: Codable, Equatable, Sendable, Hashable {
     public var name: String {
         return "\(productName) Recipe"
     }
-    
+
     public var quality: ItemQuality { material.quality }
-    
+
 }
 
 extension EquipmentRecipe {
@@ -31,7 +31,7 @@ extension EquipmentRecipe {
         let shortSwords = EquipmentMaterial.weaponMaterials.map {
             EquipmentRecipe(kind: .shortSword, material: $0, cost: bladeWeaponCost(material: $0, multiplier: 2))
         }
-        
+
         return [
             daggers,
             shortSwords,
