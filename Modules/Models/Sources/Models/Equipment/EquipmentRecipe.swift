@@ -26,11 +26,15 @@ public struct EquipmentRecipe: Codable, Equatable, Sendable, Hashable {
 extension EquipmentRecipe {
     public static var allCases: [EquipmentRecipe] {
         let daggers = EquipmentMaterial.weaponMaterials.map {
-            EquipmentRecipe(kind: .dagger, material: $0, cost: bladeWeaponCost(material: $0))
+            EquipmentRecipe(kind: .dagger, material: $0, cost: bladeWeaponCost(material: $0, multiplier: 1))
+        }
+        let shortSwords = EquipmentMaterial.weaponMaterials.map {
+            EquipmentRecipe(kind: .dagger, material: $0, cost: bladeWeaponCost(material: $0, multiplier: 2))
         }
         
         return [
-            daggers
+            daggers,
+            shortSwords,
         ]
         .flatMap { $0 }
     }
@@ -39,31 +43,39 @@ extension EquipmentRecipe {
 // MARK: - Cost
 
 extension EquipmentRecipe {
-    static func bladeWeaponCost(material: EquipmentMaterial) -> [UpgradeCostItem] {
+    static func bladeWeaponCost(
+        material: EquipmentMaterial,
+        multiplier: Int,
+    ) -> [UpgradeCostItem] {
         switch material {
         case .stone:
-            return [.init(item: .rock, quantity: 50)]
+            return [
+                .init(item: .rock, quantity: 50 * multiplier),
+                .init(item: .copperFlorin, quantity: 10 * multiplier),
+            ]
         case .crystal:
             return [
-                .init(item: .quartzCrystal, quantity: 25),
-                .init(item: .whetstone, quantity: 25),
+                .init(item: .quartzCrystal, quantity: 25 * multiplier),
+                .init(item: .whetstone, quantity: 25 * multiplier),
+                .init(item: .silverFlorin, quantity: 10 * multiplier),
             ]
         case .steelvine:
             return [
-                .init(item: .metalBloom, quantity: 25),
-                .init(item: .giantThorn, quantity: 25),
+                .init(item: .metalBloom, quantity: 25 * multiplier),
+                .init(item: .giantThorn, quantity: 25 * multiplier),
+                .init(item: .goldFlorin, quantity: 10 * multiplier),
             ]
         case .thunderscale:
             return [
-                .init(item: .lightningStone, quantity: 25),
-                .init(item: .metalBloom, quantity: 25),
-                .init(item: .silverFlorin, quantity: 25),
+                .init(item: .lightningStone, quantity: 25 * multiplier),
+                .init(item: .metalBloom, quantity: 25 * multiplier),
+                .init(item: .silverFlorin, quantity: 25 * multiplier),
             ]
         case .astral:
             return [
-                .init(item: .astralGem, quantity: 25),
-                .init(item: .sunwellPhial, quantity: 25),
-                .init(item: .anchorStone, quantity: 25),
+                .init(item: .astralGem, quantity: 25 * multiplier),
+                .init(item: .sunwellPhial, quantity: 25 * multiplier),
+                .init(item: .anchorStone, quantity: 25 * multiplier),
             ]
         default:
             fatalError("Unexpected materail for ")
