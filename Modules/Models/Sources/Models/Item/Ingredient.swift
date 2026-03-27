@@ -3,7 +3,7 @@
 import Foundation
 
 /// Simple items that only have quantity
-public enum Ingredient: String, Hashable, Equatable, CaseIterable, Identifiable, Codable {
+public enum Ingredient: String, Hashable, Equatable, CaseIterable, Identifiable, Codable, Sendable {
     // Junk
     case copperFlorin
     case apple

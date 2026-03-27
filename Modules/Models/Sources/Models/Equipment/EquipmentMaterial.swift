@@ -5,6 +5,7 @@ import SwiftUI
 
 public enum EquipmentMaterial: String, Codable, CaseIterable, Hashable, Identifiable, Sendable {
     case stone
+    case wovenReed
     case crystal
     case steelvine
     case thunderscale
@@ -16,11 +17,19 @@ public enum EquipmentMaterial: String, Codable, CaseIterable, Hashable, Identifi
     public var nameAdjective: String {
         String(describing: self).fromCaseName
     }
+    
+    static var weaponMaterials: [EquipmentMaterial] {
+        [.stone, .crystal, .steelvine, .thunderscale, .astral]
+    }
+    
+    static var armorMaterials: [EquipmentMaterial] {
+        [.wovenReed, .crystal, .steelvine, .thunderscale, .astral]
+    }
 
     /// Quality tier this material corresponds to
     public var quality: ItemQuality {
         switch self {
-        case .stone:
+        case .stone, .wovenReed:
             return .junk
         case .crystal:
             return .common
@@ -38,6 +47,8 @@ public enum EquipmentMaterial: String, Codable, CaseIterable, Hashable, Identifi
         switch self {
         case .stone:
             return .gray
+        case .wovenReed:
+            return .brown
         case .crystal:
             return .yellow
         case .steelvine:

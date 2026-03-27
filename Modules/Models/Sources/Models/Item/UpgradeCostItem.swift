@@ -3,7 +3,7 @@
 import Foundation
 
 /// A single line in an upgrade's cost: item type and required quantity.
-public struct UpgradeCostItem: Codable, Hashable {
+public struct UpgradeCostItem: Codable, Hashable, Sendable {
     public let item: Ingredient
     public let quantity: Int
 
