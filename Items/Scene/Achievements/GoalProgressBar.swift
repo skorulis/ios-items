@@ -30,7 +30,9 @@ extension GoalProgressBar: View {
     }
 
     private var stringValue: String {
-        return "\(value)/\(total)"
+        let valueText = CompactNumberFormatter.string(Double(value))
+        let totalText = CompactNumberFormatter.string(Double(total))
+        return "\(valueText)/\(totalText)"
     }
 
     private var bar: some View {

@@ -11,4 +11,8 @@ struct GolemEquipmentLoadout: Codable, Equatable {
     func equipment(in slot: EquipmentSlot) -> EquipmentInstance? {
         slots[slot]
     }
+    
+    static func empty() -> Self {
+        .init(slots: [:])
+    }
 }

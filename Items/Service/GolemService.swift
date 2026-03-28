@@ -108,6 +108,7 @@ extension GolemService {
 
         loadout.slots[slot] = instance
         golems.equipmentByGolem[slotIndex] = loadout
+        refreshGolemStats(slotIndex: slotIndex, golems: &golems)
         mainStore.golems = golems
     }
 
@@ -123,6 +124,7 @@ extension GolemService {
         } else {
             golems.equipmentByGolem[slotIndex] = loadout
         }
+        refreshGolemStats(slotIndex: slotIndex, golems: &golems)
         mainStore.golems = golems
     }
 
@@ -130,6 +132,38 @@ extension GolemService {
         guard mainStore.warehouse.equipment.count < 100 else { return }
         mainStore.warehouse.equipmentUnlocked = true
         mainStore.warehouse.equipment.append(instance)
+    }
+
+    private func refreshGolemStats(slotIndex: Int, golems: inout Golems) {
+        var slot = golems.slots[slotIndex] ?? .empty()
+        let previousStats = slot.stats
+        let updatedStats = statsForLoadout(golems.equipmentByGolem[slotIndex] ?? .empty())
+        guard updatedStats != previousStats else { return }
+
+        slot.stats = updatedStats
+
+        // Preserve damage taken if max health changes due to future equipment bonuses.
+        if let remaining = slot.remainingHealth {
+            let damageTaken = max(0, previousStats.health - remaining)
+            slot.remainingHealth = max(0, updatedStats.health - damageTaken)
+        }
+
+        golems.slots[slotIndex] = slot
+    }
+
+    private func statsForLoadout(_ loadout: GolemEquipmentLoadout) -> GolemStats {
+        let equippedItems = Array(loadout.slots.values)
+        let attackBonus = equippedItems.reduce(0.0) { partialResult, instance in
+            partialResult + instance.stats.attack
+        }
+        let defenceBonus = equippedItems.reduce(0.0) { partialResult, instance in
+            partialResult + instance.stats.defence
+        }
+
+        var stats = GolemStats.basic
+        stats.attack += Int(attackBonus.rounded())
+        stats.defence += Int(defenceBonus.rounded())
+        return stats
     }
 
 }
